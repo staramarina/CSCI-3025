@@ -1,0 +1,38 @@
+General Package Update: 
+sudo apt install
+sudo apt upgrade
+
+Check versions:
+python3 --version
+pip --version
+git --version
+
+Install python: (generally not needed for Linux)
+sudo apt install python3
+
+Install pip: 
+sudo apt install python3-pip
+
+Install vscode:
+sudo snap install --classic code
+
+Install git: 
+sudo apt install git-all
+
+Install Jupyter: 
+sudo apt install jupyter-core
+sudo apt install jupyter
+
+venv prereq: 
+sudo apt install python3.14-venv
+[note: version dependent, check version first]
+
+create virtual environment: 
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
+[then add a virtual environment in vsc/python/environment managers/venv]
+
+git identification commands: 
+git config --global user.email "tiffany_mui934@sunyempire.edu"
+git config --global user.name "Tiffany Mui"
