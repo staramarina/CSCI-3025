@@ -36,3 +36,7 @@ python3 -m pip install --upgrade pip
 git identification commands: 
 git config --global user.email "tiffany_mui934@sunyempire.edu"
 git config --global user.name "Tiffany Mui"
+
+publish to git from .venv:
+git init
+git add -f .venv/<filename.fileextension>
