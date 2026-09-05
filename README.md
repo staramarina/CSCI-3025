@@ -2,6 +2,5 @@
 Repository for CSCI-3025: Python Programming, Fall 2026
 
 ## Contents
-- PythonEnvironmentInstructions.txt: List of useful commands for setting up a Python environment in Linux (Ubuntu).
-- Mui_SetupTest.py: Simple print program to test the Python environment and workflow to publishing in git.
-- Mui_M1Assignment.py: Simple print and calculation program to demonstrate utilizing python environment.
+- Module0: contains Python environment instructions and setup test scripts.
+- Module1: Module 1 assignment files
