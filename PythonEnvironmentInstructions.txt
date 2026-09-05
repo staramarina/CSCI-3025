@@ -38,5 +38,8 @@ git config --global user.email "tiffany_mui934@sunyempire.edu"
 git config --global user.name "Tiffany Mui"
 
 publish to git from .venv:
+mv .venv/<filename.fileextension> <filename.fileextension> //assuming working directory is git repo folder
 git init
-git add -f .venv/<filename.fileextension>
+git add <filename.fileextension>
+git commit -m "<commit comments>"
+//can use vsc gui to push to git
