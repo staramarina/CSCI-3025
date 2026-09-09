@@ -1,0 +1,25 @@
+# Tiffany M. Mui
+# Module 2 Assignment
+# CSCI-3025: Python Programming
+# Purpose: Demonstrate variables, data types, and expressions in Python
+
+#define variables
+num1 = 11
+num2 = 7
+num3 = 3.14
+num4 = 5.39
+string1 = "Let's learn Python!"
+
+#arithmetic operations
+sum23 = num2 + num3             #summation of integer and decimal type
+product13 = num1 * num3         #multiplication of integer and decimal type
+difference24 = num2 - num4      #subtraction of integer and decimal type
+quotient12 = num1 / num2        #division of integers
+quotient14 = num1 / num4        #division of integer and decimal type
+quotient43 = num4 / num3        #division of decimal types
+
+#string manipulations
+
+#boolean expressions
+
+#output statements
