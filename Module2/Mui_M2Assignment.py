@@ -19,7 +19,12 @@ quotient14 = num1 / num4        #division of integer and decimal type
 quotient43 = num4 / num3        #division of decimal types
 
 #string manipulations
+stringjoin1 = ' '.join([string1, "It's fun!"])              #add another string to the end of string1 with a space between strings
+slicedstring1 = string1[12:17]                              #slice string1 to isolate "Python"
+slicedstring2 = stringjoin1[25:29]                          #slice stringjoin to isolate "fun!"
+stringjoin2 = slicedstring1 + " is " + slicedstring2        #join sliced strings with " is " in between
 
 #boolean expressions
+
 
 #output statements
