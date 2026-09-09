@@ -3,6 +3,8 @@
 # CSCI-3025: Python Programming
 # Purpose: Demonstrate variables, data types, and expressions in Python
 
+from decimal import Decimal
+
 #define variables
 num1 = 11
 num2 = 7
@@ -11,12 +13,16 @@ num4 = 5.39
 string1 = "Let's learn Python!"
 
 #arithmetic operations
-sum23 = num2 + num3             #summation of integer and decimal type
-product13 = num1 * num3         #multiplication of integer and decimal type
-difference24 = num2 - num4      #subtraction of integer and decimal type
+sum23 = num2 + num3             #summation of integer and float type
+product13 = num1 * num3         #multiplication of integer and float type
+difference24 = num2 - num4      #subtraction of integer and float type
 quotient12 = num1 / num2        #division of integers
-quotient14 = num1 / num4        #division of integer and decimal type
-quotient43 = num4 / num3        #division of decimal types
+quotient14 = num1 / num4        #division of integer and float type
+quotient43 = num4 / num3        #division of float types
+
+#arithmetic operations with attempted corrections
+fixeddiff1 = Decimal(num2) - Decimal(num4)
+fixeddiff2 = float(num2) - num4
 
 #string manipulations
 stringjoin1 = ' '.join([string1, "It's fun!"])              #add another string to the end of string1 with a space between strings
@@ -30,13 +36,17 @@ bool2 = len(stringjoin1) >= 28  #check if the length of stringjoin1 is greater t
 
 #output statements
 print("\nArithmetic operations included:")
-print("Summation of integer", num2, "and decimal", num3, "results in the sum", sum23)
-print("Multiplication of integer", num1, "and decimal", num3, "results in the product", product13)
-print("Subtraction of decimal", num4, "from integer", num2, "results in the difference", difference24)
+print("Summation of integer", num2, "and float", num3, "results in the sum", sum23)
+print("Multiplication of integer", num1, "and float", num3, "results in the product", product13)
+print("Subtraction of float", num4, "from integer", num2, "results in the difference", difference24)
 print("Division of integer", num1, "by integer", num2, "results in quotient", quotient12)
-print("Division of integer", num1, "by decimal", num4, "results in quotient", quotient14)
-print("Division of decimal", num4, "by decimal", num3, "results in quotient", quotient43)
-print("Note that arithmetic operations between integers and decimals may not behave as expected.")
+print("Division of integer", num1, "by float", num4, "results in quotient", quotient14)
+print("Division of float", num4, "by float", num3, "results in quotient", quotient43)
+print("\nNote that arithmetic operations may not always behave as expected.")
+print("For example, consider the subtraction of the float and integer above.")
+print(f"Specifying both {num2} and {num4} as Decimals results in {fixeddiff1}")
+print(f"Specifying {num2} as a float results in {fixeddiff2}")
+print(f"In this instance, the error is likely due to precise limitations when representing the float {num4}")
 print("\nString manipulations included:")
 print(f"Joining string '{string1}' with 'It's fun!' results in '{stringjoin1}'")
 print(f"Slicing '{string1}' from position 12 to 18 results in '{slicedstring1}'")
