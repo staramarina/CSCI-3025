@@ -13,4 +13,13 @@ while True == tryagain:                                                         
     except:                                                                     # exception handles when user input is not in correct format
         print("Error processing input, please try again.")                      # tells the operator that the input could not be processed
         score = input("Enter a percentage score (do not include '%'): ")        # attempt to get operator input again
-print("Good!")    #test output, remove later
+if score >= 90.0:
+    print(f"A score of {score}% results in grade A.")
+elif score >= 80:
+    print(f"A score of {score}% results in grade B.")
+elif score >= 70:
+    print(f"A score of {score}% results in grade C.")
+elif score >= 60:
+    print(f"A score of {score}% results in grade D.")
+else: 
+    print(f"A score of {score}% results in grade F.")
