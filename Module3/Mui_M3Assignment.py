@@ -36,3 +36,21 @@ else:                                                                           
         if letter in vowels:                                                    # check if the letter is a vowel
             vowelcount += 1                                                     # if a vowel is found, the counter is incremented
     print(f"There are {vowelcount} vowels in the given statement.")             # inform users of the number of vowels
+
+#Part 3: a while loop for a number guessing game
+rightnum = 4                                                                    # set the correct number to guess for the game
+print("\nI'm thinking of an integer between 1 and 10. Can you guess it?")       # beginning of guessing game statement
+guess = input("Enter an integer (or press q to quit): ")                        # prompt user to enter a number or q to exit
+while 'q' != guess:                                                             # while loop to continue guessing unless q is entered
+    try:                                                                        # try statement to check that user input is correct format
+        guess = int(guess)                                                      # attempt to convert guess to an integer
+        if rightnum == guess:                                                   # check if the user guessed the correct number
+            print(f"{guess} is correct!")                                       # inform user of correct guess
+            break                                                               # exit the game
+        else:                                                                   # if the guess was not correct
+            print(f"{guess} isn't the number.")                                 # inform user of wrong guess
+            guess = input("Enter another number (or press q to quit):")         # prompt for another guess
+    except:                                                                     # if converting to an integer failed
+        print("That doesn't seem to be an integer.")                            # inform user of incorrect input
+        guess = input("Enter another number (or press q to quit):")             # prompt for another guess
+print("Thanks for playing!")                                                    # end game message
