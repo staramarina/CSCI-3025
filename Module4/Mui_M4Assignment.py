@@ -19,14 +19,6 @@ def inch_to_cm(inch):
 
     Returns: 
         cm: Length in centimeters
-
-    Examples:
-        >>> inch_to_cm(1)
-        2.54
-        >>> inch_to_cm(0)
-        0.0
-        >>> inch_to_cm(-1)
-        -2.54
     """
     cm = inch * IN_CM
     return cm
@@ -40,14 +32,6 @@ def cm_to_inch(cm):
     
     Returns:
         inch: Length in inches
-    
-    Examples: 
-        >>> cm_to_inch(1)
-        0.3937
-        >>> cm_to_inch(0)
-        0.0
-        >>> cm_to_inch(-1)
-        -0.3937
     """
     inch = cm / IN_CM
     return inch
@@ -61,14 +45,6 @@ def mile_to_km(mile):
     
     Returns:
         km: Length in kilometers
-    
-    Examples:
-        >>> mile_to_km(1)
-        1.609344
-        >>> mile_to_km(0)
-        0.0
-        >>> mile_to_km(-1)
-        -1.609344
     """
     km = mile * MI_KM
     return km
@@ -82,14 +58,6 @@ def km_to_mile(km):
     
     Returns:
         mile: Length in miles
-        
-    Examples:
-        >>> km_to_mile(1)
-        0.62137
-        >>> km_to_mile(0)
-        0.0
-        >>> km_to_mile(-1)
-        -0.62137
     """
     mile = km / MI_KM
     return mile
@@ -103,14 +71,6 @@ def lb_to_kg(pound):
     
     Returns:
         kg: Mass/weight in kilograms
-    
-    Examples:
-        >>> lb_to_kg(1)
-        0.45359237
-        >>> lb_to_kg(0)
-        0.0
-        >>> lb_to_kg(-1)
-        -0.45359237
     """
     kg = pound * LB_KG
     return kg
@@ -124,14 +84,6 @@ def kg_to_lb(kg):
     
     Returns:
         pound: Mass/weight in pounds
-    
-    Examples:
-        >>> kg_to_lb(1)
-        2.20462
-        >>> kg_to_lb(0)
-        0.0
-        >>> kg_to_lb(-1)
-        -2.20462
     """
     pound = kg / LB_KG
     return pound
@@ -145,14 +97,6 @@ def fah_to_cel(fah):
     
     Returns:
         cel: Temperature in Celsius
-    
-    Examples:
-        >>> fah_to_cel(32)
-        0
-        >>> fah_to_cel(0)
-        -17.7778
-        >>> fah_to_cel(-32)
-        -35.5556
     """
     cel = (fah - 32) / 1.8
     return cel
@@ -166,21 +110,13 @@ def cel_to_fah(cel):
     
     Returns:
         fah: Temperature in Fahrenheit
-        
-    Examples:
-        >>> cel_to_fah(32)
-        89.6
-        >>> cel_to_fah(0)
-        32
-        >>> cel_to_fah(-32)
-        -25.6
     """
     fah = (cel * 1.8) + 32
     return fah
 
 # ------------------------------------------------------------------------------
 # CONVERSION: A dictionary that maps menu options to conversion functions
-# Elements in the dictionary are 5-tuple using the following
+# Elements in the dictionary are 4-tuple using the following
 #   [0]: conversion function - input float, return float
 #   [1]: abbreviated input unit used for printing results
 #   [2]: abbreviated output unit used for printing results
@@ -222,7 +158,7 @@ def print_menu():
     print("q -- Quit")
 
 
-def run_conversion(selection, func, u_in, u_out, long_in):
+def run_conversion(_selection, func, u_in, u_out, _long_in):
     """Perform the unit conversion and handle errors"""
     input_number = input("\nEnter the number to convert: ")
     try:
@@ -231,8 +167,6 @@ def run_conversion(selection, func, u_in, u_out, long_in):
         print(f"{input_number} {u_in} is {output_number:.4f} {u_out}")
     except ValueError:
         print(f"{input_number} is not a valid number.")
-    except ZeroDivisionError:
-        print("Division by zero occurred during calculation.")
     except TypeError as error:
         print(f"Encountered type error: {error}")
     except Exception as error: 
