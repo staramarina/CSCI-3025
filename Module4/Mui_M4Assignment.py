@@ -11,7 +11,7 @@ MI_KM = 1.609344 # Miles to kilometers conversion ratio
 LB_KG = 0.45359237 # Pounds to kilograms conversion ratio
 
 
-def in_to_cm(inch):
+def inch_to_cm(inch):
     """Convert inches to centimeters.
     
     inch variable is assumed to be a number.
@@ -21,7 +21,7 @@ def in_to_cm(inch):
     return cm
 
 
-def cm_to_in(cm):
+def cm_to_inch(cm):
     """Convert centimeters to inches.
     
     cm variable is assumed to be a number.
@@ -30,7 +30,7 @@ def cm_to_in(cm):
     return inch
 
 
-def mi_to_km(mile):
+def mile_to_km(mile):
     """Convert miles to kilometers.
     
     mile variable is assumed to be a number.
@@ -39,7 +39,7 @@ def mi_to_km(mile):
     return km
 
 
-def km_to_mi(km):
+def km_to_mile(km):
     """Convert kilometers to miles.
     
     km variable is assumed to a number.
@@ -85,16 +85,14 @@ def cel_to_fah(cel):
 
 
 CONVERSION = {
-    1: (in_to_cm, "in", "cm", "inches", "centimeters"),
-    2: (mi_to_km, "mi", "km", "miles", "kilometers"),
-    3: (cm_to_in, "cm", "in", "centimeters", "inches"),
-    4: (km_to_mi, "km", "mi", "kilometers", "miles"),
-    5: (lb_to_kg, "lb", "kg", "pounds", "kilograms"),
-    6: (kg_to_lb, "kg", "lb", "kilograms", "pounds"),
-    7: (fah_to_cel, "\N{DEGREE SIGN}F", "\N{DEGREE SIGN}C", 
-        "Fahrenheit", "Celsius"),
-    8: (cel_to_fah, "\N{DEGREE SIGN}C", "\N{DEGREE SIGN}F", 
-        "Celsius", "Fahrenheit"),
+    1: (inch_to_cm, "in", "cm", "inches"),
+    2: (mile_to_km, "mi", "km", "miles"),
+    3: (cm_to_inch, "cm", "in", "centimeters"),
+    4: (km_to_mile, "km", "mi", "kilometers"),
+    5: (lb_to_kg, "lb", "kg", "pounds"),
+    6: (kg_to_lb, "kg", "lb", "kilograms"),
+    7: (fah_to_cel, "\N{DEGREE SIGN}F", "\N{DEGREE SIGN}C", "Fahrenheit"),
+    8: (cel_to_fah, "\N{DEGREE SIGN}C", "\N{DEGREE SIGN}F", "Celsius"),
 }
 
 
@@ -102,25 +100,23 @@ def menu_input_check(user_input = "No Input"):
     """Checks the format of user input from the selection menu.
 
     user_input is assumed to be a string with default value "No Input".
-    Returns 0 for valid selection format.
-    Returns 1 for invalid selection format."""
+    Returns true if user_input is a valid integer, otherwise returns false."""
     try:
-        user_input = int(user_input)
-        CheckFlag = 0
-    except:
-        CheckFlag = 1
-    return CheckFlag
+        int(user_input)
+        return True
+    except (ValueError, TypeError):
+        return False
 
 
 def print_menu():
     """Prints the menu options based on the conversion dictionary"""
     print("Select the number corresponding to the input unit (or q to quit)")
-    for option, (_, short_unit, _, long_unit, _) in sorted(CONVERSION.items()):
+    for option, (_, short_unit, _, long_unit) in sorted(CONVERSION.items()):
         print(f"{option} -- {long_unit} ({short_unit})")
     print("q -- Quit")
 
 
-def run_conversion(selection, func, u_in, u_out, long_in, long_out):
+def run_conversion(selection, func, u_in, u_out, long_in):
     """Perform the unit conversion and handle errors"""
     input_number = input("\nEnter the number to convert: ")
     try:
@@ -142,17 +138,15 @@ if __name__ == "__main__":
     menu_select = input()
     menu_check = menu_input_check(menu_select)
     while 'q' != menu_select:
-        if 0 == menu_check:
+        if menu_check:
             menu_select = int(menu_select)
             if menu_select in CONVERSION:
-                func, in_u, out_u, lg_in, lg_out = CONVERSION[menu_select]
-                run_conversion(menu_select, func, in_u, out_u, lg_in, lg_out)
+                func, in_u, out_u, in_long= CONVERSION[menu_select]
+                run_conversion(menu_select, func, in_u, out_u, in_long)
             else:
                 print(f"\n{menu_select} is not an available menu option.")
-        elif 1 == menu_check:
+        else:
             print("\nAn invalid selection was made.")
-        else: 
-            print("\nAn unknown error occurred.")
         cont_flag = input("\nWould you like to convert another number? (y/n): ")
         if 'y' == cont_flag:
             print("\n")
