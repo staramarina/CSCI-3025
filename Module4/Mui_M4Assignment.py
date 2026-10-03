@@ -6,15 +6,43 @@
 #     https://doi.org/10.6028/NIST.SP.365-2024
 
 
-def menu_select_check(UserInput):
+def menu_input_check(UserInput):
+    """Checks the format of user input from the selection menu.
+    
+    Returns 0 for quit parameter.
+    Returns 1 for valid selection format.
+    Returns 2 for invalid selection format."""
     if 'q' == UserInput:
         CheckFlag = 0
-    else: 
-        # TODO write try statement to check for int input
+    else:
+        try:
+            UserInput = int(UserInput)
+            CheckFlag = 1
+        except:
+            CheckFlag = 2
     return CheckFlag
 
+
 def number_check(UserInput):
-    # TODO write check to validate numerical values
+    """Checks the format of the number entered to convert.
+    
+    Returns 1 for valid number format.
+    Returns 2 for invalid number format."""
+    try:
+        UserInput = float(UserInput)
+        CheckFlag = 1
+    except:
+        CheckFlag = 2
+    return CheckFlag
+
+
+def menu_select_check(UserInput):
+    """Checks if the selected menu option is available."""
+    if 0 < UserInput < 9:
+        CheckFlag = 1
+    else: 
+        CheckFlag = 2
+    return CheckFlag
 
 
 def in_to_cm(inch):
@@ -22,35 +50,42 @@ def in_to_cm(inch):
     cm = inch * 2.54
     return cm
 
+
 def cm_to_in(cm):
     """Convert centimeters to inches."""
     inch = cm / 2.54
     return inch
+
 
 def mi_to_km(mile):
     """Convert miles to kilometers."""
     km = mile * 1.61
     return km
 
+
 def km_to_mi(km):
     """Convert kilometers to miles."""
     mile = km / 1.61
     return mile
+
 
 def lb_to_kg(pound):
     """Convert pounds to kilograms."""
     kg = pound * 0.45
     return kg
 
+
 def kg_to_lb(kg):
     """Convert kilograms to pounds."""
     pound = kg / 0.45
     return pound
 
+
 def fah_to_cel(fah):
     """Convert degrees Fahrenheit to degrees Celsius"""
     cel = (fah - 32) / 1.8
     return cel
+
 
 def cel_to_fah(cel):
     """Convert degrees Celsius to degrees Fahrenheit"""
@@ -70,5 +105,5 @@ if __name__ == "__main__":
     print("7 -- Fahrenheit (F)")
     print("8 -- Celsius (C)")
     print("q -- Quit")
-    InputUnit = input()
-    print(InputUnit)
+    MenuSelect = input()
+    print(MenuSelect)
