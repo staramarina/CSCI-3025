@@ -130,28 +130,29 @@ def cel_to_fah(cel):
 
 
 CONVERSION = {
-    1: (in_to_cm, "in", "cm"),
-    2: (mi_to_km, "mi", "km"),
-    3: (cm_to_in, "cm", "in"),
-    4: (km_to_mi, "km", "mi"),
-    5: (lb_to_kg, "lb", "kg"),
-    6: (kg_to_lb, "kg", "lb"),
-    7: (fah_to_cel, "\N{DEGREE SIGN}F", "\N{DEGREE SIGN}C"),
-    8: (cel_to_fah, "\N{DEGREE SIGN}C", "\N{DEGREE SIGN}F"),
+    1: (in_to_cm, "in", "cm", "inches", "centimeters"),
+    2: (mi_to_km, "mi", "km", "miles", "kilometers"),
+    3: (cm_to_in, "cm", "in", "centimeters", "inches"),
+    4: (km_to_mi, "km", "mi", "kilometers", "miles"),
+    5: (lb_to_kg, "lb", "kg", "pounds", "kilograms"),
+    6: (kg_to_lb, "kg", "lb", "kilograms", "pounds"),
+    7: (fah_to_cel, "\N{DEGREE SIGN}F", "\N{DEGREE SIGN}C", 
+        "Fahrenheit", "Celsius"),
+    8: (cel_to_fah, "\N{DEGREE SIGN}C", "\N{DEGREE SIGN}F", 
+        "Celsius", "Fahrenheit"),
 }
 
 
-if __name__ == "__main__":
+def print_menu():
+    """prints the menu options based on the conversion dictionary"""
     print("Select the number corresponding to the input unit (or q to quit)")
-    print("1 -- inches (in)")
-    print("2 -- miles (mi)")
-    print("3 -- centimeters (cm)")
-    print("4 -- kilometers (km)")
-    print("5 -- pounds (lbs)")
-    print("6 -- kilograms (kg)")
-    print("7 -- Fahrenheit (F)")
-    print("8 -- Celsius (C)")
+    for option, (_, short_unit, _, long_unit, _) in sorted(CONVERSION.items()):
+        print(f"{option} -- {long_unit} ({short_unit})")
     print("q -- Quit")
+
+
+if __name__ == "__main__":
+    print_menu()
     menu_select = input()
     menu_check = menu_input_check(menu_select)
     if 0 == menu_check:
