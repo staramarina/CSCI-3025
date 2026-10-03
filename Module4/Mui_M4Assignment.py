@@ -119,21 +119,31 @@ if __name__ == "__main__":
             MenuSelect = int(MenuSelect)
             InputNumber = float(InputNumber)
             if 1 == MenuSelect:
-                #TODO convert in to cm
+                OutputNumber = in_to_cm(InputNumber)
+                print(f"{InputNumber} in is {OutputNumber:.4f} cm.")
             elif 2 == MenuSelect:
-                #TODO convert mi to km
+                OutputNumber = mi_to_km(InputNumber)
+                print(f"{InputNumber} mi is {OutputNumber:.4f} km.")
             elif 3 == MenuSelect:
-                #TODO convert cm to in
+                OutputNumber = cm_to_in(InputNumber)
+                print(f"{InputNumber} cm is {OutputNumber:.4f} in.")
             elif 4 == MenuSelect:
-                #TODO convert km to mi
+                OutputNumber = km_to_mi(InputNumber)
+                print(f"{InputNumber} km is {OutputNumber:.4f} mi.")
             elif 5 == MenuSelect:
-                #TODO convert lbs to kg
+                OutputNumber = lb_to_kg(InputNumber)
+                print(f"{InputNumber} lb is {OutputNumber:.4f} kg.")
             elif 6 == MenuSelect:
-                #TODO convert kg to lbs
+                OutputNumber = kg_to_lb(InputNumber)
+                print(f"{InputNumber} kg is {OutputNumber:.4f} lb.")
             elif 7 == MenuSelect:
-                #TODO convert F to C
+                OutputNumber = fah_to_cel(InputNumber)
+                print(f"{InputNumber} \N{DEGREE SIGN}F" 
+                      "is {OutputNumber:.4f} \N{DEGREE SIGN}C.")
             elif 8 == MenuSelect:
-                #TODO convert C to F
+                OutputNumber = cel_to_fah(InputNumber)
+                print(f"{InputNumber} \N{DEGREE SIGN}C" 
+                      "is {OutputNumber:.4f} \N{DEGREE SIGN}F.")
             else: 
                 print("An unknown error occurred.")
         elif 2 == InputCheck: 
