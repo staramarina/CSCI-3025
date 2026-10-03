@@ -10,6 +10,7 @@ IN_CM = 2.54 # Inches to centimeter conversion ratio
 MI_KM = 1.609344 # Miles to kilometers conversion ratio
 LB_KG = 0.45359237 # Pounds to kilograms conversion ratio
 
+
 def menu_input_check(user_input = "No Input"):
     """Checks the format of user input from the selection menu.
 
@@ -128,6 +129,18 @@ def cel_to_fah(cel):
     return fah
 
 
+CONVERSION = {
+    1: (in_to_cm, "in", "cm"),
+    2: (mi_to_km, "mi", "km"),
+    3: (cm_to_in, "cm", "in"),
+    4: (km_to_mi, "km", "mi"),
+    5: (lb_to_kg, "lb", "kg"),
+    6: (kg_to_lb, "kg", "lb"),
+    7: (fah_to_cel, "\N{DEGREE SIGN}F", "\N{DEGREE SIGN}C"),
+    8: (cel_to_fah, "\N{DEGREE SIGN}C", "\N{DEGREE SIGN}F"),
+}
+
+
 if __name__ == "__main__":
     print("Select the number corresponding to the input unit (or q to quit)")
     print("1 -- inches (in)")
@@ -143,47 +156,27 @@ if __name__ == "__main__":
     menu_check = menu_input_check(menu_select)
     if 0 == menu_check:
         print("\nThank you for using the unit conversion calculator!")
-    elif 1 == menu_check and 1 == menu_select_check(int(menu_select)):
-        input_number = input("\nEnter the number to convert: ")
-        input_check = number_check(input_number)
-        if 1 == input_check:
-            menu_select = int(menu_select)
-            input_number = float(input_number)
-            if 1 == menu_select:
-                output_number = in_to_cm(input_number)
-                print(f"{input_number} in is {output_number:.4f} cm.")
-            elif 2 == menu_select:
-                output_number = mi_to_km(input_number)
-                print(f"{input_number} mi is {output_number:.4f} km.")
-            elif 3 == menu_select:
-                output_number = cm_to_in(input_number)
-                print(f"{input_number} cm is {output_number:.4f} in.")
-            elif 4 == menu_select:
-                output_number = km_to_mi(input_number)
-                print(f"{input_number} km is {output_number:.4f} mi.")
-            elif 5 == menu_select:
-                output_number = lb_to_kg(input_number)
-                print(f"{input_number} lb is {output_number:.4f} kg.")
-            elif 6 == menu_select:
-                output_number = kg_to_lb(input_number)
-                print(f"{input_number} kg is {output_number:.4f} lb.")
-            elif 7 == menu_select:
-                output_number = fah_to_cel(input_number)
-                print(f"{input_number} \N{DEGREE SIGN}F" 
-                      f"is {output_number:.4f} \N{DEGREE SIGN}C.")
-            elif 8 == menu_select:
-                output_number = cel_to_fah(input_number)
-                print(f"{input_number} \N{DEGREE SIGN}C" 
-                      f"is {output_number:.4f} \N{DEGREE SIGN}F.")
+    elif 1 == menu_check:
+        menu_select = int(menu_select)
+        if menu_select in CONVERSION:
+            convert_func, in_unit, out_unit = CONVERSION[menu_select]
+            input_number = input("\nEnter the number to convert: ")
+            input_check = number_check(input_number)
+            if 1 == input_check:
+                input_number = float(input_number)
+                try:
+                    output_number = convert_func(input_number)
+                    print(f"{input_number} {in_unit} "
+                          f"is {output_number:.4f} {out_unit}")
+                except Exception as error:
+                    print(f"Calculation error: {error}")
+            elif 2 == input_check: 
+                print(f"{input_number} is not a valid number.")
             else: 
                 print("An unknown error occurred.")
-        elif 2 == input_check: 
-            print(f"{input_number} is not a valid number.")
-        else: 
-            print("An unknown error occurred.")
-    elif 1 == menu_check and 2 == menu_select_check(int(menu_select)):
-        print(f"\n{menu_select} is not an available menu option.")
-        print("Please run the program again and select a menu number.")
+        else:
+            print(f"\n{menu_select} is not an available menu option.")
+            print("Please run the program again and select a menu number.")
     elif 2 == menu_check:
         print("\nAn invalid selection was made.")
         print("Please run the program again and select a menu number.")
