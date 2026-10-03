@@ -14,8 +14,19 @@ LB_KG = 0.45359237 # Pounds to kilograms conversion ratio
 def inch_to_cm(inch):
     """Convert inches to centimeters.
     
-    inch variable is assumed to be a number.
-    Returns cm as a number.
+    Args:
+        inch: Length in inches (must be numeric, can be negative)
+
+    Returns: 
+        cm: Length in centimeters
+
+    Examples:
+        >>> inch_to_cm(1)
+        2.54
+        >>> inch_to_cm(0)
+        0.0
+        >>> inch_to_cm(-1)
+        -2.54
     """
     cm = inch * IN_CM
     return cm
@@ -24,8 +35,20 @@ def inch_to_cm(inch):
 def cm_to_inch(cm):
     """Convert centimeters to inches.
     
-    cm variable is assumed to be a number.
-    Returns inch as a number."""
+    Args:
+        cm: Length in centimeters (must be numeric, can be negative)
+    
+    Returns:
+        inch: Length in inches
+    
+    Examples: 
+        >>> cm_to_inch(1)
+        0.3937
+        >>> cm_to_inch(0)
+        0.0
+        >>> cm_to_inch(-1)
+        -0.3937
+    """
     inch = cm / IN_CM
     return inch
 
@@ -33,8 +56,20 @@ def cm_to_inch(cm):
 def mile_to_km(mile):
     """Convert miles to kilometers.
     
-    mile variable is assumed to be a number.
-    Returns km as a number."""
+    Args:
+        mile: Length in miles (must be numeric, can be negative)
+    
+    Returns:
+        km: Length in kilometers
+    
+    Examples:
+        >>> mile_to_km(1)
+        1.609344
+        >>> mile_to_km(0)
+        0.0
+        >>> mile_to_km(-1)
+        -1.609344
+    """
     km = mile * MI_KM
     return km
 
@@ -42,8 +77,20 @@ def mile_to_km(mile):
 def km_to_mile(km):
     """Convert kilometers to miles.
     
-    km variable is assumed to a number.
-    Returns mile as a number."""
+    Args:
+        km: Length in kilometers (must be numeric, can be negative)
+    
+    Returns:
+        mile: Length in miles
+        
+    Examples:
+        >>> km_to_mile(1)
+        0.62137
+        >>> km_to_mile(0)
+        0.0
+        >>> km_to_mile(-1)
+        -0.62137
+    """
     mile = km / MI_KM
     return mile
 
@@ -51,8 +98,20 @@ def km_to_mile(km):
 def lb_to_kg(pound):
     """Convert pounds to kilograms.
     
-    pound variable is assumed to be a number.
-    Returns kg as a number."""
+    Args:
+        pound: Mass/weight in pounds (must be numeric, can be negative)
+    
+    Returns:
+        kg: Mass/weight in kilograms
+    
+    Examples:
+        >>> lb_to_kg(1)
+        0.45359237
+        >>> lb_to_kg(0)
+        0.0
+        >>> lb_to_kg(-1)
+        -0.45359237
+    """
     kg = pound * LB_KG
     return kg
 
@@ -60,8 +119,20 @@ def lb_to_kg(pound):
 def kg_to_lb(kg):
     """Convert kilograms to pounds.
     
-    kg variable is assumed to be a number.
-    Returns pound as a number."""
+    Args:
+        kg: Mass/weight in kilograms (must be numeric, can be negative)
+    
+    Returns:
+        pound: Mass/weight in pounds
+    
+    Examples:
+        >>> kg_to_lb(1)
+        2.20462
+        >>> kg_to_lb(0)
+        0.0
+        >>> kg_to_lb(-1)
+        -2.20462
+    """
     pound = kg / LB_KG
     return pound
 
@@ -69,8 +140,20 @@ def kg_to_lb(kg):
 def fah_to_cel(fah):
     """Convert degrees Fahrenheit to degrees Celsius.
     
-    fah variable assumed to be a number.
-    Returns cel as a number."""
+    Args:
+        fah: Temperature in Fahrenheit (must be numeric, can be negative)
+    
+    Returns:
+        cel: Temperature in Celsius
+    
+    Examples:
+        >>> fah_to_cel(32)
+        0
+        >>> fah_to_cel(0)
+        -17.7778
+        >>> fah_to_cel(-32)
+        -35.5556
+    """
     cel = (fah - 32) / 1.8
     return cel
 
@@ -78,12 +161,31 @@ def fah_to_cel(fah):
 def cel_to_fah(cel):
     """Convert degrees Celsius to degrees Fahrenheit.
     
-    cel variable assumed to be a number.
-    Returns fah as a number."""
+    Args:
+        cel: Temperature in Celsius (must be numeric, can be negative)
+    
+    Returns:
+        fah: Temperature in Fahrenheit
+        
+    Examples:
+        >>> cel_to_fah(32)
+        89.6
+        >>> cel_to_fah(0)
+        32
+        >>> cel_to_fah(-32)
+        -25.6
+    """
     fah = (cel * 1.8) + 32
     return fah
 
-
+# ------------------------------------------------------------------------------
+# CONVERSION: A dictionary that maps menu options to conversion functions
+# Elements in the dictionary are 5-tuple using the following
+#   [0]: conversion function - input float, return float
+#   [1]: abbreviated input unit used for printing results
+#   [2]: abbreviated output unit used for printing results
+#   [3]: full input unit name used for menu display
+# ------------------------------------------------------------------------------
 CONVERSION = {
     1: (inch_to_cm, "in", "cm", "inches"),
     2: (mile_to_km, "mi", "km", "miles"),
@@ -99,8 +201,12 @@ CONVERSION = {
 def menu_input_check(user_input = "No Input"):
     """Checks the format of user input from the selection menu.
 
-    user_input is assumed to be a string with default value "No Input".
-    Returns true if user_input is a valid integer, otherwise returns false."""
+    Args:
+        user_input: menu option selection (default: "No Input")
+    
+    Returns:
+        true if user_input is a valid integer, otherwise false.
+    """
     try:
         int(user_input)
         return True
