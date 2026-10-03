@@ -106,4 +106,14 @@ if __name__ == "__main__":
     print("8 -- Celsius (C)")
     print("q -- Quit")
     MenuSelect = input()
-    print(MenuSelect)
+    MenuCheck = menu_input_check(MenuSelect)
+    if 0 == MenuCheck:
+        print("\nThank you for using the unit conversion calculator!")
+    elif 1 == MenuCheck:
+        print(MenuCheck) #testing line remove later
+        #TODO build program
+    elif 2 == MenuCheck:
+        print("\nAn invalid selection was made.")
+        print("Please run the program again and select a menu number.")
+    else: 
+        print("\nAn unknown error ocurred.")
