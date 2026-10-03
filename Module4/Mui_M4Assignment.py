@@ -102,44 +102,13 @@ def menu_input_check(user_input = "No Input"):
     """Checks the format of user input from the selection menu.
 
     user_input is assumed to be a string with default value "No Input".
-    Returns 0 for quit parameter.
-    Returns 1 for valid selection format.
-    Returns 2 for invalid selection format."""
-    if 'q' == user_input:
-        CheckFlag = 0
-    else:
-        try:
-            user_input = int(user_input)
-            CheckFlag = 1
-        except:
-            CheckFlag = 2
-    return CheckFlag
-
-
-def number_check(user_input = "No Input"):
-    """Checks the format of the number entered to convert.
-    
-    user_input is assumed to be a string with default value "No Input".
-    Returns 1 for valid number format.
-    Returns 2 for invalid number format."""
+    Returns 0 for valid selection format.
+    Returns 1 for invalid selection format."""
     try:
-        user_input = float(user_input)
-        CheckFlag = 1
+        user_input = int(user_input)
+        CheckFlag = 0
     except:
-        CheckFlag = 2
-    return CheckFlag
-
-
-def menu_select_check(user_input = 0):
-    """Checks if the selected menu option is available.
-    
-    user_input is assumed to be an integer with default value 0.
-    Returns 1 if menu option is available.
-    Returns 2 if selection is not available in the menu."""
-    if 0 < user_input < 9:
         CheckFlag = 1
-    else: 
-        CheckFlag = 2
     return CheckFlag
 
 
@@ -172,18 +141,24 @@ if __name__ == "__main__":
     print_menu()
     menu_select = input()
     menu_check = menu_input_check(menu_select)
-    if 0 == menu_check:
-        print("\nThank you for using the unit conversion calculator!")
-    elif 1 == menu_check:
-        menu_select = int(menu_select)
-        if menu_select in CONVERSION:
-            func, in_u, out_u, lg_in, lg_out = CONVERSION[menu_select]
-            run_conversion(menu_select, func, in_u, out_u, lg_in, lg_out)
-        else:
-            print(f"\n{menu_select} is not an available menu option.")
-            print("Please run the program again and select a menu number.")
-    elif 2 == menu_check:
-        print("\nAn invalid selection was made.")
-        print("Please run the program again and select a menu number.")
-    else: 
-        print("\nAn unknown error occurred.")
+    while 'q' != menu_select:
+        if 0 == menu_check:
+            menu_select = int(menu_select)
+            if menu_select in CONVERSION:
+                func, in_u, out_u, lg_in, lg_out = CONVERSION[menu_select]
+                run_conversion(menu_select, func, in_u, out_u, lg_in, lg_out)
+            else:
+                print(f"\n{menu_select} is not an available menu option.")
+        elif 1 == menu_check:
+            print("\nAn invalid selection was made.")
+        else: 
+            print("\nAn unknown error occurred.")
+        cont_flag = input("\nWould you like to convert another number? (y/n): ")
+        if 'y' == cont_flag:
+            print("\n")
+            print_menu()
+            menu_select = input()
+            menu_check = menu_input_check(menu_select)
+        else: 
+            break
+    print("\nThank you for using the unit conversion calculator!")
