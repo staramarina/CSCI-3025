@@ -116,8 +116,26 @@ if __name__ == "__main__":
         InputNumber = input("\nEnter the number to convert: ")
         InputCheck = number_check(InputNumber)
         if 1 == InputCheck:
-            print(InputNumber) #testing line remove later
-            #TODO build out if/else function calls
+            MenuSelect = int(MenuSelect)
+            InputNumber = float(InputNumber)
+            if 1 == MenuSelect:
+                #TODO convert in to cm
+            elif 2 == MenuSelect:
+                #TODO convert mi to km
+            elif 3 == MenuSelect:
+                #TODO convert cm to in
+            elif 4 == MenuSelect:
+                #TODO convert km to mi
+            elif 5 == MenuSelect:
+                #TODO convert lbs to kg
+            elif 6 == MenuSelect:
+                #TODO convert kg to lbs
+            elif 7 == MenuSelect:
+                #TODO convert F to C
+            elif 8 == MenuSelect:
+                #TODO convert C to F
+            else: 
+                print("An unknown error occurred.")
         elif 2 == InputCheck: 
             print(f"{InputNumber} is not a valid number.")
         else: 
