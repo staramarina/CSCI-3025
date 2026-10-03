@@ -113,8 +113,15 @@ if __name__ == "__main__":
     if 0 == MenuCheck:
         print("\nThank you for using the unit conversion calculator!")
     elif 1 == MenuCheck and 1 == menu_select_check(int(MenuSelect)):
-        print(MenuSelect) #testing line remove later
-        #TODO build out if/else function calls
+        InputNumber = input("\nEnter the number to convert: ")
+        InputCheck = number_check(InputNumber)
+        if 1 == InputCheck:
+            print(InputNumber) #testing line remove later
+            #TODO build out if/else function calls
+        elif 2 == InputCheck: 
+            print(f"{InputNumber} is not a valid number.")
+        else: 
+            print("An unknown error occurred.")
     elif 1 == MenuCheck and 2 == menu_select_check(int(MenuSelect)):
         print(f"\n{MenuSelect} is not an available menu option.")
         print("Please run the program again and select a menu number.")
@@ -122,4 +129,4 @@ if __name__ == "__main__":
         print("\nAn invalid selection was made.")
         print("Please run the program again and select a menu number.")
     else: 
-        print("\nAn unknown error ocurred.")
+        print("\nAn unknown error occurred.")
