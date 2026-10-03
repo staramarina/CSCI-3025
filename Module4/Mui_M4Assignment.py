@@ -11,51 +11,6 @@ MI_KM = 1.609344 # Miles to kilometers conversion ratio
 LB_KG = 0.45359237 # Pounds to kilograms conversion ratio
 
 
-def menu_input_check(user_input = "No Input"):
-    """Checks the format of user input from the selection menu.
-
-    user_input is assumed to be a string with default value "No Input".
-    Returns 0 for quit parameter.
-    Returns 1 for valid selection format.
-    Returns 2 for invalid selection format."""
-    if 'q' == user_input:
-        CheckFlag = 0
-    else:
-        try:
-            user_input = int(user_input)
-            CheckFlag = 1
-        except:
-            CheckFlag = 2
-    return CheckFlag
-
-
-def number_check(user_input = "No Input"):
-    """Checks the format of the number entered to convert.
-    
-    user_input is assumed to be a string with default value "No Input".
-    Returns 1 for valid number format.
-    Returns 2 for invalid number format."""
-    try:
-        user_input = float(user_input)
-        CheckFlag = 1
-    except:
-        CheckFlag = 2
-    return CheckFlag
-
-
-def menu_select_check(user_input = 0):
-    """Checks if the selected menu option is available.
-    
-    user_input is assumed to be an integer with default value 0.
-    Returns 1 if menu option is available.
-    Returns 2 if selection is not available in the menu."""
-    if 0 < user_input < 9:
-        CheckFlag = 1
-    else: 
-        CheckFlag = 2
-    return CheckFlag
-
-
 def in_to_cm(inch):
     """Convert inches to centimeters.
     
@@ -143,12 +98,74 @@ CONVERSION = {
 }
 
 
+def menu_input_check(user_input = "No Input"):
+    """Checks the format of user input from the selection menu.
+
+    user_input is assumed to be a string with default value "No Input".
+    Returns 0 for quit parameter.
+    Returns 1 for valid selection format.
+    Returns 2 for invalid selection format."""
+    if 'q' == user_input:
+        CheckFlag = 0
+    else:
+        try:
+            user_input = int(user_input)
+            CheckFlag = 1
+        except:
+            CheckFlag = 2
+    return CheckFlag
+
+
+def number_check(user_input = "No Input"):
+    """Checks the format of the number entered to convert.
+    
+    user_input is assumed to be a string with default value "No Input".
+    Returns 1 for valid number format.
+    Returns 2 for invalid number format."""
+    try:
+        user_input = float(user_input)
+        CheckFlag = 1
+    except:
+        CheckFlag = 2
+    return CheckFlag
+
+
+def menu_select_check(user_input = 0):
+    """Checks if the selected menu option is available.
+    
+    user_input is assumed to be an integer with default value 0.
+    Returns 1 if menu option is available.
+    Returns 2 if selection is not available in the menu."""
+    if 0 < user_input < 9:
+        CheckFlag = 1
+    else: 
+        CheckFlag = 2
+    return CheckFlag
+
+
 def print_menu():
-    """prints the menu options based on the conversion dictionary"""
+    """Prints the menu options based on the conversion dictionary"""
     print("Select the number corresponding to the input unit (or q to quit)")
     for option, (_, short_unit, _, long_unit, _) in sorted(CONVERSION.items()):
         print(f"{option} -- {long_unit} ({short_unit})")
     print("q -- Quit")
+
+
+def run_conversion(selection, func, u_in, u_out, long_in, long_out):
+    """Perform the unit conversion and handle errors"""
+    input_number = input("\nEnter the number to convert: ")
+    try:
+        input_number = float(input_number)
+        output_number = func(input_number)
+        print(f"{input_number} {u_in} is {output_number:.4f} {u_out}")
+    except ValueError:
+        print(f"{input_number} is not a valid number.")
+    except ZeroDivisionError:
+        print("Division by zero occurred during calculation.")
+    except TypeError as error:
+        print(f"Encountered type error: {error}")
+    except Exception as error: 
+        print(f"Encountered error: {error}")
 
 
 if __name__ == "__main__":
@@ -160,21 +177,8 @@ if __name__ == "__main__":
     elif 1 == menu_check:
         menu_select = int(menu_select)
         if menu_select in CONVERSION:
-            convert_func, in_unit, out_unit = CONVERSION[menu_select]
-            input_number = input("\nEnter the number to convert: ")
-            input_check = number_check(input_number)
-            if 1 == input_check:
-                input_number = float(input_number)
-                try:
-                    output_number = convert_func(input_number)
-                    print(f"{input_number} {in_unit} "
-                          f"is {output_number:.4f} {out_unit}")
-                except Exception as error:
-                    print(f"Calculation error: {error}")
-            elif 2 == input_check: 
-                print(f"{input_number} is not a valid number.")
-            else: 
-                print("An unknown error occurred.")
+            func, in_u, out_u, lg_in, lg_out = CONVERSION[menu_select]
+            run_conversion(menu_select, func, in_u, out_u, lg_in, lg_out)
         else:
             print(f"\n{menu_select} is not an available menu option.")
             print("Please run the program again and select a menu number.")
