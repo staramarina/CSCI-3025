@@ -6,7 +6,7 @@
 #     https://doi.org/10.6028/NIST.SP.365-2024
 
 
-def menu_input_check(UserInput):
+def menu_input_check(UserInput = "No Input"):
     """Checks the format of user input from the selection menu.
     
     Returns 0 for quit parameter.
@@ -23,7 +23,7 @@ def menu_input_check(UserInput):
     return CheckFlag
 
 
-def number_check(UserInput):
+def number_check(UserInput = "No Input"):
     """Checks the format of the number entered to convert.
     
     Returns 1 for valid number format.
@@ -36,7 +36,7 @@ def number_check(UserInput):
     return CheckFlag
 
 
-def menu_select_check(UserInput):
+def menu_select_check(UserInput = 0):
     """Checks if the selected menu option is available."""
     if 0 < UserInput < 9:
         CheckFlag = 1
