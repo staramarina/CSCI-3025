@@ -37,7 +37,10 @@ def number_check(UserInput = "No Input"):
 
 
 def menu_select_check(UserInput = 0):
-    """Checks if the selected menu option is available."""
+    """Checks if the selected menu option is available.
+    
+    Returns 1 if menu option is availabe.
+    Returns 2 if selection is not available in the menu."""
     if 0 < UserInput < 9:
         CheckFlag = 1
     else: 
@@ -109,9 +112,12 @@ if __name__ == "__main__":
     MenuCheck = menu_input_check(MenuSelect)
     if 0 == MenuCheck:
         print("\nThank you for using the unit conversion calculator!")
-    elif 1 == MenuCheck:
-        print(MenuCheck) #testing line remove later
-        #TODO build program
+    elif 1 == MenuCheck and 1 == menu_select_check(int(MenuSelect)):
+        print(MenuSelect) #testing line remove later
+        #TODO build out if/else function calls
+    elif 1 == MenuCheck and 2 == menu_select_check(int(MenuSelect)):
+        print(f"\n{MenuSelect} is not an available menu option.")
+        print("Please run the program again and select a menu number.")
     elif 2 == MenuCheck:
         print("\nAn invalid selection was made.")
         print("Please run the program again and select a menu number.")
