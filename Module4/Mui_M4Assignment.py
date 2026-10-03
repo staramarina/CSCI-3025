@@ -6,22 +6,6 @@
 #     https://doi.org/10.6028/NIST.SP.365-2024
 
 
-def input_menu():
-    """Prints user input options and returns user input.
-    User input validated by separate function."""
-    print("1 -- inches (in)")
-    print("2 -- miles (mi)")
-    print("3 -- centimeters (cm)")
-    print("4 -- kilometers (km)")
-    print("5 -- pounds (lbs)")
-    print("6 -- kilograms (kg)")
-    print("7 -- Fahrenheit (F)")
-    print("8 -- Celsius (C)")
-    print("q -- Quit")
-    UserInput = input()
-    return UserInput
-
-
 def menu_select_check(UserInput):
     if 'q' == UserInput:
         CheckFlag = 0
@@ -77,5 +61,14 @@ def cel_to_fah(cel):
 if __name__ == "__main__":
     """Main function that runs the unit conversion program."""
     print("Select the number corresponding to the input unit (or q to quit)")
-    InputUnit = input_menu()
+    print("1 -- inches (in)")
+    print("2 -- miles (mi)")
+    print("3 -- centimeters (cm)")
+    print("4 -- kilometers (km)")
+    print("5 -- pounds (lbs)")
+    print("6 -- kilograms (kg)")
+    print("7 -- Fahrenheit (F)")
+    print("8 -- Celsius (C)")
+    print("q -- Quit")
+    InputUnit = input()
     print(InputUnit)
