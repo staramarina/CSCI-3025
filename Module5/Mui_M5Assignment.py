@@ -8,20 +8,28 @@
 from MuiIO import file_exists
 
 
-# TODO build the program
 if __name__ == "__main__":
     print("Welcome to Tiffany Mui's Budgeting Tool!")
     print("Please enter the file name (with extension) "
           "that contains your income data")
-    file_name = input()
-    file_check = file_exists(file_name)
-    print(file_check)
+    income_file = input()
+    print("Please enter the file name (with extension) "
+          "that contains your expense data")
+    expense_file = input()
+    income_file_check = file_exists(income_file)
+    expense_file_check = file_exists(expense_file)
+    if income_file_check[0] and expense_file_check[0]:
+        print(income_file_check) # test line remove later
+        print(expense_file_check) # test line remove later
+    elif income_file_check[0]:
+        print(f"{income_file_check[1]}, but {expense_file_check[1]}.")
+    elif expense_file_check[0]:
+        print(f"{expense_file_check[1]}, but {income_file_check[1]}.")
+    else:
+        print(f"{income_file_check[1]} and {expense_file_check[1]}.")
+
 
 # Flow Notes:
-# open with a menu, ask for choice between file and console input
-# if file input, ask for path/filename for income and expenses
-# if console input, ask for user input for each item, check if input is done
-# ask if user wants file or console output
 # perform calculations
 # output to user chosen destination
 
