@@ -22,8 +22,29 @@ if __name__ == "__main__":
     if income_file_check[0] and expense_file_check[0]:
         income = Mui_M5Calculations.generate_budget_object(income_file_name)
         expense = Mui_M5Calculations.generate_budget_object(expense_file_name)
-        print(income) # test line remove later
-        print(expense) # test line remove later
+        rm_income = Mui_M5Calculations.check_budget_data(income)
+        rm_expense = Mui_M5Calculations.check_budget_data(expense)
+        if not rm_income and not rm_expense:
+            print(income) # test line remove later
+            print(expense) # test line remove later
+            print("\n")
+            print(rm_income) # test line remove later
+            print(rm_expense) # test line remove later
+            #format_income = Mui_M5Calculations.format_budget_data(income)
+            #format_expense = Mui_M5Calculations.format_budget_data(expense)
+            #print(format_income) # test line remove later
+            #print(format_expense) # test line remove later
+        elif not rm_income:
+            print("The following lines encountered issues in the expense file")
+            print(rm_expense)
+        elif not rm_expense: 
+            print("The following lines encountered issues in the income file")
+            print(rm_income)
+        else:
+            print("The following lines encountered issues in the income file")
+            print(rm_income)
+            print("The following lines encountered issues in the expense file")
+            print(rm_expense)
     elif income_file_check[0]:
         print(f"{income_file_check[1]}, but {expense_file_check[1]}.")
     elif expense_file_check[0]:
