@@ -19,7 +19,6 @@ FREQUENCY_LIST = {
 }
 
 
-
 def generate_budget_object(file_name):
     """Generates a budget object, can be used for income and expenses
     
@@ -114,6 +113,7 @@ def format_budget_data(budget_raw):
     for key in budget_raw:
         budget_formatted[budget_raw[key][0]] = [budget_raw[key][1], budget_raw[key][2]]
     for name in budget_formatted:
+        budget_formatted[name][0] = budget_formatted[name][0].lower()
         budget_formatted[name][0] = FREQUENCY_LIST[budget_formatted[name][0]]
         budget_formatted[name][1] = Decimal(budget_formatted[name][1])
     return budget_formatted

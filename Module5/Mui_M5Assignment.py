@@ -25,15 +25,12 @@ if __name__ == "__main__":
         rm_income = Mui_M5Calculations.check_budget_data(income)
         rm_expense = Mui_M5Calculations.check_budget_data(expense)
         if not rm_income and not rm_expense:
-            print(income) # test line remove later
-            print(expense) # test line remove later
-            print("\n")
-            print(rm_income) # test line remove later
-            print(rm_expense) # test line remove later
-            #format_income = Mui_M5Calculations.format_budget_data(income)
-            #format_expense = Mui_M5Calculations.format_budget_data(expense)
-            #print(format_income) # test line remove later
-            #print(format_expense) # test line remove later
+            format_income = Mui_M5Calculations.format_budget_data(income)
+            format_expense = Mui_M5Calculations.format_budget_data(expense)
+            test_value = format_income["Income 1"][1] + format_income["Income 2"][1] # test line remove later
+            print(format_income) # test line remove later
+            print(format_expense) # test line remove later
+            print(test_value)
         elif not rm_income:
             print("The following lines encountered issues in the expense file")
             print(rm_expense)
