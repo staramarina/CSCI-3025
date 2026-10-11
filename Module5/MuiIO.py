@@ -1,5 +1,5 @@
 # Tiffany M. Mui
-# Module 5 Assignment
+# Module 5 Assignment - I/O Module
 # CSCI-3025: Python Programming
 # Purpose: Input/Output module for handling files and console input
 
