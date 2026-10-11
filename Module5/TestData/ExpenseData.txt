@@ -1,0 +1,7 @@
+Rent, Monthly, 2384.56
+Car, monthly, 152.45
+Electricity, monthly, 214.89
+Water, monthly, 39.74
+Internet, monthly, 104.49
+Phone, monthly, 39.04
+Groceries, weekly, 117.40

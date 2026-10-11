@@ -1,7 +1,2 @@
-Income 1, bimonhtly, 3671.18
+Income 1, bimonthly, 3671.18
 Income 2, monthly, 1808.45
-
-Income 4, weekly
-Income 5, 
-123
-Income 7, yearly, investment, 1234.456

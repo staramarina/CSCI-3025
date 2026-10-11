@@ -64,7 +64,7 @@ def check_budget_data(budget):
             removed_data_list[new_key] = copy.deepcopy(budget[key])
             removed_data_list[new_key].append("Reason: list does not contain " \
                                           "the expected number of elements")
-        elif budget[key][1] not in FREQUENCY_LIST:
+        elif budget[key][1].lower() not in FREQUENCY_LIST:
             new_key = copy.copy(key)
             removed_data_list[new_key] = copy.deepcopy(budget[key])
             removed_data_list[new_key].append("Reason: frequency is not an " \
@@ -77,11 +77,17 @@ def check_budget_data(budget):
                 removed_data_list[new_key] = copy.deepcopy(budget[key])
                 removed_data_list[new_key].append("Reason: dollar amount is " \
                                               "not a decimal")
-    for key_outer in budget:
-        for key_inner in budget:
-            if budget[key_inner][0] == budget[key_outer][0]:
-                new_key = copy.copy(key)
-                removed_data_list[new_key] = copy.deepcopy(budget[key])
+    temp_dict = {}
+    for key, value in budget.items():
+        if value[0] not in temp_dict:
+            temp_dict[value[0]] = [key]
+        else:
+            temp_dict[value[0]].append(key)
+    for key, value in temp_dict.items():
+        if 1 < len(value):
+            for name in value:
+                new_key = copy.copy(name)
+                removed_data_list[new_key] = copy.deepcopy(budget[name])
                 removed_data_list[new_key].append("Reason: line item does " \
                                                   "not have a unique name")
     return removed_data_list
