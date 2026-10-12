@@ -2,6 +2,7 @@
 # Module 5 Assignment - Budget Tool Calculations Module
 # CSCI-3025: Python Programming
 # Purpose: Calculations module for a personal budgeting tool
+# Dependencies: decimal, copy
 
 
 from decimal import Decimal
@@ -111,13 +112,40 @@ def format_budget_data(budget_raw):
     """
     budget_formatted = {}
     for key in budget_raw:
-        budget_formatted[budget_raw[key][0]] = [budget_raw[key][1], budget_raw[key][2]]
+        budget_formatted[budget_raw[key][0]] = (
+            [budget_raw[key][1], 
+             budget_raw[key][2]]
+             )
     for name in budget_formatted:
         budget_formatted[name][0] = budget_formatted[name][0].lower()
         budget_formatted[name][0] = FREQUENCY_LIST[budget_formatted[name][0]]
         budget_formatted[name][1] = Decimal(budget_formatted[name][1])
     return budget_formatted
 
-# TODO calculate percentage of income used for each expense
 
+def yearly_conversion(budget):
+    """Calculates yearly values for income and expenses
+    
+    Args: 
+        budget: a dictionary with list elements containing 
+                budgetary data in the following format
+            key: name of the item as a string
+            [0]: frequency of the transaction per year as an integer
+            [1]: dollar amount of the transaction as a decimal
+    
+    Returns:
+        year_budget: a dictionary with list elements containing 
+                     budgetary data in the following format
+            key: name of the item as a string
+            [0]: yearly dollar amount of the transaction as a decimal
+    """
+    year_budget = {}
+    for key in budget:
+        new_key = copy.copy(key)
+        year_budget[new_key] = [Decimal(budget[key][0]) * budget[key][1]]
+    return year_budget
+
+
+
+# TODO calculate percentage of income used for each expense
 # TODO calcluate remaining income and percentage

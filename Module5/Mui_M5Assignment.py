@@ -26,11 +26,11 @@ if __name__ == "__main__":
         rm_expense = Mui_M5Calculations.check_budget_data(expense)
         if not rm_income and not rm_expense:
             format_income = Mui_M5Calculations.format_budget_data(income)
+            year_income = Mui_M5Calculations.yearly_conversion(format_income)
             format_expense = Mui_M5Calculations.format_budget_data(expense)
-            test_value = format_income["Income 1"][1] + format_income["Income 2"][1] # test line remove later
-            print(format_income) # test line remove later
-            print(format_expense) # test line remove later
-            print(test_value)
+            year_expense = Mui_M5Calculations.yearly_conversion(format_expense)
+            print(year_income) # test line remove later
+            print(year_expense) # test line remove later
         elif not rm_income:
             print("The following lines encountered issues in the expense file")
             print(rm_expense)
