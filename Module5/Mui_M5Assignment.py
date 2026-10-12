@@ -2,10 +2,14 @@
 # Module 5 Assignment - Main Program
 # CSCI-3025: Python Programming
 # Purpose: Main program for a personal budgeting tool
-# Dependencies: MuiIO.py, Mui_M5Calculations.py, TODO see README for full details
+# Dependencies: MuiIO.py, Mui_M5Calculations.py, see README for full details
+# Provided Example Input Files: 
+    # Module5/TestData/IncomeData.txt
+    # Module5/TestData/ExpenseData.txt
 
 
 from MuiIO import file_exists
+from MuiIO import print_new_file
 import Mui_M5Calculations
 
 
@@ -38,9 +42,12 @@ if __name__ == "__main__":
                 year_expense,
                 total_income
                 )
-            print(month_income) # test line remove later
-            print(f"Total Income: {total_income}") # test line remove later
-            print(month_expense) # test line remove later
+            print_file = print_new_file(month_income)
+            if print_file[0]:
+                print(print_file[1])
+                print_file = print_new_file(month_expense)
+            else: 
+                print(print_file[1])
         elif not rm_income:
             print("The following lines encountered issues in the expense file")
             print(rm_expense)
@@ -58,19 +65,3 @@ if __name__ == "__main__":
         print(f"{expense_file_check[1]}, but {income_file_check[1]}.")
     else:
         print(f"{income_file_check[1]} and {expense_file_check[1]}.")
-
-
-# Flow Notes:
-# perform calculations
-# output to user chosen destination
-
-# Other Notes:
-# support both single and multiple income sources
-# support both single and multiple expenses
-# input: need name (string), frequency (string?), dollar amount (float)
-# output shows amount and percentage for each expense
-# output shows amount and percentage remaining of income after expenses
-# need to decide how output is handled
-
-# Module5/TestData/IncomeData.txt
-# Module5/TestData/ExpenseData.txt
