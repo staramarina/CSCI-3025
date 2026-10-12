@@ -83,9 +83,9 @@ def check_budget_data(budget):
     for key, value in temp_dict.items():
         if 1 < len(value):
             for name in value:
-                removed_data_list[key] = copy.deepcopy(budget[name])
-                removed_data_list[key].append("Reason: line item does " \
-                                              "not have a unique name")
+                removed_data_list[name] = copy.deepcopy(budget[name])
+                removed_data_list[name].append("Reason: line item does " \
+                                               "not have a unique name")
     return removed_data_list
 
 

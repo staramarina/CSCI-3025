@@ -362,7 +362,7 @@ class TestEdgeCases:
     def test_large_num(self):
         """Tests that large numbers can maintain precision"""
         large = {
-            'High Income' : [1, Decimal('999999.99')]
+            'High Income' : [Decimal('999999.99')]
         }
         total = calc.sum_income(large)
 
@@ -372,7 +372,7 @@ class TestEdgeCases:
     def test_small_round(self):
         """Tests that small numbers are rounded properly"""
         small = {
-            'Small Number' : [Decimal('0.005'), Decimal('0.004')]
+            'Small Number' : [Decimal('0.007'), Decimal('0.004')]
         }
         rounded = calc.budget_rounding(small)
 

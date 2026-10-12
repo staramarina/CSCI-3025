@@ -135,8 +135,8 @@ class TestPrintNewFile:
         lines = content.strip().split('\n')
 
         assert 2 == len(lines)
-        assert 0 in lines[0]
-        assert 1 in lines[1]
+        assert '0' in lines[0]
+        assert '1' in lines[1]
 
 
 class TestIntegration:
