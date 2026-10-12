@@ -60,23 +60,20 @@ def check_budget_data(budget):
     removed_data_list = {}
     for key in budget:
         if 3 != len(budget[key]):
-            new_key = copy.copy(key)
-            removed_data_list[new_key] = copy.deepcopy(budget[key])
-            removed_data_list[new_key].append("Reason: list does not contain " \
-                                              "the expected number of elements")
+            removed_data_list[key] = copy.deepcopy(budget[key])
+            removed_data_list[key].append("Reason: list does not contain " \
+                                          "the expected number of elements")
         elif budget[key][1].lower() not in FREQUENCY_LIST:
-            new_key = copy.copy(key)
-            removed_data_list[new_key] = copy.deepcopy(budget[key])
-            removed_data_list[new_key].append("Reason: frequency is not an " \
-                                              "accepted value")
+            removed_data_list[key] = copy.deepcopy(budget[key])
+            removed_data_list[key].append("Reason: frequency is not an " \
+                                          "accepted value")
         else:
             try:
                 Decimal(budget[key][2])
             except (InvalidOperation, TypeError):
-                new_key = copy.copy(key)
-                removed_data_list[new_key] = copy.deepcopy(budget[key])
-                removed_data_list[new_key].append("Reason: dollar amount is " \
-                                                  "not a decimal")
+                removed_data_list[key] = copy.deepcopy(budget[key])
+                removed_data_list[key].append("Reason: dollar amount is " \
+                                              "not a decimal")
     temp_dict = {}
     for key, value in budget.items():
         if value[0] not in temp_dict:
@@ -86,10 +83,9 @@ def check_budget_data(budget):
     for key, value in temp_dict.items():
         if 1 < len(value):
             for name in value:
-                new_key = copy.copy(name)
-                removed_data_list[new_key] = copy.deepcopy(budget[name])
-                removed_data_list[new_key].append("Reason: line item does " \
-                                                  "not have a unique name")
+                removed_data_list[key] = copy.deepcopy(budget[name])
+                removed_data_list[key].append("Reason: line item does " \
+                                              "not have a unique name")
     return removed_data_list
 
 
@@ -141,8 +137,7 @@ def yearly_conversion(budget):
     """
     year_budget = {}
     for key in budget:
-        new_key = copy.copy(key)
-        year_budget[new_key] = [Decimal(budget[key][0]) * budget[key][1]]
+        year_budget[key] = [Decimal(budget[key][0]) * budget[key][1]]
     return year_budget
 
 
@@ -183,10 +178,9 @@ def budget_calc(budget, total_income = 1):
     """
     monthly_budget = {}
     for key in budget:
-        new_key = copy.copy(key)
         monthly_amount = budget[key][0] / Decimal(12)
         monthly_percent = (budget[key][0] / total_income) * 100
-        monthly_budget[new_key] = [monthly_amount, monthly_percent]
+        monthly_budget[key] = [monthly_amount, monthly_percent]
     return monthly_budget
 
 
@@ -209,8 +203,7 @@ def budget_rounding(budget):
     """
     budget_round = {}
     for key in budget:
-        new_key = copy.copy(key)
-        budget_round[new_key] = (
+        budget_round[key] = (
             [f"{budget[key][0]:.2f}",
             f"{budget[key][1]:.2f}"]
         )
