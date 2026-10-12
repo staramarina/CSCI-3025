@@ -101,7 +101,7 @@ Module5/
 
 ### Built-in Packages
 - decimal.Decimal - Precise financial calculations, avoid floating-point errors
-- copy - Copies and deep copies used to prevent unintended mutations of original data
+- copy - Deep copies used to prevent unintended mutations of original data
 
 ### I/O Module (MuiIO.py)
 | Function | Purpose | Return |
