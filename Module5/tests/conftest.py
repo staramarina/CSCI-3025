@@ -9,16 +9,16 @@ from decimal import Decimal
 
 
 @pytest.fixture
-def sample_income_file(temp_path):
+def sample_income_file(tmp_path):
     """Creates temporary sample income file and data
     
     Args:
-        temp_path: unique temporary directory file path
+        tmp_path: unique temporary directory file path
     
     Returns:
         file_path: file path to the created file
     """
-    file_path = f"{temp_path}/IncomeData.txt"
+    file_path = tmp_path / "IncomeData.txt"
     file_path.write_text(
         "Income 1, bimonthly, 3671.18\n"
         "Income 2, monthly, 1808.45\n"
@@ -27,16 +27,16 @@ def sample_income_file(temp_path):
 
 
 @pytest.fixture
-def sample_expense_file(temp_path):
+def sample_expense_file(tmp_path):
     """Creates temporary sample expense file and data
     
     Args:
-        temp_path: unique temporary directory file path
+        tmp_path: unique temporary directory file path
     
     Returns:
         file_path: file path to the created file
     """
-    file_path = f"{temp_path}/ExpenseData.txt"
+    file_path = tmp_path / "ExpenseData.txt"
     file_path.write_text(
         "Rent, monthly, 2384.56\n"
         "Car, monthly, 152.45\n"
@@ -45,16 +45,16 @@ def sample_expense_file(temp_path):
 
 
 @pytest.fixture
-def valid_budget_data(temp_path):
+def valid_budget_data(tmp_path):
     """Creates temporary 'good' budget data of mixed frequencies
     
     Args:
-        temp_path: unique temporary directory file path
+        tmp_path: unique temporary directory file path
     
     Returns:
         file_path: file path to the created file
     """
-    file_path = f"{temp_path}/GoodData.txt"
+    file_path = tmp_path / "GoodData.txt"
     file_path.write_text(
         "Salary, bimonthly, 2764.81\n"
         "Bonus, yearly, 1500.00\n"
@@ -64,16 +64,16 @@ def valid_budget_data(temp_path):
 
 
 @pytest.fixture
-def invalid_budget_data(temp_path):
+def invalid_budget_data(tmp_path):
     """Creates temporary 'bad' budget data
     
     Args:
-        temp_path: unique temporary directory file path
+        tmp_path: unique temporary directory file path
     
     Returns:
         file_path: file path to the created file
     """
-    file_path = f"{temp_path}/BadData.txt"
+    file_path = tmp_path / "BadData.txt"
     file_path.write_text(
         "Valid Line, monthly, 100.00\n"
         "\n"

@@ -39,18 +39,18 @@ class TestGenerateBudgetObject:
         assert ['Other', 'monthly', '941.26'] == budget[2]
 
 
-    def test_empty_file(self, temp_path):
+    def test_empty_file(self, tmp_path):
         """Tests that empty file will return an empty dictionary
         
         Args:
-            temp_path: file path to the created file
+            tmp_path: file path to the created file
         
         Returns:
             None
         """
-        file_path = f"{temp_path}/empty.txt"
+        file_path = tmp_path / "empty.txt"
         file_path.write_text("")
-        budget = calc.generate_budget_object(file_path)
+        budget = calc.generate_budget_object(str(file_path))
 
         assert {} == budget
 
@@ -59,11 +59,11 @@ class TestCheckBudgetData:
     """Tests the check_budget_data() function"""
 
 
-    def test_valid_data_return(self, sample_income):
+    def test_valid_data_return(self, sample_income_dict):
         """Tests that valid data will return empty removed lines dictionary
         
         Args:
-            sample_income: a dictionary with elements as a list containing 
+            sample_income_dict: a dictionary with elements as a list containing 
                 the following expected budgetary data
                 [0]: unique name of the item as a string
                 [1]: frequency of the transaction as a string
@@ -72,7 +72,7 @@ class TestCheckBudgetData:
         Returns:
             None
         """
-        listed = calc.check_budget_data(sample_income)
+        listed = calc.check_budget_data(sample_income_dict)
 
         assert {} == listed
 
@@ -87,7 +87,7 @@ class TestCheckBudgetData:
 
         assert 1 in listed
         assert ("Reason: list does not contain the expected number of elements" 
-                in listed[0][-1])
+                in listed[1][-1])
 
 
     def test_invalid_frequency(self):
@@ -100,7 +100,7 @@ class TestCheckBudgetData:
 
         assert 1 in listed
         assert ("Reason: frequency is not an accepted value" 
-                in listed[0][-1])
+                in listed[1][-1])
 
 
     def test_invalid_amount(self):
@@ -113,7 +113,7 @@ class TestCheckBudgetData:
 
         assert 1 in listed
         assert ("Reason: dollar amount is not a decimal" 
-                in listed[0][-1])
+                in listed[1][-1])
 
 
     def test_none_amount(self):
@@ -126,7 +126,7 @@ class TestCheckBudgetData:
         
         assert 1 in listed
         assert ("Reason: dollar amount is not a decimal" 
-                in listed[0][-1])
+                in listed[1][-1])
 
 
     def test_duplicate_name(self):
@@ -141,9 +141,9 @@ class TestCheckBudgetData:
         assert 1 in listed
         assert 2 in listed
         assert ("Reason: line item does not have a unique name" 
-                in listed[0][-1])
-        assert ("Reason: line item does not have a unique name" 
                 in listed[1][-1])
+        assert ("Reason: line item does not have a unique name" 
+                in listed[2][-1])
 
 
 class TestFormatBudgetData:
@@ -162,11 +162,11 @@ class TestFormatBudgetData:
         assert 12 == formatted['Item1'][0]
 
     
-    def test_calc_multiplier(self, sample_income):
+    def test_calc_multiplier(self, sample_income_dict):
         """Tests that frequencies are converted to numerical multipliers
         
         Args:
-            sample_income: a dictionary with elements as a list containing 
+            sample_income_dict: a dictionary with elements as a list containing 
                     the following expected budgetary data
                 [0]: unique name of the item as a string
                 [1]: frequency of the transaction as a string
@@ -175,17 +175,17 @@ class TestFormatBudgetData:
         Returns:
             None
         """
-        formatted = calc.format_budget_data(sample_income)
+        formatted = calc.format_budget_data(sample_income_dict)
 
         assert 24 == formatted['Income 1'][0]
         assert 12 == formatted['Income 2'][0]
 
 
-    def test_convert_decimal(self, sample_income):
+    def test_convert_decimal(self, sample_income_dict):
         """Tests that the dollar amounts convert to decimals
         
         Args:
-            sample_income: a dictionary with elements as a list containing 
+            sample_income_dict: a dictionary with elements as a list containing 
                     the following expected budgetary data
                 [0]: unique name of the item as a string
                 [1]: frequency of the transaction as a string
@@ -194,7 +194,7 @@ class TestFormatBudgetData:
         Returns:
             None
         """
-        formatted = calc.format_budget_data(sample_income)
+        formatted = calc.format_budget_data(sample_income_dict)
 
         assert isinstance(formatted['Income 1'][1], Decimal)
         assert Decimal('3671.18') == formatted['Income 1'][1]
@@ -372,7 +372,7 @@ class TestEdgeCases:
     def test_small_round(self):
         """Tests that small numbers are rounded properly"""
         small = {
-            'Small Number' : [Decimal('0.005'), Decimal['0.004']]
+            'Small Number' : [Decimal('0.005'), Decimal('0.004')]
         }
         rounded = calc.budget_rounding(small)
 
