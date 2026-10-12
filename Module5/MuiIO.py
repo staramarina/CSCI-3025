@@ -54,7 +54,7 @@ def can_write_file(file_name):
         return (True, f"File printed successfully as {file_name}")
 
 
-def print_new_file(data_dict):
+def print_new_file(data_dict, file_name):
     """Prints a dictionary to an existing file (will create if not present)
     
     Args:
@@ -65,7 +65,6 @@ def print_new_file(data_dict):
         [0]: True if file was successfully written, otherwise False
         [1]: f-string that provides more information beyond True/False
     """
-    file_name = "budget_data.txt"
     can_write = can_write_file(file_name)
     if can_write:
         with open(file_name, "a") as f:

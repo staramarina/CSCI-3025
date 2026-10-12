@@ -44,10 +44,11 @@ if __name__ == "__main__":
                 total_income
                 )
             round_expense = Mui_M5Calculations.budget_rounding(month_expense)
-            print_file = print_new_file(round_income)
+            report_name = "budget_data.txt"
+            print_file = print_new_file(round_income, report_name)
             if print_file[0]:
                 print(print_file[1])
-                print_file = print_new_file(round_expense)
+                print_file = print_new_file(round_expense, report_name)
             else: 
                 print(print_file[1])
         elif not rm_income:
