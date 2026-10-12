@@ -16,26 +16,26 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = [
-    "-v"
-    "--tb=short"
+    "-v",
+    "--tb=short",
     "--strict-markers"
 ]
 markers = [
     "slow: marks tests as slow",
     "integration: marks integration tests"
 ]
-filterwarning = [
+filterwarnings = [
     "ignore::DeprecationWarning"
 ]
 
 [tool.coverage.run]
-source["."]
+source = ["."]
 omit = ["tests/*"]
 
 [tool.black]
 line-length = 79
 target-version = ["py36"]
-include = '\.pyu?$'
+include = '\.py?$'
 exclude = '''
 /(
     \.git
