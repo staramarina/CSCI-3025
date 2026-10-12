@@ -146,6 +146,45 @@ def yearly_conversion(budget):
     return year_budget
 
 
+def sum_income(income):
+    """Calculates total yearly income
+    
+    Args:
+        income: a dictionary with list elements containing 
+                income data in the following format
+            key: name of the income source as a string
+            [0]: income yearly dollar amount in decimal
+    
+    Returns:
+        income_total: total yearly income in decimal
+    """
+    income_total = Decimal(0)
+    for key in income:
+        income_total += income[key][0]
+    return income_total
 
-# TODO calculate percentage of income used for each expense
-# TODO calcluate remaining income and percentage
+
+def budget_calc(budget, total_income = 1):
+    """Calculates monthly income, expenses, and percentages
+    
+    Args:
+        budget: a dictionary with list elements containing 
+                income data in the following format
+            key: name of the item as a string
+            [0]: yearly dollar amount of the transaction as a decimal
+        total_income: total yearly income in decimal
+    
+    Returns:
+        monthly_budget: a dictionary with list elements containing 
+                      income data in the following format
+            key: name of the item as a string
+            [0]: monthly dollar amount of the transaction as a decimal
+            [1]: percentage of income as a decimal
+    """
+    monthly_budget = {}
+    for key in budget:
+        new_key = copy.copy(key)
+        monthly_amount = budget[key][0] / Decimal(12)
+        monthly_percent = (budget[key][0] / total_income) * 100
+        monthly_budget[new_key] = [monthly_amount, monthly_percent]
+    return monthly_budget

@@ -27,10 +27,20 @@ if __name__ == "__main__":
         if not rm_income and not rm_expense:
             format_income = Mui_M5Calculations.format_budget_data(income)
             year_income = Mui_M5Calculations.yearly_conversion(format_income)
+            total_income = Mui_M5Calculations.sum_income(year_income)
+            month_income = Mui_M5Calculations.budget_calc(
+                year_income,
+                total_income
+                )
             format_expense = Mui_M5Calculations.format_budget_data(expense)
             year_expense = Mui_M5Calculations.yearly_conversion(format_expense)
-            print(year_income) # test line remove later
-            print(year_expense) # test line remove later
+            month_expense = Mui_M5Calculations.budget_calc(
+                year_expense,
+                total_income
+                )
+            print(month_income) # test line remove later
+            print(f"Total Income: {total_income}") # test line remove later
+            print(month_expense) # test line remove later
         elif not rm_income:
             print("The following lines encountered issues in the expense file")
             print(rm_expense)
