@@ -5,7 +5,7 @@
 # Dependencies: decimal, copy
 
 
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 import copy
 
 
@@ -72,7 +72,7 @@ def check_budget_data(budget):
         else:
             try:
                 Decimal(budget[key][2])
-            except (ValueError, TypeError):
+            except (InvalidOperation, TypeError):
                 new_key = copy.copy(key)
                 removed_data_list[new_key] = copy.deepcopy(budget[key])
                 removed_data_list[new_key].append("Reason: dollar amount is " \
