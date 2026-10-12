@@ -36,16 +36,18 @@ if __name__ == "__main__":
                 year_income,
                 total_income
                 )
+            round_income = Mui_M5Calculations.budget_rounding(month_income)
             format_expense = Mui_M5Calculations.format_budget_data(expense)
             year_expense = Mui_M5Calculations.yearly_conversion(format_expense)
             month_expense = Mui_M5Calculations.budget_calc(
                 year_expense,
                 total_income
                 )
-            print_file = print_new_file(month_income)
+            round_expense = Mui_M5Calculations.budget_rounding(month_expense)
+            print_file = print_new_file(round_income)
             if print_file[0]:
                 print(print_file[1])
-                print_file = print_new_file(month_expense)
+                print_file = print_new_file(round_expense)
             else: 
                 print(print_file[1])
         elif not rm_income:

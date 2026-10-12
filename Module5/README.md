@@ -73,16 +73,17 @@ File printed successfully as budget_data.txt
 
 ### Sample Output File (budget_data.txt)
 ```
-Income 1, 7342.36, 80.23726861337958060543274311
-Income 2, 1808.45, 19.76273138662041939456725689
-Rent, 2384.56, 26.05845821298879552739047144
-Car, 152.45, 1.665972739025288471730917809
-Electricity, 214.89, 2.348316706389926137686172044
-Water, 39.74, 0.4342784955648734920733792965
-Internet, 104.49, 1.141866129883584076163749439
-Phone, 39.04, 0.4266288995181847290021320517
-Groceries, 510.1323500000000066734173742, 5.574723439782926393110745106
+Income 1, 7342.36, 80.24
+Income 2, 1808.45, 19.76
+Rent, 2384.56, 26.06
+Car, 152.45, 1.67
+Electricity, 214.89, 2.35
+Water, 39.74, 0.43
+Internet, 104.49, 1.14
+Phone, 39.04, 0.43
+Groceries, 510.13, 5.57
 ```
+Report data is rounded to the nearest cent for readability. Full precision data is maintained within program memory.
 
 ## Project Structure
 ```
@@ -118,6 +119,7 @@ Module5/
 | yearly_conversion(budget) | Calculates yearly values for income and expenses | dict - {name : [yearly_amount]} |
 | sum_income(income) | Calculates total yearly income | Decimal - sum of all income sources |
 | budget_calc(budget, total_income = 1) | Calculates monthly income, expenses, and percentages | dict - {name : [monthly_amount, percentage]} |
+| budget_rounding(budget) | Rounds all decimal values for report purposes | dict - {name : [monthly_amount, percentage]} |
 
 
 ## Input File Format

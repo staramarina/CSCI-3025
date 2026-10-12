@@ -188,3 +188,30 @@ def budget_calc(budget, total_income = 1):
         monthly_percent = (budget[key][0] / total_income) * 100
         monthly_budget[new_key] = [monthly_amount, monthly_percent]
     return monthly_budget
+
+
+def budget_rounding(budget):
+    """Rounds all decimal values for report purposes
+    
+    Args:
+        budget: a dictionary with list elements containing 
+                income data in the following format
+            key: name of the item as a string
+            [0]: monthly dollar amount of the transaction as a decimal
+            [1]: percentage of income as a decimal
+    
+    Returns:
+        budget_round: a dictionary with list elements containing 
+                      income data in the following format
+            key: name of the item as a string (unchanged)
+            [0]: monthly dollar amount as a formatted string
+            [1]: percentage of income as a formatted string
+    """
+    budget_round = {}
+    for key in budget:
+        new_key = copy.copy(key)
+        budget_round[new_key] = (
+            [f"{budget[key][0]:.2f}",
+            f"{budget[key][1]:.2f}"]
+        )
+    return budget_round
