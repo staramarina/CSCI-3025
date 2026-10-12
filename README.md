@@ -7,3 +7,4 @@ Repository for CSCI-3025: Python Programming, Fall 2026
 - Module2: Data types, variables, expressions assignments
 - Module3: Decisions and loops assignments
 - Module4: Functions and error handling
+- Module5: Modular programming and code reuse
