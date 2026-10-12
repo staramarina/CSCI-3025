@@ -63,12 +63,12 @@ def check_budget_data(budget):
             new_key = copy.copy(key)
             removed_data_list[new_key] = copy.deepcopy(budget[key])
             removed_data_list[new_key].append("Reason: list does not contain " \
-                                          "the expected number of elements")
+                                              "the expected number of elements")
         elif budget[key][1].lower() not in FREQUENCY_LIST:
             new_key = copy.copy(key)
             removed_data_list[new_key] = copy.deepcopy(budget[key])
             removed_data_list[new_key].append("Reason: frequency is not an " \
-                                          "accepted value")
+                                              "accepted value")
         else:
             try:
                 Decimal(budget[key][2])
@@ -76,7 +76,7 @@ def check_budget_data(budget):
                 new_key = copy.copy(key)
                 removed_data_list[new_key] = copy.deepcopy(budget[key])
                 removed_data_list[new_key].append("Reason: dollar amount is " \
-                                              "not a decimal")
+                                                  "not a decimal")
     temp_dict = {}
     for key, value in budget.items():
         if value[0] not in temp_dict:
