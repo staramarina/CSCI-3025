@@ -30,6 +30,7 @@ class TestFileExists:
             None
         """
         test_file = tmp_path / "exists.txt"
+        test_file.write_text("Test Content\n")
         flag, message = io.file_exists(str(test_file))
 
         assert flag is True
@@ -74,7 +75,7 @@ class TestCanWriteFile:
         flag, message = io.can_write_file(str(test_file))
 
         assert flag is True
-        assert "exists" in message
+        assert "successfully" in message
 
 
     def test_restricted_dir(self):
@@ -103,7 +104,7 @@ class TestPrintNewFile:
             'Item0' : ['text', 123.45],
             'Item1' : ['more text', 67.89]
         }
-        flag, message = io.print_new_file(str(test_file))
+        flag, message = io.print_new_file(data, str(test_file))
 
         assert flag is True
         assert "successfully" in message
@@ -125,9 +126,11 @@ class TestPrintNewFile:
         Returns:
             None
         """
+        data1 = {0 : ['First Write', 111.22]}
+        data2 = {1 : ['Second Write', 333.44]}
         test_file = tmp_path / "append_test.txt"
-        io.print_new_file({0 : 'First Write'}, test_file)
-        io.print_new_file({1 : 'Second Write'}, test_file)
+        io.print_new_file(data1, str(test_file))
+        io.print_new_file(data2, str(test_file))
         content = Path(test_file).read_text()
         lines = content.strip().split('\n')
 
@@ -153,8 +156,10 @@ class TestIntegration:
         exists_flag, _ = io.file_exists(str(input_file))
         output_file = tmp_path / "output.txt"
         data = {'Another Test' : [123.00, 45.60]}
-        write_flag, _ = io.file_exists(str(output_file))
+        write_flag, _ = io.print_new_file(data, str(output_file))
+        content = Path(output_file).read_text()
 
         assert exists_flag is True
         assert write_flag is True
         assert output_file.exists()
+        assert "Another Test" in content
