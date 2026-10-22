@@ -1,6 +1,6 @@
 # Tiffany Mui - Module 6 Assignment
 
-A library tool that tracks books and patrons, allows patrons to checkout and return books.
+A library tool that tracks books and patrons and allows patrons to checkout and return books.
 
 Estimated Minimum: TBD  
 Development Environment: Python 3.14.4
@@ -19,10 +19,18 @@ Development Environment: Python 3.14.4
 ---
 
 ## Overview
-(describe what the tool is, why it was made, and what it offers)
+The library tool was created for State University of New York (SUNY): Empire State University (ESU), CSCI-3025: Python Programming course as the Module 6 assignment.
+
+The library tool: 
+- (TBD --mechanism of input data)
+- (TBD --input data verification)
+- (TBD --describe the flow of the main program)
 
 ## Features
-(describe the features of the tool)
+- **Book Checkout, Return, and Extend** - Allows patrons to checkout and return books as well as extend the due date of a borrowed book
+- **Ordered Wait Listing** - If all copies of a book are checked out a patron can request to be placed on a wait list, which prevents borrow extensions
+- **Separate Patron and Educator Accounts** - Increases borrow times and item limitations for educators
+- **Book Holds** - Allows educators to place holds on books for a future period of time
 
 ## Installation
 
@@ -47,7 +55,7 @@ Development Environment: Python 3.14.4
 
 ### Running the Program
 From the Module6 directory  
-```python TBD.py```
+```python Mui_M6Assignment.py```
 
 ### Example Interaction
 ```
@@ -57,7 +65,12 @@ TBD
 ## Project Structure
 ```
    Module6/
-    └── TBD
+    ├── Mui_M6Assignment.py   # Main program
+    ├── Mui_Library.py        # Library class module
+    ├── Mui_Book.py           # Book class module
+    ├── Mui_Patron.py         # Patron class module
+    ├── TBD
+    └── README.md             # Read me file (current file)
 ```
 
 ## Modules
@@ -166,6 +179,9 @@ TBD
 | hold_remove(self, book) | Removes the hold on the specified book | TBD |
 
 ## Input File Format
+TBD
+
+### Valid Values
 TBD
 
 ### Example Input File (TBD.txt)
