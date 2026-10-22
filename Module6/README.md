@@ -76,26 +76,23 @@ TBD
 | phone | Phone number to call the library | None |
 | address | Address to visit the library | None |
 | books | Dictionary to hold instances of Book | Empty |
-| out_books | Dictionary to hold books that have been pulled from circulation | Empty |
+| books_out | Dictionary to hold books that have been pulled from circulation | Empty |
 | patrons | Dictionary to hold instances of Patron | Empty |
 
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| __init__(TBD) | Initializes as instance of the Library class | Library class instance |
-| add_book(Book) | Adds a Book instance to the library | TBD |
-| decirc_book(Book) | Removes a Book instance from the books dictionary and adds to the out_books dictionary | TBD |
-| recirc_book(Book) | Removes a Book instance from the out_books dictionary and adds to the books dictionary | TBD |
-| remove_book(Book) | Removes a Book instance from the library altogether | TBD |
-| add_patron(Patron) | Adds a Patron instance to the library | TBD |
-| remove_patron(Patron) | Removes a Patron instance from the library | TBD |
-| show_books() | Shows all books in the library | TBD |
-| search_isbn(isbn) | Shows all books with the given ISBN | TBD |
-| search_author(author) | Shows all books with the given author | TBD |
-| search_title(title) | Shows all books with the given title | TBD |
-| book_checkout(Book, Patron) | Checks out a Book instance to a Patron instance | TBD |
-| book_return(Book, !TBR) | Returns a Book instance | TBD |
-| TBD | TBD | TBD |
+| __init__(TBD) | Initializes as instance of the Library class | library |
+| add_book(self, book) | Adds a Book instance to the library | TBD |
+| decirc_book(self, book) | Removes a Book instance from the books dictionary and adds to the out_books dictionary | TBD |
+| recirc_book(self, book) | Removes a Book instance from the out_books dictionary and adds to the books dictionary | TBD |
+| remove_book(self, book) | Removes a Book instance from the library altogether | TBD |
+| add_patron(self, patron) | Adds a Patron instance to the library | TBD |
+| remove_patron(self, patron) | Removes a Patron instance from the library | TBD |
+| show_books(self) | Shows all books in the library | TBD |
+| search_isbn(self, isbn) | Shows all books with the given ISBN | TBD |
+| search_author(self, author) | Shows all books with the given author | TBD |
+| search_title(self, title) | Shows all books with the given title | TBD |
 
 ### Book Module (Mui_Book.py)
 
@@ -104,12 +101,22 @@ TBD
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | -------- | -------- | -------- |
-| TBD | TBD | TBD |
+| isbn | ISBN of the book | '0' |
+| author | Author of the book with first name first | '' |
+| title | Title of the book | '' |
+| quantity | Number of copies the library has available | 1 |
+| return_date | Date the book is due to return | None |
+| hold_start | Date the hold on a book starts | None |
+| hold_end | Date the hold on a book ends | None |
+| waitlist | List of library card numbers of patrons waiting for the book | Empty |
 
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| TBD | TBD | TBD |
+| __init__(TBD) | Initializes as instance of the Book class | book |
+| show_info(self) | Provides ISBN, author, title, and quantity information for a book | book_info as a string |
+| show_status(self) | Provides ISBN, author, title, and return date information for a book | book_status as a string |
+| show_hold(self) | Provides ISBN, author, title, hold_start, and hold_end information for a book | book_hold as a string |
 
 ### Patron Module (Mui_Patron.py)
 
@@ -118,12 +125,43 @@ TBD
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | -------- | -------- | -------- |
-| TBD | TBD | TBD |
+| card_num | Unique library card number | TBD |
+| last_name | Patron's last name | TBD |
+| first_name | Patron's first name | TBD |
+| dob | Patron's date of birth | TBD |
+| phone | Patron's phone number | TBD |
+| email | Patron's email address | TBD |
+| address | Patron's mailing address | TBD |
+| standing | Patron's standing; good, overdue, fines | TBD |
+| books | List of books the Patron has currently checked out | TBD |
 
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| TBD | TBD | TBD |
+| __init__(TBD) | Initializes as instance of the Patron class | patron |
+| checkout_book(self, book) | Checks out a book to a patron | TBD |
+| return_book(self, book) | Returns a book back to the library | TBD |
+| checkout_extend(self, book) | Extends the return date of a book | TBD |
+| waitlist_add(self, book) | Adds a patron to the wait list for a book | TBD |
+| display_checkout(self) | Provides status information on books the patron has checked out | TBD |
+
+#### Educator Subclass (Patron is parent class)
+
+##### Attributes
+| Attribute | Purpose | Default Value |
+| -------- | -------- | -------- |
+| institution | The educator's institution | TBD |
+| hold_books | List of books the educator has requested a hold on | TBD |
+
+##### Methods
+| Method | Purpose | Return |
+| -------- | -------- | -------- |
+| __init__(TBD) | Initializes as instance of the Educator class | educator |
+| checkout_book(self, book) | Checks out a book to an educator | TBD |
+| checkout_extend(self, book) | Extends the return date of a book | TBD |
+| hold_request(self, book) | Places a hold on the requested book | TBD |
+| hold_extend(self, book) | Extends the hold on the requested book | TBD |
+| hold_remove(self, book) | Removes the hold on the specified book | TBD |
 
 ## Input File Format
 TBD
