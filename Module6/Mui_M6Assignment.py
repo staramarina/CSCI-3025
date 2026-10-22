@@ -6,3 +6,17 @@
 #               see README for full details
 # Provided Example Input Files: 
     # Module6/TestData/TBD.txt
+
+
+from Mui_Library import Library
+
+
+if __name__ == "__main__":
+    lib_name = 'Mui Mini Library'
+    lib_ph = '719-542-7279' # Example only, do not call
+    lib_add = '123 S Academy Blvd, Fountain, CO 80819' # Example only
+    mml = Library(lib_name, lib_ph, lib_add)
+
+    print(mml.name)
+    print(mml.phone)
+    print(mml.address)
