@@ -25,3 +25,30 @@ class Library:
         self.books = {}
         self.books_out = {}
         self.patrons = {}
+
+
+    def add_book(self, book):
+        """Adds a Book instance to the library inventory
+        
+        Args: 
+            book: a Book class instance
+        
+        Returns:
+            None
+        """
+        if book.isbn in self.books:
+            self.books[book.isbn].quantity += 1
+        else:
+            self.books[book.isbn] = book
+
+
+    def decirc_book(self, book):
+        """Remove a book from the circulation inventory and
+           add it to the out of circulation inventory
+        
+        Args: 
+            book: a Book class instance
+
+        Returns:
+            None
+        """

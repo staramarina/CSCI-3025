@@ -20,3 +20,10 @@ if __name__ == "__main__":
     print(mml.name)
     print(mml.phone)
     print(mml.address)
+
+    # TODO: create book instances
+    # TODO: add books to library
+    # TODO: create patron instances
+    # TODO: create educator instances
+    # TODO: add patrons and educators to library
+    # TODO: create menu
