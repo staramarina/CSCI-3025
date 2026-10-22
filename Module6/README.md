@@ -117,6 +117,8 @@ TBD
 | show_info(self) | Provides ISBN, author, title, and quantity information for a book | book_info as a string |
 | show_status(self) | Provides ISBN, author, title, and return date information for a book | book_status as a string |
 | show_hold(self) | Provides ISBN, author, title, hold_start, and hold_end information for a book | book_hold as a string |
+| book_avail(self) | Determines whether a book is available for checkout | TBD |
+| change_quant(self) | Changes the quantity of books that the library has available | TBD |
 
 ### Patron Module (Mui_Patron.py)
 
