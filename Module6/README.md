@@ -81,6 +81,7 @@ TBD
 ### Library Module (Mui_Library.py)
 
 #### Library Class
+Provides library book inventory and patron management.
 
 ##### Attributes
 | Attribute | Purpose | Default Value |
@@ -110,6 +111,7 @@ TBD
 ### Book Module (Mui_Book.py)
 
 #### Book Class
+Provides information and checks on books
 
 ##### Attributes
 | Attribute | Purpose | Default Value |
@@ -136,6 +138,7 @@ TBD
 ### Patron Module (Mui_Patron.py)
 
 #### Patron Class
+Provides information on and support actions of patrons
 
 ##### Attributes
 | Attribute | Purpose | Default Value |
@@ -161,6 +164,7 @@ TBD
 | display_checkout(self) | Provides status information on books the patron has checked out | TBD |
 
 #### Educator Subclass (Patron is parent class)
+Provides information on and support actions of educators
 
 ##### Attributes
 | Attribute | Purpose | Default Value |
