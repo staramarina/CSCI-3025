@@ -2,7 +2,7 @@
 
 A library tool that tracks books and patrons, allows patrons to checkout and return books.
 
-Estimated Minimum: TBD
+Estimated Minimum: TBD  
 Development Environment: Python 3.14.4
 
 ## Table of Contents
@@ -34,14 +34,19 @@ Development Environment: Python 3.14.4
 1. Download the repository from https://github.com/staramarina/CSCI-3025/tree/main/Module6
 2. Verify all files are present
 ```
-   TBD
+   Module6/
+    ├── Mui_M6Assignment.py   # Main program
+    ├── Mui_Library.py        # Library class module
+    ├── Mui_Book.py           # Book class module
+    ├── Mui_Patron.py         # Patron class module
+    └── TBR
 ```
 3. Ensure Python path includes the Module6 directory or run from within it.
 
 ## Usage
 
 ### Running the Program
-From the Module5 directory  
+From the Module6 directory  
 ```python TBD.py```
 
 ### Example Interaction
@@ -51,21 +56,61 @@ TBD
 
 ## Project Structure
 ```
-TBD
+   Module6/
+    └── TBD
 ```
 
 ## Modules
 
 ### Built-in Packages
-- decimal.Decimal - Precise financial calculations, avoid floating-point errors
-- copy - Deep copies used to prevent unintended mutations of original data
+- TBD
 
-### TBD Module (TBD.py)
+### Library Module (Mui_Library.py)
+
+#### Library Class
+
+##### Attributes
+| Attribute | Purpose | Default Value |
+| -------- | -------- | -------- |
+| TBD | TBD | TBD |
+
+##### Methods
+| Method | Purpose | Return |
+| -------- | -------- | -------- |
+| TBD | TBD | TBD |
+
+### Book Module (Mui_Book.py)
+
+#### Book Class
+
+##### Attributes
+| Attribute | Purpose | Default Value |
+| -------- | -------- | -------- |
+| TBD | TBD | TBD |
+
+##### Methods
+| Method | Purpose | Return |
+| -------- | -------- | -------- |
+| TBD | TBD | TBD |
+
+### Patron Module (Mui_Patron.py)
+
+#### Patron Class
+
+##### Attributes
+| Attribute | Purpose | Default Value |
+| -------- | -------- | -------- |
+| TBD | TBD | TBD |
+
+##### Methods
+| Method | Purpose | Return |
+| -------- | -------- | -------- |
+| TBD | TBD | TBD |
 
 ## Input File Format
 TBD
 
-### Example Input File (IncomeData.txt)
+### Example Input File (TBD.txt)
 ```
 TBD
 ```
