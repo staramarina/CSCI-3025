@@ -72,11 +72,29 @@ TBD
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | -------- | -------- | -------- |
-| TBD | TBD | TBD |
+| name | Name of the library | 'Library' |
+| phone | Phone number to call the library | None |
+| address | Address to visit the library | None |
+| books | Dictionary to hold instances of Book | Empty |
+| out_books | Dictionary to hold books that have been pulled from circulation | Empty |
+| patrons | Dictionary to hold instances of Patron | Empty |
 
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
+| __init__(TBD) | Initializes as instance of the Library class | Library class instance |
+| add_book(Book) | Adds a Book instance to the library | TBD |
+| decirc_book(Book) | Removes a Book instance from the books dictionary and adds to the out_books dictionary | TBD |
+| recirc_book(Book) | Removes a Book instance from the out_books dictionary and adds to the books dictionary | TBD |
+| remove_book(Book) | Removes a Book instance from the library altogether | TBD |
+| add_patron(Patron) | Adds a Patron instance to the library | TBD |
+| remove_patron(Patron) | Removes a Patron instance from the library | TBD |
+| show_books() | Shows all books in the library | TBD |
+| search_isbn(isbn) | Shows all books with the given ISBN | TBD |
+| search_author(author) | Shows all books with the given author | TBD |
+| search_title(title) | Shows all books with the given title | TBD |
+| book_checkout(Book, Patron) | Checks out a Book instance to a Patron instance | TBD |
+| book_return(Book, !TBR) | Returns a Book instance | TBD |
 | TBD | TBD | TBD |
 
 ### Book Module (Mui_Book.py)
