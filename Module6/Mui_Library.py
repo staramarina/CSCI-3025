@@ -52,9 +52,31 @@ class Library:
             None
         """
         if self.book_exists(self, book):
-            self.books[book.isbn].quantity += 1
+            self.books[book.isbn].qty += 1
         else:
             self.books[book.isbn] = book
+
+
+    def remove_book(self, book):
+        """Remove a single Book instance from the library altogether
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            True if book in library, otherwise False
+        """
+        if self.book_exists(self.book):
+            if 1 < self.books[book.isbn].qty:
+                self.books[book.isbn].qty -= 1
+                return True
+            elif 1 == self.books[book.isbn].qty:
+                self.books[book.isbn].pop()
+                return True
+            else:
+                return False
+        else:
+            return False
 
 
     def decirc_book(self, book):
@@ -67,9 +89,9 @@ class Library:
         Returns:
             True if book in library, otherwise False
         """
-        if self.book_exists(self, book):
+        if self.remove_book(self, book):
             if book.isbn in self.books_out:
-                self.books_out[book.isbn].quantity += 1
+                self.books_out[book.isbn].qty += 1
             else:
                 self.books_out[book.isbn] = book
             return True
@@ -88,26 +110,16 @@ class Library:
             True if book in library, otherwise False
         """
         if book.isbn in self.books_out:
-            self.books_out[book.isbn].quantity -= 1
-            self.add_book(self, book)
-            return True
-        else:
-            return False
-
-
-    def remove_book(self, book):
-        """Remove a single Book instance from the library altogether
-        
-        Args:
-            book: a Book class instance
-        
-        Returns:
-            True if book in library, otherwise False
-        """
-        if self.book_exists(self.book):
-            self.books[book.isbn].quantity -= 1
-            # TODO: account for 0 quantity
-            return True
+            if 1 < self.books_out[book.isbn].qty:
+                self.books_out[book.isbn].qty -= 1
+                self.add_book(self, book)
+                return True
+            elif 1 == self.books_out[book.isbn].qty:
+                self.books_out[book.isbn].pop()
+                self.add_book(self, book)
+                return True
+            else:
+                return False
         else:
             return False
 
