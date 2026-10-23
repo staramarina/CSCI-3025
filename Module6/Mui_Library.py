@@ -170,3 +170,8 @@ class Library:
         else:
             return False
 
+
+    def show_books(self):
+        """Prints all books in the library to the console"""
+        for book in self.books.values():
+            print(book.show_info(book))
