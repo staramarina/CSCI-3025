@@ -96,7 +96,7 @@ Provides library book inventory and patron management.
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| __init__(self, name = 'Library', phone = None, address = None) | Initializes as instance of the Library class | library |
+| __init__(self, name = 'Library', phone = None, address = None) | Initializes an instance of the Library class | library |
 | book_exists(self, book) | Checks whether a book exists in the circulation inventory | True if book exists, otherwise False |
 | add_book(self, book) | Adds a Book instance to the library inventory | None |
 | remove_book(self, book) | Removes a single Book instance from the library altogether | True if book exists, otherwise False |
