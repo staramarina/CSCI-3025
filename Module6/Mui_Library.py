@@ -27,6 +27,21 @@ class Library:
         self.patrons = {}
 
 
+    def book_exists(self, book):
+        """Checks whether a book exists in the circulation inventory
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            True if book in library, otherwise False
+        """
+        if book.isbn in self.books:
+            return True
+        else:
+            return False
+
+
     def add_book(self, book):
         """Adds a Book instance to the library inventory
         
@@ -36,7 +51,7 @@ class Library:
         Returns:
             None
         """
-        if book.isbn in self.books:
+        if self.book_exists(self, book):
             self.books[book.isbn].quantity += 1
         else:
             self.books[book.isbn] = book
@@ -50,5 +65,13 @@ class Library:
             book: a Book class instance
 
         Returns:
-            None
+            True if book in library, otherwise False
         """
+        if self.book_exists(self, book):
+            if book.isbn in self.books_out:
+                self.books_out[book.isbn].quantity += 1
+            else:
+                self.books_out[book.isbn] = book
+            return True
+        else:
+            return False
