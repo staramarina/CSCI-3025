@@ -75,3 +75,21 @@ class Library:
             return True
         else:
             return False
+
+
+    def recirc_book(self, book):
+        """Adds a book back into the circulation inventory
+           from the decirculation inventory
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            True if book in library, otherwise False
+        """
+        if book.isbn in self.books_out:
+            self.books_out[book.isbn].quantity -= 1
+            self.add_book(self, book)
+            return True
+        else:
+            return False
