@@ -174,4 +174,20 @@ class Library:
     def show_books(self):
         """Prints all books in the library to the console"""
         for book in self.books.values():
-            print(book.show_info(book))
+            print(book.show_info(book)) # TODO: check this after implementation
+
+
+    def search_isbn(self, search):
+        """Prints books information for the given ISBN if it exists
+        
+        Args:
+            search: ISBN search term
+        
+        Returns:
+            None
+        """
+        book = self.books.get(search)
+        if book is not None:
+            print(self.books[search].show_info(book)) # TODO : check this after implementation
+        else:
+            print('That book is not available.')
