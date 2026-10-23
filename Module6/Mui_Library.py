@@ -209,3 +209,21 @@ class Library:
                 count += 1
         if 0 == count:
             print('No books with that author found.')
+
+
+    def search_title(self, search):
+        """Prints book information with given title if they exist
+        
+        Args:
+            search: Title of book, not case sensitive, can be partial
+
+        Returns:
+            None
+        """
+        count = 0
+        for isbn, book in self.books:
+            if search.lower() in book.title.lower():
+                print(self.books[isbn].show_info(book)) # TODO : check this after implementation
+                count += 1
+        if 0 == count:
+            print('No books with that title found.')
