@@ -191,3 +191,21 @@ class Library:
             print(self.books[search].show_info(book)) # TODO : check this after implementation
         else:
             print('That book is not available.')
+
+
+    def search_author(self, search):
+        """Prints book information written by given author if they exist
+        
+        Args:
+            search: Author name, not case sensitive, can be partial
+        
+        Returns:
+            None
+        """
+        count = 0
+        for isbn, book in self.books:
+            if search.lower() in book.author.lower():
+                print(self.books[isbn].show_info(book)) # TODO : check this after implementation
+                count += 1
+        if 0 == count:
+            print('No books with that author found.')
