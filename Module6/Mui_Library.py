@@ -141,3 +141,19 @@ class Library:
         else:
             return False
 
+
+    def remove_patron(self, patron):
+        """Removes a Patron instance from the library
+        
+        Args:
+            patron: a Patron or Educator class instance
+        
+        Returns:
+            True if patron exists, otherwise False
+        """
+        if self.patron_exists(self, patron):
+            self.patrons[patron.card_num].pop()
+            return True
+        else:
+            return False
+
