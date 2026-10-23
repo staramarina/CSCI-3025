@@ -109,3 +109,35 @@ class Library:
             return True
         else:
             return False
+
+
+    def patron_exists(self, patron):
+        """Checks whether a patron exists in the library database
+        
+        Args:
+            patron: a Patron or Educator class instance
+        
+        Returns:
+            True if patron exists, otherwise False
+        """
+        if patron.card_num in self.patrons:
+            return True
+        else:
+            return False
+
+
+    def add_patron(self, patron):
+        """Adds a Patron instance to the library
+        
+        Args:
+            patron: a Patron or Educator class instance
+        
+        Returns:
+            False if patron already exists, otherwise True
+        """
+        if not self.patron_exists(self, patron):
+            self.patrons[patron.card_num] = patron
+            return True
+        else:
+            return False
+
