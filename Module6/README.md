@@ -99,16 +99,16 @@ Provides library book inventory and patron management.
 | __init__(self, name = 'Library', phone = None, address = None) | Initializes as instance of the Library class | library |
 | book_exists(self, book) | Checks whether a book exists in the circulation inventory | True if book exists, otherwise False |
 | add_book(self, book) | Adds a Book instance to the library inventory | None |
+| remove_book(self, book) | Removes a single Book instance from the library altogether | True if book exists, otherwise False |
 | decirc_book(self, book) | Remove a book from the circulation inventory and add it to the out of circulation inventory | True if book exists, otherwise False |
 | recirc_book(self, book) | Adds a book back into the circulation inventory from the decirculation inventory | True if book exists, otherwise False |
-| remove_book(self, book) | Removes a single Book instance from the library altogether | True if book exists, otherwise False |
 | patron_exists(self, patron) | Checks whether a patron exists in the library database | True if patron exists, otherwise False |
 | add_patron(self, patron) | Adds a Patron instance to the library | False if patron already exists, otherwise True |
 | remove_patron(self, patron) | Removes a Patron instance from the library | True if patron exists, otherwise False |
-| show_books(self) | Shows all books in the library | TBD |
-| search_isbn(self, isbn) | Shows all books with the given ISBN | TBD |
-| search_author(self, author) | Shows all books with the given author | TBD |
-| search_title(self, title) | Shows all books with the given title | TBD |
+| show_books(self) | Prints all books in the library to the console | None |
+| search_isbn(self, search) | Prints book information for the given ISBN if it exists | None |
+| search_author(self, search) | Prints book information written by given author if they exist | None |
+| search_title(self, search) | Prints book information with given title if they exist | None |
 
 ### Book Module (Mui_Book.py)
 
@@ -121,7 +121,7 @@ Provides information and checks on books
 | isbn | ISBN of the book | '0' |
 | author | Author of the book with first name first | '' |
 | title | Title of the book | '' |
-| quantity | Number of copies the library has available | 1 |
+| qty | Number of copies the library has available | 1 |
 | return_date | Date the book is due to return | None |
 | hold_start | Date the hold on a book starts | None |
 | hold_end | Date the hold on a book ends | None |
