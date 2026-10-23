@@ -106,6 +106,7 @@ class Library:
         """
         if self.book_exists(self.book):
             self.books[book.isbn].quantity -= 1
+            # TODO: account for 0 quantity
             return True
         else:
             return False
