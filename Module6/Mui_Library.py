@@ -93,3 +93,19 @@ class Library:
             return True
         else:
             return False
+
+
+    def remove_book(self, book):
+        """Remove a single Book instance from the library altogether
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            True if book in library, otherwise False
+        """
+        if self.book_exists(self.book):
+            self.books[book.isbn].quantity -= 1
+            return True
+        else:
+            return False
