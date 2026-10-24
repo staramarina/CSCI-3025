@@ -44,3 +44,13 @@ class Book:
                f'Author: {self.author}, '
                f'Title: {self.title}, '
                f'Return Date: {self.return_date}')
+
+
+    def show_hold(self):
+        """Provides ISBN, author, title, hold start date, and
+           hold end date information for a book"""
+        return(f'ISBN: {self.isbn}, '
+               f'Author: {self.author}, '
+               f'Title: {self.title}, '
+               f'Hold Start: {self.hold_start}, '
+               f'Hold End: {self.hold_end}')
