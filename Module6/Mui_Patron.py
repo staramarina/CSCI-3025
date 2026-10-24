@@ -2,7 +2,10 @@
 # Module 6 Assignment - Patron Class Module
 # CSCI-3025: Python Programming
 # Purpose: Patron and Educator classes with associated attributes and methods
-# Dependencies: TBD
+# Dependencies: datetime
+
+
+from datetime import datetime, timedelta
 
 
 class Parton:
@@ -34,3 +37,19 @@ class Parton:
         self.address = address
         self.standing = 'good'
         self.books = {}
+
+
+    def checkout_extend(self, book):
+        """Extends the return date of a book
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            True if patron has book, otherwise false
+        """
+        if book in self.books:
+            self.books[book.isbn].return_date += timedelta(weeks=3)
+            return True
+        else:
+            return False
