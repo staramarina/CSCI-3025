@@ -74,14 +74,14 @@ if __name__ == "__main__":
     # TODO: add bulk import after class is built
     educator_reader.close()
 
-
-    # TEST LINES
-    #mml.show_books() # GOOD
-    print(mml) # GOOD
-
-    # TODO: create book instances
-    # TODO: add books to library
-    # TODO: create patron instances
-    # TODO: create educator instances
-    # TODO: add patrons and educators to library
-    # TODO: create menu
+    # Start of library tool
+    print('\n')
+    print(mml)
+    print('\n')
+    mml.print_main_menu()
+    usr_in = input()
+    while 'x' != usr_in:
+        print(usr_in)
+        mml.print_main_menu()
+        usr_in = input()
+    print('Come back soon!')
