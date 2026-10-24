@@ -8,6 +8,32 @@
 from datetime import datetime, timedelta
 
 
+def file_exists(file_name): # Note: this was reused from Module 5 Mui_IO.py
+    """Checks if a file can be opened and read
+    
+    Args:
+        file_name: name of the file to check, can be absolute or relative path
+    
+    Returns:
+        2-tuple with the following characteristics
+        [0]: True if file was successfully opened, otherwise False
+        [1]: f-string that provides more information beyond True/False
+    """
+    try:
+        f = open(file_name, 'r')
+    except FileNotFoundError: 
+        return (False, f'{file_name} does not exist')
+    except PermissionError:
+        return (False, f'You do not have permission to read {file_name}')
+    except IsADirectoryError:
+        return (False, f'{file_name} is not a file')
+    except OSError as err:
+        return (False, f'Failed to read file with error: {err}')
+    else:
+        f.close()
+        return (True, f'{file_name} exists')
+
+
 def int_check(num_str):
     """Determines whether a string can be converted to an integer
     
