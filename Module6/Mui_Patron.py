@@ -114,6 +114,8 @@ class Parton:
             self.books.append(book_copy)
             has_flag = self.book_check(book)
             if has_flag:
+                if 0 != len(book.waistlist):
+                    book.waitlist.pop(0)
                 return (True, 'Book was successfully checked out')
             else:
                 return (False, 'Book could not be checked out')
@@ -156,6 +158,7 @@ class Parton:
 
     def checkout_extend(self, book):
         """Extends the return date of a book
+           Note: assumes patron has book
         
         Args:
             book: a Book class instance
@@ -163,17 +166,13 @@ class Parton:
         Returns:
             True if patron has book, otherwise false
         """
-        count = 0
-        index = 0
-        for i in range(self.books):
-            if book.isbn == self.books[i].isbn:
-                if 0 != book.waitlist:
-                    return (False, 'Cannot extend waitlisted book')
-            else:
-                count += 1
-
-        if book in self.books: # TODO: fix this to account for copy
-            self.books[book.isbn].return_date += timedelta(weeks=3)
-            return True
+        match = self.book_check(book)
+        if book.hold_check():
+            return (False, 'Book is on hold, checkout cannot be extended')
+        elif 0 < len(book.waitlist):
+            return (False, 'Book is waitlisted, checkout cannot be extended')
+        elif match[0]:
+            self.books[match[1]].return_date += timedelta(weeks=3)
+            return (True, 'Return date successfully extended')
         else:
-            return False
+            return (False, 'Book is not currently checked out')
