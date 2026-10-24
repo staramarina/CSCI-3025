@@ -194,11 +194,11 @@ class Library:
         Returns:
             False if patron already exists, otherwise True
         """
-        if not self.patron_exists(self, patron):
+        if self.patron_exists(self, patron):
+            return False
+        else:
             self.patrons[patron.card_num] = patron
             return True
-        else:
-            return False
 
 
     def remove_patron(self, patron):
