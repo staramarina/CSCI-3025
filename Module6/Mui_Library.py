@@ -64,12 +64,22 @@ class Library:
             book: a Book class instance
         
         Returns:
-            None
+            True if book successfully added, otherwise False
         """
         if self.book_in_exists(self, book):
+            qty_orig = self.books[book.isbn].qty
             self.books[book.isbn].qty += 1
+            qty_new = self.books[book.isbn].qty
+            if qty_new > qty_orig:
+                return True
+            else:
+                return False
         else:
             self.books[book.isbn] = book
+            if self.book_in_exists(self, book):
+                return True
+            else:
+                return False
 
 
     def remove_book(self, book):
@@ -138,17 +148,23 @@ class Library:
         Returns:
             True if book in library, otherwise False
         """
-        if book.isbn in self.books_out:
-            if 1 < self.books_out[book.isbn].qty:
+        if self.book_out_exists(self, book):
+            qty_orig = self.books_out[book.isbn].qty
+            if 1 < qty_orig:
                 self.books_out[book.isbn].qty -= 1
-                self.add_book(self, book)
-                return True
-            elif 1 == self.books_out[book.isbn].qty:
+                qty_new = self.books_out[book.isbn].qty
+                if (qty_new < qty_orig) and self.add_book(self, book):
+                    return True
+                else:
+                    return False
+            if 1 == qty_orig:
                 self.books_out[book.isbn].pop()
-                self.add_book(self, book)
-                return True
-            else:
-                return False
+                if self.book_out_exists(self, book):
+                    return False
+                elif self.add_book(self, book):
+                    return True
+                else:
+                    return False
         else:
             return False
 
