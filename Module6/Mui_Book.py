@@ -49,13 +49,13 @@ class Book:
             return False
 
 
-    def show_info(self):
+    def __str__(self):
         """Provides ISBN, author, title, and quantity information for a book"""
         return(f'ISBN: {self.isbn}, Author: {self.author}, '
                f'Title: {self.title}, Available Quantity: {self.qty}')
 
 
-    def __str__(self):
+    def show_status(self):
         """Provides ISBN, author, title, and 
            return date information for a book"""
         return(f'ISBN: {self.isbn}, '
