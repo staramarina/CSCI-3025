@@ -66,7 +66,7 @@ class Library:
         Returns:
             True if book successfully added, otherwise False
         """
-        if self.book_in_exists(self, book):
+        if self.book_in_exists(book):
             qty_orig = self.books[book.isbn].qty
             self.books[book.isbn].qty += 1
             qty_new = self.books[book.isbn].qty
@@ -76,7 +76,7 @@ class Library:
                 return False
         else:
             self.books[book.isbn] = book
-            if self.book_in_exists(self, book):
+            if self.book_in_exists(book):
                 return True
             else:
                 return False
@@ -91,7 +91,7 @@ class Library:
         Returns:
             True if book removed successfully, otherwise False
         """
-        if self.book_in_exists(self, book):
+        if self.book_in_exists(book):
             qty_orig = self.books[book.isbn].qty
             if 1 < qty_orig:
                 self.books[book.isbn].qty -= 1
@@ -119,8 +119,8 @@ class Library:
             True if book was successfully moved to decirculation inventory, 
                 otherwise False
         """
-        if self.remove_book(self, book):
-            if self.book_out_exists(self, book):
+        if self.remove_book(book):
+            if self.book_out_exists(book):
                 qty_out_orig = self.books_out[book.isbn].qty
                 self.books_out[book.isbn].qty += 1
                 qty_out_new = self.books_out[book.isbn].qty
@@ -130,7 +130,7 @@ class Library:
                     return False
             else:
                 self.books_out[book.isbn] = book
-                if self.book_out_exists(self, book):
+                if self.book_out_exists(book):
                     return True
                 else:
                     return False
@@ -149,20 +149,20 @@ class Library:
             True if book successfully moved to circulation library, 
                 otherwise False
         """
-        if self.book_out_exists(self, book):
+        if self.book_out_exists(book):
             qty_orig = self.books_out[book.isbn].qty
             if 1 < qty_orig:
                 self.books_out[book.isbn].qty -= 1
                 qty_new = self.books_out[book.isbn].qty
-                if (qty_new < qty_orig) and self.add_book(self, book):
+                if (qty_new < qty_orig) and self.add_book(book):
                     return True
                 else:
                     return False
             if 1 == qty_orig:
                 self.books_out[book.isbn].pop()
-                if self.book_out_exists(self, book):
+                if self.book_out_exists(book):
                     return False
-                elif self.add_book(self, book):
+                elif self.add_book(book):
                     return True
                 else:
                     return False
@@ -179,7 +179,7 @@ class Library:
         Returns:
             True if quantity in library is at least one, otherwise False
         """
-        if self.book_in_exists(self, book):
+        if self.book_in_exists(book):
             if 1 <= self.books[book.isbn].qty:
                 return True
             else:
@@ -212,7 +212,7 @@ class Library:
         Returns:
             False if patron already exists, otherwise True
         """
-        if self.patron_exists(self, patron):
+        if self.patron_exists(patron):
             return False
         else:
             self.patrons[patron.card_num] = patron
@@ -228,7 +228,7 @@ class Library:
         Returns:
             True if patron exists, otherwise False
         """
-        if self.patron_exists(self, patron):
+        if self.patron_exists(patron):
             self.patrons[patron.card_num].pop()
             return True
         else:
