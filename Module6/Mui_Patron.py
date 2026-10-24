@@ -2,7 +2,7 @@
 # Module 6 Assignment - Patron Class Module
 # CSCI-3025: Python Programming
 # Purpose: Patron and Educator classes with associated attributes and methods
-# Dependencies: datetime, Mui_book, Mui_Ancillary
+# Dependencies: datetime, copy, Mui_book, Mui_Ancillary
 
 
 from datetime import datetime, timedelta
