@@ -79,6 +79,7 @@ TBD
 
 ### Built-in Packages
 - datetime for representing dates and performing date calculations
+- copy to make deep copies of instances
 
 ### Library Module (Mui_Library.py)
 
@@ -135,6 +136,7 @@ Provides information and checks on books
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
 | __init__(self, isbn = '0', author = '', title = '', qty = 1) | Initializes as instance of the Book class | book instance |
+| hold_check(self) | Checks whether a book is currently within the hold period | True if book is on hold, otherwise False |
 | show_info(self) | Provides ISBN, author, title, and quantity information for a book | book information as a string |
 | show_status(self) | Provides ISBN, author, title, and return date information for a book | book status information as a string |
 | show_hold(self) | Provides ISBN, author, title, hold_start, and hold_end information for a book | book hold information as a string |
@@ -150,10 +152,10 @@ Provides information on and support actions of patrons
 | card_num | Unique library card number | '0' |
 | last_name | Patron's last name | '' |
 | first_name | Patron's first name | '' |
-| dob | Patron's date of birth | '' |
-| phone | Patron's phone number | '' |
-| email | Patron's email address | '' |
-| address | Patron's residential address | '' |
+| dob | Patron's date of birth (encapsulated) | '' |
+| phone | Patron's phone number (encapsulated) | '' |
+| email | Patron's email address (encapsulated) | '' |
+| address | Patron's residential address (encapsulated) | '' |
 | standing | Patron's standing; good or overdue | 'good' |
 | books | List of books the Patron has currently checked out | Empty |
 
@@ -161,11 +163,16 @@ Provides information on and support actions of patrons
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
 | __init__(self, num = '0', last = '', first = '', dob = None, phone = '', email = '', address = '') | Initializes as instance of the Patron class | patron instance |
-| checkout_book(self, book) | Checks out a book to a patron (maybe move to library instead, TBR) | TBD |
-| return_book(self, book) | Returns a book back to the library (maybe move to library instead, TBR) | TBD |
-| checkout_extend(self, book) | Extends the return date of a book | True if patron has book, otherwise False |
-| waitlist_add(self, book) | Adds a patron to the wait list for a book (maybe move to library instead, TBR) | TBD |
-| display_checkout(self) | Provides status information on books the patron has checked out | TBD |
+| get_dob(self) | Validated access to patron's date of birth attribute | dob |
+| get_phone(self) | Validated access to patron's phone number attribute | phone |
+| get_email(self) | Validated access to patron's email address attribute | email |
+| get_address(self) | Validated access to patron's residential address attribute | address |
+| book_check(self, book) | Checks whether a patron has already checked out a book | (True, index) if patron has book, otherwise (False, None) |
+| checkout_book(self, book) | Checks out a book to a patron | (True, success message) if checkout was successful, otherwise (False, error message) |
+| return_book(self, book) | Returns a book back to the library | (True, success message) if return was successful, otherwise (False, error message) |
+| checkout_extend(self, book) | Extends the return date of a book | True if book return extension was granted, otherwise False |
+| waitlist_add(self, book) | Adds a patron to the waitlist for a book | patron's index in the waitlist |
+| checked_out(self) | Displays information on all books patron has checked out | None (output to Console) |
 
 #### Educator Subclass (Patron is parent class)
 Provides information on and support actions of educators
