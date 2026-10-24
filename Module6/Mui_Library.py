@@ -301,8 +301,9 @@ class Library:
         print('x -- Quit')
 
 
-    #def __str__(self): TODO
-    #    """Prints library name, phone number, and address information"""
+    def __str__(self):
+        """Prints library name, phone number, and address information"""
+        return (f'{self.name}\n{self.phone}\n{self.address}')
 
 
     def show_books(self):

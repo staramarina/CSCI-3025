@@ -77,9 +77,7 @@ if __name__ == "__main__":
 
     # TEST LINES
     #mml.show_books() # GOOD
-    print(mml.name) # GOOD
-    print(mml.phone) # GOOD
-    print(mml.address) # GOOD
+    print(mml) # GOOD
 
     # TODO: create book instances
     # TODO: add books to library
