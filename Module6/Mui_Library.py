@@ -146,7 +146,8 @@ class Library:
             book: a Book class instance
         
         Returns:
-            True if book in library, otherwise False
+            True if book successfully moved to circulation library, 
+                otherwise False
         """
         if self.book_out_exists(self, book):
             qty_orig = self.books_out[book.isbn].qty
