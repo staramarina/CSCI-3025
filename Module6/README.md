@@ -47,6 +47,7 @@ The library tool:
     ├── Mui_Library.py        # Library class module
     ├── Mui_Book.py           # Book class module
     ├── Mui_Patron.py         # Patron class module
+    ├── Mui_Ancillary.py      # Ancillary functions module
     └── TBR
 ```
 3. Ensure Python path includes the Module6 directory or run from within it.
@@ -69,6 +70,7 @@ TBD
     ├── Mui_Library.py        # Library class module
     ├── Mui_Book.py           # Book class module
     ├── Mui_Patron.py         # Patron class module
+    ├── Mui_Ancillary.py      # Ancillary functions module
     ├── TBD
     └── README.md             # Read me file (current file)
 ```
@@ -76,7 +78,7 @@ TBD
 ## Modules
 
 ### Built-in Packages
-- TBD
+- datetime for representing dates and performing date calculations
 
 ### Library Module (Mui_Library.py)
 
@@ -183,6 +185,14 @@ Provides information on and support actions of educators
 | hold_request(self, book) | Places a hold on the requested book | TBD |
 | hold_extend(self, book) | Extends the hold on the requested book | TBD |
 | hold_remove(self, book) | Removes the hold on the specified book | TBD |
+
+### Ancillary Module (Mui_Ancillary.py)
+Provides additional functions and checks
+
+| Function | Purpose | Return |
+| -------- | -------- | -------- |
+| int_check(num_str) | Determines whether a string can be converted to an integer | (True, int) if successful, otherwise (False, error message) |
+| date_format(date_str) | Formats a string into a datetime | date_dtg in datetime if successful, otherwise date_dtg is None |
 
 ## Input File Format
 TBD
