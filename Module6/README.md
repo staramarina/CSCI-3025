@@ -43,11 +43,14 @@ The library tool:
 2. Verify all files are present
 ```
    Module6/
-    ├── Mui_M6Assignment.py   # Main program
-    ├── Mui_Library.py        # Library class module
-    ├── Mui_Book.py           # Book class module
-    ├── Mui_Patron.py         # Patron class module
-    ├── Mui_Ancillary.py      # Ancillary functions module
+    ├── Mui_Ancillary.py         # Ancillary functions module
+    ├── Mui_Book.py              # Book class module
+    ├── Mui_Library.py           # Library class module
+    ├── Mui_M6Assignment.py      # Main program
+    ├── Mui_Patron.py            # Patron class module
+    ├── testbookdata.txt         # Book data to instantiate a library instance
+    ├── testeducatordata.txt     # Educator data to instantiate a library instance
+    ├── testpatrondata.txt       # Patron data to instantiate a library instance
     └── TBR
 ```
 3. Ensure Python path includes the Module6 directory or run from within it.
@@ -66,13 +69,16 @@ TBD
 ## Project Structure
 ```
    Module6/
-    ├── Mui_M6Assignment.py   # Main program
-    ├── Mui_Library.py        # Library class module
-    ├── Mui_Book.py           # Book class module
-    ├── Mui_Patron.py         # Patron class module
-    ├── Mui_Ancillary.py      # Ancillary functions module
-    ├── TBD
-    └── README.md             # Read me file (current file)
+    ├── Mui_Ancillary.py         # Ancillary functions module
+    ├── Mui_Book.py              # Book class module
+    ├── Mui_Library.py           # Library class module
+    ├── Mui_M6Assignment.py      # Main program
+    ├── Mui_Patron.py            # Patron class module
+    ├── README.md                # Read me file (current file)
+    ├── testbookdata.txt         # Book data to instantiate a library instance
+    ├── testeducatordata.txt     # Educator data to instantiate a library instance
+    ├── testpatrondata.txt       # Patron data to instantiate a library instance
+    └── TBR
 ```
 
 ## Modules
@@ -110,6 +116,11 @@ Provides library book inventory and patron management.
 | patron_exists(self, patron) | Checks whether a patron exists in the library database | True if patron exists, otherwise False |
 | add_patron(self, patron) | Adds a Patron instance to the library | False if patron already exists, otherwise True |
 | remove_patron(self, patron) | Removes a Patron instance from the library | True if patron exists, otherwise False |
+| menu_bound_check(self, select = 0, type = 0) | Checks whether the selection from the menu is within bounds | True if within bounds, otherwise False |
+| print_main_menu(self) | Prints the library main menu to the console | None (Output to console) |
+| print_staff_menu(self) | Prints the library staff menu to the console | None (Output to console) |
+| print_patron_menu(self) | Prints the patron menu to the console | None (Output to console) |
+| __str__(self) | Provides library name, phone number, and address information | String default output |
 | show_books(self) | Prints all books in the library to the console | None (Output to console) |
 | search_isbn(self, search) | Prints book information for the given ISBN if it exists | None (Output to console) |
 | search_author(self, search) | Prints book information written by given author if they exist | None (Output to console) |
@@ -137,7 +148,7 @@ Provides information and checks on books
 | -------- | -------- | -------- |
 | __init__(self, isbn = '0', author = '', title = '', qty = 1) | Initializes as instance of the Book class | book instance |
 | hold_check(self) | Checks whether a book is currently within the hold period | True if book is on hold, otherwise False |
-| show_info(self) | Provides ISBN, author, title, and quantity information for a book | book information as a string |
+| __str__(self) | Provides ISBN, author, title, and quantity information for a book | book information as a string |
 | show_status(self) | Provides ISBN, author, title, and return date information for a book | book status information as a string |
 | show_hold(self) | Provides ISBN, author, title, hold_start, and hold_end information for a book | book hold information as a string |
 
@@ -167,6 +178,7 @@ Provides information on and support actions of patrons
 | get_phone(self) | Validated access to patron's phone number attribute | phone |
 | get_email(self) | Validated access to patron's email address attribute | email |
 | get_address(self) | Validated access to patron's residential address attribute | address |
+| __str__(self) | Provides library card number, last name, and first name | String default output |
 | book_check(self, book) | Checks whether a patron has already checked out a book | (True, index) if patron has book, otherwise (False, None) |
 | checkout_book(self, book) | Checks out a book to a patron | (True, success message) if checkout was successful, otherwise (False, error message) |
 | return_book(self, book) | Returns a book back to the library | (True, success message) if return was successful, otherwise (False, error message) |
@@ -198,21 +210,41 @@ Provides additional functions and checks
 
 | Function | Purpose | Return |
 | -------- | -------- | -------- |
+| file_exists(file_name) | Checks if a file can be opened and read (duplicated function from Module5) | (True, success message) if successful, otherwise (False, error message) |
 | int_check(num_str) | Determines whether a string can be converted to an integer | (True, int) if successful, otherwise (False, error message) |
 | date_format(date_str) | Formats a string into a datetime | date_dtg in datetime if successful, otherwise date_dtg is None |
 
-## Input File Format
-TBD
+## Input Files
+The following files are used to populate a new library instance with example data. Further interaction is intended to occur via the console. Verification rules are the same for both unless otherwise noted. The file names are currently hard-coded, but all such variables are defined immediately following the instantiation of main in the Mui_M6Assignment.py file. 
 
-### Valid Values
-TBD
+### Book Data (testbookdata.txt)
 
-### Example Input File (TBD.txt)
+#### Example Input File (TBD.txt)
 ```
 TBD
 ```
 
-### Verification Rules
+#### Verification Rules
+TBD
+
+### Patron Data (testpatrondata.txt)
+
+#### Example Input File (TBD.txt)
+```
+TBD
+```
+
+#### Verification Rules
+TBD
+
+### Educator Data (testeducatordata.txt)
+
+#### Example Input File (TBD.txt)
+```
+TBD
+```
+
+#### Verification Rules
 TBD
 
 ## Testing
