@@ -10,7 +10,7 @@ from copy import deepcopy
 from Mui_Ancillary import date_format
 
 
-class Parton:
+class Patron:
     """Provides information on and support actions of patrons"""
 
 
