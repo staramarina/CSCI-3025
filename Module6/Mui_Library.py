@@ -2,7 +2,7 @@
 # Module 6 Assignment - Library Class Module
 # CSCI-3025: Python Programming
 # Purpose: Library class with associated attributes and methods
-# Dependencies: TBD
+# Dependencies: Mui_Book, Mui_Patron
 
 
 class Library:
