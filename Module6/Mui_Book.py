@@ -55,7 +55,7 @@ class Book:
                f'Title: {self.title}, Available Quantity: {self.qty}')
 
 
-    def show_status(self):
+    def __str__(self):
         """Provides ISBN, author, title, and 
            return date information for a book"""
         return(f'ISBN: {self.isbn}, '
