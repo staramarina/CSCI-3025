@@ -272,6 +272,7 @@ class Library:
         print('Please select one of the following options:')
         print('1 -- Staff Login')
         print('2 -- Card Holder Login')
+        print('x -- Quit')
 
 
     def print_staff_menu(self):
@@ -283,6 +284,7 @@ class Library:
         print('4 -- Add a book back into circulation')
         print('5 -- Add a patron')
         print('6 -- Remove a patron')
+        print('x -- Quit')
 
 
     def print_patron_menu(self):
@@ -296,6 +298,7 @@ class Library:
         print('6 -- Extend a hold on a book')
         print('7 -- Remove a hold on a book')
         print('8 -- View all checked out books')
+        print('x -- Quit')
 
 
     def show_books(self):
