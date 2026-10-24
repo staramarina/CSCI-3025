@@ -103,6 +103,52 @@ class Parton:
             return (False, f'Cannot exceed checkout limit of {limit}')
 
 
+    def return_book(self, book):
+        """Returns a book back to the library
+           Note: assumes book exists in library database
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            A 2-tuple with the following elements
+                [0]: True if return was successful, otherwise False
+                [1]: Addition information on return condition
+        """
+        match_list = []
+        for i in len(self.books):
+            if book.isbn == self.books[i].isbn:
+                match_list.append[self.books[i]]
+        if 0 == len(match_list):
+            return (False, 'That book was not checked out.')
+        if 1 == len(match_list):
+            self.books.remove(match_list[0])
+            if match_list in self.books:
+                return (False, 'Failed to return book')
+            else:
+                qty_orig = book.qty
+                book.qty += match_list[0].qty
+                qty_new = book.qty
+                if qty_new > qty_orig:
+                    return (True, 'Book returned successfully')
+                else: 
+                    return (False, 'Failed to update library inventory')
+        else:
+            match_list.sort(key=lambda date: date.return_date)
+            self.books.remove(match_list[0])
+            if match_list[0] in self.books:
+                return (False, 'Failed to return book')
+            else:
+                qty_orig = book.qty
+                book.qty += match_list[0].qty
+                qty_new = book.qty
+                if qty_new > qty_orig:
+                    return (True, 'Book returned successfully')
+                else: 
+                    return (False, 'Failed to update library inventory')
+
+
+
     def checkout_extend(self, book):
         """Extends the return date of a book
         
