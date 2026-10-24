@@ -35,3 +35,12 @@ class Book:
         """Provides ISBN, author, title, and quantity information for a book"""
         return(f'ISBN: {self.isbn}, Author: {self.author}, '
                f'Title: {self.title}, Available Quantity: {self.qty}')
+
+
+    def show_status(self):
+        """Provides ISBN, author, title, and 
+           return date information for a book"""
+        return(f'ISBN: {self.isbn}, '
+               f'Author: {self.author}, '
+               f'Title: {self.title}, '
+               f'Return Date: {self.return_date}')
