@@ -84,6 +84,7 @@ TBD
 ## Modules
 
 ### Built-in Packages
+- sys for graceful program exits
 - datetime for representing dates and performing date calculations
 - copy to make deep copies of instances
 
