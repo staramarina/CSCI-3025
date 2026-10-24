@@ -17,16 +17,16 @@ from Mui_Patron import Patron
 from Mui_Ancillary import file_exists, int_check
 
 
-book_file = 'testbookdata.txt'
-patron_file = 'testpatrondata.txt'
-educator_file = 'testeducatordata.txt'
-
-
 if __name__ == "__main__":
-    # Library instatiation -- only performed once to bring the library online
+    # Example library values
     lib_name = 'Mui Mini Library'
     lib_ph = '719-542-7279' # Example only, do not call
     lib_add = '123 S Academy Blvd, Fountain, CO 80819' # Example only
+    book_file = 'testbookdata.txt'
+    patron_file = 'testpatrondata.txt'
+    educator_file = 'testeducatordata.txt'
+
+    # Library instatiation -- only performed once to bring the library online
     mml = Library(lib_name, lib_ph, lib_add)
     book_file_exists = file_exists(book_file)
     patron_file_exists = file_exists(patron_file)
