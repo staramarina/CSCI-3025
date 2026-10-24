@@ -30,7 +30,7 @@ def date_format(date_str):
     """Formats a string into a datetime
         
     Args:
-        date_str: a date in string format
+        date_str: a date in string format, expects YYYYMMDD
         
     Returns:
         date_dtg: a date in datetime format if conversion was successful,
@@ -51,7 +51,10 @@ def date_format(date_str):
                 and 1 <= m_in[1] <= 12
                 and 1 <= d_int[1] <= 31
             ):
-                date_dtg = datetime(y_int[1], m_int[1], d_int[1])
+                try:
+                    date_dtg = datetime(y_int[1], m_int[1], d_int[1])
+                except ValueError:
+                    date_dtg = None
             else:
                 date_dtg = None
         else:
