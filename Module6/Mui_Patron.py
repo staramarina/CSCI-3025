@@ -2,10 +2,11 @@
 # Module 6 Assignment - Patron Class Module
 # CSCI-3025: Python Programming
 # Purpose: Patron and Educator classes with associated attributes and methods
-# Dependencies: datetime
+# Dependencies: datetime, Mui_book, Mui_Ancillary
 
 
 from datetime import datetime, timedelta
+from Mui_Ancillary import date_format
 
 
 class Parton:
@@ -31,7 +32,7 @@ class Parton:
         self.card_num = num
         self.last_name = last
         self.first_name = first
-        self.dob = dob # TODO: write function to convert this to datetime
+        self.dob = date_format(dob)
         self.phone = phone
         self.email = email
         self.address = address
