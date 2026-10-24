@@ -93,10 +93,10 @@ Provides library book inventory and patron management.
 | books_out | Dictionary to hold books that have been pulled from circulation | Empty |
 | patrons | Dictionary to hold instances of Patron | Empty |
 
-##### Methods
+##### Methods -- Too much coupling, need to rethink these
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| __init__(self, name = 'Library', phone = None, address = None) | Initializes an instance of the Library class | library |
+| __init__(self, name = 'Library', phone = None, address = None) | Initializes an instance of the Library class | library instance |
 | book_exists(self, book) | Checks whether a book exists in the circulation inventory | True if book exists, otherwise False |
 | add_book(self, book) | Adds a Book instance to the library inventory | None |
 | remove_book(self, book) | Removes a single Book instance from the library altogether | True if book exists, otherwise False |
@@ -130,7 +130,7 @@ Provides information and checks on books
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| __init__(self, isbn = '0', author = '', title = '', qty = 1) | Initializes as instance of the Book class | book |
+| __init__(self, isbn = '0', author = '', title = '', qty = 1) | Initializes as instance of the Book class | book instance |
 | show_info(self) | Provides ISBN, author, title, and quantity information for a book | book information as a string |
 | show_status(self) | Provides ISBN, author, title, and return date information for a book | book status information as a string |
 | show_hold(self) | Provides ISBN, author, title, hold_start, and hold_end information for a book | book hold information as a string |
@@ -145,24 +145,24 @@ Provides information on and support actions of patrons
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | -------- | -------- | -------- |
-| card_num | Unique library card number | TBD |
-| last_name | Patron's last name | TBD |
-| first_name | Patron's first name | TBD |
-| dob | Patron's date of birth | TBD |
-| phone | Patron's phone number | TBD |
-| email | Patron's email address | TBD |
-| address | Patron's mailing address | TBD |
-| standing | Patron's standing; good, overdue, fines | TBD |
-| books | List of books the Patron has currently checked out | TBD |
+| card_num | Unique library card number | '0' |
+| last_name | Patron's last name | '' |
+| first_name | Patron's first name | '' |
+| dob | Patron's date of birth | '' |
+| phone | Patron's phone number | '' |
+| email | Patron's email address | '' |
+| address | Patron's residential address | '' |
+| standing | Patron's standing; good or overdue | 'good' |
+| books | List of books the Patron has currently checked out | Empty |
 
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| __init__(TBD) | Initializes as instance of the Patron class | patron |
-| checkout_book(self, book) | Checks out a book to a patron | TBD |
-| return_book(self, book) | Returns a book back to the library | TBD |
-| checkout_extend(self, book) | Extends the return date of a book | TBD |
-| waitlist_add(self, book) | Adds a patron to the wait list for a book | TBD |
+| __init__(self, num = '0', last = '', first = '', dob = None, phone = '', email = '', address = '') | Initializes as instance of the Patron class | patron instance |
+| checkout_book(self, book) | Checks out a book to a patron (maybe move to library instead, TBR) | TBD |
+| return_book(self, book) | Returns a book back to the library (maybe move to library instead, TBR) | TBD |
+| checkout_extend(self, book) | Extends the return date of a book | True if patron has book, otherwise False |
+| waitlist_add(self, book) | Adds a patron to the wait list for a book (maybe move to library instead, TBR) | TBD |
 | display_checkout(self) | Provides status information on books the patron has checked out | TBD |
 
 #### Educator Subclass (Patron is parent class)
