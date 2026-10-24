@@ -5,7 +5,7 @@
 # Dependencies: datetime
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 def file_exists(file_name): # Note: this was reused from Module 5 Mui_IO.py
