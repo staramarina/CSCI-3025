@@ -2,7 +2,9 @@
 # Module 6 Assignment - Book Class Module
 # CSCI-3025: Python Programming
 # Purpose: Book class with associated attributes and methods
-# Dependencies: None
+# Dependencies: datetime
+
+from datetime import datetime
 
 
 class Book:
@@ -29,6 +31,22 @@ class Book:
         self.hold_start = None
         self.hold_end = None
         self.waitlist =  []
+
+
+    def hold_check(self):
+        """Checks whether a book is currently within the hold period
+        
+        Args:
+            None
+        
+        Returns:
+            True if the book is currently on hold, otherwise False
+        """
+        today = datetime.now()
+        if self.hold_start <= today <= self.hold_end:
+            return True
+        else:
+            return False
 
 
     def show_info(self):
