@@ -25,8 +25,16 @@ if __name__ == "__main__":
     patron_file = 'testpatrondata.txt'
     educator_file = 'testeducatordata.txt'
     book_file_exists = file_exists(book_file)
+    patron_file_exists = file_exists(patron_file)
+    educator_file_exists = file_exists(educator_file)
     if not book_file_exists[0]:
         print(book_file_exists[1])
+        sys.exit(0)
+    elif not patron_file_exists[0]:
+        print(patron_file_exists[1])
+        sys.exit(0)
+    elif not educator_file_exists[0]:
+        print(educator_file_exists[1])
         sys.exit(0)
 
 
