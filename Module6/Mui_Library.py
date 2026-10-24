@@ -27,7 +27,7 @@ class Library:
         self.patrons = {}
 
 
-    def book_exists(self, book):
+    def book_in_exists(self, book):
         """Checks whether a book exists in the circulation inventory
         
         Args:
@@ -37,6 +37,21 @@ class Library:
             True if book in library, otherwise False
         """
         if book.isbn in self.books:
+            return True
+        else:
+            return False
+
+
+    def book_out_exists(self, book):
+        """Checks whether a book exists in the non-circulation inventory
+        
+        Args: 
+            book: a Book class instance
+        
+        Returns:
+            True if book in library, otherwise False
+        """
+        if book.isbn in self.books_out:
             return True
         else:
             return False
