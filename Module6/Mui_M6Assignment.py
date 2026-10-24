@@ -13,7 +13,7 @@
 import sys
 from Mui_Library import Library
 from Mui_Book import Book
-#from Mui_Patron import Patron
+from Mui_Patron import Patron
 from Mui_Ancillary import file_exists, int_check
 
 
@@ -53,7 +53,23 @@ if __name__ == "__main__":
                 mml.add_book(book)
             else:
                 continue
-
+    book_reader.close()
+    patron_reader = open(patron_file)
+    for line in patron_reader:
+        if line.isspace():
+            continue
+        else:
+            line = line.strip()
+            data = line.split(", ")
+            if 10 != len(data):
+                continue
+            else:
+                address = (data[6] + ', ' + data[7] + ', ' 
+                           + data[8] + ', ' + data[9])
+                print(address)
+                patron = Patron(data[0], data[1], data[2], data[3],
+                                data[4], data[5], address)
+    patron_reader.close()
 
     # TEST LINES
     #mml.show_books() # GOOD
