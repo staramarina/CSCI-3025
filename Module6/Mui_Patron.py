@@ -32,12 +32,36 @@ class Parton:
         self.card_num = num
         self.last_name = last
         self.first_name = first
-        self.dob = date_format(dob)
-        self.phone = phone
-        self.email = email
-        self.address = address
+        self.__dob = date_format(dob)
+        self.__phone = phone
+        self.__email = email
+        self.__address = address
         self.standing = 'good'
         self.books = {}
+
+
+    @property
+    def get_dob(self):
+        """Used for validated access to patron's date of birth attribute"""
+        return self.__dob
+
+
+    @property
+    def get_phone(self):
+        """Used for validated access to patron's phone number attribute"""
+        return self.__phone
+
+
+    @property
+    def get_email(self):
+        """Used for validated access to patron's email address attribute"""
+        return self.__email
+
+
+    @property
+    def get_address(self):
+        """Used for validated access to patron's address attribute"""
+        return self.__address
 
 
     def checkout_extend(self, book):
