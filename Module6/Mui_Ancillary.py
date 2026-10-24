@@ -48,7 +48,7 @@ def date_format(date_str):
         if y_int[0] and m_int[0] and d_int[0]:
             if (
                 min_date.year <= y_int[1] <= max_date.year
-                and 1 <= m_in[1] <= 12
+                and 1 <= m_int[1] <= 12
                 and 1 <= d_int[1] <= 31
             ):
                 try:
