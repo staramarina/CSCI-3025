@@ -49,7 +49,7 @@ if __name__ == "__main__":
             line = line.strip()
             data = line.split(", ")
             int_flag = int_check(data[3])
-            if int_flag[0]:
+            if int_flag[0] and (4 == len(data)):
                 book = Book(data[0], data[1], data[2], int_flag[1])
                 mml.add_book(book)
             else:
