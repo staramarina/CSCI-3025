@@ -63,7 +63,7 @@ def date_format(date_str):
             otherwise, None
     """
     max_date = datetime.now()
-    min_date = max_date - timedelta(years=100)
+    min_date = datetime(1900, 1, 1)
     if 8 == len(date_str):
         y_str = date_str[:4]
         m_str = date_str[4:6]
