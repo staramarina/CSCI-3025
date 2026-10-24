@@ -235,6 +235,37 @@ class Library:
             return False
 
 
+    def print_main_menu(self):
+        """Prints the library main menu to the console"""
+        print('Please select one of the following options:')
+        print('1 -- Staff Login')
+        print('2 -- Card Holder Login')
+
+
+    def print_staff_menu(self):
+        """Prints the library staff menu to the console"""
+        print('Please select one of the following options:')
+        print('1 -- Add a book to the library database')
+        print('2 -- Remove a book from the library database')
+        print('3 -- Remove a book from circulation, but not the library')
+        print('4 -- Add a book back into circulation')
+        print('5 -- Add a patron')
+        print('6 -- Remove a patron')
+
+
+    def print_patron_menu(self):
+        """Prints the patron menu to the console"""
+        print('Please select one of the following options:')
+        print('1 -- Checkout a book')
+        print('2 -- Return a book')
+        print('3 -- Extend return due date on a book')
+        print('4 -- Get added to the waitlist for a book')
+        print('5 -- Request a hold on a book')
+        print('6 -- Extend a hold on a book')
+        print('7 -- Remove a hold on a book')
+        print('8 -- View all checked out books')
+
+
     def show_books(self):
         """Prints all books in the library to the console"""
         for book in self.books.values():
