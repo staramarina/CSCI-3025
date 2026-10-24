@@ -1,0 +1,17 @@
+9780060853983, Terry Pratchett & Neil Gaiman, Good Omens, 3
+9780062073488, Agatha Christie, And Then There We’re None, 4
+9780062094889, Laura Ingalls Wilder, Little House on the Prairie, 11
+9780140177398, John Steinbeck, Of Mice and Men, 1
+9780141191508, Gaston Leroux, The Phantom of the Opera, 2
+9780141392608, Victor Hugo, Les Miserables, 5
+9780141439471, Mary Shelley, Frankenstein, 6
+9780141439518, Jane Austen, Pride and Prejudice, 15
+9780141439556, Emily Bronte, Wuthering Heights, 9
+9780141439570, Oscar Wilde, The Picture of Dorian Gray, 9
+9780141439600, Charles Dickens, A Tale of Two Cities, 14
+9780142410318, Roald Dahl, Charlie and the Chocolate Factory, 8
+9780316769174, J.D. Slinger, The Catcher in the Rye, 16
+9780330437981, Douglas Adams, Hitchhikers Guide to the Galaxy, 7
+9780345538987, Michael Crichton, Jurassic Park, 13
+9780451524935, George Orwell, 1984, 12
+9780451530653, H.G. Wells, The War of the Worlds, 6
