@@ -302,7 +302,7 @@ class Library:
 
 
     def __str__(self):
-        """Prints library name, phone number, and address information"""
+        """Provides library name, phone number, and address information"""
         return (f'{self.name}\n{self.phone}\n{self.address}')
 
 
