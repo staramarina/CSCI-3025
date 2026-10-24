@@ -170,6 +170,24 @@ class Library:
             return False
 
 
+    def book_avail(self, book):
+        """Determines whether a book is available for checkout
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            True if quantity in library is at least one, otherwise False
+        """
+        if self.book_in_exists(self, book):
+            if 1 <= self.books[book.isbn].qty:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+
     def patron_exists(self, patron):
         """Checks whether a patron exists in the library database
         
