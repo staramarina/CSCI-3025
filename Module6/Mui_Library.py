@@ -304,7 +304,7 @@ class Library:
     def show_books(self):
         """Prints all books in the library to the console"""
         for book in self.books.values():
-            print(book.show_info()) # TODO: check this after implementation
+            print(book)
 
 
     def search_isbn(self, search):
@@ -318,7 +318,7 @@ class Library:
         """
         book = self.books.get(search)
         if book is not None:
-            print(self.books[search].show_info()) # TODO : check this after implementation
+            print(self.books[search].show_info()) # TODO : FIX THIS
         else:
             print('That book is not available.')
 
@@ -335,7 +335,7 @@ class Library:
         count = 0
         for isbn, book in self.books:
             if search.lower() in book.author.lower():
-                print(self.books[isbn].show_info()) # TODO : check this after implementation
+                print(self.books[isbn].show_info()) # TODO : FIX THIS
                 count += 1
         if 0 == count:
             print('No books with that author found.')
@@ -353,7 +353,7 @@ class Library:
         count = 0
         for isbn, book in self.books:
             if search.lower() in book.title.lower():
-                print(self.books[isbn].show_info()) # TODO : check this after implementation
+                print(self.books[isbn].show_info()) # TODO : FIX THIS
                 count += 1
         if 0 == count:
             print('No books with that title found.')
