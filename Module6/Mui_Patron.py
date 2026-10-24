@@ -176,3 +176,20 @@ class Parton:
             return (True, 'Return date successfully extended')
         else:
             return (False, 'Book is not currently checked out')
+
+
+    def waitlist_add(self, book):
+        """Adds a patron to the waitlist for a book
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            position: the patron's index in the waitlist
+        """
+        if self.card_num in book.waitlist:
+            position = book.waitlist.index(self.card_num)
+        else:
+            book.wailist.append(self.card_num)
+            position = len(book.waitlist) - 1
+        return position
