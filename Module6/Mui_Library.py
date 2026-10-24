@@ -301,6 +301,10 @@ class Library:
         print('x -- Quit')
 
 
+    #def __str__(self): TODO
+    #    """Prints library name, phone number, and address information"""
+
+
     def show_books(self):
         """Prints all books in the library to the console"""
         for book in self.books.values():
