@@ -4,10 +4,10 @@
 # Purpose: Main program for a library tool
 # Dependencies: Mui_Library.py, Mui_Book.py, Mui_Patron.py
 #               see README for full details
-# Provided Example Input Files: 
-    # Module6/testbookdata.txt - real book information from my ebooks
-    # Module6/testpatrondata.txt - generated using generate-random.org/persons
-    # Module6/testeducatordata.txt - generated using generate-random.org/persons
+# Provided Input Files (required): 
+    # testbookdata.txt - real book information from my ebooks
+    # testpatrondata.txt - generated using generate-random.org/persons
+    # testeducatordata.txt - generated using generate-random.org/persons
 
 
 import sys
@@ -15,15 +15,17 @@ from Mui_Library import Library
 from Mui_Ancillary import file_exists
 
 
+book_file = 'testbookdata.txt'
+patron_file = 'testpatrondata.txt'
+educator_file = 'testeducatordata.txt'
+
+
 if __name__ == "__main__":
-    # Library instatiation
+    # Library instatiation -- only performed once to bring the library online
     lib_name = 'Mui Mini Library'
     lib_ph = '719-542-7279' # Example only, do not call
     lib_add = '123 S Academy Blvd, Fountain, CO 80819' # Example only
     mml = Library(lib_name, lib_ph, lib_add)
-    book_file = 'testbookdata.txt'
-    patron_file = 'testpatrondata.txt'
-    educator_file = 'testeducatordata.txt'
     book_file_exists = file_exists(book_file)
     patron_file_exists = file_exists(patron_file)
     educator_file_exists = file_exists(educator_file)
