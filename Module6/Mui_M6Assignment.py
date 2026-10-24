@@ -2,7 +2,8 @@
 # Module 6 Assignment - Main Program
 # CSCI-3025: Python Programming
 # Purpose: Main program for a library tool
-# Dependencies: Mui_Library.py, Mui_Book.py, Mui_Patron.py
+# Dependencies: Mui_Library.py, Mui_Book.py, Mui_Patron.py, Mui_Ancillary,
+#               sys
 #               see README for full details
 # Provided Input Files (required): 
     # testbookdata.txt - real book information from my ebooks
