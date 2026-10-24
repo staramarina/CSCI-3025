@@ -65,6 +65,23 @@ class Parton:
         return self.__address
 
 
+    def book_check(self, book):
+        """Checks whether a patron has already checked out a book
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            A 2-tuple of the following format
+                [0]: True is patron has book, otherwise False
+                [1]: Index in patron's book list if found, otherwise None
+        """
+        for i in len(self.books):
+            if book.isbn == self.books[i].isbn:
+                return (True, i)
+        return (False, None)
+
+
     def checkout_book(self, book):
         """Checks out a book to a patron
            Note: assumes book_avail from library module was run separately
@@ -78,29 +95,33 @@ class Parton:
                 [1]: Additional information on outcome
         """
         limit = 12
-        today = datetime.now()
-        if 12 > len(self.books):
-            if book.hold_start > today or book.hold_end < today:
-                if (
-                    0 == len(book.waistlist) 
-                    or self.card_num == book.waitlist[0]
-                ):
-                    book.qty -= 1
-                    book_copy = deepcopy(book)
-                    book_copy.qty = 1
-                    book_copy.waitlist = []
-                    book_copy.return_date = today + timedelta(weeks=3)
-                    self.books.append(book_copy)
-                elif self.card_num in book.waitlist:
-                    place = book.waitlist(self.card_num)
-                    return (False, 
-                            f'You are currently number {place} on the waitlist')
-                else:
-                    return (False, 'Book is waitlisted')
-            else: 
-                return (False, 'Book is currently on hold')
-        else:
+        has_flag = self.book_check(book)
+        if has_flag:
+            return (False, 'A copy of this book is already checked out')
+        elif 12 == len(self.books):
             return (False, f'Cannot exceed checkout limit of {limit}')
+        elif book.hold_check():
+            return (False, 'This book is currently on hold')
+        elif (
+            0 == len(book.waistlist)
+            or self.card_num == book.waitlist[0]
+        ):
+            book.qty -= 1
+            book_copy = deepcopy(book)
+            book_copy.qty = 1
+            book_copy.waitlist = []
+            book_copy.return_date = datetime.now() + timedelta(weeks=3)
+            self.books.append(book_copy)
+            has_flag = self.book_check(book)
+            if has_flag:
+                return (True, 'Book was successfully checked out')
+            else:
+                return (False, 'Book could not be checked out')
+        elif self.card_num in book.waitlist:
+            place = book.waitlist(self.card_num)
+            return (False, f'You are currently number {place} on the waitlist')
+        else:
+            return (False, 'Book is currently waitlisted')
 
 
     def return_book(self, book):
@@ -148,7 +169,6 @@ class Parton:
                     return (False, 'Failed to update library inventory')
 
 
-
     def checkout_extend(self, book):
         """Extends the return date of a book
         
@@ -158,6 +178,15 @@ class Parton:
         Returns:
             True if patron has book, otherwise false
         """
+        count = 0
+        index = 0
+        for i in range(self.books):
+            if book.isbn == self.books[i].isbn:
+                if 0 != book.waitlist:
+                    return (False, 'Cannot extend waitlisted book')
+            else:
+                count += 1
+
         if book in self.books: # TODO: fix this to account for copy
             self.books[book.isbn].return_date += timedelta(weeks=3)
             return True
