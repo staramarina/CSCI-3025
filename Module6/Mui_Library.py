@@ -235,6 +235,38 @@ class Library:
             return False
 
 
+    def menu_bound_check(self, select = 0, type = 0):
+        """Checks whether the selection from the menu is within bounds
+        
+        Args:
+            select: selection from the user, assumes int
+            type: type of menu that is being checked
+                0 for main
+                1 for staff
+                2 for patron
+        
+        Returns:
+            True if within bounds, otherwise False
+        """
+        if 0 == type:
+            if 0 < select <= 2:
+                return True
+            else:
+                return False
+        elif 1 == type:
+            if 0 < select <= 6:
+                return True
+            else:
+                return False
+        elif 2 == type:
+            if 0 < select <= 8:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+
     def print_main_menu(self):
         """Prints the library main menu to the console"""
         print('Please select one of the following options:')
