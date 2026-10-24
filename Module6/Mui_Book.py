@@ -29,3 +29,9 @@ class Book:
         self.hold_start = None
         self.hold_end = None
         self.waitlist =  []
+
+
+    def show_info(self):
+        """Provides ISBN, author, title, and quantity information for a book"""
+        return(f'ISBN: {self.isbn}, Author: {self.author}, '
+               f'Title: {self.title}, Available Quantity: {self.qty}')
