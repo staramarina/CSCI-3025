@@ -10,14 +10,25 @@
     # Module6/testeducatordata.txt - generated using generate-random.org/persons
 
 
+import sys
 from Mui_Library import Library
+from Mui_Ancillary import file_exists
 
 
 if __name__ == "__main__":
+    # Library instatiation
     lib_name = 'Mui Mini Library'
     lib_ph = '719-542-7279' # Example only, do not call
     lib_add = '123 S Academy Blvd, Fountain, CO 80819' # Example only
     mml = Library(lib_name, lib_ph, lib_add)
+    book_file = 'testbookdata.txt'
+    patron_file = 'testpatrondata.txt'
+    educator_file = 'testeducatordata.txt'
+    book_file_exists = file_exists(book_file)
+    if not book_file_exists[0]:
+        print(book_file_exists[1])
+        sys.exit(0)
+
 
     print(mml.name)
     print(mml.phone)
