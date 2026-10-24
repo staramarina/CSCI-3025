@@ -93,22 +93,23 @@ Provides library book inventory and patron management.
 | books_out | Dictionary to hold books that have been pulled from circulation | Empty |
 | patrons | Dictionary to hold instances of Patron | Empty |
 
-##### Methods -- Too much coupling, need to rethink these
+##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
 | __init__(self, name = 'Library', phone = None, address = None) | Initializes an instance of the Library class | library instance |
-| book_exists(self, book) | Checks whether a book exists in the circulation inventory | True if book exists, otherwise False |
-| add_book(self, book) | Adds a Book instance to the library inventory | None |
-| remove_book(self, book) | Removes a single Book instance from the library altogether | True if book exists, otherwise False |
-| decirc_book(self, book) | Remove a book from the circulation inventory and add it to the out of circulation inventory | True if book exists, otherwise False |
-| recirc_book(self, book) | Adds a book back into the circulation inventory from the decirculation inventory | True if book exists, otherwise False |
+| book_in_exists(self, book) | Checks whether a book exists in the circulation inventory | True if book exists, otherwise False |
+| book_out_exists(self, book) | Checks whether a book exists in the non-circulation inventory | True if book exists, otherwise False |
+| add_book(self, book) | Adds a Book instance to the library inventory | True if book successfully added, otherwise False |
+| remove_book(self, book) | Removes a single Book instance from the library altogether | True if book removed successfully, otherwise False |
+| decirc_book(self, book) | Remove a book from the circulation inventory and add it to the out of circulation inventory | True if book was successfully moved to decirculation inventory, otherwise False |
+| recirc_book(self, book) | Adds a book back into the circulation inventory from the decirculation inventory | True if book successfully moved to circulation inventory, otherwise False |
 | patron_exists(self, patron) | Checks whether a patron exists in the library database | True if patron exists, otherwise False |
 | add_patron(self, patron) | Adds a Patron instance to the library | False if patron already exists, otherwise True |
 | remove_patron(self, patron) | Removes a Patron instance from the library | True if patron exists, otherwise False |
-| show_books(self) | Prints all books in the library to the console | None |
-| search_isbn(self, search) | Prints book information for the given ISBN if it exists | None |
-| search_author(self, search) | Prints book information written by given author if they exist | None |
-| search_title(self, search) | Prints book information with given title if they exist | None |
+| show_books(self) | Prints all books in the library to the console | None (Output to console) |
+| search_isbn(self, search) | Prints book information for the given ISBN if it exists | None (Output to console) |
+| search_author(self, search) | Prints book information written by given author if they exist | None (Output to console) |
+| search_title(self, search) | Prints book information with given title if they exist | None (Output to console) |
 
 ### Book Module (Mui_Book.py)
 
