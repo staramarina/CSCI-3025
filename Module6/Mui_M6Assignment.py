@@ -69,8 +69,10 @@ if __name__ == "__main__":
                 patron = Patron(data[0], data[1], data[2], data[3],
                                 data[4], data[5], address)
                 mml.add_patron(patron)
-                print(patron)
     patron_reader.close()
+    educator_reader = open(educator_file)
+    # TODO: add bulk import after class is built
+    educator_reader.close()
 
 
     # TEST LINES
