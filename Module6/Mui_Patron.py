@@ -65,6 +65,12 @@ class Patron:
         return self.__address
 
 
+    def __str__(self):
+        """Provides library card number, last name, and first name"""
+        return (f'Card #: {self.card_num} - '
+                f'{self.last_name}, {self.first_name}')
+
+
     def book_check(self, book):
         """Checks whether a patron has already checked out a book
         
