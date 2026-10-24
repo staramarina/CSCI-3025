@@ -74,7 +74,6 @@ class Library:
 
     def remove_book(self, book):
         """Remove a single Book instance from the library altogether
-           Note: assumes book_in_exists method run separately
         
         Args:
             book: a Book class instance
@@ -82,36 +81,49 @@ class Library:
         Returns:
             True if book removed successfully, otherwise False
         """
-        qty_orig = self.books[book.isbn].qty
-        if 1 < qty_orig:
-            self.books[book.isbn].qty -= 1
-            qty_new = self.books[book.isbn].qty
-        elif 1 == qty_orig:
-            self.books[book.isbn].pop()
-        else:
-            return False
-        if qty_new < qty_orig:
-            return True
+        if self.book_in_exists(self, book):
+            qty_orig = self.books[book.isbn].qty
+            if 1 < qty_orig:
+                self.books[book.isbn].qty -= 1
+                qty_new = self.books[book.isbn].qty
+            elif 1 == qty_orig:
+                self.books[book.isbn].pop()
+            else:
+                return False
+            if qty_new < qty_orig:
+                return True
+            else:
+                return False
         else:
             return False
 
 
     def decirc_book(self, book):
         """Remove a book from the circulation inventory and
-           add it to the out of circulation inventory
+                add it to the out of circulation inventory
         
         Args: 
             book: a Book class instance
 
         Returns:
-            True if book in library, otherwise False
+            True if book was successfully moved to decirculation inventory, 
+                otherwise False
         """
         if self.remove_book(self, book):
-            if book.isbn in self.books_out:
+            if self.book_out_exists(self, book):
+                qty_out_orig = self.books_out[book.isbn].qty
                 self.books_out[book.isbn].qty += 1
+                qty_out_new = self.books_out[book.isbn].qty
+                if (qty_out_orig < qty_out_new):
+                    return True
+                else:
+                    return False
             else:
                 self.books_out[book.isbn] = book
-            return True
+                if self.book_out_exists(self, book):
+                    return True
+                else:
+                    return False
         else:
             return False
 
