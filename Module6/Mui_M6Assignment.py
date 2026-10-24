@@ -12,7 +12,9 @@
 
 import sys
 from Mui_Library import Library
-from Mui_Ancillary import file_exists
+from Mui_Book import Book
+#from Mui_Patron import Patron
+from Mui_Ancillary import file_exists, int_check
 
 
 book_file = 'testbookdata.txt'
@@ -38,11 +40,26 @@ if __name__ == "__main__":
     elif not educator_file_exists[0]:
         print(educator_file_exists[1])
         sys.exit(0)
+    book_reader = open(book_file)
+    for line in book_reader:
+        if line.isspace():
+            continue
+        else:
+            line = line.strip()
+            data = line.split(", ")
+            int_flag = int_check(data[3])
+            if int_flag[0]:
+                book = Book(data[0], data[1], data[2], int_flag[1])
+                mml.add_book(book)
+            else:
+                continue
 
 
-    print(mml.name)
-    print(mml.phone)
-    print(mml.address)
+    # TEST LINES
+    #mml.show_books() # GOOD
+    print(mml.name) # GOOD
+    print(mml.phone) # GOOD
+    print(mml.address) # GOOD
 
     # TODO: create book instances
     # TODO: add books to library
