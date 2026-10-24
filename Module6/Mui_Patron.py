@@ -76,7 +76,7 @@ class Parton:
                 [0]: True is patron has book, otherwise False
                 [1]: Index in patron's book list if found, otherwise None
         """
-        for i in len(self.books):
+        for i in range(len(self.books)):
             if book.isbn == self.books[i].isbn:
                 return (True, i)
         return (False, None)
@@ -193,3 +193,17 @@ class Parton:
             book.wailist.append(self.card_num)
             position = len(book.waitlist) - 1
         return position
+
+
+    def checked_out(self):
+        """Displays information on all books patron has checked out"""
+        if 0 == len(self.books):
+            print('No books currently checked out')
+        else:
+            for i in range(len(self.books)):
+                print(
+                    f'ISBN: {self.books[i].isbn}, '
+                    f'Author: {self.books[i].author}'
+                    f'Title: {self.books[i].title}'
+                    f'Return Date: {self.books[i].return_date}'
+                )
