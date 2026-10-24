@@ -5,7 +5,9 @@
 # Dependencies: Mui_Library.py, Mui_Book.py, Mui_Patron.py
 #               see README for full details
 # Provided Example Input Files: 
-    # Module6/TestData/TBD.txt
+    # Module6/testbookdata.txt - real book information from my ebooks
+    # Module6/testpatrondata.txt - generated using generate-random.org/persons
+    # Module6/testeducatordata.txt - generated using generate-random.org/persons
 
 
 from Mui_Library import Library
