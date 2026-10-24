@@ -130,12 +130,12 @@ Provides information and checks on books
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| __init__(TBD) | Initializes as instance of the Book class | book |
-| show_info(self) | Provides ISBN, author, title, and quantity information for a book | book_info as a string |
-| show_status(self) | Provides ISBN, author, title, and return date information for a book | book_status as a string |
-| show_hold(self) | Provides ISBN, author, title, hold_start, and hold_end information for a book | book_hold as a string |
-| book_avail(self) | Determines whether a book is available for checkout | TBD |
-| change_quant(self) | Changes the quantity of books that the library has available | TBD |
+| __init__(self, isbn = '0', author = '', title = '', qty = 1) | Initializes as instance of the Book class | book |
+| show_info(self) | Provides ISBN, author, title, and quantity information for a book | book information as a string |
+| show_status(self) | Provides ISBN, author, title, and return date information for a book | book status information as a string |
+| show_hold(self) | Provides ISBN, author, title, hold_start, and hold_end information for a book | book hold information as a string |
+| book_avail(self) | Determines whether a book is available for checkout (Seems duplicated, TBR) | TBD |
+| change_quant(self) | Changes the quantity of books that the library has available (Seems duplicated, TBR) | TBD |
 
 ### Patron Module (Mui_Patron.py)
 
