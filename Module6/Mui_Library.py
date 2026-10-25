@@ -259,7 +259,7 @@ class Library:
             True if patron exists, otherwise False
         """
         if self.patron_exists(patron):
-            self.patrons[patron.card_num].pop()
+            self.patrons.pop(patron.card_num)
             return True
         else:
             return False
