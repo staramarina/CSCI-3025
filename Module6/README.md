@@ -122,6 +122,7 @@ Provides library book inventory and patron management.
 | print_main_menu(self) | Prints the library main menu to the console | None (Output to console) |
 | print_staff_menu(self) | Prints the library staff menu to the console | None (Output to console) |
 | print_patron_menu(self) | Prints the patron menu to the console | None (Output to console) |
+| print_search_menu(self) | Prints the search menu to the console | None (Output to console) |
 | __str__(self) | Provides library name, phone number, and address information | String default output |
 | show_books(self) | Prints all books in the library to the console | None (Output to console) |
 | search_isbn(self, search) | Prints book information for the given ISBN if it exists | None (Output to console) |
