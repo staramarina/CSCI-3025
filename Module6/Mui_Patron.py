@@ -379,7 +379,7 @@ class Educator(Patron):
                 [1]: Addition information on return condition
         """
         today = datetime.now()
-        if book in self.hold_books.values():
+        if book.isbn in self.hold_books:
             return (False, 'Book is already on hold')
         elif qty > book.qty:
             return (False, 'Cannot hold more than available quantity')
@@ -413,6 +413,19 @@ class Educator(Patron):
                 [0]: True if update was successful, otherwise False
                 [1]: Addition information on return condition
         """
+        today = datetime.now()
+        if book.isbn not in self.hold_books:
+            return (False, 'Book is not currently on hold')
+        elif (today > start) or (today > end):
+            return (False, 'Cannot update for past dates')
+        elif start > end:
+            return (False, 'Cannot set end date before start date')
+        else:
+            book.hold_start = start
+            book.hold_end = end
+            self.hold_books[book.isbn].hold_start = start
+            self.hold_books[book.isbn].hold_end = end
+            return (True, 'Book hold updated')
 
 
     def hold_remove(self, book):
