@@ -3,7 +3,7 @@
 # CSCI-3025: Python Programming
 # Purpose: Main program for a library tool
 # Dependencies: Mui_Library.py, Mui_Book.py, Mui_Patron.py, Mui_Ancillary,
-#               sys
+#               sys, datetime, copy
 #               see README for full details
 # Provided Input Files (required): 
     # testbookdata.txt - real book information from my ebooks
@@ -15,7 +15,7 @@ import sys
 from Mui_Library import Library
 from Mui_Book import Book
 from Mui_Patron import Patron, Educator
-from Mui_Ancillary import file_exists, int_check
+from Mui_Ancillary import file_exists, int_check, date_format
 
 
 if __name__ == "__main__":
@@ -278,7 +278,16 @@ if __name__ == "__main__":
                         book = mml.find_book(isbn)
                         ed_flag = isinstance(patron, Educator)
                         if ed_flag and book:
-                            #do stuff
+                            data = mml.ed_hold_prompt()
+                            start = date_format(data[0])
+                            end = date_format(data[1])
+                            qty = int_check(data[2])
+                            if start and end and qty[0]:
+                                flag = patron.hold_request(book, start, 
+                                                           end, qty)
+                                print(flag[1])
+                            else:
+                                ('Input is in the wrong format')
                         elif ed_flag:
                             print('Book does not exist in the library database')
                         else:
@@ -292,6 +301,7 @@ if __name__ == "__main__":
                         book = mml.find_book(isbn)
                         ed_flag = isinstance(patron, Educator)
                         if ed_flag and book:
+                            data = mml.ed_hold_prompt()
                             #do stuff
                         elif ed_flag:
                             print('Book does not exist in the library database')
