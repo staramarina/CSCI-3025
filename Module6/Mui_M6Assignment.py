@@ -252,8 +252,11 @@ if __name__ == "__main__":
                             print(book)
                         print('\n')
                     case 2:
-                        # TODO: build Search by ISBN
-                        print(srch_in[1])
+                        print('Please enter the ISBN of the book you would ' \
+                              'like to find')
+                        isbn = input()
+                        print(f'\nSearch for "{isbn}" yielded the following:')
+                        mml.search_isbn(isbn)
                     case 3:
                         # TODO: build Search by author
                         print(srch_in[1])
