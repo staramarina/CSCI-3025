@@ -115,6 +115,7 @@ Provides library book inventory and patron management.
 | decirc_book(self, book) | Remove a book from the circulation inventory and add it to the out of circulation inventory | True if book was successfully moved to decirculation inventory, otherwise False |
 | recirc_book(self, book) | Adds a book back into the circulation inventory from the decirculation inventory | True if book successfully moved to circulation inventory, otherwise False |
 | book_avail(self, book) | Determines whether a book is available for checkout | True if quantity in library is at least one, otherwise False |
+| find_patron(self, card) | Finds a patron record from their library card number | patron |
 | patron_exists(self, patron) | Checks whether a patron exists in the library database | True if patron exists, otherwise False |
 | add_patron(self, patron) | Adds a Patron instance to the library | False if patron already exists, otherwise True |
 | remove_patron(self, patron) | Removes a Patron instance from the library | True if patron exists, otherwise False |
