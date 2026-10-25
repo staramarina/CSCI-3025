@@ -2,7 +2,7 @@
 
 A library tool that tracks books and patrons and allows patrons to checkout and return books.
 
-Estimated Minimum: TBD  
+Estimated Minimum: ![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)    
 Development Environment: Python 3.14.4
 
 ## Table of Contents
@@ -35,7 +35,7 @@ The library tool:
 ## Installation
 
 ### Prerequisites
-- Python 3.6 or higher (estimated) --TBR
+- Python 3.10 or higher (estimated)
 - No external dependencies: required modules are either included or use built-in packages. -- TBR
 
 ### Setup Steps
