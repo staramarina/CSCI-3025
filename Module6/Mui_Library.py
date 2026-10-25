@@ -391,17 +391,15 @@ class Library:
             None
         
         Returns:
-            data: a 3-tuple with the following elements
+            dates: a 2-tuple with the following elements
                 [0]: start - hold start date as a string
                 [1]: end - hold end date as a string
-                [2]: qty - quantity to put on hold as a string
         """
         print('Please enter the following information')
         start = input('Start date (YYYYMMDD): ')
         end = input('End date (YYYYMMDD): ')
-        qty = input('Quantity: ')
-        data = (start, end, qty)
-        return data
+        dates = (start, end)
+        return dates
 
 
     def __str__(self):
