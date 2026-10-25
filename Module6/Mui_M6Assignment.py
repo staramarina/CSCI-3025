@@ -306,7 +306,8 @@ if __name__ == "__main__":
                         book = mml.find_book(isbn)
                         ed_flag = isinstance(patron, Educator)
                         if ed_flag and book:
-                            #do stuff
+                            flag = patron.hold_remove(book)
+                            print(flag[1])
                         elif ed_flag:
                             print('Book does not exist in the library database')
                         else:
