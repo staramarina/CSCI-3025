@@ -361,3 +361,48 @@ class Educator(Patron):
                 return (True, 'Return date successfully extended')
         else:
             return (False, 'Book is not currently checked out')
+
+
+    def hold_request(self, book, start, end, qty):
+        """Places a hold on the requsted book
+        
+        Args:
+            book: a Book class instance
+            start: requested hold start date
+            end: requested hold end date
+            qty: requested hold quantity
+        
+        Returns:
+            A 2-tuple with the following elements
+                [0]: True if hold was successful, otherwise False
+                [1]: Addition information on return condition
+        """
+
+
+    def hold_update(self, book, start, end):
+        """Updates the hold dates on the requested book
+        
+        Args:
+            book: a Book class instance
+            start: updated hold start date
+            end: updated hold end date
+            qty: updated hold quantity
+        
+        Returns: 
+            A 2-tuple with the following elements
+                [0]: True if update was successful, otherwise False
+                [1]: Addition information on return condition
+        """
+
+
+    def hold_remove(self, book):
+        """Remove the hold on the specified book
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            A 2-tuple with the following elements
+                [0]: True if removal was successful, otherwise False
+                [1]: Addition information on return condition
+        """
