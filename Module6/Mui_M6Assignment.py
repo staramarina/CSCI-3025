@@ -192,7 +192,18 @@ if __name__ == "__main__":
                         if book:
                             flag = patron.return_book(book)
                             print(flag[1])
+                        else:
+                            print('Book is not in the library database.')
                     case 3:
+                        print('Please enter the ISBN of the book you would ' \
+                              'like to extend the return date of')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        if book:
+                            flag = patron.checkout_extend(book)
+                            print(flag[1])
+                        else:
+                            print('Book is not in the library database.')
                         # TODO: build Extend return due date on a book
                         print(pat_in[1])
                     case 4:
