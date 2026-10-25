@@ -365,6 +365,7 @@ class Educator(Patron):
 
     def hold_request(self, book, start, end, qty):
         """Places a hold on the requsted book
+           Note: assumes book in library database
         
         Args:
             book: a Book class instance
@@ -377,6 +378,25 @@ class Educator(Patron):
                 [0]: True if hold was successful, otherwise False
                 [1]: Addition information on return condition
         """
+        today = datetime.now()
+        if book in self.hold_books.values():
+            return (False, 'Book is already on hold')
+        elif qty > book.qty:
+            return (False, 'Cannot hold more than available quantity')
+        elif (today > start) or (today > end):
+            return (False, 'Cannot hold for past dates')
+        elif start > end:
+            return (False, 'Cannot set end date before start date')
+        else:
+            book.hold_start = start
+            book.hold_end = end
+            book_copy = deepcopy(book)
+            book_copy.qty = qty
+            self.books_hold[book_copy.isbn] = book_copy
+            if book_copy in self.hold_books.values():
+                return (True, 'Book added to hold list')
+            else:
+                return (False, 'Failed to add book to hold list')
 
 
     def hold_update(self, book, start, end):
