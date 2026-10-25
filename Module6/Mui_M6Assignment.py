@@ -121,8 +121,20 @@ if __name__ == "__main__":
                         else:
                             print('Book is not in the database.')
                     case 3:
+                        print('Please enter the ISBN of the book you ' \
+                              'want to remove from circulation')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        if book:
+                            flag = mml.decirc_book(book)
+                            if flag:
+                                print('Book removed from circulation!')
+                            else:
+                                print('Error moving book, please try again')
+                        else:
+                            print('Book is not in the database.')
                         # TODO: build Remove a book from circulation, but not the library
-                        print(staff_in[1])
+                        #print(staff_in[1])
                     case 4:
                         # TODO: build Add a book back into circulation
                         print(staff_in[1])
