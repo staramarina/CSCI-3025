@@ -89,8 +89,42 @@ if __name__ == "__main__":
             usr_in = input()
             while 'x' != usr_in:
                 staff_in = int_check(usr_in)
-                print(staff_in)
-                # TODO: build out cases
+                match staff_in[1]:
+                    case 1:
+                        print('\nPlease enter the following information')
+                        isbn = input('ISBN: ')
+                        auth = input('Auther: ')
+                        title = input('Title: ')
+                        qty = input('Quantity: ')
+                        qty_chk = int_check(qty)
+                        if qty_chk[0]:
+                            new_b = Book(isbn, auth, title, qty_chk[1])
+                            flag = mml.add_book(new_b)
+                            if flag:
+                                print('Book added!')
+                            else:
+                                print('Book could not be added.')
+                        else:
+                            print('Quantity could not be converted')
+                            print(f'Error: {qty_chk[1]}')
+                    case 2:
+                        # TODO: build Remove a book from the library database
+                        print(staff_in[1])
+                    case 3:
+                        # TODO: build Remove a book from circulation, but not the library
+                        print(staff_in[1])
+                    case 4:
+                        # TODO: build Add a book back into circulation
+                        print(staff_in[1])
+                    case 5:
+                        # TODO: build Add a patron
+                        print(staff_in[1])
+                    case 6:
+                        # TODO: build Remove a patron
+                        print(staff_in[1])
+                    case _:
+                        print('That doesn\'t seem to be an option.')
+                print('')
                 mml.print_staff_menu()
                 usr_in = input()
         elif 2 == main_in[1]:
@@ -99,8 +133,34 @@ if __name__ == "__main__":
             usr_in = input()
             while 'x' != usr_in:
                 pat_in = int_check(usr_in)
-                print(pat_in)
-                # TODO: print patron menu and build out cases
+                match pat_in[1]:
+                    case 1:
+                        # TODO: build Checkout a book
+                        print(pat_in[1])
+                    case 2:
+                        # TODO: build Return a book
+                        print(pat_in[1])
+                    case 3:
+                        # TODO: build Extend return due date on a book
+                        print(pat_in[1])
+                    case 4:
+                        # TODO: build Get added to the waitlist for a book
+                        print(pat_in[1])
+                    case 5:
+                        # TODO: build Request a hold on a book
+                        print(pat_in[1])
+                    case 6:
+                        # TODO: build Extend a hold on a book
+                        print(pat_in[1])
+                    case 7:
+                        # TODO: build Remove a hold on a book
+                        print(pat_in[1])
+                    case 8:
+                        # TODO: build View all checked out books
+                        print(pat_in[1])
+                    case _:
+                        print('That doesn\'t seem to be an option.')
+                print('')
                 mml.print_patron_menu()
                 usr_in = input()
         else:
