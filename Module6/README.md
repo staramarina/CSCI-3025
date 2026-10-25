@@ -109,6 +109,7 @@ Provides library book inventory and patron management.
 | __init__(self, name = 'Library', phone = None, address = None) | Initializes an instance of the Library class | library instance |
 | book_in_exists(self, book) | Checks whether a book exists in the circulation inventory | True if book exists, otherwise False |
 | book_out_exists(self, book) | Checks whether a book exists in the non-circulation inventory | True if book exists, otherwise False |
+| find_book(self, isbn) | Finds and turns a book with the specified ISBN | book |
 | add_book(self, book) | Adds a Book instance to the library inventory | True if book successfully added, otherwise False |
 | remove_book(self, book) | Removes a single Book instance from the library altogether | True if book removed successfully, otherwise False |
 | decirc_book(self, book) | Remove a book from the circulation inventory and add it to the out of circulation inventory | True if book was successfully moved to decirculation inventory, otherwise False |
