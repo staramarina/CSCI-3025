@@ -373,7 +373,6 @@ class Library:
                 [6]: address - Patron's residential address
         """
         print('Please enter the following information')
-        #num = '0', last = '', first = '', dob = None, phone = '', email = '', address = ''
         num = input('Library card number: ')
         last = input('Patron\'s last name: ')
         first = input('Patron\'s first name: ')
@@ -382,6 +381,26 @@ class Library:
         email = input('Patron\'s email address: ')
         address = input('Patron\'s residential address: ')
         data = (num, last, first, dob, phone, email, address)
+        return data
+
+
+    def ed_hold_prompt(self):
+        """Gives prompt to enter hold information and handles user input
+        
+        Args:
+            None
+        
+        Returns:
+            data: a 3-tuple with the following elements
+                [0]: start - hold start date as a string
+                [1]: end - hold end date as a string
+                [2]: qty - quantity to put on hold as a string
+        """
+        print('Please enter the following information')
+        start = input('Start date (YYYYMMDD): ')
+        end = input('End date (YYYYMMDD): ')
+        qty = input('Quantity: ')
+        data = (start, end, qty)
         return data
 
 
