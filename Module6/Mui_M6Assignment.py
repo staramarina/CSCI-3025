@@ -108,8 +108,18 @@ if __name__ == "__main__":
                             print('Quantity could not be converted')
                             print(f'Error: {qty_chk[1]}')
                     case 2:
-                        # TODO: build Remove a book from the library database
-                        print(staff_in[1])
+                        print('Please enter the ISBN ' \
+                              'of the book you want to remove')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        if book: 
+                            flag = mml.remove_book(book)
+                            if flag:
+                                print('Book removed successfully!')
+                            else:
+                                print('Error removing book, please try again')
+                        else:
+                            print('Book is not in the database.')
                     case 3:
                         # TODO: build Remove a book from circulation, but not the library
                         print(staff_in[1])
@@ -162,6 +172,30 @@ if __name__ == "__main__":
                         print('That doesn\'t seem to be an option.')
                 print('')
                 mml.print_patron_menu()
+                usr_in = input()
+        elif 3 == main_in[1]:
+            print('')
+            mml.print_search_menu()
+            usr_in = input()
+            while 'x' != usr_in:
+                srch_in = int_check(usr_in)
+                match srch_in[1]:
+                    case 1:
+                        # TODO: build Show all books
+                        print(srch_in[1])
+                    case 2:
+                        # TODO: build Search by ISBN
+                        print(srch_in[1])
+                    case 3:
+                        # TODO: build Search by author
+                        print(srch_in[1])
+                    case 4:
+                        # TODO: build Search by title
+                        print(srch_in[1])
+                    case _:
+                        print('That doesn\'t seem to be an option.')
+                print('')
+                mml.print_search_menu()
                 usr_in = input()
         else:
             print('That doesn\'t seem to be an option.')

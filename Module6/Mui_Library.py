@@ -57,6 +57,18 @@ class Library:
             return False
 
 
+    def find_book(self, isbn):
+        """Finds and returns a book with the specified ISBN
+        
+        Args:
+            isbn: the ISBN of the book to find
+        
+        Returns:
+            book: a Book class instance
+        """
+        book = self.books.get(isbn)
+
+
     def add_book(self, book):
         """Adds a Book instance to the library inventory
         
@@ -244,12 +256,13 @@ class Library:
                 0 for main
                 1 for staff
                 2 for patron
+                3 for search
         
         Returns:
             True if within bounds, otherwise False
         """
         if 0 == type:
-            if 0 < select <= 2:
+            if 0 < select <= 3:
                 return True
             else:
                 return False
@@ -263,6 +276,11 @@ class Library:
                 return True
             else:
                 return False
+        elif 3 == type:
+            if 0 < select <= 4:
+                return True
+            else:
+                return False
         else:
             return False
 
@@ -272,6 +290,7 @@ class Library:
         print('Please select one of the following options:')
         print('1 -- Staff Login')
         print('2 -- Card Holder Login')
+        print('3 -- Search Library Database')
         print('x -- Quit')
 
 
@@ -298,6 +317,16 @@ class Library:
         print('6 -- Extend a hold on a book')
         print('7 -- Remove a hold on a book')
         print('8 -- View all checked out books')
+        print('x -- Quit')
+
+
+    def print_search_menu(self):
+        """Prints the search menu to the console"""
+        print('Please select one of the following options:')
+        print('1 -- Show all books')
+        print('2 -- Search by ISBN')
+        print('3 -- Search by author')
+        print('4 -- Search by title')
         print('x -- Quit')
 
 
