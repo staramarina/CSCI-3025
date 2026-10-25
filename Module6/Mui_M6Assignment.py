@@ -263,8 +263,6 @@ if __name__ == "__main__":
                         auth = input()
                         print(f'\nSearch for "{auth}" yielded the following:')
                         mml.search_author(auth)
-                        # TODO: build Search by author
-                        print(srch_in[1])
                     case 4:
                         # TODO: build Search by title
                         print(srch_in[1])
