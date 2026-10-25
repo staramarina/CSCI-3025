@@ -147,10 +147,10 @@ if __name__ == "__main__":
                         else:
                             print('Book is not in the database.')
                     case 5:
-                        # TODO: build Add a patron
+                        # TODO: build Add a patron -- need to account for educator
                         print(staff_in[1])
                     case 6:
-                        # TODO: build Remove a patron
+                        # TODO: build Remove a patron -- need to account for educator
                         print(staff_in[1])
                     case _:
                         print('That doesn\'t seem to be an option.')
@@ -165,8 +165,26 @@ if __name__ == "__main__":
                 pat_in = int_check(usr_in)
                 match pat_in[1]:
                     case 1:
-                        # TODO: build Checkout a book
-                        print(pat_in[1])
+                        print('Please enter your library card number')
+                        card = input()
+                        patron = mml.find_patron(card)
+                        print('Please enter the ISBN of the book you would ' \
+                              'like to checkout')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        if patron and book:
+                            avail = mml.book_avail(book)
+                            if avail:
+                                flag = patron.checkout_book(book)
+                                print(flag[1])
+                            else:
+                                print('No copies available.')
+                                print('Select option 4 to be added to ' \
+                                      'the waitlist')
+                        elif patron:
+                            print('Book not found.')
+                        else:
+                            print('Account not found. Please consult staff.')
                     case 2:
                         # TODO: build Return a book
                         print(pat_in[1])
@@ -186,8 +204,14 @@ if __name__ == "__main__":
                         # TODO: build Remove a hold on a book
                         print(pat_in[1])
                     case 8:
-                        # TODO: build View all checked out books
-                        print(pat_in[1])
+                        print('Please enter your library card number')
+                        card = input()
+                        patron = mml.find_patron(card)
+                        print(patron) # test line remove later -- good
+                        if patron:
+                            patron.checked_out() # still need to check
+                        else:
+                            print('Account not found. Please consult staff.')
                     case _:
                         print('That doesn\'t seem to be an option.')
                 print('')
