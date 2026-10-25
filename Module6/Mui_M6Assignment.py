@@ -279,9 +279,10 @@ if __name__ == "__main__":
                         ed_flag = isinstance(patron, Educator)
                         if ed_flag and book:
                             data = mml.ed_hold_prompt()
+                            qty_in = input('Quantity: ')
                             start = date_format(data[0])
                             end = date_format(data[1])
-                            qty = int_check(data[2]) # take this out
+                            qty = int_check(qty_in)
                             if start and end and qty[0]:
                                 flag = patron.hold_request(book, start, 
                                                            end, qty)
