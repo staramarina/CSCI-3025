@@ -272,12 +272,45 @@ if __name__ == "__main__":
                         else:
                             print('Book is not in the library database.')
                     case 5:
+                        print('Please enter the ISBN of the book you would ' \
+                              'like to place a hold')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        ed_flag = isinstance(patron, Educator)
+                        if ed_flag and book:
+                            #do stuff
+                        elif ed_flag:
+                            print('Book does not exist in the library database')
+                        else:
+                            print('Only educator accounts can process holds')
                         # TODO: build Request a hold on a book -- need to account for non-educator
                         print(pat_in[1])
                     case 6:
+                        print('Please enter the ISBN of the book you would ' \
+                              'like to update the hold')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        ed_flag = isinstance(patron, Educator)
+                        if ed_flag and book:
+                            #do stuff
+                        elif ed_flag:
+                            print('Book does not exist in the library database')
+                        else:
+                            print('Only educator accounts can process holds')
                         # TODO: build Extend a hold on a book -- need to account for non-educator
                         print(pat_in[1])
                     case 7:
+                        print('Please enter the ISBN of the book you would ' \
+                              'like to remove the hold')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        ed_flag = isinstance(patron, Educator)
+                        if ed_flag and book:
+                            #do stuff
+                        elif ed_flag:
+                            print('Book does not exist in the library database')
+                        else:
+                            print('Only educator accounts can process holds')
                         # TODO: build Remove a hold on a book -- need to account for non-educator
                         print(pat_in[1])
                     case 8:
