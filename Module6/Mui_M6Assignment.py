@@ -161,8 +161,32 @@ if __name__ == "__main__":
                         else:
                             print('Book is not in the database.')
                     case 5:
-                        # TODO: build Add a patron -- need to account for educator
-                        print(staff_in[1])
+                        mml.print_type_meu()
+                        usr_in = input()
+                        if 'x' == usr_in:
+                            break
+                        type_in = int_check(usr_in)
+                        if 1 == type_in[1]:
+                            data = mml.patron_create_prompt()
+                            patron = Patron(*data)
+                            flag = mml.add_patron(patron)
+                            if flag:
+                                print('\nThe following patron was added')
+                                print(patron)
+                            else:
+                                print('\nThat card number already exists')
+                        elif 2 == type_in[1]:
+                            data = mml.patron_create_prompt()
+                            inst = input('Patron\'s institution: ')
+                            educator = Educator(*data, inst)
+                            flag = mml.add_patron(educator)
+                            if flag:
+                                print('\nThe following educator was added')
+                                print(educator)
+                            else:
+                                print('\nThat card number already exists')
+                        else:
+                            print('That doesn\'t seem to be an option.')
                     case 6:
                         # TODO: build Remove a patron -- need to account for educator
                         print(staff_in[1])
