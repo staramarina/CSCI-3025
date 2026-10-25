@@ -144,8 +144,8 @@ class Patron:
                 [0]: True if return was successful, otherwise False
                 [1]: Addition information on return condition
         """
-        match = self.book_check(book)
-        if match:
+        has_flag = self.book_check(book)
+        if has_flag:
             book_return = self.books.pop(book.isbn)
             update = self.book_check(book_return)
             if update:
@@ -172,12 +172,12 @@ class Patron:
         Returns:
             True if patron has book, otherwise false
         """
-        match = self.book_check(book)
+        has_flag = self.book_check(book)
         if book.hold_check():
             return (False, 'Book is on hold, checkout cannot be extended')
         elif 0 < len(book.waitlist):
             return (False, 'Book is waitlisted, checkout cannot be extended')
-        elif match:
+        elif has_flag:
             self.books[book.isbn].return_date += timedelta(weeks=3)
             return (True, 'Return date successfully extended')
         else:
