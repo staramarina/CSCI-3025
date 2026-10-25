@@ -126,6 +126,7 @@ Provides library book inventory and patron management.
 | print_search_menu(self) | Prints the search menu to the console | None (Output to console) |
 | print_type_menu(self) | Prints the patron or educator type menu to the console | None (Output to console) |
 | patron_create_prompt | Gives prompts to enter patron information and handles user input | data as a 7-tuple with all input for patron initialization |
+| ed_hold_prompt(self) | Gives prompt to enter hold information and handles user input | data as a 3-tuple including start date, end date, and quantity |
 | __str__(self) | Provides library name, phone number, and address information | String default output |
 | show_books(self) | Prints all books in the library to the console | None (Output to console) |
 | search_isbn(self, search) | Prints book information for the given ISBN if it exists | None (Output to console) |
