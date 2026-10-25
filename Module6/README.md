@@ -22,9 +22,17 @@ Development Environment: Python 3.14.4
 The library tool was created for State University of New York (SUNY): Empire State University (ESU), CSCI-3025: Python Programming course as the Module 6 assignment.
 
 The library tool: 
-- (TBD --mechanism of input data)
-- (TBD --input data verification)
-- (TBD --describe the flow of the main program)
+- Instantiates a library instance using example starting data
+- Offers separate menus for library staff, patrons, and general book searches
+- Staff abilities include adding, decirculating, recirculating, and removing books as well as adding and removing patrons
+- Patron abilities include checking out, extending, and returning as well as adding themselves to waitlists for books.
+- Educators have the same abilities as patrons, but can also request, update, and remove holds on books
+- Searching includes by ISBN, author, or title as well as the ability to display all books in the library
+
+Ground work for the following features is included, but not fully implemented:
+- Tracking a patron's status and blocking addition check outs if the account is overdue
+- Age-based account types using patron date of birth
+- Eligibility restrictions based on patron residential address
 
 ## Features
 - **Book Checkout, Return, and Extend** - Allows patrons to checkout and return books as well as extend the due date of a borrowed book
