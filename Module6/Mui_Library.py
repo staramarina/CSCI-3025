@@ -348,6 +348,43 @@ class Library:
         print('x -- Quit')
 
 
+    def print_type_meu(self):
+        """Prints the patron or educator type menu to the console"""
+        print('Please select one of the following options:')
+        print('1 -- Add regular patron')
+        print('2 -- Add educator')
+        print('x -- Quit')
+
+
+    def patron_create_prompt(self):
+        """Gives prompts to enter patron information and handles user input
+        
+        Args:
+            None
+        
+        Returns:
+            data: a 7-tuple with the following elements
+                [0]: num - library card number
+                [1]: last - Patron's last name
+                [2]: first - Patron's first name
+                [3]: dob - Patron's date of birth
+                [4]: phone - Patron's phone number
+                [5]: email - Patron's email address
+                [6]: address - Patron's residential address
+        """
+        print('Please enter the following information')
+        #num = '0', last = '', first = '', dob = None, phone = '', email = '', address = ''
+        num = input('Library card number: ')
+        last = input('Patron\'s last name: ')
+        first = input('Patron\'s first name: ')
+        dob = input('Patron\'s date of birth (YYYMMDD): ')
+        phone = input('Patron\'s phone number: ')
+        email = input('Patron\'s email address: ')
+        address = input('Patron\'s residential address: ')
+        data = (num, last, first, dob, phone, email, address)
+        return data
+
+
     def __str__(self):
         """Provides library name, phone number, and address information"""
         return (f'{self.name}\n{self.phone}\n{self.address}')
