@@ -208,8 +208,6 @@ class Patron:
             return (True, position)
         else:
             return (False, 'You already have that book checked out')
-        
-
 
 
     def checked_out(self):
@@ -219,3 +217,37 @@ class Patron:
         else:
             for book in self.books.values():
                 print(book.show_status())
+
+
+class Educator(Patron):
+    """Provides information on and support actions of educators"""
+
+
+    def __init__(self, num = '0', last = '', first = '', dob = None, 
+                 phone = '', email = '', address = '', institution = ''):
+        """Initializes an instance of the Patron class
+        
+        Args:
+            num: Unique library card number
+            last: Educator's last name
+            first: Educator's first name
+            dob: Educator's date of birth
+            phone: Educator's phone number
+            email: Educator's email address
+            address: Educator's residential address
+            institution: The educator's institution
+        
+        Returns:
+            Educator instance
+        """
+        self.card_num = num
+        self.last_name = last
+        self.first_name = first
+        self.__dob = date_format(dob)
+        self.__phone = phone
+        self.__email = email
+        self.__address = address
+        self.institution = institution
+        self.standing = 'good'
+        self.books = {}
+        self.hold_books = {}
