@@ -175,15 +175,13 @@ if __name__ == "__main__":
                               'like to checkout')
                         isbn = input()
                         book = mml.find_book(isbn)
-                        if book:
-                            avail = mml.book_avail(book)
-                            if avail:
-                                flag = patron.checkout_book(book)
-                                print(flag[1])
-                            else:
-                                print('No copies available.')
-                                print('Select option 4 to be added to ' \
-                                      'the waitlist')
+                        avail = mml.book_avail(book)
+                        if book and avail:
+                            flag = patron.checkout_book(book)
+                            print(flag[1])
+                        elif book:
+                            print('No copies available.')
+                            print('Select option 4 to be added to the waitlist')
                         else:
                             print('Book not found.')
                     case 2:
