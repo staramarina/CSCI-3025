@@ -264,8 +264,11 @@ if __name__ == "__main__":
                         print(f'\nSearch for "{auth}" yielded the following:')
                         mml.search_author(auth)
                     case 4:
-                        # TODO: build Search by title
-                        print(srch_in[1])
+                        print('Please enter the title of the book you would ' \
+                              'like to find')
+                        title = input()
+                        print(f'\nSearch for "{title}" yielded the following:')
+                        mml.search_title(title)
                     case _:
                         print('That doesn\'t seem to be an option.')
                 print('')
