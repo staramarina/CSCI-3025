@@ -90,8 +90,9 @@ if __name__ == "__main__":
             while 'x' != usr_in:
                 staff_in = int_check(usr_in)
                 print(staff_in)
-                usr_in = input()
                 # TODO: build out cases
+                mml.print_staff_menu()
+                usr_in = input()
         elif 2 == main_in[1]:
             print('')
             mml.print_patron_menu()
@@ -99,8 +100,9 @@ if __name__ == "__main__":
             while 'x' != usr_in:
                 pat_in = int_check(usr_in)
                 print(pat_in)
-                usr_in = input()
                 # TODO: print patron menu and build out cases
+                mml.print_patron_menu()
+                usr_in = input()
         else:
             print('That doesn\'t seem to be an option.')
             mml.print_main_menu()
