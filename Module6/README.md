@@ -33,6 +33,7 @@ Ground work for the following features is included, but not fully implemented:
 - Tracking a patron's status and blocking addition check outs if the account is overdue
 - Age-based account types using patron date of birth
 - Eligibility restrictions based on patron residential address
+- Separation of staff and patron actions is complete, but no authentication is included
 
 ## Features
 - **Book Checkout, Return, and Extend** - Allows patrons to checkout and return books as well as extend the due date of a borrowed book
@@ -44,7 +45,7 @@ Ground work for the following features is included, but not fully implemented:
 
 ### Prerequisites
 - Python 3.10 or higher (estimated)
-- No external dependencies: required modules are either included or use built-in packages. -- TBR
+- No external dependencies: required modules are either included or use built-in packages.
 
 ### Setup Steps
 1. Download the repository from https://github.com/staramarina/CSCI-3025/tree/main/Module6
@@ -58,8 +59,7 @@ Ground work for the following features is included, but not fully implemented:
     ├── Mui_Patron.py            # Patron class module
     ├── testbookdata.txt         # Book data to instantiate a library instance
     ├── testeducatordata.txt     # Educator data to instantiate a library instance
-    ├── testpatrondata.txt       # Patron data to instantiate a library instance
-    └── TBR
+    └── testpatrondata.txt       # Patron data to instantiate a library instance
 ```
 3. Ensure Python path includes the Module6 directory or run from within it.
 
@@ -71,7 +71,37 @@ From the Module6 directory
 
 ### Example Interaction
 ```
-TBD
+
+Mui Mini Library
+719-542-7279
+123 S Academy Blvd, Fountain, CO 80819
+
+
+Please select one of the following options:
+1 -- Staff Login
+2 -- Card Holder Login
+3 -- Search Library Database
+x -- Quit
+2
+
+Please enter your library card number
+888120722
+
+Please select one of the following options:
+1 -- Checkout a book
+2 -- Return a book
+3 -- Extend return due date on a book
+4 -- Get added to the waitlist for a book
+5 -- Request a hold on a book
+6 -- Update a hold on a book
+7 -- Remove a hold on a book
+8 -- View al checked out books
+x -- Quit
+1
+
+Please enter the ISBN of the book you would like to checkout
+9780060853983
+Book was successfully checked out
 ```
 
 ## Project Structure
@@ -85,8 +115,7 @@ TBD
     ├── README.md                # Read me file (current file)
     ├── testbookdata.txt         # Book data to instantiate a library instance
     ├── testeducatordata.txt     # Educator data to instantiate a library instance
-    ├── testpatrondata.txt       # Patron data to instantiate a library instance
-    └── TBR
+    └── testpatrondata.txt       # Patron data to instantiate a library instance
 ```
 
 ## Modules
