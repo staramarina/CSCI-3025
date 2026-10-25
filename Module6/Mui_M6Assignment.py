@@ -281,7 +281,7 @@ if __name__ == "__main__":
                             data = mml.ed_hold_prompt()
                             start = date_format(data[0])
                             end = date_format(data[1])
-                            qty = int_check(data[2])
+                            qty = int_check(data[2]) # take this out
                             if start and end and qty[0]:
                                 flag = patron.hold_request(book, start, 
                                                            end, qty)
@@ -302,6 +302,13 @@ if __name__ == "__main__":
                         ed_flag = isinstance(patron, Educator)
                         if ed_flag and book:
                             data = mml.ed_hold_prompt()
+                            start = date_format(data[0])
+                            end = date_format(data[1])
+                            if start and end:
+                                flag = patron.hold_update(book, start, end)
+                                print(flag[1])
+                            else:
+                                ('Input is in the wrong format')
                             #do stuff
                         elif ed_flag:
                             print('Book does not exist in the library database')

@@ -407,7 +407,6 @@ class Educator(Patron):
             book: a Book class instance
             start: updated hold start date
             end: updated hold end date
-            qty: updated hold quantity
         
         Returns: 
             A 2-tuple with the following elements
