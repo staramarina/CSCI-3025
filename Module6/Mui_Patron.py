@@ -164,22 +164,22 @@ class Patron:
 
     def checkout_extend(self, book):
         """Extends the return date of a book
-           Note: assumes patron has book
-        
+
         Args:
             book: a Book class instance
         
         Returns:
-            True if patron has book, otherwise false
+            True if return date was extended, otherwise false
         """
         has_flag = self.book_check(book)
-        if book.hold_check():
-            return (False, 'Book is on hold, checkout cannot be extended')
-        elif 0 < len(book.waitlist):
-            return (False, 'Book is waitlisted, checkout cannot be extended')
-        elif has_flag:
-            self.books[book.isbn].return_date += timedelta(weeks=3)
-            return (True, 'Return date successfully extended')
+        if has_flag:
+            if book.hold_check():
+                return (False, 'Book is on hold, return cannot be extended')
+            elif 0 < len(book.waitlist):
+                return (False, 'Book is waitlisted, return cannot be extended')
+            else:
+                self.books[book.isbn].return_date += timedelta(weeks=3)
+                return (True, 'Return date successfully extended')
         else:
             return (False, 'Book is not currently checked out')
 
