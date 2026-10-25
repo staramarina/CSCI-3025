@@ -169,7 +169,9 @@ class Patron:
             book: a Book class instance
         
         Returns:
-            True if return date was extended, otherwise false
+            A 2-tuple with the following elements
+                [0]: True if extension was successful, otherwise False
+                [1]: Addition information on return condition
         """
         has_flag = self.book_check(book)
         if has_flag:
@@ -186,19 +188,28 @@ class Patron:
 
     def waitlist_add(self, book):
         """Adds a patron to the waitlist for a book
+           Note: assumes book exists in library database and it's not available
         
         Args:
             book: a Book class instance
         
         Returns:
-            position: the patron's index in the waitlist
+            A 2-tuple with the following elements
+                [0]: True if patron is on the waitlist, otherwise False
+                [1]: Index in the waitlist if true, otherwise error message
         """
-        if self.card_num in book.waitlist:
-            position = book.waitlist.index(self.card_num)
+        has_flag = self.book_check(book)
+        if has_flag:
+            if self.card_num in book.waitlist:
+                position = book.waitlist.index(self.card_num)
+            else:
+                book.wailist.append(self.card_num)
+                position = len(book.waitlist) - 1
+            return (True, position)
         else:
-            book.wailist.append(self.card_num)
-            position = len(book.waitlist) - 1
-        return position
+            return (False, 'You already have that book checked out')
+        
+
 
 
     def checked_out(self):
