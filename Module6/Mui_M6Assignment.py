@@ -85,7 +85,6 @@ if __name__ == "__main__":
                            + data[8] + ', ' + data[9])
                 educator = Educator(data[0], data[1], data[2], data[3],
                                 data[4], data[5], address, data[10])
-                print(educator) # test line remove later
                 mml.add_patron(educator)
     educator_reader.close()
 
