@@ -67,6 +67,7 @@ class Library:
             book: a Book class instance
         """
         book = self.books.get(isbn)
+        return book
 
 
     def add_book(self, book):
@@ -108,12 +109,16 @@ class Library:
             if 1 < qty_orig:
                 self.books[book.isbn].qty -= 1
                 qty_new = self.books[book.isbn].qty
+                if qty_new < qty_orig:
+                    return True
+                else:
+                    return False
             elif 1 == qty_orig:
-                self.books[book.isbn].pop()
-            else:
-                return False
-            if qty_new < qty_orig:
-                return True
+                self.books.pop(book.isbn)
+                if self.book_in_exists(book):
+                    return False
+                else:
+                    return True
             else:
                 return False
         else:

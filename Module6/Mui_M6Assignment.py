@@ -112,7 +112,7 @@ if __name__ == "__main__":
                               'of the book you want to remove')
                         isbn = input()
                         book = mml.find_book(isbn)
-                        if book: 
+                        if book:
                             flag = mml.remove_book(book)
                             if flag:
                                 print('Book removed successfully!')
