@@ -337,3 +337,27 @@ class Educator(Patron):
             return (False, f'You are currently number {place} on the waitlist')
         else:
             return (False, 'Book is currently waitlisted')
+
+
+    def checkout_extend(self, book):
+        """Extends the return date of a book
+
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            A 2-tuple with the following elements
+                [0]: True if extension was successful, otherwise False
+                [1]: Addition information on return condition
+        """
+        has_flag = self.book_check(book)
+        if has_flag:
+            if book.hold_check():
+                return (False, 'Book is on hold, return cannot be extended')
+            elif 0 < len(book.waitlist):
+                return (False, 'Book is waitlisted, return cannot be extended')
+            else:
+                self.books[book.isbn].return_date += timedelta(weeks=6)
+                return (True, 'Return date successfully extended')
+        else:
+            return (False, 'Book is not currently checked out')
