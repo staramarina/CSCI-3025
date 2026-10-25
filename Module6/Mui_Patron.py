@@ -199,11 +199,11 @@ class Patron:
                 [1]: Index in the waitlist if true, otherwise error message
         """
         has_flag = self.book_check(book)
-        if has_flag:
+        if not has_flag:
             if self.card_num in book.waitlist:
                 position = book.waitlist.index(self.card_num)
             else:
-                book.wailist.append(self.card_num)
+                book.waitlist.append(self.card_num)
                 position = len(book.waitlist) - 1
             return (True, position)
         else:
