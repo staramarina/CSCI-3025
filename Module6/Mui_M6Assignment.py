@@ -158,6 +158,12 @@ if __name__ == "__main__":
                 mml.print_staff_menu()
                 usr_in = input()
         elif 2 == main_in[1]:
+            print('\nPlease enter your library card number')
+            card = input()
+            patron = mml.find_patron(card)
+            if not patron:
+                print('Account not found. Please consult staff.')
+                break
             print('')
             mml.print_patron_menu()
             usr_in = input()
@@ -165,14 +171,11 @@ if __name__ == "__main__":
                 pat_in = int_check(usr_in)
                 match pat_in[1]:
                     case 1:
-                        print('Please enter your library card number')
-                        card = input()
-                        patron = mml.find_patron(card)
                         print('Please enter the ISBN of the book you would ' \
                               'like to checkout')
                         isbn = input()
                         book = mml.find_book(isbn)
-                        if patron and book:
+                        if book:
                             avail = mml.book_avail(book)
                             if avail:
                                 flag = patron.checkout_book(book)
@@ -181,10 +184,8 @@ if __name__ == "__main__":
                                 print('No copies available.')
                                 print('Select option 4 to be added to ' \
                                       'the waitlist')
-                        elif patron:
-                            print('Book not found.')
                         else:
-                            print('Account not found. Please consult staff.')
+                            print('Book not found.')
                     case 2:
                         # TODO: build Return a book
                         print(pat_in[1])
@@ -204,14 +205,8 @@ if __name__ == "__main__":
                         # TODO: build Remove a hold on a book
                         print(pat_in[1])
                     case 8:
-                        print('Please enter your library card number')
-                        card = input()
-                        patron = mml.find_patron(card)
-                        print(patron) # test line remove later -- good
-                        if patron:
-                            patron.checked_out() # still need to check
-                        else:
-                            print('Account not found. Please consult staff.')
+                        print('\nYour checked out books:')
+                        patron.checked_out() # still need to check
                     case _:
                         print('That doesn\'t seem to be an option.')
                 print('')
