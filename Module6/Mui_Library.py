@@ -370,7 +370,8 @@ class Library:
         """
         book = self.books.get(search)
         if book is not None:
-            print(self.books[search].show_info()) # TODO : FIX THIS
+            #print(self.books[search].show_info()) # TODO : FIX THIS
+            print(book)
         else:
             print('That book is not available.')
 
@@ -387,7 +388,8 @@ class Library:
         count = 0
         for isbn, book in self.books:
             if search.lower() in book.author.lower():
-                print(self.books[isbn].show_info()) # TODO : FIX THIS
+                #print(self.books[isbn].show_info()) # TODO : FIX THIS
+                print(self.books[isbn])
                 count += 1
         if 0 == count:
             print('No books with that author found.')
@@ -405,7 +407,8 @@ class Library:
         count = 0
         for isbn, book in self.books:
             if search.lower() in book.title.lower():
-                print(self.books[isbn].show_info()) # TODO : FIX THIS
+                #print(self.books[isbn].show_info()) # TODO : FIX THIS
+                print(self.books[isbn])
                 count += 1
         if 0 == count:
             print('No books with that title found.')
