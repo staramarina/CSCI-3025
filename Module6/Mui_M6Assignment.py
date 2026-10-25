@@ -181,8 +181,10 @@ if __name__ == "__main__":
                 srch_in = int_check(usr_in)
                 match srch_in[1]:
                     case 1:
-                        # TODO: build Show all books
-                        print(srch_in[1])
+                        print('\n')
+                        for book in mml.books.values():
+                            print(book)
+                        print('\n')
                     case 2:
                         # TODO: build Search by ISBN
                         print(srch_in[1])
