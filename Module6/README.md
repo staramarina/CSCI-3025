@@ -213,13 +213,13 @@ Provides information on and support actions of educators
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| __init__(TBD) | Initializes as instance of the Educator class | educator |
+| __init__(self, num = '0', last = '', first = '', dob = None, phone = '', email = '', address = '', institution = '') | Initializes as instance of the Educator class | educator |
 | hold_check(self, book) | Checks whether the educator currently has a hold on the book | (True, qty) if book is on hold and within window, otherwise (False, error message) |
 | checkout_book(self, book) | Checks out a book to an educator | (True, success message) if checkout was successful, otherwise (False, error message) |
 | checkout_extend(self, book) | Extends the return date of a book | (True, success message) if extension was successful, otherwise (False, error message) |
-| hold_request(self, book) | Places a hold on the requested book | TBD |
-| hold_update(self, book) | Updates the hold dates on the requested book | TBD |
-| hold_remove(self, book) | Removes the hold on the specified book | TBD |
+| hold_request(self, book, start, end, qty) | Places a hold on the requested book | (True, success message) if hold was successful, otherwise (False, error message) |
+| hold_update(self, book, start, end, qty) | Updates the hold dates on the requested book | (True, success message) if update was successful, otherwise (False, error message) |
+| hold_remove(self, book) | Removes the hold on the specified book | (True, success message) if removal was successful, otherwise (False, error message) |
 
 ### Ancillary Module (Mui_Ancillary.py)
 Provides additional functions and checks
