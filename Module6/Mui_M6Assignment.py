@@ -293,8 +293,6 @@ if __name__ == "__main__":
                             print('Book does not exist in the library database')
                         else:
                             print('Only educator accounts can process holds')
-                        # TODO: build Request a hold on a book -- need to account for non-educator
-                        print(pat_in[1])
                     case 6:
                         print('\nPlease enter the ISBN of the book you would ' \
                               'like to update the hold')
@@ -310,13 +308,10 @@ if __name__ == "__main__":
                                 print(flag[1])
                             else:
                                 ('Input is in the wrong format')
-                            #do stuff
                         elif ed_flag:
                             print('Book does not exist in the library database')
                         else:
                             print('Only educator accounts can process holds')
-                        # TODO: build Extend a hold on a book -- need to account for non-educator
-                        print(pat_in[1])
                     case 7:
                         print('\nPlease enter the ISBN of the book you would ' \
                               'like to remove the hold')
@@ -330,8 +325,6 @@ if __name__ == "__main__":
                             print('Book does not exist in the library database')
                         else:
                             print('Only educator accounts can process holds')
-                        # TODO: build Remove a hold on a book -- need to account for non-educator
-                        print(pat_in[1])
                     case 8:
                         print('\nYour checked out books:')
                         patron.checked_out()
