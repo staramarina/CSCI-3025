@@ -15,3 +15,6 @@
 9780345538987, Michael Crichton, Jurassic Park, 13
 9780451524935, George Orwell, 1984, 12
 9780451530653, H.G. Wells, The War of the Worlds, 6
+9780451526342, George Orwell, Animal Farm, 10
+9781542559669, H.G. Wells, The Invisible Man, 3
+9780679732761, Ralph Ellison, Invisible Man, 1
