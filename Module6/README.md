@@ -124,6 +124,8 @@ Provides library book inventory and patron management.
 | print_staff_menu(self) | Prints the library staff menu to the console | None (Output to console) |
 | print_patron_menu(self) | Prints the patron menu to the console | None (Output to console) |
 | print_search_menu(self) | Prints the search menu to the console | None (Output to console) |
+| print_type_menu(self) | Prints the patron or educator type menu to the console | None (Output to console) |
+| patron_create_prompt | Gives prompts to enter patron information and handles user input | data as a 7-tuple with all input for patron initialization |
 | __str__(self) | Provides library name, phone number, and address information | String default output |
 | show_books(self) | Prints all books in the library to the console | None (Output to console) |
 | search_isbn(self, search) | Prints book information for the given ISBN if it exists | None (Output to console) |
@@ -186,7 +188,7 @@ Provides information on and support actions of patrons
 | book_check(self, book) | Checks whether a patron has already checked out a book | (True, index) if patron has book, otherwise (False, None) |
 | checkout_book(self, book) | Checks out a book to a patron | (True, success message) if checkout was successful, otherwise (False, error message) |
 | return_book(self, book) | Returns a book back to the library | (True, success message) if return was successful, otherwise (False, error message) |
-| checkout_extend(self, book) | Extends the return date of a book | True if book return extension was granted, otherwise False |
+| checkout_extend(self, book) | Extends the return date of a book | (True, success message) if extension was successful, otherwise (False, error message) |
 | waitlist_add(self, book) | Adds a patron to the waitlist for a book | patron's index in the waitlist |
 | checked_out(self) | Displays information on all books patron has checked out | None (output to Console) |
 
@@ -196,17 +198,27 @@ Provides information on and support actions of educators
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | -------- | -------- | -------- |
-| institution | The educator's institution | TBD |
-| hold_books | List of books the educator has requested a hold on | TBD |
+| card_num | Unique library card number | '0' |
+| last_name | Educator's last name | '' |
+| first_name | Educator's first name | '' |
+| dob | Educator's date of birth (encapsulated) | '' |
+| phone | Educator's phone number (encapsulated) | '' |
+| email | Educator's email address (encapsulated) | '' |
+| address | Educator's residential address (encapsulated) | '' |
+| institution | The educator's institution | '' |
+| standing | Educator's standing; good or overdue | 'good' |
+| books | List of books the Educator has currently checked out | Empty |
+| hold_books | List of books the educator has requested a hold on | Empty |
 
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
 | __init__(TBD) | Initializes as instance of the Educator class | educator |
-| checkout_book(self, book) | Checks out a book to an educator | TBD |
-| checkout_extend(self, book) | Extends the return date of a book | TBD |
+| hold_check(self, book) | Checks whether the educator currently has a hold on the book | (True, qty) if book is on hold and within window, otherwise (False, error message) |
+| checkout_book(self, book) | Checks out a book to an educator | (True, success message) if checkout was successful, otherwise (False, error message) |
+| checkout_extend(self, book) | Extends the return date of a book | (True, success message) if extension was successful, otherwise (False, error message) |
 | hold_request(self, book) | Places a hold on the requested book | TBD |
-| hold_extend(self, book) | Extends the hold on the requested book | TBD |
+| hold_update(self, book) | Updates the hold dates on the requested book | TBD |
 | hold_remove(self, book) | Removes the hold on the specified book | TBD |
 
 ### Ancillary Module (Mui_Ancillary.py)
