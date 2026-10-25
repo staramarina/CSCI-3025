@@ -401,6 +401,7 @@ class Educator(Patron):
 
     def hold_update(self, book, start, end):
         """Updates the hold dates on the requested book
+           Note: assumes book in library database
         
         Args:
             book: a Book class instance
@@ -430,6 +431,7 @@ class Educator(Patron):
 
     def hold_remove(self, book):
         """Remove the hold on the specified book
+           Note: assumes book in library database
         
         Args:
             book: a Book class instance
@@ -439,3 +441,13 @@ class Educator(Patron):
                 [0]: True if removal was successful, otherwise False
                 [1]: Addition information on return condition
         """
+        if book.isbn not in self.hold_books:
+            return (False, 'Book is not currently on hold')
+        else:
+            self.hold_books.pop(book.isbn)
+            book.hold_start = None
+            book.hold_end = None
+            if book.isbn in self.hold_books:
+                return (False, 'Failed to remove hold')
+            else:
+                return (True, 'Hold removed successfully')
