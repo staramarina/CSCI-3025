@@ -176,7 +176,7 @@ class Library:
                 else:
                     return False
             if 1 == qty_orig:
-                self.books_out[book.isbn].pop()
+                self.books_out.pop(book.isbn)
                 if self.book_out_exists(book):
                     return False
                 elif self.add_book(book):
