@@ -82,10 +82,10 @@ class Patron:
                 [0]: True is patron has book, otherwise False
                 [1]: Index in patron's book list if found, otherwise None
         """
-        for i in range(len(self.books)):
-            if book.isbn == self.books[i].isbn:
-                return (True, i)
-        return (False, None)
+        if book.isbn in self.books:
+            return True
+        else:
+            return False
 
 
     def checkout_book(self, book):
@@ -109,7 +109,7 @@ class Patron:
         elif book.hold_check():
             return (False, 'This book is currently on hold')
         elif (
-            0 == len(book.waistlist)
+            0 == len(book.waitlist)
             or self.card_num == book.waitlist[0]
         ):
             book.qty -= 1
@@ -117,10 +117,10 @@ class Patron:
             book_copy.qty = 1
             book_copy.waitlist = []
             book_copy.return_date = datetime.now() + timedelta(weeks=3)
-            self.books.append(book_copy)
+            self.books[book_copy.isbn] = book_copy
             has_flag = self.book_check(book)
             if has_flag:
-                if 0 != len(book.waistlist):
+                if 0 != len(book.waitlist):
                     book.waitlist.pop(0)
                 return (True, 'Book was successfully checked out')
             else:
@@ -145,8 +145,8 @@ class Patron:
                 [1]: Addition information on return condition
         """
         match = self.book_check(book)
-        if match[0]:
-            book_return = self.books.pop(match[1])
+        if match:
+            book_return = self.books.pop(book.isbn)
             update = self.book_check(book_return)
             if update:
                 return (False, 'Failed to return book')
@@ -177,8 +177,8 @@ class Patron:
             return (False, 'Book is on hold, checkout cannot be extended')
         elif 0 < len(book.waitlist):
             return (False, 'Book is waitlisted, checkout cannot be extended')
-        elif match[0]:
-            self.books[match[1]].return_date += timedelta(weeks=3)
+        elif match:
+            self.books[book.isbn].return_date += timedelta(weeks=3)
             return (True, 'Return date successfully extended')
         else:
             return (False, 'Book is not currently checked out')
@@ -206,10 +206,5 @@ class Patron:
         if 0 == len(self.books):
             print('No books currently checked out')
         else:
-            for i in range(len(self.books)):
-                print(
-                    f'ISBN: {self.books[i].isbn}, '
-                    f'Author: {self.books[i].author}'
-                    f'Title: {self.books[i].title}'
-                    f'Return Date: {self.books[i].return_date}'
-                )
+            for book in self.books.values():
+                print(book.show_status())
