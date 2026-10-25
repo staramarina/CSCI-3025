@@ -404,10 +404,9 @@ class Library:
             None
         """
         count = 0
-        for isbn, book in self.books:
+        for book in self.books.values():
             if search.lower() in book.title.lower():
-                #print(self.books[isbn].show_info()) # TODO : FIX THIS
-                print(self.books[isbn])
+                print(book)
                 count += 1
         if 0 == count:
             print('No books with that title found.')
