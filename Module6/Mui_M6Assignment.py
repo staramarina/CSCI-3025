@@ -258,6 +258,11 @@ if __name__ == "__main__":
                         print(f'\nSearch for "{isbn}" yielded the following:')
                         mml.search_isbn(isbn)
                     case 3:
+                        print('Please enter the author of the book you would ' \
+                              'like to find')
+                        auth = input()
+                        print(f'\nSearch for "{auth}" yielded the following:')
+                        mml.search_author(auth)
                         # TODO: build Search by author
                         print(srch_in[1])
                     case 4:
