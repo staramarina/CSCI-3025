@@ -196,7 +196,7 @@ if __name__ == "__main__":
                             print('Book is not in the library database.')
                     case 3:
                         print('Please enter the ISBN of the book you would ' \
-                              'like to extend the return date of')
+                              'like to extend checkout')
                         isbn = input()
                         book = mml.find_book(isbn)
                         if book:
@@ -204,9 +204,24 @@ if __name__ == "__main__":
                             print(flag[1])
                         else:
                             print('Book is not in the library database.')
-                        # TODO: build Extend return due date on a book
-                        print(pat_in[1])
                     case 4:
+                        print('Please enter the ISBN of the book you would ' \
+                              'like to be added to the waitlist for')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        avail = mml.book_avail(book)
+                        if avail:
+                            print('Book is available for checkout.')
+                            print('Select option 1 to checkout book.')
+                        elif book:
+                            flag = patron.waitlist_add(book)
+                            if flag[0]:
+                                print(f'You are number {flag[1] + 1} '
+                                      f'on the waitlist')
+                            else:
+                                print(flag[1])
+                        else:
+                            print('Book is not in the library database.')
                         # TODO: build Get added to the waitlist for a book
                         print(pat_in[1])
                     case 5:
