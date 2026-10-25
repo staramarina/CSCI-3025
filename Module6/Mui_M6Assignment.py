@@ -222,16 +222,14 @@ if __name__ == "__main__":
                                 print(flag[1])
                         else:
                             print('Book is not in the library database.')
-                        # TODO: build Get added to the waitlist for a book
-                        print(pat_in[1])
                     case 5:
-                        # TODO: build Request a hold on a book
+                        # TODO: build Request a hold on a book -- need to account for non-educator
                         print(pat_in[1])
                     case 6:
-                        # TODO: build Extend a hold on a book
+                        # TODO: build Extend a hold on a book -- need to account for non-educator
                         print(pat_in[1])
                     case 7:
-                        # TODO: build Remove a hold on a book
+                        # TODO: build Remove a hold on a book -- need to account for non-educator
                         print(pat_in[1])
                     case 8:
                         print('\nYour checked out books:')
