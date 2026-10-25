@@ -14,7 +14,7 @@
 import sys
 from Mui_Library import Library
 from Mui_Book import Book
-from Mui_Patron import Patron
+from Mui_Patron import Patron, Educator
 from Mui_Ancillary import file_exists, int_check
 
 
@@ -72,7 +72,21 @@ if __name__ == "__main__":
                 mml.add_patron(patron)
     patron_reader.close()
     educator_reader = open(educator_file)
-    # TODO: add bulk import after class is built
+    for line in educator_reader:
+        if line.isspace():
+            continue
+        else:
+            line = line.strip()
+            data = line.split(", ")
+            if 11 != len(data):
+                continue
+            else:
+                address = (data[6] + ', ' + data[7] + ', ' 
+                           + data[8] + ', ' + data[9])
+                educator = Educator(data[0], data[1], data[2], data[3],
+                                data[4], data[5], address, data[10])
+                print(educator) # test line remove later
+                mml.add_patron(educator)
     educator_reader.close()
 
     # Start of library tool
