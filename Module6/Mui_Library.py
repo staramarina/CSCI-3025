@@ -205,6 +205,19 @@ class Library:
             return False
 
 
+    def find_patron(self, card):
+        """Finds a patron record from their library card number
+        
+        Args:
+            card: library card number as a string
+        
+        Returns:
+            patron: a Patron or Educator class instance
+        """
+        patron = self.patrons.get(card)
+        return patron
+
+
     def patron_exists(self, patron):
         """Checks whether a patron exists in the library database
         
