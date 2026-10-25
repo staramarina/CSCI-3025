@@ -220,7 +220,7 @@ if __name__ == "__main__":
                 pat_in = int_check(usr_in)
                 match pat_in[1]:
                     case 1:
-                        print('Please enter the ISBN of the book you would ' \
+                        print('\nPlease enter the ISBN of the book you would ' \
                               'like to checkout')
                         isbn = input()
                         book = mml.find_book(isbn)
@@ -234,7 +234,7 @@ if __name__ == "__main__":
                         else:
                             print('Book not found.')
                     case 2:
-                        print('Please enter the ISBN of the book you would ' \
+                        print('\nPlease enter the ISBN of the book you would ' \
                               'like to return')
                         isbn = input()
                         book = mml.find_book(isbn)
@@ -244,7 +244,7 @@ if __name__ == "__main__":
                         else:
                             print('Book is not in the library database.')
                     case 3:
-                        print('Please enter the ISBN of the book you would ' \
+                        print('\nPlease enter the ISBN of the book you would ' \
                               'like to extend checkout')
                         isbn = input()
                         book = mml.find_book(isbn)
@@ -254,7 +254,7 @@ if __name__ == "__main__":
                         else:
                             print('Book is not in the library database.')
                     case 4:
-                        print('Please enter the ISBN of the book you would ' \
+                        print('\nPlease enter the ISBN of the book you would ' \
                               'like to be added to the waitlist for')
                         isbn = input()
                         book = mml.find_book(isbn)
@@ -272,7 +272,7 @@ if __name__ == "__main__":
                         else:
                             print('Book is not in the library database.')
                     case 5:
-                        print('Please enter the ISBN of the book you would ' \
+                        print('\nPlease enter the ISBN of the book you would ' \
                               'like to place a hold')
                         isbn = input()
                         book = mml.find_book(isbn)
@@ -285,7 +285,7 @@ if __name__ == "__main__":
                             qty = int_check(qty_in)
                             if start and end and qty[0]:
                                 flag = patron.hold_request(book, start, 
-                                                           end, qty)
+                                                           end, qty[1])
                                 print(flag[1])
                             else:
                                 ('Input is in the wrong format')
@@ -296,7 +296,7 @@ if __name__ == "__main__":
                         # TODO: build Request a hold on a book -- need to account for non-educator
                         print(pat_in[1])
                     case 6:
-                        print('Please enter the ISBN of the book you would ' \
+                        print('\nPlease enter the ISBN of the book you would ' \
                               'like to update the hold')
                         isbn = input()
                         book = mml.find_book(isbn)
@@ -318,7 +318,7 @@ if __name__ == "__main__":
                         # TODO: build Extend a hold on a book -- need to account for non-educator
                         print(pat_in[1])
                     case 7:
-                        print('Please enter the ISBN of the book you would ' \
+                        print('\nPlease enter the ISBN of the book you would ' \
                               'like to remove the hold')
                         isbn = input()
                         book = mml.find_book(isbn)

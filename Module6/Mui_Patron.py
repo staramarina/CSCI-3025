@@ -392,7 +392,7 @@ class Educator(Patron):
             book.hold_end = end
             book_copy = deepcopy(book)
             book_copy.qty = qty
-            self.books_hold[book_copy.isbn] = book_copy
+            self.hold_books[book_copy.isbn] = book_copy
             if book_copy in self.hold_books.values():
                 return (True, 'Book added to hold list')
             else:

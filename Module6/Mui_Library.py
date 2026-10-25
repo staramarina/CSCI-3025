@@ -332,7 +332,7 @@ class Library:
         print('3 -- Extend return due date on a book')
         print('4 -- Get added to the waitlist for a book')
         print('5 -- Request a hold on a book')
-        print('6 -- Extend a hold on a book')
+        print('6 -- Update a hold on a book')
         print('7 -- Remove a hold on a book')
         print('8 -- View all checked out books')
         print('x -- Quit')
