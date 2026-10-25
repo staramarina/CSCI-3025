@@ -161,12 +161,14 @@ if __name__ == "__main__":
                         else:
                             print('Book is not in the database.')
                     case 5:
+                        print('')
                         mml.print_type_meu()
                         usr_in = input()
                         if 'x' == usr_in:
                             break
                         type_in = int_check(usr_in)
                         if 1 == type_in[1]:
+                            print('')
                             data = mml.patron_create_prompt()
                             patron = Patron(*data)
                             flag = mml.add_patron(patron)
@@ -176,6 +178,7 @@ if __name__ == "__main__":
                             else:
                                 print('\nThat card number already exists')
                         elif 2 == type_in[1]:
+                            print('')
                             data = mml.patron_create_prompt()
                             inst = input('Patron\'s institution: ')
                             educator = Educator(*data, inst)
@@ -188,8 +191,16 @@ if __name__ == "__main__":
                         else:
                             print('That doesn\'t seem to be an option.')
                     case 6:
-                        # TODO: build Remove a patron -- need to account for educator
-                        print(staff_in[1])
+                        print('\nPlease enter the card number of the patron ' \
+                              'you would like to remove')
+                        card = input()
+                        patron = mml.find_patron(card)
+                        if not patron:
+                            print('Account not found.')
+                        else:
+                            mml.remove_patron(patron)
+                            print('The following patron was removed')
+                            print(patron)
                     case _:
                         print('That doesn\'t seem to be an option.')
                 print('')
