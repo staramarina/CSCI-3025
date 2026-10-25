@@ -133,11 +133,19 @@ if __name__ == "__main__":
                                 print('Error moving book, please try again')
                         else:
                             print('Book is not in the database.')
-                        # TODO: build Remove a book from circulation, but not the library
-                        #print(staff_in[1])
                     case 4:
-                        # TODO: build Add a book back into circulation
-                        print(staff_in[1])
+                        print('Please enter the ISBN of the book you ' \
+                              'want to return to circulation')
+                        isbn = input()
+                        book = mml.books_out.get(isbn)
+                        if book:
+                            flag = mml.recirc_book(book)
+                            if flag:
+                                print('Book returned to circulation!')
+                            else:
+                                print('Error moving book, please try again')
+                        else:
+                            print('Book is not in the database.')
                     case 5:
                         # TODO: build Add a patron
                         print(staff_in[1])
