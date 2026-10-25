@@ -104,7 +104,7 @@ class Patron:
         has_flag = self.book_check(book)
         if has_flag:
             return (False, 'A copy of this book is already checked out')
-        elif 12 == len(self.books):
+        elif limit == len(self.books):
             return (False, f'Cannot exceed checkout limit of {limit}')
         elif book.hold_check():
             return (False, 'This book is currently on hold')
@@ -251,3 +251,89 @@ class Educator(Patron):
         self.standing = 'good'
         self.books = {}
         self.hold_books = {}
+
+
+    def hold_book(self, book):
+        """Checks whether the educator current has a hold on the book
+        
+        Args:
+            book: a Book class instance
+        
+        Returns:
+            A 2-tuple of the following format
+                [0]: True if book is on hold and within window, otherwise False
+                [1]: Additional information on outcome
+        """
+        today = datetime.now()
+        if 0 == len(self.hold_books):
+            return (False, 'You currently have no books on hold')
+        elif book.isbn in self.hold_books:
+            if today < self.hold_books[book.isbn].hold_start :
+                return (False, 'Your hold window has not started')
+            elif self.hold_books[book.isbn].hold_end < today:
+                return (False, 'Your hold window has ended')
+            else:
+                qty = self.hold_books[book.isbn].qty
+                return (True, qty)
+        else:
+            return (False, 'You do not have a hold on the book')
+
+
+
+    def checkout_book(self, book):
+        """Checks out a book to an educator
+           Note: assumes book_avail from library module was run separately
+        
+        Args:
+            book: a Book class instance
+        
+        Return:
+            A 2-tuple of the following format
+                [0]: True if book checkout was successful, otherwise False
+                [1]: Additional information on outcome
+        """
+        limit = 50
+        has_flag = self.book_check(book)
+        if has_flag:
+            return (False, 'A copy of this book is already checked out')
+        elif limit == len(self.books):
+            return (False, f'Cannot exceed checkout limit of {limit}')
+        elif book.hold_check():
+            hold_flag = self.hold_book(book)
+            if hold_flag[0]:
+                book.qty -= hold_flag[1]
+                book_copy = deepcopy(book)
+                book_copy.qty = hold_flag[1]
+                book_copy.waitlist = []
+                book_copy.return_date = book.hold_end
+                self.books[book_copy.isbn] = book_copy
+                has_flag = self.book_check(book)
+                if has_flag:
+                    self.hold_books.pop(book.isbn)
+                    return (True, 'Book was successfully checked out')
+                else:
+                    return (False, 'Book could not be checked out')
+            else:
+                return (False, hold_flag[1])
+        elif (
+            0 == len(book.waitlist)
+            or self.card_num == book.waitlist[0]
+        ):
+            book.qty -= 1
+            book_copy = deepcopy(book)
+            book_copy.qty = 1
+            book_copy.waitlist = []
+            book_copy.return_date = datetime.now() + timedelta(weeks=6)
+            self.books[book_copy.isbn] = book_copy
+            has_flag = self.book_check(book)
+            if has_flag:
+                if 0 != len(book.waitlist):
+                    book.waitlist.pop(0)
+                return (True, 'Book was successfully checked out')
+            else:
+                return (False, 'Book could not be checked out')
+        elif self.card_num in book.waitlist:
+            place = book.waitlist(self.card_num)
+            return (False, f'You are currently number {place} on the waitlist')
+        else:
+            return (False, 'Book is currently waitlisted')
