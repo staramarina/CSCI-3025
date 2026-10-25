@@ -271,43 +271,57 @@ Provides additional functions and checks
 ## Input Files
 The following files are used to populate a new library instance with example data. Further interaction is intended to occur via the console. Verification rules are the same for both unless otherwise noted. The file names are currently hard-coded, but all such variables are defined immediately following the instantiation of main in the Mui_M6Assignment.py file. 
 
-### Book Data (testbookdata.txt)
+### Book Data
 
-#### Example Input File (TBD.txt)
+#### Example Input File (testbookdata.txt)
 ```
-TBD
-```
-
-#### Verification Rules
-TBD
-
-### Patron Data (testpatrondata.txt)
-
-#### Example Input File (TBD.txt)
-```
-TBD
+9780140177398, John Steinbeck, Of Mice and Men, 1
+9780141191508, Gaston Leroux, The Phantom of the Opera, 2
+9780141392608, Victor Hugo, Les Miserables, 5
 ```
 
 #### Verification Rules
-TBD
+- File input only: A total of 4 values is required
+- First value is ISBN and must be unique
+- Last value is quantity and must be an integer
+- File input only: separate is done via commas, so titles and authors cannot have commas present
 
-### Educator Data (testeducatordata.txt)
+### Patron Data
 
-#### Example Input File (TBD.txt)
+#### Example Input File (testpatrondata.txt)
 ```
-TBD
+899261678, Deckow, Sonia, 19711012, 810-932-7365, soniadeckow@protonmail.com, 9740 Larissa Expressway Apt. 320, Bernitaport, South Dakota, 07123
+118164312, Ruecker, Myles, 19821031, 667-377-2882, mylesruecker@outlook.com, 442 Cayla Lakes, North Maia, West Virginia, 04197
+684429935, Windler, Kayley, 19961104. 669-404-2845, kayley.windler@hotmail.com, 900 Joannie Mill, New Gayfort, New Mexico, 07780
 ```
 
 #### Verification Rules
-TBD
+- File input only: A total of 10 values is required
+- First value is the library card number and must be unique
+- Fourth value is date of birth and must be in the format YYYYMMDD
+- File input only: separation is done via commas, individual values cannot have commas present
+- Address components are combined into a single value
+
+### Educator Data
+
+#### Example Input File (testeducatordata.txt)
+```
+888120722, Barrows, Americo, 19881015, 580-438-9671, americo.barrows68@outlook.com, 5677 Witting Rest Suite 120, East Harmony, California, 66444, American River College
+764707335, Reichel, Morgan, 19781220, 630-251-6114, morgan.reichel@hotmail.com, 47180 Jenifer Plains Apt. 307, Clairebury, Alabama, 76390, North Highlands High School
+360922899, Klocko, Alan, 19680402, 779-608-1590, alan.klocko82@yahoo.com, 635 Harmon Mill Suite 899, Port Dashawn, South Dakota, 95953, Sierra College
+```
+
+#### Verification Rules
+- File input only: A total of 11 values is required
+- First value is the library card number and must be unique
+- Fourth value is date of birth and must be in the format YYYYMMDD
+- File input only: separation is done via commas, individual values cannot have commas present
+- Address components are combined into a single value
 
 ## Testing
 
 ### Manual Testing
-Run the program with provided test data:  
-```python TBD.py```  
-Enter: ```TBD```  
-Enter: ```TBD```
+Manual testing was conducted using the aforementioned input files. Valid values from these files were utilized to test successful branches. Factitious, both valid and invalid, were used to test the remaining branches. Manual testing was conducted as each branch of the project was completed.
 
 ### Automated Testing
 Automated tested with pytest. --TBR
