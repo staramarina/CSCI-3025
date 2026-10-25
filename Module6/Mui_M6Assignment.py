@@ -185,8 +185,13 @@ if __name__ == "__main__":
                         else:
                             print('Book not found.')
                     case 2:
-                        # TODO: build Return a book
-                        print(pat_in[1])
+                        print('Please enter the ISBN of the book you would ' \
+                              'like to return')
+                        isbn = input()
+                        book = mml.find_book(isbn)
+                        if book:
+                            flag = patron.return_book(book)
+                            print(flag[1])
                     case 3:
                         # TODO: build Extend return due date on a book
                         print(pat_in[1])
@@ -204,7 +209,7 @@ if __name__ == "__main__":
                         print(pat_in[1])
                     case 8:
                         print('\nYour checked out books:')
-                        patron.checked_out() # still need to check
+                        patron.checked_out()
                     case _:
                         print('That doesn\'t seem to be an option.')
                 print('')
