@@ -43,7 +43,11 @@ class Book:
             True if the book is currently on hold, otherwise False
         """
         today = datetime.now()
-        if self.hold_start <= today <= self.hold_end:
+        if not self.hold_start:
+            return False
+        elif (self.hold_start <= today) and (not self.hold_end):
+            return True
+        elif self.hold_start <= today <= self.hold_end:
             return True
         else:
             return False
