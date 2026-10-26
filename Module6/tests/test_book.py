@@ -24,6 +24,7 @@ class TestBookConstructor:
         assert '' == sample_book_default.author
         assert '' == sample_book_default.title
         assert 1 == sample_book_default.qty
+        assert 1 == sample_book_default.tot_qty
 
 
     def test_init_values(self, sample_book_default):
@@ -41,6 +42,7 @@ class TestBookConstructor:
         assert 'Jane Austen' == sample_book_many.author
         assert 'Pride and Prejudice' == sample_book_many.title
         assert 15 == sample_book_many.qty
+        assert 15 == sample_book_many.tot_qty
 
 
     def test_mutability(self, sample_book_many):
