@@ -360,6 +360,7 @@ python -m pytest
 | sample_ed_default() | Returns an Educator using only required parameters |
 | sample_lib() | Returns a Library with realistic data |
 | sample_lib_default() | Returns a Library with default values |
+| samp_pop_lib() | Returns a Library with some books and patrons data included |
 
 #### Helper Functions (utilities.py)
 | Function | Purpose | Returns |
