@@ -172,3 +172,32 @@ class TestCheckoutExtend:
         flag = sample_patron.checkout_extend(sample_book_single)
         assert not flag[0]
         assert 'not currently checked out' in flag[1]
+
+
+class TestWaitlistAdd:
+    """Class to test the waitlist_add(self, book) method"""
+
+
+    def test_checked_out(self, sample_patron, sample_book_single):
+        """Tests that adding to waitlist for checked out book fails"""
+        sample_patron.checkout_book(sample_book_single)
+        flag = sample_patron.waitlist_add(sample_book_single)
+        assert not flag[0]
+        assert 'already have that book' in flag[1]
+
+
+    def test_add_wait(self, sample_patron, sample_book_single):
+        """Tests that a patron is successfully added to the waitlist"""
+        flag = sample_patron.waitlist_add(sample_book_single)
+        assert flag[0]
+        assert 0 == flag[1]
+
+
+    def test_wait_already(self, sample_patron, sample_book_single):
+        """Tests that a patron's position in the waitlist is not changed"""
+        sample_patron.waitlist_add(sample_book_single)
+        sample_book_single.waitlist.append('112233')
+        sample_book_single.waitlist.append('445566')
+        flag = sample_patron.waitlist_add(sample_book_single)
+        assert flag[0]
+        assert 0 == flag[1]
