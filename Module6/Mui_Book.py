@@ -51,9 +51,9 @@ class Book:
             ValueError: if value is less than 0
         """
         if isinstance(value, bool) or not isinstance(value, int):
-            raise TypeError(f'Quantity must be an integer')
+            raise TypeError('Quantity must be an integer')
         elif 0 > value:
-            raise ValueError(f'Quantity cannot be negative')
+            raise ValueError('Quantity cannot be negative')
         else:
             self.__qty = value
 

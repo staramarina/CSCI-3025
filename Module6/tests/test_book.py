@@ -6,6 +6,7 @@
 
 
 from datetime import datetime
+import pytest
 import sys
 from pathlib import Path
 from utilities import offset_date
@@ -49,3 +50,27 @@ class TestConstructor:
         sample_book_many.return_date = offset_date(weeks=3)
         assert 21 == sample_book_many.qty
         assert sample_book_many.return_date is not None
+
+
+    def test_qty_neg(self, sample_book_default):
+        """Tests that quantity updates with negative number raises error"""
+        qty_neg = -1
+        with pytest.raises(ValueError) as exc_info:
+            sample_book_default.qty = qty_neg
+        assert 'Quantity cannot be negative' == str(exc_info.value)
+
+
+    def test_qty_type(self, sample_book_default):
+        """Tests that quantity updates with wrong type raises error"""
+        qty_bad_type = 'char'
+        with pytest.raises(TypeError) as exc_info:
+            sample_book_default.qty = qty_bad_type
+        assert 'Quantity must be an integer' == str(exc_info.value)
+
+
+    def test_qty_bool(self, sample_book_default):
+        """Tests that quantity updates with bool raises error"""
+        qty_bool = False
+        with pytest.raises(TypeError) as exc_info:
+            sample_book_default.qty = qty_bool
+        assert 'Quantity must be an integer' == str(exc_info.value)
