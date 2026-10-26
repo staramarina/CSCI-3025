@@ -5,7 +5,12 @@
 # Note: file_exists function tested in Module 5
 # Run with: pytest tests/test_ancillary.py -v
 
+import sys
+from pathlib import Path
 
+
+#Adds parent directory to front of module search path
+sys.path.insert(0, str(Path(__file__).parent.parent))
 import Mui_Ancillary as aux
 
 
