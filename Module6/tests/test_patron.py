@@ -408,3 +408,18 @@ class TestHoldUpdate:
 
 class TestHoldCancel:
     """Class to test the hold_remove(self, book) method"""
+
+
+    def test_hold_cancel(self, sample_educator, sample_book_single):
+        """Tests that a hold is successfully cancelled"""
+        start = offset_date(days=5)
+        end = offset_date(days=15)
+        qty = 1
+        sample_educator.hold_request(sample_book_single, start, end, qty)
+        flag = sample_educator.hold_remove(sample_book_single)
+        assert flag[0]
+        assert 'Hold removed successfully' in flag[1]
+        assert sample_book_single.isbn not in sample_educator.hold_books
+        assert sample_book_single.hold_start is None
+        assert sample_book_single.hold_end is None
+        assert 0 == sample_book_single.hold_qty
