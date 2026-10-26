@@ -41,7 +41,7 @@ class TestIntCheck:
         num = aux.int_check(num_str)
 
         assert not num[0]
-        assert 'must be a string' in num[1]
+        assert 'Invalid input' in num[1]
 
 
     def test_char_input(self):
@@ -52,9 +52,9 @@ class TestIntCheck:
         num2 = aux.int_check(num_str2)
 
         assert not num1[0]
-        assert 'invalid literal' in num1[1]
+        assert 'Invalid input' in num1[1]
         assert not num2[0]
-        assert 'invalid literal' in num2[1]
+        assert 'Invalid input' in num2[1]
 
 
     def test_decimal_input(self):
@@ -63,7 +63,7 @@ class TestIntCheck:
         num = aux.int_check(num_str)
 
         assert not num[0]
-        assert 'invalid literal' in num[1]
+        assert 'Invalid input' in num[1]
 
 
 class TestDateFormat:
@@ -137,4 +137,4 @@ class TestDateFormat:
 
         assert dtg_good[1] is None
         assert dtg_bad[0] is None
-        assert 'Date cannot be in the future' in dtg_bad[1]
+        assert 'Date must be in the future' in dtg_bad[1]

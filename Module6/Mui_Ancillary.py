@@ -49,7 +49,7 @@ def int_check(num_str):
         num_int = int(num_str)
         return (True, num_int)
     except (ValueError, TypeError) as err:
-        return (False, err)
+        return (False, f'Invalid input: {err}')
 
 
 def date_format(date_str, future = False):
@@ -79,7 +79,7 @@ def date_format(date_str, future = False):
         try:
             date_dtg = datetime(y_int[1], m_int[1], d_int[1])
         except ValueError:
-            date_dtg = (None, 'Not a valid date')
+            return (None, 'Not a valid date')
         if future:
             if max_date < date_dtg:
                 return (date_dtg, None)
