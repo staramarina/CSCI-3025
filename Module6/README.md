@@ -193,6 +193,7 @@ Provides information and checks on books
 | return_date | Date the book is due to return | None |
 | hold_start | Date the hold on a book starts | None |
 | hold_end | Date the hold on a book ends | None |
+| hold_qty | Quantity of books that are on hold | 0 |
 | waitlist | List of library card numbers of patrons waiting for the book | Empty |
 
 ##### Methods
