@@ -106,7 +106,7 @@ if __name__ == "__main__":
                     case 1:
                         print('\nPlease enter the following information')
                         isbn = input('ISBN: ')
-                        auth = input('Auther: ')
+                        auth = input('Author: ')
                         title = input('Title: ')
                         qty = input('Quantity: ')
                         qty_chk = int_check(qty)
@@ -161,7 +161,7 @@ if __name__ == "__main__":
                             print('Book is not in the database.')
                     case 5:
                         print('')
-                        mml.print_type_meu()
+                        mml.print_type_menu()
                         usr_in = input()
                         if 'x' == usr_in:
                             break

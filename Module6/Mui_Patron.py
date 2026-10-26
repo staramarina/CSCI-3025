@@ -126,7 +126,7 @@ class Patron:
             else:
                 return (False, 'Book could not be checked out')
         elif self.card_num in book.waitlist:
-            place = book.waitlist(self.card_num)
+            place = book.waitlist.index(self.card_num)
             return (False, f'You are currently number {place} on the waitlist')
         else:
             return (False, 'Book is currently waitlisted')
@@ -333,7 +333,7 @@ class Educator(Patron):
             else:
                 return (False, 'Book could not be checked out')
         elif self.card_num in book.waitlist:
-            place = book.waitlist(self.card_num)
+            place = book.waitlist.index(self.card_num)
             return (False, f'You are currently number {place} on the waitlist')
         else:
             return (False, 'Book is currently waitlisted')

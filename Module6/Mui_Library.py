@@ -348,7 +348,7 @@ class Library:
         print('x -- Quit')
 
 
-    def print_type_meu(self):
+    def print_type_menu(self):
         """Prints the patron or educator type menu to the console"""
         print('Please select one of the following options:')
         print('1 -- Add regular patron')
