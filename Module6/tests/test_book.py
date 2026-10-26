@@ -31,6 +31,7 @@ class TestBookConstructor:
         assert sample_book_default.return_date is None
         assert sample_book_default.hold_start is None
         assert sample_book_default.hold_end is None
+        assert 0 == sample_book_default.hold_qty
         assert 0 == len(sample_book_default.waitlist)
 
 

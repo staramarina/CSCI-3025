@@ -30,6 +30,7 @@ class Book:
         self.return_date = None
         self.hold_start = None
         self.hold_end = None
+        self.hold_qty = 0
         self.waitlist =  []
 
 
