@@ -47,7 +47,7 @@ class Book:
         return self.__tot_qty
 
 
-    def __val_qty(self, value):
+    def _val_qty(self, value):
         """Checks quantity value, rejects invalid values
         
         Args:
