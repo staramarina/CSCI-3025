@@ -44,3 +44,19 @@ class TestPatronConstructor:
         assert '810-932-7365' == sample_patron.phone
         assert 'soniadeckow@protonmail.com' == sample_patron.email
         assert '9740 Larissa Expressway Apt. 320, Bernitaport, South Dakota, 07123' == sample_patron.address
+
+
+class TestPatronString:
+    """Class to test the __str__ method"""
+
+
+    def test_str_format(self, sample_patron):
+        """Tests that string appears as expected"""
+        expect = ('Card #: 899261678 - Deckow, Sonia')
+        assert expect == str(sample_patron)
+
+
+    def test_str_default(self, sample_patron_default):
+        """Tests that a book with default values prints as expected"""
+        expect = ('Card #: 111222333 - , ')
+        assert expect == str(sample_patron_default)
