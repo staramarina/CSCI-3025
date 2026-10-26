@@ -60,7 +60,7 @@ def sample_patron():
 
 
 @pytest.fixture
-def sampe_patron_default():
+def sample_patron_default():
     """Returns a Patron using only required parameters"""
     return Patron(
         num = '111222333'
