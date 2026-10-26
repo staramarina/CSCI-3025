@@ -29,7 +29,7 @@ class TestConstructor:
 
 
     def test_init_values(self, sample_book_default):
-        """Tests initiatlization values that are the same for all books"""
+        """Tests initialization values that are the same for all books"""
         assert sample_book_default.return_date is None
         assert sample_book_default.hold_start is None
         assert sample_book_default.hold_end is None
