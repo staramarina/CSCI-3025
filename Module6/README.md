@@ -338,7 +338,7 @@ From within Module6 directory, run
 python -m pytest
 ```
 
-####Test Fixtures (conftest.py)
+#### Test Fixtures (conftest.py)
 | Fixture | Purpose |
 | ------- | ------- |
 | sample_book_many | Returns a fully populated Book with realistic data and large quantity |
@@ -346,12 +346,12 @@ python -m pytest
 | sample_book_default | Returns a Book using only required parameters |
 | TBD | TBD |
 
-####Helper Functions (utilities.py)
+#### Helper Functions (utilities.py)
 | Function | Purpose | Returns |
 | ------- | ------- | ------- |
 | offset_date(**kwargs) | Returns a relative date from now to ensure past and future | rel_dtg as a datetime value |
 
-####Ancillary Tests (test_ancillary.py)
+#### Ancillary Tests (test_ancillary.py)
 | Class | Method | Purpose |
 | ------- | ------- | ------- |
 | TestIntCheck |  | Class to test the int_check(num_str) function |
@@ -367,7 +367,7 @@ python -m pytest
 |  | test_past_date(self) | Tests both past and future date against past requirement |
 |  | test_future_date(self) | Tests both past and future date against future requirement |
 
-####Book Tests (test_book.py)
+#### Book Tests (test_book.py)
 | Class | Method | Purpose |
 | ------- | ------- | ------- |
 | TestConstructor |  | Class to test the initialization method |
@@ -389,10 +389,10 @@ python -m pytest
 |  | test_show_status(self, sample_book_single) | Tests that the return string from show_status is as expected |
 |  | test_show_hold(self, sample_book_single) | Tests that the return string from show_hold is as expected |
 
-####Library Tests (test_library.py)
+#### Library Tests (test_library.py)
 TBD
 
-####Patron Tests (test_patron.py)
+#### Patron Tests (test_patron.py)
 TBD
 
 ## Author & Credits
