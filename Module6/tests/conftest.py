@@ -125,9 +125,9 @@ def sample_ed_default():
 def sample_lib():
     """returns a Library with realistic data"""
     return Library(
-        lib_name = 'Mui Mini Library',
-        lib_ph = '719-542-7279', # Example only, do not call
-        lib_add = '123 S Academy Blvd, Fountain, CO 80819' # Example only
+        name = 'Mui Mini Library',
+        phone = '719-542-7279', # Example only, do not call
+        address = '123 S Academy Blvd, Fountain, CO 80819' # Example only
     )
 
 
