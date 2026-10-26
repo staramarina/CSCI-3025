@@ -90,3 +90,21 @@ class TestInLib:
         """Tests whether None is returned when given an absent patron key"""
         patron = sample_lib.find_patron('899261678')
         assert patron is None
+
+
+class TestAddBook:
+    """Class to test the add_book(self, book) method"""
+
+
+    def test_update_pass(self, samp_pop_lib, sample_book_single):
+        """Tests the case when book already exists and adding passes"""
+        flag = samp_pop_lib.add_book(sample_book_single)
+        assert flag
+        assert 2 == samp_pop_lib.books[sample_book_single.isbn].tot_qty
+        assert 2 == samp_pop_lib.books[sample_book_single.isbn].qty
+
+
+    def test_add_new(self, sample_lib, sample_book_single):
+        """Tests the case when a book does not already exist"""
+        flag = sample_lib.add_book(sample_book_single)
+        assert flag
