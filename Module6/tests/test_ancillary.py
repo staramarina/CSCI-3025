@@ -63,3 +63,73 @@ class TestIntCheck:
 
 class TestDateFormat:
     """Class to test the date_format(date_str) function"""
+
+
+    def test_none_input(self):
+        """Tests None input"""
+        date_str = None
+        future = False
+        dtg = aux.date_format(date_str, future)
+
+        assert dtg[0] is None
+        assert 'Date cannot be none' in dtg[1]
+
+
+    def test_wrong_length(self):
+        """Tests smaller and larger length input"""
+        future = False
+        date_str1 = '199010311'
+        date_str2 = '1990103'
+        dtg1 = aux.date_format(date_str1, future)
+        dtg2 = aux.date_format(date_str2, future)
+
+        assert dtg1[0] is None
+        assert 'Incorrect date length' in dtg1[1]
+        assert dtg2[0] is None
+        assert 'Incorrect date length' in dtg2[1]
+
+
+    def test_not_number(self):
+        """Tests non-number values"""
+        future = False
+        date_str = 'chardate'
+        dtg = aux.date_format(date_str, future)
+
+        assert dtg[0] is None
+        assert 'Invalid date formatting' in dtg[1]
+
+
+    def test_invalid_dates(self):
+        """Tests dates that don't exist"""
+        future = False
+        date_str = '20030229'
+        dtg = aux.date_format(date_str, future)
+
+        assert dtg[0] is None
+        assert 'Not a valid date' in dtg[1]
+
+
+    def test_past_date(self):
+        """Tests both past and future date against past requirement"""
+        future = False
+        date_good = '20051031'
+        date_bad = '20551031'
+        dtg_good = aux.date_format(date_good, future)
+        dtg_bad = aux.date_format(date_bad, future)
+
+        assert dtg_good[1] is None
+        assert dtg_bad[0] is None
+        assert 'Date cannot be in the future' in dtg_bad[1]
+
+
+    def test_future_date(self):
+        """Tests both past and future date against future requirement"""
+        future = True
+        date_good = '20551031'
+        date_bad = '20051031'
+        dtg_good = aux.date_format(date_good, future)
+        dtg_bad = aux.date_format(date_bad, future)
+
+        assert dtg_good[1] is None
+        assert dtg_bad[0] is None
+        assert 'Date cannot be in the future' in dtg_bad[1]
