@@ -341,9 +341,13 @@ python -m pytest
 #### Test Fixtures (conftest.py)
 | Fixture | Purpose |
 | ------- | ------- |
-| sample_book_many | Returns a fully populated Book with realistic data and large quantity |
-| sample_book_single | Returns a fully populated Book with realistic data with single copy |
-| sample_book_default | Returns a Book using only required parameters |
+| sample_book_many() | Returns a fully populated Book with realistic data and large quantity |
+| sample_book_single() | Returns a fully populated Book with realistic data with single copy |
+| sample_book_default() | Returns a Book using only required parameters |
+| sample_patron() | Returns a Patron fully populated with realistic data |
+| sample_patron_default() | Returns a Patron using only required parameters |
+| sample_educator() | Returns and Educator fully populated with realistic data |
+| sample_ed_default() | Returns an Educator using only required parameters |
 | TBD | TBD |
 
 #### Helper Functions (utilities.py)
