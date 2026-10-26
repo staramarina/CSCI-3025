@@ -12,6 +12,7 @@ from pathlib import Path
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from Mui_Book import Book
+from Mui_Patron import Patron, Educator
 
 
 @pytest.fixture
@@ -41,4 +42,49 @@ def sample_book_default():
     """Returns a Book using only required parameters"""
     return Book(
         isbn = '123456789'
+    )
+
+
+@pytest.fixture
+def sample_patron():
+    """Returns a Patron fully populated with realistic data"""
+    return Patron(
+        num = '899261678',
+        last = 'Deckow',
+        first = 'Sonia',
+        dob = '19711012',
+        phone = '810-932-7365',
+        email = 'soniadeckow@protonmail.com',
+        address = '9740 Larissa Expressway Apt. 320, Bernitaport, South Dakota, 07123'
+    )
+
+
+@pytest.fixture
+def sampe_patron_default():
+    """Returns a Patron using only required parameters"""
+    return Patron(
+        num = '111222333'
+    )
+
+
+@pytest.fixture
+def sample_educator():
+    """Returns an Educator fully populated with realistic data"""
+    return Educator(
+        num = '888120722',
+        last = 'Barrows',
+        first = 'Americo',
+        dob = '19881015',
+        phone = '580-438-9671',
+        email = 'americo.barrows68@outlook.com',
+        address = '5677 Witting Rest Suite 120, East Harmony, California, 66444',
+        insitution = 'P.S. 112'
+    )
+
+
+@pytest.fixture
+def sample_ed_default():
+    """Returns an Educator using only required parameters"""
+    return Educator(
+        num = '444555666'
     )
