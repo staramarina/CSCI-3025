@@ -329,7 +329,7 @@ The following files are used to populate a new library instance with example dat
 ## Testing
 
 ### Manual Testing
-Manual testing was conducted using the aforementioned input files. Valid values from these files were utilized to test successful branches. Factitious, both valid and invalid, were used to test the remaining branches. Manual testing was conducted as each branch of the project was completed.
+Manual testing was conducted using the aforementioned input files. Valid values from these files were utilized to test successful branches. Fictitious, both valid and invalid, were used to test the remaining branches. Manual testing was conducted as each branch of the project was completed.
 
 ### Automated Testing
 Automated tested with pytest. 
@@ -339,7 +339,17 @@ python -m pytest
 ```
 
 ####Test Fixtures (conftest.py)
-TBD
+| Fixture | Purpose |
+| ------- | ------- |
+| sample_book_many | Returns a fully populated Book with realistic data and large quantity |
+| sample_book_single | Returns a fully populated Book with realistic data with single copy |
+| sample_book_default | Returns a Book using only required parameters |
+| TBD | TBD |
+
+####Helper Functions (utilities.py)
+| Function | Purpose | Returns |
+| ------- | ------- | ------- |
+| offset_date(**kwargs) | Returns a relative date from now to ensure past and future | rel_dtg as a datetime value |
 
 ####Ancillary Tests (test_ancillary.py)
 | Class | Method | Purpose |
@@ -358,7 +368,26 @@ TBD
 |  | test_future_date(self) | Tests both past and future date against future requirement |
 
 ####Book Tests (test_book.py)
-TBD
+| Class | Method | Purpose |
+| ------- | ------- | ------- |
+| TestConstructor |  | Class to test the initialization method |
+|  | test_default_values(self, sample_book_default) | Tests that default values are populated when args are missing |
+|  | test_init_values(self, sample_book_default) | Tests initialization values that are the same for all books |
+|  | test_populated_values(self, sample_book_many) | Tests that passed values override defaults |
+|  | test_mutability(self, sample_book_many) | Tests that values expected to change can be changed |
+|  | test_qty_neg(self, sample_book_default) | Tests that quantity updates with negative number raises error |
+|  | test_qty_type(self, sample_book_default) | Tests that quantity updates with wrong type raises error |
+|  | test_qty_bool(self, sample_book_default) | Tests that quantity updates with bool raises error |
+| TestHoldCheck |  | Class to test the hold_check(self) method |
+|  | test_no_hold(self, sample_book_default) | Tests that hold start and end with None result in False |
+|  | test_current_hold(self, sample_book_default) | Tests that a book within the hold period returns true |
+|  | test_past_hold(self, sample_book_default) | Tests that a past hold period returns False |
+|  | test_future_hold(self, sample_book_default) | Tests that a future hold period returns False |
+| TestStringRepresentations |  | Class to test the __str__, show_status, and show_hold methods |
+|  | test_str_format(self, sample_book_many) | Tests that string appears as expected |
+|  | test_str_default(self, sample_book_default) | Tests that a book with default values prints as expected |
+|  | test_show_status(self, sample_book_single) | Tests that the return string from show_status is as expected |
+|  | test_show_hold(self, sample_book_single) | Tests that the return string from show_hold is as expected |
 
 ####Library Tests (test_library.py)
 TBD
