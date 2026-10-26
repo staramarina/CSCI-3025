@@ -97,9 +97,7 @@ class Patron:
             book: a Book class instance
         
         Returns:
-            A 2-tuple of the following format
-                [0]: True is patron has book, otherwise False
-                [1]: Index in patron's book list if found, otherwise None
+            True is patron has book, otherwise False
         """
         if book.isbn in self.books:
             return True
@@ -120,12 +118,12 @@ class Patron:
                 [1]: Additional information on outcome
         """
         limit = 12
-        has_flag = self.book_check(book)
-        if has_flag:
+        co_len = 3
+        if self.book_check(book):
             return (False, 'A copy of this book is already checked out')
         elif limit == len(self.books):
             return (False, f'Cannot exceed checkout limit of {limit}')
-        elif book.hold_check():
+        elif (book.hold_check()) and (book.qty <= book.hold_qty):
             return (False, 'This book is currently on hold')
         elif (
             0 == len(book.waitlist)
@@ -135,15 +133,11 @@ class Patron:
             book_copy = deepcopy(book)
             book_copy.qty = 1
             book_copy.waitlist = []
-            book_copy.return_date = datetime.now() + timedelta(weeks=3)
-            self.books[book_copy.isbn] = book_copy
-            has_flag = self.book_check(book)
-            if has_flag:
-                if 0 != len(book.waitlist):
-                    book.waitlist.pop(0)
-                return (True, 'Book was successfully checked out')
-            else:
-                return (False, 'Book could not be checked out')
+            book_copy.return_date = datetime.now() + timedelta(weeks=co_len)
+            self.books[book.isbn] = book_copy
+            if 0 != len(book.waitlist):
+                book.waitlist.pop(0)
+            return (True, 'Book was successfully checked out')
         elif self.card_num in book.waitlist:
             place = book.waitlist.index(self.card_num)
             return (False, f'You are currently number {place} on the waitlist')
@@ -163,20 +157,10 @@ class Patron:
                 [0]: True if return was successful, otherwise False
                 [1]: Addition information on return condition
         """
-        has_flag = self.book_check(book)
-        if has_flag:
-            book_return = self.books.pop(book.isbn)
-            update = self.book_check(book_return)
-            if update:
-                return (False, 'Failed to return book')
-            else:
-                qty_orig = book.qty
-                book.qty += 1
-                qty_new = book.qty
-                if qty_new > qty_orig:
-                    return (True, 'Book returned successfully')
-                else:
-                    return (False, 'Failed to update library inventory')
+        if self.book_check(book):
+            self.books.pop(book.isbn)
+            book.qty += 1
+            return (True, 'Book successfully returned')
         else:
             return (False, 'That book was not checked out')
 
@@ -192,14 +176,14 @@ class Patron:
                 [0]: True if extension was successful, otherwise False
                 [1]: Addition information on return condition
         """
-        has_flag = self.book_check(book)
-        if has_flag:
-            if book.hold_check():
+        co_len = 3
+        if self.book_check(book):
+            if (book.hold_check()) and (book.qty <= book.hold_qty):
                 return (False, 'Book is on hold, return cannot be extended')
             elif 0 < len(book.waitlist):
                 return (False, 'Book is waitlisted, return cannot be extended')
             else:
-                self.books[book.isbn].return_date += timedelta(weeks=3)
+                self.books[book.isbn].return_date += timedelta(weeks=co_len)
                 return (True, 'Return date successfully extended')
         else:
             return (False, 'Book is not currently checked out')
@@ -217,8 +201,7 @@ class Patron:
                 [0]: True if patron is on the waitlist, otherwise False
                 [1]: Index in the waitlist if true, otherwise error message
         """
-        has_flag = self.book_check(book)
-        if not has_flag:
+        if not self.book_check(book):
             if self.card_num in book.waitlist:
                 position = book.waitlist.index(self.card_num)
             else:
@@ -291,9 +274,8 @@ class Educator(Patron):
             return (False, 'You do not have a hold on the book')
 
 
-
     def checkout_book(self, book):
-        """Checks out a book to an educator
+        """Checks out a book to a patron
            Note: assumes book_avail from library module was run separately
         
         Args:
@@ -305,12 +287,12 @@ class Educator(Patron):
                 [1]: Additional information on outcome
         """
         limit = 50
-        has_flag = self.book_check(book)
-        if has_flag:
+        co_len = 6
+        if self.book_check(book):
             return (False, 'A copy of this book is already checked out')
         elif limit == len(self.books):
             return (False, f'Cannot exceed checkout limit of {limit}')
-        elif book.hold_check():
+        elif (book.hold_check()) and (book.qty <= book.hold_qty):
             hold_flag = self.hold_book(book)
             if hold_flag[0]:
                 book.qty -= hold_flag[1]
@@ -318,13 +300,10 @@ class Educator(Patron):
                 book_copy.qty = hold_flag[1]
                 book_copy.waitlist = []
                 book_copy.return_date = book.hold_end
-                self.books[book_copy.isbn] = book_copy
+                self.books[book.isbn] = book_copy
                 has_flag = self.book_check(book)
-                if has_flag:
-                    self.hold_books.pop(book.isbn)
-                    return (True, 'Book was successfully checked out')
-                else:
-                    return (False, 'Book could not be checked out')
+                self.hold_books.pop(book.isbn)
+                return (True, 'Book was successfully checked out')
             else:
                 return (False, hold_flag[1])
         elif (
@@ -335,15 +314,11 @@ class Educator(Patron):
             book_copy = deepcopy(book)
             book_copy.qty = 1
             book_copy.waitlist = []
-            book_copy.return_date = datetime.now() + timedelta(weeks=6)
-            self.books[book_copy.isbn] = book_copy
-            has_flag = self.book_check(book)
-            if has_flag:
-                if 0 != len(book.waitlist):
-                    book.waitlist.pop(0)
-                return (True, 'Book was successfully checked out')
-            else:
-                return (False, 'Book could not be checked out')
+            book_copy.return_date = datetime.now() + timedelta(weeks=co_len)
+            self.books[book.isbn] = book_copy
+            if 0 != len(book.waitlist):
+                book.waitlist.pop(0)
+            return (True, 'Book was successfully checked out')
         elif self.card_num in book.waitlist:
             place = book.waitlist.index(self.card_num)
             return (False, f'You are currently number {place} on the waitlist')
@@ -362,22 +337,23 @@ class Educator(Patron):
                 [0]: True if extension was successful, otherwise False
                 [1]: Addition information on return condition
         """
-        has_flag = self.book_check(book)
-        if has_flag:
-            if book.hold_check():
+        co_len = 6
+        if self.book_check(book):
+            if (book.hold_check()) and (book.qty <= book.hold_qty):
                 return (False, 'Book is on hold, return cannot be extended')
             elif 0 < len(book.waitlist):
                 return (False, 'Book is waitlisted, return cannot be extended')
             else:
-                self.books[book.isbn].return_date += timedelta(weeks=6)
+                self.books[book.isbn].return_date += timedelta(weeks=co_len)
                 return (True, 'Return date successfully extended')
         else:
             return (False, 'Book is not currently checked out')
 
 
-    def hold_request(self, book, start, end, qty): # TODO update with new date_format
+    def hold_request(self, book, start, end, qty):
         """Places a hold on the requsted book
-           Note: assumes book in library database
+           Notes: assumes book in library database
+                  assumes int and date format checks already run
         
         Args:
             book: a Book class instance
@@ -393,7 +369,7 @@ class Educator(Patron):
         today = datetime.now()
         if book.isbn in self.hold_books:
             return (False, 'Book is already on hold')
-        elif qty > book.qty:
+        elif qty > book.tot_qty:
             return (False, 'Cannot hold more than available quantity')
         elif (today > start) or (today > end):
             return (False, 'Cannot hold for past dates')
@@ -402,18 +378,17 @@ class Educator(Patron):
         else:
             book.hold_start = start
             book.hold_end = end
+            book.hold_qty = qty
             book_copy = deepcopy(book)
             book_copy.qty = qty
-            self.hold_books[book_copy.isbn] = book_copy
-            if book_copy in self.hold_books.values():
-                return (True, 'Book added to hold list')
-            else:
-                return (False, 'Failed to add book to hold list')
+            self.hold_books[book.isbn] = book_copy
+            return (True, 'Book added to hold list')
 
 
-    def hold_update(self, book, start, end): # TODO update with new date_format
+    def hold_update(self, book, start, end):
         """Updates the hold dates on the requested book
-           Note: assumes book in library database
+           Notes: assumes book in library database
+                  assumes int and date format checks already run
         
         Args:
             book: a Book class instance
@@ -458,7 +433,5 @@ class Educator(Patron):
             self.hold_books.pop(book.isbn)
             book.hold_start = None
             book.hold_end = None
-            if book.isbn in self.hold_books:
-                return (False, 'Failed to remove hold')
-            else:
-                return (True, 'Hold removed successfully')
+            book.hold_qty = 0
+            return (True, 'Hold removed successfully')
