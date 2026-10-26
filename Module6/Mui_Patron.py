@@ -259,16 +259,9 @@ class Educator(Patron):
         Returns:
             Educator instance
         """
-        self.card_num = num
-        self.last_name = last
-        self.first_name = first
-        self.__dob = date_format(dob) # TODO update with new date_format
-        self.__phone = phone
-        self.__email = email
-        self.__address = address
+        super().__init__(num = num, last = last, first = first, dob = dob, 
+                         phone = phone, email = email, address = address)
         self.institution = institution
-        self.standing = 'good'
-        self.books = {}
         self.hold_books = {}
 
 
