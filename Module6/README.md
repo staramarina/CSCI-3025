@@ -370,7 +370,7 @@ python -m pytest
 #### Book Tests (test_book.py)
 | Class | Method | Purpose |
 | ------- | ------- | ------- |
-| TestConstructor |  | Class to test the initialization method |
+| TestBookConstructor |  | Class to test the initialization method |
 |  | test_default_values(self, sample_book_default) | Tests that default values are populated when args are missing |
 |  | test_init_values(self, sample_book_default) | Tests initialization values that are the same for all books |
 |  | test_populated_values(self, sample_book_many) | Tests that passed values override defaults |
@@ -383,7 +383,7 @@ python -m pytest
 |  | test_current_hold(self, sample_book_default) | Tests that a book within the hold period returns true |
 |  | test_past_hold(self, sample_book_default) | Tests that a past hold period returns False |
 |  | test_future_hold(self, sample_book_default) | Tests that a future hold period returns False |
-| TestStringRepresentations |  | Class to test the __str__, show_status, and show_hold methods |
+| TestBookStringRepresentations |  | Class to test the __str__, show_status, and show_hold methods |
 |  | test_str_format(self, sample_book_many) | Tests that string appears as expected |
 |  | test_str_default(self, sample_book_default) | Tests that a book with default values prints as expected |
 |  | test_show_status(self, sample_book_single) | Tests that the return string from show_status is as expected |
