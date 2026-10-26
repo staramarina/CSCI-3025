@@ -358,6 +358,8 @@ python -m pytest
 | sample_patron_default() | Returns a Patron using only required parameters |
 | sample_educator() | Returns and Educator fully populated with realistic data |
 | sample_ed_default() | Returns an Educator using only required parameters |
+| sample_lib() | Returns a Library with realistic data |
+| sample_lib_default() | Returns a Library with default values |
 
 #### Helper Functions (utilities.py)
 | Function | Purpose | Returns |
