@@ -323,7 +323,7 @@ class Educator(Patron):
             place = book.waitlist.index(self.card_num)
             return (False, f'You are currently number {place} on the waitlist')
         else:
-            return (False, 'Book is currently waitlisted')
+            return (False, 'Book is not available')
 
 
     def checkout_extend(self, book):

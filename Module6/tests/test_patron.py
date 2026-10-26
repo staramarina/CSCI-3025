@@ -288,6 +288,42 @@ class TestCurrentHold:
 
 class TestEdCheckoutBook:
     """Class to test the Educator checkout_book(self, book) method"""
+
+    def test_hold_checkout(self, sample_educator, sample_book_single):
+        """Tests when a book is on hold and checkout is successful"""
+        sample_book_single.hold_start = offset_date(days=-2)
+        sample_book_single.hold_end = offset_date(days=17)
+        sample_book_single.hold_qty = 1
+        sample_educator.hold_books[sample_book_single.isbn] = (
+                sample_book_single)
+        flag = sample_educator.checkout_book(sample_book_single)
+        assert flag[0]
+        assert 'successfully checked out' in flag[1]
+
+    def test_not_enough(self, sample_educator, sample_book_many):
+        """Tests when a book is on hold, but there aren't enough"""
+        sample_book_many.hold_start = offset_date(days=-2)
+        sample_book_many.hold_end = offset_date(days=17)
+        sample_book_many.hold_qty = 5
+        sample_book_many.qty = 3
+        sample_educator.hold_books[sample_book_many.isbn] = (
+                sample_book_many)
+        flag = sample_educator.checkout_book(sample_book_many)
+        assert flag[0]
+        assert 'successfully checked out' in flag[1]
+
+    def test_reg_checkout(self, sample_educator, sample_book_many):
+        """Tests when there is a hold, but book_hold check fails"""
+        sample_book_many.hold_start = offset_date(days=3)
+        sample_book_many.hold_end = offset_date(days=15)
+        sample_book_many.hold_qty = 1
+        sample_educator.hold_books[sample_book_many.isbn] = (
+                sample_book_many)
+        flag = sample_educator.checkout_book(sample_book_many)
+        assert flag[0]
+        assert 'successfully checked out' in flag[1]
+
+
 class TestHoldRequest:
     """Class to test the hold_request(self, book, start, end, qty) method"""
 class TestHoldUpdate:
