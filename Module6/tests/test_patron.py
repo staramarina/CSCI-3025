@@ -380,5 +380,31 @@ class TestHoldRequest:
 
 class TestHoldUpdate:
     """Class to test the hold_update(self, book, start, end) method"""
+
+
+    def test_not_hold(self, sample_educator, sample_book_single):
+        """Tests when the book is not currently on hold"""
+        start = offset_date(days=10)
+        end = offset_date(days=30)
+        flag = sample_educator.hold_update(sample_book_single, start, end)
+        assert not flag[0]
+        assert 'not currently on hold' in flag[1]
+
+
+    def test_update_success(self, sample_educator, sample_book_single):
+        """Tests when the hold was successfully updated"""
+        start0 = offset_date(days=5)
+        end0 = offset_date(days=15)
+        qty = 1
+        sample_educator.hold_request(sample_book_single, start0, end0, qty)
+        start1 = offset_date(days=10)
+        end1 = offset_date(days=30)
+        flag = sample_educator.hold_update(sample_book_single, start1, end1)
+        assert flag[0]
+        assert 'hold updated' in flag[1]
+        assert start0 < sample_book_single.hold_start
+        assert end0 < sample_book_single.hold_end
+
+
 class TestHoldCancel:
     """Class to test the hold_remove(self, book) method"""
