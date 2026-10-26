@@ -17,7 +17,7 @@ from Mui_Book import Book
 from tests.utilities import offset_date
 
 
-class TestConstructor:
+class TestBookConstructor:
     """Class to test the __init__ method"""
 
 
@@ -106,7 +106,7 @@ class TestHoldCheck:
         assert sample_book_default.hold_check() is False
 
 
-class TestStringRepresentations:
+class TestBookStringRepresentations:
     """Class to test the __str__, show_status, and show_hold methods"""
 
     def test_str_format(self, sample_book_many):
