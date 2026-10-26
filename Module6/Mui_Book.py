@@ -70,8 +70,6 @@ class Book:
         today = datetime.now()
         if not self.hold_start:
             return False
-        elif (self.hold_start <= today) and (not self.hold_end):
-            return True
         elif self.hold_start <= today <= self.hold_end:
             return True
         else:
