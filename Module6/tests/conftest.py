@@ -7,6 +7,7 @@
 import pytest
 from Mui_Book import Book
 from Mui_Patron import Patron, Educator
+from Mui_Library import Library
 
 
 @pytest.fixture
@@ -118,3 +119,19 @@ def sample_ed_default():
     return Educator(
         num = '444555666'
     )
+
+
+@pytest.fixture
+def sample_lib():
+    """returns a Library with realistic data"""
+    return Library(
+        lib_name = 'Mui Mini Library',
+        lib_ph = '719-542-7279', # Example only, do not call
+        lib_add = '123 S Academy Blvd, Fountain, CO 80819' # Example only
+    )
+
+
+@pytest.fixture
+def default_lib_default():
+    """returns a Library with default values"""
+    return Library()
