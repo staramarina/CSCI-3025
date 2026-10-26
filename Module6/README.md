@@ -113,9 +113,17 @@ Book was successfully checked out
     ├── Mui_M6Assignment.py      # Main program
     ├── Mui_Patron.py            # Patron class module
     ├── README.md                # Read me file (current file)
+    ├── pyproject.toml           # Configuration file
     ├── testbookdata.txt         # Book data to instantiate a library instance
     ├── testeducatordata.txt     # Educator data to instantiate a library instance
-    └── testpatrondata.txt       # Patron data to instantiate a library instance
+    ├── testpatrondata.txt       # Patron data to instantiate a library instance
+    └── tests/                   # Test files for pytest
+          ├── __init__.py        # Tells Python this is a package
+          ├── conftest.py        # Shared test fixtures
+          ├── test_ancillary.py  # Tests for Mui_Ancillary.py
+          ├── test_book.py       # Tests for Mui_Book.py
+          ├── test_library.py    # Tests for Mui_Library.py
+          └── test_patron.py     # Tests for Mui_Patron.py
 ```
 
 ## Modules
