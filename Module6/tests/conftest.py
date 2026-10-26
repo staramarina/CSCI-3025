@@ -145,9 +145,24 @@ def samp_pop_lib():
         phone = '719-542-7279', # Example only, do not call
         address = '123 S Academy Blvd, Fountain, CO 80819' # Example only
     )
-    books = sample_book_dict()
-    for key, value in books:
-        library.books[key] = value
+    book1 = Book('9780062094889', 'Laura Ingalls Wilder', 'Little House on the Prairie', 11)
+    book2 = Book('9780140177398', 'John Steinbeck', 'Of Mice and Men', 1)
+    book3 = Book('9780141191508', 'Gaston Leroux', 'The Phantom of the Opera', 2)
+    book4 = Book('9780141392608', 'Victor Hugo', 'Les Miserables', 5)
+    book5 = Book('9780141439471', 'Mary Shelley', 'Frankenstein', 6)
+    book6 = Book('9780141439518', 'Jane Austen', 'Pride and Prejudice', 15)
+    book7 = Book('9780141439556', 'Emily Bronte', 'Wuthering Heights', 9)
+    book8 = Book('9780141439570', 'Oscar Wilde', 'The Picture of Dorian Gray', 9)
+    book9 = Book('9780141439600', 'Charles Dickens', 'A Tale of Two Cities', 14)
+    library.books[book1.isbn] = book1
+    library.books[book2.isbn] = book2
+    library.books[book3.isbn] = book3
+    library.books[book4.isbn] = book4
+    library.books[book5.isbn] = book5
+    library.books[book6.isbn] = book6
+    library.books[book7.isbn] = book7
+    library.books[book8.isbn] = book8
+    library.books[book9.isbn] = book9
     patron1 = Patron('159225523', 'Runolfsdottir, Magali', '19530103', '470-516-4553', 'magali.runolfsdottir92@icloud.com', '5909 Harris Gardens, New Lueville, Delaware, 72591')
     patron2 = Patron('690341793', 'Padberg, Eliezer', '19931106', '458-320-1047', 'e.padberg@protonmail.com', '29792 Enola Summit Apt. 926, Stevieborough, North Dakota, 48039')
     patron3 = Patron('606936289', 'Okuneva, Francis', '19570428', '470-478-0435', 'fokune@hotmail.com', '359 White Mountain Suite 109, East Domenicahaven, Georgia, 60905')
@@ -165,6 +180,17 @@ def samp_pop_lib():
 
 
 """
+'9780062094889', 'Laura Ingalls Wilder', 'Little House on the Prairie', 11
+'9780140177398', 'John Steinbeck', 'Of Mice and Men', 1
+'9780141191508', 'Gaston Leroux', 'The Phantom of the Opera', 2
+'9780141392608', 'Victor Hugo', 'Les Miserables', 5
+'9780141439471', 'Mary Shelley', 'Frankenstein', 6
+'9780141439518', 'Jane Austen', 'Pride and Prejudice', 15
+'9780141439556', 'Emily Bronte', 'Wuthering Heights', 9
+'9780141439570', 'Oscar Wilde', 'The Picture of Dorian Gray', 9
+'9780141439600', 'Charles Dickens', 'A Tale of Two Cities', 14
+
+
 '159225523', 'Runolfsdottir, Magali', '19530103', '470-516-4553', 'magali.runolfsdottir92@icloud.com', '5909 Harris Gardens, New Lueville, Delaware, 72591'
 '690341793', 'Padberg, Eliezer', '19931106', '458-320-1047', 'e.padberg@protonmail.com', '29792 Enola Summit Apt. 926, Stevieborough, North Dakota, 48039'
 '606936289', 'Okuneva, Francis', '19570428', '470-478-0435', 'fokune@hotmail.com', '359 White Mountain Suite 109, East Domenicahaven, Georgia, 60905'
