@@ -9,12 +9,12 @@ from datetime import datetime
 import pytest
 import sys
 from pathlib import Path
-from utilities import offset_date
 
 
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from Mui_Book import Book
+from tests.utilities import offset_date
 
 
 class TestConstructor:
@@ -104,3 +104,41 @@ class TestHoldCheck:
         sample_book_default.hold_start = offset_date(days=-9)
         sample_book_default.hold_end = offset_date(days=-3)
         assert sample_book_default.hold_check() is False
+
+
+class TestStringRepresentations:
+    """Class to test the __str__, show_status, and show_hold methods"""
+
+    def test_str_format(self, sample_book_many):
+        """Tests that string appears as expected"""
+        expect = ('ISBN: 9780141439518, Author: Jane Austen, '
+                  'Title: Pride and Prejudice, Available Quantity: 15')
+        assert expect == str(sample_book_many)
+
+
+    def test_str_default(self, sample_book_default):
+        """Tests that a book with default values prints as expected"""
+        expect = ('ISBN: 123456789, Author: , '
+                  'Title: , Available Quantity: 1')
+        assert expect == str(sample_book_default)
+
+
+    def test_show_status(self, sample_book_single):
+        """Tests that the return string from show_status is as expected"""
+        due = offset_date(weeks=3)
+        sample_book_single.return_date = due
+        expect = ('ISBN: 9780140177398, Author: John Steinbeck, '
+                  f'Title: Of Mice and Men, Return Date: {due}')
+        assert expect == sample_book_single.show_status()
+
+
+    def test_show_hold(self, sample_book_single):
+        """Tests that the return string from show_hold is as expected"""
+        start = offset_date(days=-3)
+        end = offset_date(days=9)
+        sample_book_single.hold_start = start
+        sample_book_single.hold_end = end
+        expect = ('ISBN: 9780140177398, Author: John Steinbeck, '
+                  'Title: Of Mice and Men, '
+                  f'Hold Start: {start}, Hold End: {end}')
+        assert expect == sample_book_single.show_hold()
