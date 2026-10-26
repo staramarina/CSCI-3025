@@ -5,7 +5,6 @@
 # Run with: pytest tests/test_book.py -v
 
 
-from datetime import datetime
 import pytest
 import sys
 from pathlib import Path
@@ -13,7 +12,6 @@ from pathlib import Path
 
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from Mui_Book import Book
 from tests.utilities import offset_date
 
 
