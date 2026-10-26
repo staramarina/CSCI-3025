@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from tests.utilities import offset_date
+from Mui_Patron import Educator
 
 
 class TestPatronConstructor:
@@ -201,3 +202,34 @@ class TestWaitlistAdd:
         flag = sample_patron.waitlist_add(sample_book_single)
         assert flag[0]
         assert 0 == flag[1]
+
+
+class TestEducatorConstructor:
+    """Class to test the Educator __init__ method"""
+
+
+    def test_default_values(self, sample_ed_default):
+        """Tests that default values behave as expected with inheritance"""
+        assert '444555666' == sample_ed_default.card_num
+        assert '' == sample_ed_default.last_name
+        assert '' == sample_ed_default.first_name
+        assert None == sample_ed_default.dob
+        assert '' == sample_ed_default.phone
+        assert '' == sample_ed_default.email
+        assert '' == sample_ed_default.address
+        assert '' == sample_ed_default.institution
+        assert isinstance(sample_ed_default, Educator)
+
+
+    def test_real_values(self, sample_educator):
+        """Tests that real values overwrite defaults with inheritance"""
+        assert '888120722' == sample_educator.card_num
+        assert 'Barrows' == sample_educator.last_name
+        assert 'Americo' == sample_educator.first_name
+        assert '19881015' == sample_educator.dob
+        assert '580-438-9671' == sample_educator.phone
+        assert 'americo.barrows68@outlook.com' == sample_educator.email
+        assert '5677 Witting Rest Suite 120, East Harmony, California, 66444' == sample_educator.address
+        assert 'P.S. 112' == sample_educator.institution
+        assert isinstance(sample_educator, Educator)
+
