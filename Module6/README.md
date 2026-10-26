@@ -324,8 +324,39 @@ The following files are used to populate a new library instance with example dat
 Manual testing was conducted using the aforementioned input files. Valid values from these files were utilized to test successful branches. Factitious, both valid and invalid, were used to test the remaining branches. Manual testing was conducted as each branch of the project was completed.
 
 ### Automated Testing
-Automated tested with pytest. --TBR
+Automated tested with pytest. 
+From within Module6 directory, run
+```
+python -m pytest
+```
 
+####Test Fixtures (conftest.py)
+TBD
+
+####Ancillary Tests (test_ancillary.py)
+| Class | Method | Purpose |
+| ------- | ------- | ------- |
+| TestIntCheck |  | Class to test the int_check(num_str) function |
+|  | test_valid_num(self) | Tests expected normal input |
+|  | test_null_input(self) | Tests function with missing input |
+|  | test_char_input(self) | Tests function with character/string input |
+|  | test_decimal_input(self) | Tests function with decimal number input |
+| TestDateFormat |  | Class to test the date_format(date_str, future) function |
+|  | test_none_input(self) | Tests None input |
+|  | test_wrong_length(self) | Tests smaller and larger length input |
+|  | test_not_number(self) | Tests non-number values |
+|  | test_invalid_dates(self) | Tests dates that don't exist |
+|  | test_past_date(self) | Tests both past and future date against past requirement |
+|  | test_future_date(self) | Tests both past and future date against future requirement |
+
+####Book Tests (test_book.py)
+TBD
+
+####Library Tests (test_library.py)
+TBD
+
+####Patron Tests (test_patron.py)
+TBD
 
 ## Author & Credits
 Author: Tiffany M. Mui  
