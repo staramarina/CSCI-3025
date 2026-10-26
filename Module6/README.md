@@ -34,6 +34,7 @@ Ground work for the following features is included, but not fully implemented:
 - Age-based account types using patron date of birth
 - Eligibility restrictions based on patron residential address
 - Separation of staff and patron actions is complete, but no authentication is included
+- Currently only one educator can place a hold on a book, but ground work is done to allow for changing this in the future
 
 ## Features
 - **Book Checkout, Return, and Extend** - Allows patrons to checkout and return books as well as extend the due date of a borrowed book
@@ -135,7 +136,7 @@ Book was successfully checked out
 
 ### Library Module (Mui_Library.py)
 
-#### Library Class
+#### Library Class -- TBR
 Provides library book inventory and patron management.
 
 ##### Attributes
@@ -194,12 +195,18 @@ Provides information and checks on books
 | hold_start | Date the hold on a book starts | None |
 | hold_end | Date the hold on a book ends | None |
 | hold_qty | Quantity of books that are on hold | 0 |
+| tot_qty | Total quantity of books the library has | 1 |
 | waitlist | List of library card numbers of patrons waiting for the book | Empty |
 
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
 | __init__(self, isbn = '0', author = '', title = '', qty = 1) | Initializes as instance of the Book class | book instance |
+| (@property) qty(self) | Used for validated access to book's quantity attribute | self.__qty |
+| (@property) tot_qty(self) | Used for validated access to book's total quantity attribute | self.__tot_qty |
+| __val_qty(self, value) | Checks quantity value, rejects invalid values | value if no error raised |
+| (@qty.setter) qty(self, value) | Sets quantity after validation | self.__qty |
+| (@tot_qty.setter) tot_qty(self, value) | Sets quantity after validation | self.__tot_qty |
 | hold_check(self) | Checks whether a book is currently within the hold period | True if book is on hold, otherwise False |
 | __str__(self) | Provides ISBN, author, title, and quantity information for a book | book information as a string |
 | show_status(self) | Provides ISBN, author, title, and return date information for a book | book status information as a string |
@@ -227,12 +234,13 @@ Provides information on and support actions of patrons
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
 | __init__(self, num = '0', last = '', first = '', dob = None, phone = '', email = '', address = '') | Initializes as instance of the Patron class | patron instance |
-| get_dob(self) | Validated access to patron's date of birth attribute | dob |
-| get_phone(self) | Validated access to patron's phone number attribute | phone |
-| get_email(self) | Validated access to patron's email address attribute | email |
-| get_address(self) | Validated access to patron's residential address attribute | address |
+| (@property) dob(self) | Validated access to patron's date of birth attribute | self.__dob |
+| (@dob.setter) dob(self, value) | Used to valid patron's date of birth | self.__dob |
+| (@property) phone(self) | Validated access to patron's phone number attribute | self.__phone |
+| (@property) email(self) | Validated access to patron's email address attribute | self.__email |
+| (@property) address(self) | Validated access to patron's residential address attribute | self.__address |
 | __str__(self) | Provides library card number, last name, and first name | String default output |
-| book_check(self, book) | Checks whether a patron has already checked out a book | (True, index) if patron has book, otherwise (False, None) |
+| book_check(self, book) | Checks whether a patron has already checked out a book | True if patron has book, otherwise False |
 | checkout_book(self, book) | Checks out a book to a patron | (True, success message) if checkout was successful, otherwise (False, error message) |
 | return_book(self, book) | Returns a book back to the library | (True, success message) if return was successful, otherwise (False, error message) |
 | checkout_extend(self, book) | Extends the return date of a book | (True, success message) if extension was successful, otherwise (False, error message) |
@@ -275,7 +283,7 @@ Provides additional functions and checks
 | -------- | -------- | -------- |
 | file_exists(file_name) | Checks if a file can be opened and read (duplicated function from Module5) | (True, success message) if successful, otherwise (False, error message) |
 | int_check(num_str) | Determines whether a string can be converted to an integer | (True, int) if successful, otherwise (False, error message) |
-| date_format(date_str) | Formats a string into a datetime | date_dtg in datetime if successful, otherwise date_dtg is None |
+| date_format(date_str) | Formats a string into a datetime | (datetime value, None) if successful, otherwise (None, error message) |
 
 ## Input Files
 The following files are used to populate a new library instance with example data. Further interaction is intended to occur via the console. Verification rules are the same for both unless otherwise noted. The file names are currently hard-coded, but all such variables are defined immediately following the instantiation of main in the Mui_M6Assignment.py file. 
@@ -349,7 +357,6 @@ python -m pytest
 | sample_patron_default() | Returns a Patron using only required parameters |
 | sample_educator() | Returns and Educator fully populated with realistic data |
 | sample_ed_default() | Returns an Educator using only required parameters |
-| TBD | TBD |
 
 #### Helper Functions (utilities.py)
 | Function | Purpose | Returns |
@@ -398,7 +405,55 @@ python -m pytest
 TBD
 
 #### Patron Tests (test_patron.py)
-TBD
+| Class | Method | Purpose |
+| ------- | ------- | ------- |
+| TestPatronConstructor |  | Class to test the __init__ method |
+|  | test_default_values(self, sample_patron_default) | Tests that default values are populated when args are missing |
+|  | test_init_values(self, sample_patron_default) | Tests initialization values that are the same for all patrons |
+|  | test_populated_values(self, sample_patron) | Tests that passed values override defaults |
+| TestPatronString |  | Class to test the __str__ method |
+|  | test_str_format(self, sample_patron) | Tests that string appears as expected |
+|  | test_str_default(self, sample_patron_default) | Tests that a book with default values prints as expected |
+| TestPatronCheckoutBook |  | Class to test the checkout_book(self, book) method |
+|  | test_success_checkout(self, sample_patron, sample_book_many) | Tests the successful checkout of a book |
+|  | test_duplicate_checkout(self, sample_patron, sample_book_many) | Tests the duplicate checkout branch |
+|  | test_checkout_limit(self, sample_patron, sample_book_many, sample_book_single) | Tests reaching the checkout limit |
+| TestReturnBook |  | Class to test the return_book(self, book) method |
+|  | test_success_return(self, sample_patron, sample_book_many) | Tests successfully returning a book |
+|  | test_fail_return(self, sample_patron, sample_book_single) | Tests failing to return a book |
+| TestPatronCheckoutExtend |  | Class to test the checkout_extend(self, book) method |
+|  | test_hold_fail(self, sample_patron, sample_book_single) | Tests the failure branch due to a hold on the book |
+|  | test_hold_pass(self, sample_patron, sample_book_many) | Tests the success branch, hold, but sufficient quantity |
+|  | test_wait_fail(self, sample_patron, sample_book_single) | Tests that extending the checkout fails when there is a waitlist |
+|  | test_not_checked(self, sample_patron, sample_book_single) | Tests that attempting to return a book not checked out fails |
+| TestWaitlistAdd |  | Class to test the waitlist_add(self, book) method |
+|  | test_checked_out(self, sample_patron, sample_book_single) | Tests that adding to waitlist for checked out book fails |
+|  | test_add_wait(self, sample_patron, sample_book_single) | Tests that a patron is successfully added to the waitlist |
+|  | test_wait_already(self, sample_patron, sample_book_single) | Tests that a patron's position in the waitlist is not changed |
+| TestEducatorConstructor |  | Class to test the Educator __init__ method |
+|  | test_default_values(self, sample_ed_default) | Tests that default values behave as expected with inheritance |
+|  | test_real_values(self, sample_educator) | Tests that real values overwrite defaults with inheritance |
+| TestCurrentHold |  | Class to test the hold_book(self, book) method |
+|  | test_no_holds(self, sample_educator, sample_book_single) | Tests when there is nothing in the hold books list |
+|  | test_too_early(self, sample_educator, sample_book_single) | Tests when the hold has not started yet |
+|  | test_too_late(self, sample_educator, sample_book_single) | Tests when the hold has expired |
+|  | test_not_hold(self, sample_educator, sample_book_single) | Tests when there is a hold book list, but the book isn't on it |
+|  | test_hold_active(self, sample_educator, sample_book_single) | Tests when a hold is active |
+| TestEdCheckoutBook |  | Class to test the Educator checkout_book(self, book) method |
+|  | test_hold_checkout(self, sample_educator, sample_book_single) | Tests when a book is on hold and checkout is successful |
+|  | test_not_enough(self, sample_educator, sample_book_many) | Tests when a book is on hold, but there aren't enough |
+|  | test_reg_checkout(self, sample_educator, sample_book_many) | Tests when there is a hold, but book_hold check fails |
+| TestHoldRequest |  | Class to test the hold_request(self, book, start, end, qty) method |
+|  | test_old_hold(self, sample_educator, sample_book_single) | Tests when the book is already on hold |
+|  | test_many_hold(self, sample_educator, sample_book_single) | Tests when there aren't enough books for a hold |
+|  | test_past_hold(self, sample_educator, sample_book_single) | Tests when a hold is requested for past dates |
+|  | test_end_start(self, sample_educator, sample_book_single) | Tests when the start date is after the end date |
+|  | test_hold_success(self, sample_educator, sample_book_single) | Tests when a hold is placed successfully |
+| TestHoldUpdate |  | Class to test the hold_update(self, book, start, end) method |
+|  | test_not_hold(self, sample_educator, sample_book_single) | Tests when the book is not currently on hold |
+|  | test_update_success(self, sample_educator, sample_book_single) | Tests when the hold was successfully updated |
+| TestHoldCancel |  | Class to test the hold_remove(self, book) method |
+|  | test_hold_cancel(self, sample_educator, sample_book_single) | Tests that a hold is successfully cancelled |
 
 ## Author & Credits
 Author: Tiffany M. Mui  
