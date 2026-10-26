@@ -10,7 +10,7 @@ from datetime import datetime
 class Book:
     """Provides information and checks on books"""
 
-    def __init__(self, isbn = '0', author = '',
+    def __init__(self, isbn, author = '',
                  title = '', qty = 1):
         """Initializes an instance of the Book class
         
