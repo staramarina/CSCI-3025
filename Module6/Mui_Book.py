@@ -31,6 +31,7 @@ class Book:
         self.hold_start = None
         self.hold_end = None
         self.hold_qty = 0
+        self.__tot_qty = qty
         self.waitlist =  []
 
 
@@ -40,9 +41,14 @@ class Book:
         return self.__qty
 
 
-    @qty.setter
-    def qty(self, value):
-        """Sets available quantity, rejects invalid values
+    @property
+    def tot_qty(self):
+        """Used for validated access to book's total quantity attribute"""
+        return self.__tot_qty
+
+
+    def __val_qty(self, value):
+        """Checks quantity value, rejects invalid values
         
         Args:
             value: number of copies in the library, must be int and >= 0
@@ -56,7 +62,27 @@ class Book:
         elif 0 > value:
             raise ValueError('Quantity cannot be negative')
         else:
-            self.__qty = value
+            return value
+
+
+    @qty.setter
+    def qty(self, value):
+        """Sets quantity after validation
+        
+        Args:
+            value: number of copies in the library, must be int and >= 0
+        """
+        self.__qty = self.__val_qty(value)
+
+
+    @tot_qty.setter
+    def tot_qty(self, value):
+        """Sets quantity after validation
+        
+        Args:
+            value: number of copies in the library, must be int and >= 0
+        """
+        self.__tot_qty = self.__val_qty(value)
 
 
     def hold_check(self):
