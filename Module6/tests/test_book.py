@@ -18,7 +18,7 @@ from Mui_Book import Book
 
 
 class TestConstructor:
-    """Tests __init__ method"""
+    """Class to test the __init__ method"""
 
 
     def test_default_values(self, sample_book_default):
@@ -74,3 +74,33 @@ class TestConstructor:
         with pytest.raises(TypeError) as exc_info:
             sample_book_default.qty = qty_bool
         assert 'Quantity must be an integer' == str(exc_info.value)
+
+
+class TestHoldCheck:
+    """Class to test the hold_check(self) method"""
+
+
+    def test_no_hold(self, sample_book_default):
+        """Tests that hold start and end with None result in False"""
+        assert sample_book_default.hold_check() is False
+
+
+    def test_current_hold(self, sample_book_default):
+        """Tests that a book within the hold period returns true"""
+        sample_book_default.hold_start = offset_date(days=-3)
+        sample_book_default.hold_end = offset_date(days=3)
+        assert sample_book_default.hold_check() is True
+
+
+    def test_past_hold(self, sample_book_default):
+        """Tests that a past hold period returns False"""
+        sample_book_default.hold_start = offset_date(days=3)
+        sample_book_default.hold_end = offset_date(days=9)
+        assert sample_book_default.hold_check() is False
+
+
+    def test_future_hold(self, sample_book_default):
+        """Tests that a future hold period returns False"""
+        sample_book_default.hold_start = offset_date(days=-9)
+        sample_book_default.hold_end = offset_date(days=-3)
+        assert sample_book_default.hold_check() is False
