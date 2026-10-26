@@ -67,7 +67,7 @@ class TestIntCheck:
 
 
 class TestDateFormat:
-    """Class to test the date_format(date_str) function"""
+    """Class to test the date_format(date_str, future) function"""
 
 
     def test_none_input(self):
