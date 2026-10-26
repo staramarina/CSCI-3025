@@ -80,19 +80,20 @@ class Library:
             True if book successfully added, otherwise False
         """
         if self.book_in_exists(book):
+            tot_qty_orig = self.books[book.isbn].tot_qty
             qty_orig = self.books[book.isbn].qty
+            self.books[book.isbn].tot_qty += 1
             self.books[book.isbn].qty += 1
+            tot_qty_new = self.books[book.isbn].tot_qty
             qty_new = self.books[book.isbn].qty
-            if qty_new > qty_orig:
+            if (qty_orig < qty_new) and (tot_qty_orig < tot_qty_new):
                 return True
             else:
                 return False
         else:
             self.books[book.isbn] = book
-            if self.book_in_exists(book):
-                return True
-            else:
-                return False
+            return True
+
 
 
     def remove_book(self, book):
