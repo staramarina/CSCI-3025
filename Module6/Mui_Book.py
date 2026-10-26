@@ -72,7 +72,7 @@ class Book:
         Args:
             value: number of copies in the library, must be int and >= 0
         """
-        self.__qty = self.__val_qty(value)
+        self.__qty = self._val_qty(value)
 
 
     @tot_qty.setter
@@ -82,7 +82,7 @@ class Book:
         Args:
             value: number of copies in the library, must be int and >= 0
         """
-        self.__tot_qty = self.__val_qty(value)
+        self.__tot_qty = self._val_qty(value)
 
 
     def hold_check(self):
