@@ -5,7 +5,6 @@
 
 
 import pytest
-from datetime import datetime, timedelta
 import sys
 from pathlib import Path
 
@@ -13,19 +12,6 @@ from pathlib import Path
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from Mui_Book import Book
-
-
-def offset_date(**kwargs):
-    """Returns a relative date from now to ensure past and future
-    
-    Args:
-        **kwargs: any combination accepted by datetime.timedelta
-    
-    Returns:
-        rel_dtg: datetime value that is offset from now
-    """
-    rel_dtg = datetime.now() + timedelta(**kwargs)
-    return rel_dtg
 
 
 @pytest.fixture
