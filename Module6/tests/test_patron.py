@@ -7,7 +7,7 @@
 
 import sys
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -60,3 +60,69 @@ class TestPatronString:
         """Tests that a book with default values prints as expected"""
         expect = ('Card #: 111222333 - , ')
         assert expect == str(sample_patron_default)
+
+
+class TestPatronCheckoutBook:
+    """Class to test the checkout_book(self, book) method"""
+
+
+    def test_success_checkout(self, sample_patron, sample_book_many):
+        """Tests the successful checkout of a book"""
+        flag = sample_patron.checkout_book(sample_book_many)
+        assert flag[0]
+        assert sample_book_many.isbn in sample_patron.books
+        assert 14 == sample_book_many.qty
+        assert 1 == sample_patron.books[sample_book_many.isbn].qty
+        assert None != sample_patron.books[sample_book_many.isbn].return_date
+
+
+    def test_duplicate_checkout(self, sample_patron, sample_book_many):
+        """Tests the duplicate checkout branch"""
+        flag0 = sample_patron.checkout_book(sample_book_many)
+        flag1 = sample_patron.checkout_book(sample_book_many)
+        assert flag0[0]
+        assert not flag1[0]
+        assert 'already checked out' in flag1[1]
+
+
+    def test_checkout_limit(self, sample_patron, sample_book_many, 
+                            sample_book_single):
+        """Tests reaching the checkout limit"""
+        sample_patron.books = {
+            '1': 'Book One',
+            '2': 'Book Two',
+            '3': 'Book Three',
+            '4': 'Book Four',
+            '5': 'Book Five',
+            '6': 'Book Six',
+            '7': 'Book Seven',
+            '8': 'Book Eight',
+            '9': 'Book Nine',
+            '10': 'Book Ten',
+            '11': 'Book Eleven'
+        }
+        flag0 = sample_patron.checkout_book(sample_book_many)
+        flag1 = sample_patron.checkout_book(sample_book_single)
+        assert flag0[0]
+        assert not flag1[0]
+        assert 'Cannot exceed checkout limit' in flag1[1]
+
+
+class TestReturnBook:
+    """Class to test the return_book(self, book) method"""
+
+
+    def test_success_return(self, sample_patron, sample_book_many):
+        """Tests successfully returning a book"""
+        sample_patron.checkout_book(sample_book_many)
+        flag = sample_patron.return_book(sample_book_many)
+        assert flag[0]
+        assert 15 == sample_book_many.qty
+        assert 'successfully returned' in flag[1]
+
+
+    def test_fail_return(self, sample_patron, sample_book_single):
+        """Tests failing to return a book"""
+        flag = sample_patron.return_book(sample_book_single)
+        assert not flag[0]
+        assert 'not checked out' in flag[1]
