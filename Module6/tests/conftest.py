@@ -5,12 +5,6 @@
 
 
 import pytest
-import sys
-from pathlib import Path
-
-
-#Adds parent directory to front of module search path
-sys.path.insert(0, str(Path(__file__).parent.parent))
 from Mui_Book import Book
 from Mui_Patron import Patron, Educator
 
