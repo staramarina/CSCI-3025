@@ -23,8 +23,8 @@ class TestPatronConstructor:
         assert '111222333' == sample_patron_default.card_num
         assert '' == sample_patron_default.last_name
         assert '' == sample_patron_default.first_name
-        assert None == sample_patron_default.__dob
-        assert '' == sample_patron_default.__phone
-        assert '' == sample_patron_default.__email
-        assert '' == sample_patron_default.__address
+        assert None == sample_patron_default.dob
+        assert '' == sample_patron_default.phone
+        assert '' == sample_patron_default.email
+        assert '' == sample_patron_default.address
 
