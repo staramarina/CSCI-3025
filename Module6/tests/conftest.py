@@ -78,7 +78,7 @@ def sample_educator():
         phone = '580-438-9671',
         email = 'americo.barrows68@outlook.com',
         address = '5677 Witting Rest Suite 120, East Harmony, California, 66444',
-        insitution = 'P.S. 112'
+        institution = 'P.S. 112'
     )
 
 
