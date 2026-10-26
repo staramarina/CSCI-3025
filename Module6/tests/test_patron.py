@@ -129,7 +129,7 @@ class TestReturnBook:
         assert 'not checked out' in flag[1]
 
 
-class TestCheckoutExtend:
+class TestPatronCheckoutExtend:
     """Class to test the checkout_extend(self, book) method"""
 
 
@@ -233,3 +233,64 @@ class TestEducatorConstructor:
         assert 'P.S. 112' == sample_educator.institution
         assert isinstance(sample_educator, Educator)
 
+
+class TestCurrentHold:
+    """Class to test the hold_book(self, book) method"""
+
+
+    def test_no_holds(self, sample_educator, sample_book_single):
+        """Tests when there is nothing in the hold books list"""
+        flag = sample_educator.hold_book(sample_book_single)
+        assert not flag[0]
+        assert 'no books on hold' in flag [1]
+
+
+    def test_too_early(self, sample_educator, sample_book_single):
+        """Tests when the hold has not started yet"""
+        sample_book_single.hold_start = offset_date(days=3)
+        sample_book_single.hold_end = offset_date(days=15)
+        sample_educator.hold_books[sample_book_single.isbn] = (
+                sample_book_single)
+        flag = sample_educator.hold_book(sample_book_single)
+        assert not flag[0]
+        assert 'window has not started' in flag [1]
+
+
+    def test_too_late(self, sample_educator, sample_book_single):
+        """Tests when the hold has expired"""
+        sample_book_single.hold_start = offset_date(days=-15)
+        sample_book_single.hold_end = offset_date(days=-3)
+        sample_educator.hold_books[sample_book_single.isbn] = (
+                sample_book_single)
+        flag = sample_educator.hold_book(sample_book_single)
+        assert not flag[0]
+        assert 'window has ended' in flag [1]
+
+
+    def test_not_hold(self, sample_educator, sample_book_single):
+        """Tests when there is a hold book list, but the book isn't on it"""
+        sample_educator.hold_books['123456789'] = 'On-Hold Book'
+        flag = sample_educator.hold_book(sample_book_single)
+        assert not flag[0]
+        assert 'do not have a hold on the book' in flag [1]
+
+    def test_hold_active(self, sample_educator, sample_book_single):
+        """Tests when a hold is active"""
+        sample_book_single.hold_start = offset_date(days=-2)
+        sample_book_single.hold_end = offset_date(days=17)
+        sample_book_single.hold_qty = 1
+        sample_educator.hold_books[sample_book_single.isbn] = (
+                sample_book_single)
+        flag = sample_educator.hold_book(sample_book_single)
+        assert flag[0]
+        assert 1 == flag [1]
+
+
+class TestEdCheckoutBook:
+    """Class to test the Educator checkout_book(self, book) method"""
+class TestHoldRequest:
+    """Class to test the hold_request(self, book, start, end, qty) method"""
+class TestHoldUpdate:
+    """Class to test the hold_update(self, book, start, end) method"""
+class TestHoldCancel:
+    """Class to test the hold_remove(self, book) method"""
