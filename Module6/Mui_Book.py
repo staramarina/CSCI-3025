@@ -31,7 +31,7 @@ class Book:
         self.hold_start = None
         self.hold_end = None
         self.hold_qty = 0
-        self.__tot_qty = qty
+        self.__tot_qty = self.qty
         self.waitlist =  []
 
 
