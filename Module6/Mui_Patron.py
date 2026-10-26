@@ -14,7 +14,7 @@ class Patron:
     """Provides information on and support actions of patrons"""
 
 
-    def __init__(self, num = '0', last = '', first = '', dob = None, 
+    def __init__(self, num, last = '', first = '', dob = None, 
                  phone = '', email = '', address = ''):
         """Initializes an instance of the Patron class
         
@@ -33,7 +33,7 @@ class Patron:
         self.card_num = num
         self.last_name = last
         self.first_name = first
-        self.__dob = date_format(dob) # TODO update with new date_format
+        self.__dob = dob
         self.__phone = phone
         self.__email = email
         self.__address = address
@@ -42,25 +42,41 @@ class Patron:
 
 
     @property
-    def get_dob(self):
+    def dob(self):
         """Used for validated access to patron's date of birth attribute"""
         return self.__dob
 
 
+    @dob.setter
+    def dob(self, value):
+        """Used to valid patron's date of birth
+        
+        Args:
+            value: Patron's date of birth in YYYYMMDD string format
+        
+        Raises:
+        """
+        date = date_format(value, False)
+        if not date[1]:
+            self.__dob = date[0]
+        else:
+            raise ValueError(date[0])
+
+
     @property
-    def get_phone(self):
+    def phone(self):
         """Used for validated access to patron's phone number attribute"""
         return self.__phone
 
 
     @property
-    def get_email(self):
+    def email(self):
         """Used for validated access to patron's email address attribute"""
         return self.__email
 
 
     @property
-    def get_address(self):
+    def address(self):
         """Used for validated access to patron's address attribute"""
         return self.__address
 
