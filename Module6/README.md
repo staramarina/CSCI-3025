@@ -186,7 +186,7 @@ Provides information and checks on books
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | -------- | -------- | -------- |
-| isbn | ISBN of the book | '0' |
+| isbn | ISBN of the book | N/A |
 | author | Author of the book with first name first | '' |
 | title | Title of the book | '' |
 | qty | Number of copies the library has available | 1 |
@@ -213,7 +213,7 @@ Provides information on and support actions of patrons
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | -------- | -------- | -------- |
-| card_num | Unique library card number | '0' |
+| card_num | Unique library card number | N/A |
 | last_name | Patron's last name | '' |
 | first_name | Patron's first name | '' |
 | dob | Patron's date of birth (encapsulated) | '' |
@@ -245,16 +245,16 @@ Provides information on and support actions of educators
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | -------- | -------- | -------- |
-| card_num | Unique library card number | '0' |
-| last_name | Educator's last name | '' |
-| first_name | Educator's first name | '' |
-| dob | Educator's date of birth (encapsulated) | '' |
-| phone | Educator's phone number (encapsulated) | '' |
-| email | Educator's email address (encapsulated) | '' |
-| address | Educator's residential address (encapsulated) | '' |
+| card_num | Unique library card number (Inherited) | N/A |
+| last_name | Educator's last name (Inherited) | '' |
+| first_name | Educator's first name (Inherited) | '' |
+| dob | Educator's date of birth (encapsulated) (Inherited) | '' |
+| phone | Educator's phone number (encapsulated) (Inherited) | '' |
+| email | Educator's email address (encapsulated) (Inherited) | '' |
+| address | Educator's residential address (encapsulated) (Inherited) | '' |
 | institution | The educator's institution | '' |
-| standing | Educator's standing; good or overdue | 'good' |
-| books | List of books the Educator has currently checked out | Empty |
+| standing | Educator's standing; good or overdue (Inherited) | 'good' |
+| books | List of books the Educator has currently checked out (Inherited) | Empty |
 | hold_books | List of books the educator has requested a hold on | Empty |
 
 ##### Methods
