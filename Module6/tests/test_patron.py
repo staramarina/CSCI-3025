@@ -5,11 +5,6 @@
 # Run with: pytest tests/test_patron.py -v
 
 
-import sys
-from pathlib import Path
-
-#Adds parent directory to front of module search path
-sys.path.insert(0, str(Path(__file__).parent.parent))
 from tests.utilities import offset_date
 from Mui_Patron import Educator
 
