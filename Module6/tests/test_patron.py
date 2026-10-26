@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from Mui_Patron import Patron, Educator
+from tests.utilities import offset_date
 
 
 class TestPatronConstructor:
@@ -126,3 +126,49 @@ class TestReturnBook:
         flag = sample_patron.return_book(sample_book_single)
         assert not flag[0]
         assert 'not checked out' in flag[1]
+
+
+class TestCheckoutExtend:
+    """Class to test the checkout_extend(self, book) method"""
+
+
+    def test_hold_fail(self, sample_patron, sample_book_single):
+        """Tests the failure branch due to a hold on the book"""
+        sample_patron.checkout_book(sample_book_single)
+        sample_book_single.hold_start = offset_date(days=-5)
+        sample_book_single.hold_end = offset_date(days=5)
+        flag = sample_patron.checkout_extend(sample_book_single)
+        assert not flag[0]
+        assert 'Book is on hold' in flag[1]
+
+
+    def test_hold_pass(self, sample_patron, sample_book_many):
+        """Tests the success branch, hold, but sufficient quantity"""
+        sample_patron.checkout_book(sample_book_many)
+        sample_patron.books[sample_book_many.isbn].return_date = (
+                offset_date(weeks=-2))
+        orig_return = sample_patron.books[sample_book_many.isbn].return_date
+        sample_book_many.hold_start = offset_date(days=-5)
+        sample_book_many.hold_end = offset_date(days=5)
+        sample_book_many.hold_qty = 5
+        flag = sample_patron.checkout_extend(sample_book_many)
+        new_return = sample_patron.books[sample_book_many.isbn].return_date
+        assert flag[0]
+        assert orig_return < new_return
+        assert 'successfully extended' in flag[1]
+
+
+    def test_wait_fail(self, sample_patron, sample_book_single):
+        """Tests that extending the checkout fails when there is a waitlist"""
+        sample_patron.checkout_book(sample_book_single)
+        sample_book_single.waitlist.append('111222333')
+        flag = sample_patron.checkout_extend(sample_book_single)
+        assert not flag[0]
+        assert 'Book is waitlisted' in flag[1]
+
+
+    def test_not_checked(self, sample_patron, sample_book_single):
+        """Tests that attempting to return a book not checked out fails"""
+        flag = sample_patron.checkout_extend(sample_book_single)
+        assert not flag[0]
+        assert 'not currently checked out' in flag[1]
