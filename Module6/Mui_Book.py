@@ -4,6 +4,7 @@
 # Purpose: Book class with associated attributes and methods
 # Dependencies: datetime
 
+
 from datetime import datetime
 
 
@@ -26,7 +27,7 @@ class Book:
         self.isbn = isbn
         self.author = author
         self.title = title
-        self.__qty = qty
+        self.qty = qty
         self.return_date = None
         self.hold_start = None
         self.hold_end = None
