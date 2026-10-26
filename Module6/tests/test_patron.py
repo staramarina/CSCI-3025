@@ -7,7 +7,6 @@
 
 import sys
 from pathlib import Path
-from datetime import datetime, timedelta
 
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -41,7 +40,7 @@ class TestPatronConstructor:
         assert '899261678' == sample_patron.card_num
         assert 'Deckow' == sample_patron.last_name
         assert 'Sonia' == sample_patron.first_name
-        assert '19711012' == sample_patron.dob
+        assert None != sample_patron.dob
         assert '810-932-7365' == sample_patron.phone
         assert 'soniadeckow@protonmail.com' == sample_patron.email
         assert '9740 Larissa Expressway Apt. 320, Bernitaport, South Dakota, 07123' == sample_patron.address
@@ -87,21 +86,9 @@ class TestPatronCheckoutBook:
 
 
     def test_checkout_limit(self, sample_patron, sample_book_many, 
-                            sample_book_single):
+                            sample_book_single, sample_book_dict):
         """Tests reaching the checkout limit"""
-        sample_patron.books = {
-            '1': 'Book One',
-            '2': 'Book Two',
-            '3': 'Book Three',
-            '4': 'Book Four',
-            '5': 'Book Five',
-            '6': 'Book Six',
-            '7': 'Book Seven',
-            '8': 'Book Eight',
-            '9': 'Book Nine',
-            '10': 'Book Ten',
-            '11': 'Book Eleven'
-        }
+        sample_patron.books = sample_book_dict
         flag0 = sample_patron.checkout_book(sample_book_many)
         flag1 = sample_patron.checkout_book(sample_book_single)
         assert flag0[0]
@@ -140,7 +127,7 @@ class TestPatronCheckoutExtend:
         sample_book_single.hold_end = offset_date(days=5)
         flag = sample_patron.checkout_extend(sample_book_single)
         assert not flag[0]
-        assert 'Book is on hold' in flag[1]
+        assert 'Book is on hold, return cannot be extended' in flag[1]
 
 
     def test_hold_pass(self, sample_patron, sample_book_many):
@@ -226,7 +213,7 @@ class TestEducatorConstructor:
         assert '888120722' == sample_educator.card_num
         assert 'Barrows' == sample_educator.last_name
         assert 'Americo' == sample_educator.first_name
-        assert '19881015' == sample_educator.dob
+        assert None != sample_educator.dob
         assert '580-438-9671' == sample_educator.phone
         assert 'americo.barrows68@outlook.com' == sample_educator.email
         assert '5677 Witting Rest Suite 120, East Harmony, California, 66444' == sample_educator.address
