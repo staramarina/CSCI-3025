@@ -177,6 +177,7 @@ def samp_pop_lib():
     library.patrons[educator1.card_num] = educator1
     library.patrons[educator2.card_num] = educator2
     library.patrons[educator3.card_num] = educator3
+    return library
 
 
 """
