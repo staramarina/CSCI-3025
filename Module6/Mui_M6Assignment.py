@@ -279,8 +279,8 @@ if __name__ == "__main__":
                         if ed_flag and book:
                             data = mml.ed_hold_prompt()
                             qty_in = input('Quantity: ')
-                            start = date_format(data[0])
-                            end = date_format(data[1])
+                            start = date_format(data[0]) # TODO update with new date_format
+                            end = date_format(data[1]) # TODO update with new date_format
                             qty = int_check(qty_in)
                             if start and end and qty[0]:
                                 flag = patron.hold_request(book, start, 
@@ -300,8 +300,8 @@ if __name__ == "__main__":
                         ed_flag = isinstance(patron, Educator)
                         if ed_flag and book:
                             data = mml.ed_hold_prompt()
-                            start = date_format(data[0])
-                            end = date_format(data[1])
+                            start = date_format(data[0]) # TODO update with new date_format
+                            end = date_format(data[1]) # TODO update with new date_format
                             if start and end:
                                 flag = patron.hold_update(book, start, end)
                                 print(flag[1])

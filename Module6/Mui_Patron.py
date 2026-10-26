@@ -33,7 +33,7 @@ class Patron:
         self.card_num = num
         self.last_name = last
         self.first_name = first
-        self.__dob = date_format(dob)
+        self.__dob = date_format(dob) # TODO update with new date_format
         self.__phone = phone
         self.__email = email
         self.__address = address
@@ -243,7 +243,7 @@ class Educator(Patron):
         self.card_num = num
         self.last_name = last
         self.first_name = first
-        self.__dob = date_format(dob)
+        self.__dob = date_format(dob) # TODO update with new date_format
         self.__phone = phone
         self.__email = email
         self.__address = address
@@ -363,7 +363,7 @@ class Educator(Patron):
             return (False, 'Book is not currently checked out')
 
 
-    def hold_request(self, book, start, end, qty):
+    def hold_request(self, book, start, end, qty): # TODO update with new date_format
         """Places a hold on the requsted book
            Note: assumes book in library database
         
@@ -399,7 +399,7 @@ class Educator(Patron):
                 return (False, 'Failed to add book to hold list')
 
 
-    def hold_update(self, book, start, end):
+    def hold_update(self, book, start, end): # TODO update with new date_format
         """Updates the hold dates on the requested book
            Note: assumes book in library database
         
