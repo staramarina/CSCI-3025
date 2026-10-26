@@ -59,8 +59,9 @@ def date_format(date_str, future = False):
         date_str: a date in string format, expects YYYYMMDD
         
     Returns:
-        date_dtg: a date in datetime format if conversion was successful,
-            otherwise, None
+        A 2-tuple with the following format:
+            [0]: datetime value if successful, otherwise None
+            [1]: None is successful, otherwise error message
     """
     min_date = datetime(1900, 1, 1)
     max_date = datetime.now()
