@@ -204,7 +204,7 @@ Provides information and checks on books
 | __init__(self, isbn = '0', author = '', title = '', qty = 1) | Initializes as instance of the Book class | book instance |
 | (@property) qty(self) | Used for validated access to book's quantity attribute | self.__qty |
 | (@property) tot_qty(self) | Used for validated access to book's total quantity attribute | self.__tot_qty |
-| __val_qty(self, value) | Checks quantity value, rejects invalid values | value if no error raised |
+| _val_qty(self, value) | Checks quantity value, rejects invalid values | value if no error raised |
 | (@qty.setter) qty(self, value) | Sets quantity after validation | self.__qty |
 | (@tot_qty.setter) tot_qty(self, value) | Sets quantity after validation | self.__tot_qty |
 | hold_check(self) | Checks whether a book is currently within the hold period | True if book is on hold, otherwise False |
@@ -353,6 +353,7 @@ python -m pytest
 | sample_book_many() | Returns a fully populated Book with realistic data and large quantity |
 | sample_book_single() | Returns a fully populated Book with realistic data with single copy |
 | sample_book_default() | Returns a Book using only required parameters |
+| sample_book_dict() | Returns a sample dictionary of 11 books |
 | sample_patron() | Returns a Patron fully populated with realistic data |
 | sample_patron_default() | Returns a Patron using only required parameters |
 | sample_educator() | Returns and Educator fully populated with realistic data |
