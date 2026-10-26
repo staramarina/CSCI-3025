@@ -326,6 +326,58 @@ class TestEdCheckoutBook:
 
 class TestHoldRequest:
     """Class to test the hold_request(self, book, start, end, qty) method"""
+
+    def test_old_hold(self, sample_educator, sample_book_single):
+        """Tests when the book is already on hold"""
+        start = offset_date(days=10)
+        end = offset_date(days=30)
+        qty = 1
+        sample_educator.hold_books[sample_book_single.isbn] = (
+                sample_book_single)
+        flag = sample_educator.hold_request(sample_book_single, start, end, qty)
+        assert not flag[0]
+        assert 'already on hold' in flag[1]
+
+
+    def test_many_hold(self, sample_educator, sample_book_single):
+        """Tests when there aren't enough books for a hold"""
+        start = offset_date(days=10)
+        end = offset_date(days=30)
+        qty = 5
+        flag = sample_educator.hold_request(sample_book_single, start, end, qty)
+        assert not flag[0]
+        assert 'more than available quantity' in flag[1]
+    
+
+    def test_past_hold(self, sample_educator, sample_book_single):
+        """Tests when a hold is requested for past dates"""
+        start = offset_date(days=-7)
+        end = offset_date(days=-3)
+        qty = 1
+        flag = sample_educator.hold_request(sample_book_single, start, end, qty)
+        assert not flag[0]
+        assert 'hold for past dates' in flag[1]
+
+    def test_end_start(self, sample_educator, sample_book_single):
+        """Tests when the start date is after the end date"""
+        start = offset_date(days=10)
+        end = offset_date(days=5)
+        qty = 1
+        flag = sample_educator.hold_request(sample_book_single, start, end, qty)
+        assert not flag[0]
+        assert 'end date before start date' in flag[1]
+
+        
+    def test_hold_success(self, sample_educator, sample_book_single):
+        """Tests when a hold is placed successfully"""
+        start = offset_date(days=10)
+        end = offset_date(days=30)
+        qty = 1
+        flag = sample_educator.hold_request(sample_book_single, start, end, qty)
+        assert flag[0]
+        assert 'added to hold list' in flag[1]
+
+
 class TestHoldUpdate:
     """Class to test the hold_update(self, book, start, end) method"""
 class TestHoldCancel:
