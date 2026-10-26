@@ -18,7 +18,7 @@ class Book:
             isbn: ISBN of the book
             author: Author of the book with first name first
             title: Title of the book
-            qty: Number of copies the library has available
+            qty: Number of copies the library has available, must be int >= 0
         
         Returns:
             Book instance
@@ -26,11 +26,36 @@ class Book:
         self.isbn = isbn
         self.author = author
         self.title = title
-        self.qty = qty
+        self.__qty = qty
         self.return_date = None
         self.hold_start = None
         self.hold_end = None
         self.waitlist =  []
+
+
+    @property
+    def qty(self):
+        """Used for validated access to book's quantity attribute"""
+        return self.__qty
+
+
+    @qty.setter
+    def qty(self, value):
+        """Sets available quantity, rejects invalid values
+        
+        Args:
+            value: number of copies in the library, must be int and >= 0
+
+        Raises:
+            TypeError: if value is a bool or not an int
+            ValueError: if value is less than 0
+        """
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise TypeError(f'Quantity must be an integer')
+        elif 0 > value:
+            raise ValueError(f'Quantity cannot be negative')
+        else:
+            self.__qty = value
 
 
     def hold_check(self):
