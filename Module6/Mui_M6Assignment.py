@@ -50,8 +50,14 @@ if __name__ == "__main__":
             data = line.split(", ")
             int_flag = int_check(data[3])
             if int_flag[0] and (4 == len(data)):
-                book = Book(data[0], data[1], data[2], int_flag[1])
-                mml.add_book(book)
+                try:
+                    book = Book(data[0], data[1], data[2], int_flag[1])
+                except (TypeError, ValueError) as err:
+                    book_reader.close()
+                    print(err)
+                    sys.exit(0)
+                else:
+                    mml.add_book(book)
             else:
                 continue
     book_reader.close()
@@ -67,9 +73,15 @@ if __name__ == "__main__":
             else:
                 address = (data[6] + ', ' + data[7] + ', ' 
                            + data[8] + ', ' + data[9])
-                patron = Patron(data[0], data[1], data[2], data[3],
-                                data[4], data[5], address)
-                mml.add_patron(patron)
+                try:
+                    patron = Patron(data[0], data[1], data[2], data[3],
+                                    data[4], data[5], address)
+                except ValueError as err:
+                    patron_reader.close()
+                    print(err)
+                    sys.exit(0)
+                else:
+                    mml.add_patron(patron)
     patron_reader.close()
     educator_reader = open(educator_file)
     for line in educator_reader:
@@ -83,9 +95,15 @@ if __name__ == "__main__":
             else:
                 address = (data[6] + ', ' + data[7] + ', ' 
                            + data[8] + ', ' + data[9])
-                educator = Educator(data[0], data[1], data[2], data[3],
-                                data[4], data[5], address, data[10])
-                mml.add_patron(educator)
+                try:
+                    educator = Educator(data[0], data[1], data[2], data[3],
+                                    data[4], data[5], address, data[10])
+                except ValueError as err:
+                    educator_reader.close()
+                    print(err)
+                    sys.exit(0)
+                else:
+                    mml.add_patron(educator)
     educator_reader.close()
 
     # Start of library tool
