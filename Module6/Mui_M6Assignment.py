@@ -209,13 +209,17 @@ if __name__ == "__main__":
                             print('')
                             data = mml.patron_create_prompt()
                             inst = input('Patron\'s institution: ')
-                            educator = Educator(*data, inst)
-                            flag = mml.add_patron(educator)
-                            if flag:
-                                print('\nThe following educator was added')
-                                print(educator)
+                            try:
+                                educator = Educator(*data, inst)
+                            except ValueError as err:
+                                print(err)
                             else:
-                                print('\nThat card number already exists')
+                                flag = mml.add_patron(educator)
+                                if flag:
+                                    print('\nThe following educator was added')
+                                    print(educator)
+                                else:
+                                    print('\nThat card number already exists')
                         else:
                             print('That doesn\'t seem to be an option.')
                     case 6:
@@ -403,4 +407,4 @@ if __name__ == "__main__":
         print('')
         mml.print_main_menu()
         usr_in = input()
-    print('\nCome back soon!')
+    print('\nCome back soon!\n')
