@@ -152,5 +152,43 @@ class TestRemoveBook:
 
 class TestDecirculateBook:
     """Class to test the decirc_book(self, book) method"""
+
+
+    def test_decirc_new(self, samp_pop_lib, sample_book_many):
+        """Tests the case when a book is not already out of circulation"""
+        flag = samp_pop_lib.decirc_book(sample_book_many)
+        assert flag
+        assert sample_book_many.isbn in samp_pop_lib.books_out
+        assert 1 == samp_pop_lib.books_out[sample_book_many.isbn].qty
+
+
+    def test_decirc_exist(self, samp_pop_lib, sample_book_many):
+        """Tests the case when a copy is already out of circulation"""
+        samp_pop_lib.decirc_book(sample_book_many)
+        flag = samp_pop_lib.decirc_book(sample_book_many)
+        assert flag
+        assert sample_book_many.isbn in samp_pop_lib.books_out
+        assert 2 == samp_pop_lib.books_out[sample_book_many.isbn].qty
+
+
+    def test_decirc_zero(self, samp_pop_lib, sample_book_single):
+        """Tests the case when the original quantity is 0"""
+        samp_pop_lib.books[sample_book_single.isbn].qty = 0
+        flag = samp_pop_lib.decirc_book(sample_book_single)
+        assert not flag
+        assert sample_book_single.isbn not in samp_pop_lib.books_out
+
+
+    def test_decirc_nonexist(self, sample_lib, sample_book_single):
+        """Tests the case when attempting to decirc a book not in the library"""
+        flag = sample_lib.decirc_book(sample_book_single)
+        assert not flag
+        assert sample_book_single.isbn not in sample_lib.books_out
+
+
 class TestRecirculateBook:
     """Class to test the recirc_book(self, book) method"""
+class TestAddPatron:
+    """Class to test adding a patron to the library"""
+class TestRemovePatron:
+    """Class to test removing a patron to the library"""
