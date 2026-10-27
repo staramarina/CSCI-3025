@@ -58,12 +58,13 @@ class Patron:
         """
         if value is None:
             self.__dob = value
+        elif '' == value:
+            self.__dob = None
         else:
             date = date_format(value, False)
-            if not date[1]:
-                self.__dob = date[0]
-            else:
-                raise ValueError(date[0])
+            self.__dob = date[0]
+            if date[1]:
+                raise ValueError(date[1])
 
 
     @property
