@@ -9,18 +9,18 @@ class TestLibraryConstructor:
     """Tests the library __init__ method"""
 
 
-    def test_default_lib(self, default_lib_default):
+    def test_default_lib(self, sample_lib_default):
         """Tests that default values are populated when args are missing"""
-        assert 'Library' == default_lib_default.name
-        assert default_lib_default.phone is None
-        assert default_lib_default.address is None
+        assert 'Library' == sample_lib_default.name
+        assert sample_lib_default.phone is None
+        assert sample_lib_default.address is None
 
 
-    def test_init_lib(self, default_lib_default):
+    def test_init_lib(self, sample_lib_default):
         """Tests initialization values that are the same"""
-        assert 0 == len(default_lib_default.books)
-        assert 0 == len(default_lib_default.books_out)
-        assert 0 == len(default_lib_default.patrons)
+        assert 0 == len(sample_lib_default.books)
+        assert 0 == len(sample_lib_default.books_out)
+        assert 0 == len(sample_lib_default.patrons)
 
 
     def test_populated_lib(self, sample_lib):

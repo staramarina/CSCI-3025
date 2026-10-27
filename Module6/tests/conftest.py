@@ -132,7 +132,7 @@ def sample_lib():
 
 
 @pytest.fixture
-def default_lib_default():
+def sample_lib_default():
     """returns a Library with default values"""
     return Library()
 

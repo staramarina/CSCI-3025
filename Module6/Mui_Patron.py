@@ -55,6 +55,7 @@ class Patron:
             value: Patron's date of birth in YYYYMMDD string format
         
         Raises:
+            ValueError: error message from date_format in Mui_Ancillary
         """
         if value is None:
             self.__dob = value
@@ -62,9 +63,9 @@ class Patron:
             self.__dob = None
         else:
             date = date_format(value, False)
-            self.__dob = date[0]
             if date[1]:
                 raise ValueError(date[1])
+            self.__dob = date[0]
 
 
     @property
@@ -302,7 +303,6 @@ class Educator(Patron):
                 book_copy.waitlist = []
                 book_copy.return_date = book.hold_end
                 self.books[book.isbn] = book_copy
-                has_flag = self.book_check(book)
                 self.hold_books.pop(book.isbn)
                 return (True, 'Book was successfully checked out')
             else:
@@ -352,7 +352,7 @@ class Educator(Patron):
 
 
     def hold_request(self, book, start, end, qty):
-        """Places a hold on the requsted book
+        """Places a hold on the requested book
            Notes: assumes book in library database
                   assumes int and date format checks already run
         
