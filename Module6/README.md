@@ -156,7 +156,7 @@ Provides library book inventory and patron management.
 | __init__(self, name = 'Library', phone = None, address = None) | Initializes an instance of the Library class | library instance |
 | book_in_exists(self, book) | Checks whether a book exists in the circulation inventory | True if book exists, otherwise False |
 | book_out_exists(self, book) | Checks whether a book exists in the non-circulation inventory | True if book exists, otherwise False |
-| find_book(self, isbn) | Finds and turns a book with the specified ISBN | book |
+| find_book(self, isbn) | Finds and returns a book with the specified ISBN | book |
 | add_book(self, book) | Adds a Book instance to the library inventory | True if book successfully added, otherwise False |
 | remove_book(self, book) | Removes a single Book instance from the library altogether | True if book removed successfully, otherwise False |
 | decirc_book(self, book) | Remove a book from the circulation inventory and add it to the out of circulation inventory | True if book was successfully moved to decirculation inventory, otherwise False |
@@ -201,7 +201,7 @@ Provides information and checks on books
 ##### Methods
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
-| __init__(self, isbn = '0', author = '', title = '', qty = 1) | Initializes as instance of the Book class | book instance |
+| __init__(self, isbn, author = '', title = '', qty = 1) | Initializes as instance of the Book class | book instance |
 | (@property) qty(self) | Used for validated access to book's quantity attribute | self.__qty |
 | (@property) tot_qty(self) | Used for validated access to book's total quantity attribute | self.__tot_qty |
 | _val_qty(self, value) | Checks quantity value, rejects invalid values | value if no error raised |
@@ -269,7 +269,7 @@ Provides information on and support actions of educators
 | Method | Purpose | Return |
 | -------- | -------- | -------- |
 | __init__(self, num, last = '', first = '', dob = None, phone = '', email = '', address = '', institution = '') | Initializes as instance of the Educator class | educator |
-| hold_check(self, book) | Checks whether the educator currently has a hold on the book | (True, qty) if book is on hold and within window, otherwise (False, error message) |
+| hold_book(self, book) | Checks whether the educator currently has a hold on the book | (True, qty) if book is on hold and within window, otherwise (False, error message) |
 | checkout_book(self, book) | Checks out a book to an educator | (True, success message) if checkout was successful, otherwise (False, error message) |
 | checkout_extend(self, book) | Extends the return date of a book | (True, success message) if extension was successful, otherwise (False, error message) |
 | hold_request(self, book, start, end, qty) | Places a hold on the requested book | (True, success message) if hold was successful, otherwise (False, error message) |
@@ -417,8 +417,8 @@ python -m pytest
 |  | test_book_absent(self, sample_lib, sample_book_many) | Tests whether false is return when book is absent |
 |  | test_book_key_presesnt(self, sample_lib, sample_book_many) | Tests whether the book is returned when given an existing key |
 |  | test_book_key_absent(self, sample_lib, sample_book_many) | Tests whether None is returned when given an absent book key |
-|  | book_avail_pass(self, samp_pop_lib, sample_book_single) | Tests whether book available is true when its present |
-|  | book_avail_fail(self, sample_lib, sample_book_single) | Tests whether book available is false when its not present |
+|  | test_book_avail_pass(self, samp_pop_lib, sample_book_single) | Tests whether book available is true when its present |
+|  | test_book_avail_fail(self, sample_lib, sample_book_single) | Tests whether book available is false when its not present |
 |  | test_patron_present(self, sample_lib, sample_patron) | Tests whether true is returned when patron is present |
 |  | test_patron_absent(self, sample_lib, sample_patron) | Tests whether false is return when patron is absent |
 |  | test_patron_key_present(self, sample_lib, sample_patron) | Tests whether the patron is returned when given an existing key |
