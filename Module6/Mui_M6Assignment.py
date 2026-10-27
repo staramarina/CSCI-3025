@@ -127,14 +127,21 @@ if __name__ == "__main__":
                         auth = input('Author: ')
                         title = input('Title: ')
                         qty = input('Quantity: ')
+                        print(qty) # test line remove later
+                        if '' == qty:
+                            qty = None
                         qty_chk = int_check(qty)
-                        if qty_chk[0]:
-                            new_b = Book(isbn, auth, title, qty_chk[1])
-                            flag = mml.add_book(new_b)
-                            if flag:
-                                print('Book added!')
+                        if qty_chk[0] or None == qty:
+                            try:
+                                new_b = Book(isbn, auth, title, qty_chk[1])
+                            except (TypeError, ValueError) as err:
+                                print(err)
                             else:
-                                print('Book could not be added.')
+                                flag = mml.add_book(new_b)
+                                if flag:
+                                    print('Book added!')
+                                else:
+                                    print('Book could not be added.')
                         else:
                             print('Quantity could not be converted')
                             print(f'Error: {qty_chk[1]}')
@@ -187,13 +194,17 @@ if __name__ == "__main__":
                         if 1 == type_in[1]:
                             print('')
                             data = mml.patron_create_prompt()
-                            patron = Patron(*data)
-                            flag = mml.add_patron(patron)
-                            if flag:
-                                print('\nThe following patron was added')
-                                print(patron)
+                            try:
+                                patron = Patron(*data)
+                            except ValueError as err:
+                                print(err)
                             else:
-                                print('\nThat card number already exists')
+                                flag = mml.add_patron(patron)
+                                if flag:
+                                    print('\nThe following patron was added')
+                                    print(patron)
+                                else:
+                                    print('\nThat card number already exists')
                         elif 2 == type_in[1]:
                             print('')
                             data = mml.patron_create_prompt()
