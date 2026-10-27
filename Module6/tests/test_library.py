@@ -188,6 +188,34 @@ class TestDecirculateBook:
 
 class TestRecirculateBook:
     """Class to test the recirc_book(self, book) method"""
+
+
+    def test_recirc_multi(self, samp_pop_lib, sample_book_many):
+        """Tests the case when there are multiple copies out of circulation"""
+        samp_pop_lib.decirc_book(sample_book_many)
+        samp_pop_lib.decirc_book(sample_book_many)
+        flag = samp_pop_lib.recirc_book(sample_book_many)
+        assert flag
+        assert 14 == samp_pop_lib.books[sample_book_many.isbn].qty
+        assert 1 == samp_pop_lib.books_out[sample_book_many.isbn].qty
+
+
+    def test_recirc_one(self, samp_pop_lib, sample_book_single):
+        """Tests the case when there is on copy out of circulation"""
+        samp_pop_lib.decirc_book(sample_book_single)
+        flag = samp_pop_lib.recirc_book(sample_book_single)
+        assert flag
+        assert 1 == samp_pop_lib.books[sample_book_single.isbn].qty
+        assert sample_book_single.isbn not in samp_pop_lib.books_out
+
+
+    def test_recirc_nonexist(self, sample_lib, sample_book_single):
+        """Tests the case when attempting to recirc a book not in out dict"""
+        flag = sample_lib.recirc_book(sample_book_single)
+        assert not flag
+        assert sample_book_single.isbn not in sample_lib.books_out
+
+
 class TestAddPatron:
     """Class to test adding a patron to the library"""
 class TestRemovePatron:
