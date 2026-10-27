@@ -136,7 +136,7 @@ Book was successfully checked out
 
 ### Library Module (Mui_Library.py)
 
-#### Library Class -- TBR
+#### Library Class
 Provides library book inventory and patron management.
 
 ##### Attributes
@@ -405,7 +405,47 @@ python -m pytest
 |  | test_show_hold(self, sample_book_single) | Tests that the return string from show_hold is as expected |
 
 #### Library Tests (test_library.py)
-TBD
+| Class | Method | Purpose |
+| ------- | ------- | ------- |
+| TestLibraryConstructor |  | Tests the library __init__ method |
+|  | test_default_lib(self, default_lib_default) | Tests that default values are populated when args are missing |
+|  | test_init_lib(self, default_lib_default) | Tests initialization values that are the same |
+|  | test_populated_lib(self, sample_lib) | Tests that passed values override defaults |
+| TestInLib |  | Class to test book_in_exists(self, book), find_book(self, isbn), book_avail(self,book), patron_exists(self, patron), and find_patron(self, card) methods |
+|  | test_book_present(self, sample_lib, sample_book_many) | Tests whether true is returned when book is present |
+|  | test_book_absent(self, sample_lib, sample_book_many) | Tests whether false is return when book is absent |
+|  | test_book_key_presesnt(self, sample_lib, sample_book_many) | Tests whether the book is returned when given an existing key |
+|  | test_book_key_absent(self, sample_lib, sample_book_many) | Tests whether None is returned when given an absent book key |
+|  | book_avail_pass(self, samp_pop_lib, sample_book_single) | Tests whether book available is true when its present |
+|  | book_avail_fail(self, sample_lib, sample_book_single) | Tests whether book available is false when its not present |
+|  | test_patron_present(self, sample_lib, sample_patron) | Tests whether true is returned when patron is present |
+|  | test_patron_absent(self, sample_lib, sample_patron) | Tests whether false is return when patron is absent |
+|  | test_patron_key_present(self, sample_lib, sample_patron) | Tests whether the patron is returned when given an existing key |
+|  | test_patron_key_absent(self, sample_lib, sample_patron) | Tests whether None is returned when given an absent patron key |
+| TestAddBook |  | Class to test the add_book(self, book) method |
+|  | test_update_pass(self, samp_pop_lib, sample_book_single) | Tests the case when book already exists and adding passes |
+|  | test_add_new(self, sample_lib, sample_book_single) | Tests the case when a book does not already exist |
+| TestRemoveBook |  | Class to test the remove_book(self, book) method |
+|  | test_dec_pass(self, samp_pop_lib, sample_book_many) | Tests the case when a book decrement passes |
+|  | test_remove_pass(self, samp_pop_lib, sample_book_single) | Tests the case when a book is fully removed |
+|  | test_qty_zero(self, samp_pop_lib, sample_book_single) | Tests the case when there is no copies of the books |
+| TestDecirculateBook |  | Class to test the decirc_book(self, book) method |
+|  | test_decirc_new(self, samp_pop_lib, sample_book_many) | Tests the case when a book is not already out of circulation |
+|  | test_decirc_exist(self, samp_pop_lib, sample_book_many) | Tests the case when a copy is already out of circulation |
+|  | test_decirc_zero(self, samp_pop_lib, sample_book_single) | Tests the case when the original quantity is 0 |
+|  | test_decirc_nonexist(self, sample_lib, sample_book_single) | Tests the case when attempting to decirc a book not in the library |
+| TestRecirculateBook |  | Class to test the recirc_book(self, book) method |
+|  | test_recirc_multi(self, samp_pop_lib, sample_book_many) | Tests the case when there are multiple copies out of circulation |
+|  | test_recirc_one(self, samp_pop_lib, sample_book_single) | Tests the case when there is one copy out of circulation |
+|  | test_recirc_nonexist(self, sample_lib, sample_book_single) | Tests the case when attempting to recirc a book not in out dict |
+| TestAddPatron |  | Class to test adding a patron to the library |
+|  | test_patron_exists(self, samp_pop_lib, sample_patron) | Tests the case when the patron already exists |
+|  | test_patron_add(self, sample_lib, sample_patron) | Tests the case when adding a patron is successful |
+|  | test_educator_add(self, sample_lib, sample_educator) | Tests the case when adding an educator is successful |
+| TestRemovePatron |  | Class to test removing a patron to the library |
+|  | test_patron_nonexists(self, sample_lib, sample_patron) | Tests the case when the patron doesn't exist |
+|  | test_patron_remove(self, samp_pop_lib, sample_patron) | Tests the case when removing a patron is successful |
+|  | test_educator_remove(self, samp_pop_lib, sample_educator) | Tests the case when removing an educator is successful |
 
 #### Patron Tests (test_patron.py)
 | Class | Method | Purpose |
