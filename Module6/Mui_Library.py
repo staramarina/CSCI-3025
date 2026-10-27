@@ -336,7 +336,7 @@ class Library:
         num = input('Library card number: ')
         last = input('Patron\'s last name: ')
         first = input('Patron\'s first name: ')
-        dob = input('Patron\'s date of birth (YYYMMDD): ')
+        dob = input('Patron\'s date of birth (YYYYMMDD): ')
         phone = input('Patron\'s phone number: ')
         email = input('Patron\'s email address: ')
         address = input('Patron\'s residential address: ')
