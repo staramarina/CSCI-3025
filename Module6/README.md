@@ -96,7 +96,7 @@ Please select one of the following options:
 5 -- Request a hold on a book
 6 -- Update a hold on a book
 7 -- Remove a hold on a book
-8 -- View al checked out books
+8 -- View all checked out books
 x -- Quit
 1
 
