@@ -218,5 +218,47 @@ class TestRecirculateBook:
 
 class TestAddPatron:
     """Class to test adding a patron to the library"""
+
+
+    def test_patron_exists(self, samp_pop_lib, sample_patron):
+        """Tests the case when the patron already exists"""
+        flag = samp_pop_lib.add_patron(sample_patron)
+        assert not flag
+
+
+    def test_patron_add(self, sample_lib, sample_patron):
+        """Tests the case when adding a patron is successful"""
+        flag = sample_lib.add_patron(sample_patron)
+        assert flag
+        assert sample_patron.card_num in sample_lib.patrons
+
+
+    def test_educator_add(self, sample_lib, sample_educator):
+        """Tests the case when adding an educator is successful"""
+        flag = sample_lib.add_patron(sample_educator)
+        assert flag
+        assert sample_educator.card_num in sample_lib.patrons
+
+
 class TestRemovePatron:
     """Class to test removing a patron to the library"""
+
+
+    def test_patron_nonexists(self, sample_lib, sample_patron):
+        """Tests the case when the patron doesn't exist"""
+        flag = sample_lib.remove_patron(sample_patron)
+        assert not flag
+
+
+    def test_patron_remove(self, samp_pop_lib, sample_patron):
+        """Tests the case when removing a patron is successful"""
+        flag = samp_pop_lib.remove_patron(sample_patron)
+        assert flag
+        assert sample_patron.card_num not in samp_pop_lib.patrons
+
+
+    def test_educator_remove(self, samp_pop_lib, sample_educator):
+        """Tests the case when removing an educator is successful"""
+        flag = samp_pop_lib.remove_patron(sample_educator)
+        assert flag
+        assert sample_educator.card_num not in samp_pop_lib.patrons
