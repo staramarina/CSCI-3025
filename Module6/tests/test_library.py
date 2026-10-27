@@ -32,7 +32,8 @@ class TestLibraryConstructor:
 
 class TestInLib:
     """Class to test book_in_exists(self, book), find_book(self, isbn), 
-       patron_exists(self, patron), and find_patron(self, card) methods"""
+       book_avail(self,book), patron_exists(self, patron), and 
+       find_patron(self, card) methods"""
 
 
     def test_book_present(self, sample_lib, sample_book_many):
@@ -62,6 +63,18 @@ class TestInLib:
         """Tests whether None is returned when given an absent book key"""
         book = sample_lib.find_book('9780141439518')
         assert book is None
+
+
+    def book_avail_pass(self, samp_pop_lib, sample_book_single):
+        """Tests whether book available is true when its present"""
+        flag = samp_pop_lib.book_avail(sample_book_single)
+        assert flag
+
+
+    def book_avail_fail(self, sample_lib, sample_book_single):
+        """Thests whether book available is false when its not present"""
+        flag = sample_lib.book_avail(sample_book_single)
+        assert not flag
 
 
     def test_patron_present(self, sample_lib, sample_patron):
@@ -135,3 +148,9 @@ class TestRemoveBook:
         assert not flag
         assert 1 == samp_pop_lib.books[sample_book_single.isbn].tot_qty
         assert 0 == samp_pop_lib.books[sample_book_single.isbn].qty
+
+
+class TestDecirculateBook:
+    """Class to test the decirc_book(self, book) method"""
+class TestRecirculateBook:
+    """Class to test the recirc_book(self, book) method"""
