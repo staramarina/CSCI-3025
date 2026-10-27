@@ -165,7 +165,6 @@ Provides library book inventory and patron management.
 | patron_exists(self, patron) | Checks whether a patron exists in the library database | True if patron exists, otherwise False |
 | add_patron(self, patron) | Adds a Patron instance to the library | False if patron already exists, otherwise True |
 | remove_patron(self, patron) | Removes a Patron instance from the library | True if patron exists, otherwise False |
-| menu_bound_check(self, select = 0, type = 0) | Checks whether the selection from the menu is within bounds | True if within bounds, otherwise False |
 | print_main_menu(self) | Prints the library main menu to the console | None (Output to console) |
 | print_staff_menu(self) | Prints the library staff menu to the console | None (Output to console) |
 | print_patron_menu(self) | Prints the patron menu to the console | None (Output to console) |
