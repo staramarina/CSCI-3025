@@ -65,13 +65,13 @@ class TestInLib:
         assert book is None
 
 
-    def book_avail_pass(self, samp_pop_lib, sample_book_single):
+    def test_book_avail_pass(self, samp_pop_lib, sample_book_single):
         """Tests whether book available is true when its present"""
         flag = samp_pop_lib.book_avail(sample_book_single)
         assert flag
 
 
-    def book_avail_fail(self, sample_lib, sample_book_single):
+    def test_book_avail_fail(self, sample_lib, sample_book_single):
         """Tests whether book available is false when its not present"""
         flag = sample_lib.book_avail(sample_book_single)
         assert not flag
