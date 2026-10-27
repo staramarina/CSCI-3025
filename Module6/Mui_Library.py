@@ -2,7 +2,10 @@
 # Module 6 Assignment - Library Class Module
 # CSCI-3025: Python Programming
 # Purpose: Library class with associated attributes and methods
-# Dependencies: Mui_Book, Mui_Patron
+# Dependencies: Mui_Book, Mui_Patron, copy
+
+
+from copy import deepcopy
 
 
 class Library:
@@ -137,21 +140,21 @@ class Library:
             True if book was successfully moved to decirculation inventory, 
                 otherwise False
         """
-        if self.remove_book(book):
-            if self.book_out_exists(book):
-                qty_out_orig = self.books_out[book.isbn].qty
-                self.books_out[book.isbn].qty += 1
-                qty_out_new = self.books_out[book.isbn].qty
-                if (qty_out_orig < qty_out_new):
-                    return True
-                else:
-                    return False
-            else:
-                self.books_out[book.isbn] = book
+        if self.book_in_exists(book):
+            qty_orig = self.books[book.isbn].qty
+            if 0 < qty_orig:
+                self.books[book.isbn].qty -= 1
                 if self.book_out_exists(book):
-                    return True
+                    self.books_out[book.isbn].qty += 1
                 else:
-                    return False
+                    book_copy = deepcopy(book)
+                    book_copy.qty = 1
+                    self.books_out[book.isbn] = book_copy
+                return True
+            elif 0 == qty_orig:
+                return False
+            else:
+                return False
         else:
             return False
 
