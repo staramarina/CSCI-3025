@@ -163,12 +163,12 @@ def samp_pop_lib():
     library.books[book7.isbn] = book7
     library.books[book8.isbn] = book8
     library.books[book9.isbn] = book9
-    patron1 = Patron('159225523', 'Runolfsdottir, Magali', '19530103', '470-516-4553', 'magali.runolfsdottir92@icloud.com', '5909 Harris Gardens, New Lueville, Delaware, 72591')
+    patron1 = Patron('159225523', 'Runolfsdottir', 'Magali', '19530103', '470-516-4553', 'magali.runolfsdottir92@icloud.com', '5909 Harris Gardens, New Lueville, Delaware, 72591')
     patron2 = Patron('899261678', 'Deckow', 'Sonia', '19711012', '810-932-7365', 'soniadeckow@protonmail.com', '9740 Larissa Expressway Apt. 320, Bernitaport, South Dakota, 07123')
-    patron3 = Patron('606936289', 'Okuneva, Francis', '19570428', '470-478-0435', 'fokune@hotmail.com', '359 White Mountain Suite 109, East Domenicahaven, Georgia, 60905')
-    patron4 = Patron('183490206', 'Langosh, Brook', '20020821', '986-830-6659', 'brookl02@yahoo.com', '637 Yundt Glen Suite 325, West Montanashire, Kentucky, 80882')
-    educator1 = Educator('764707335', 'Reichel, Morgan', '19781220', '630-251-6114', 'morgan.reichel@hotmail.com', '47180 Jenifer Plains Apt. 307, Clairebury, Alabama, 76390', 'North Highlands High School')
-    educator2 = Educator('360922899', 'Klocko, Alan', '19680402', '779-608-1590', 'alan.klocko82@yahoo.com', '635 Harmon Mill Suite 899, Port Dashawn, South Dakota, 95953', 'Sierra College')
+    patron3 = Patron('606936289', 'Okuneva', 'Francis', '19570428', '470-478-0435', 'fokune@hotmail.com', '359 White Mountain Suite 109, East Domenicahaven, Georgia, 60905')
+    patron4 = Patron('183490206', 'Langosh', 'Brook', '20020821', '986-830-6659', 'brookl02@yahoo.com', '637 Yundt Glen Suite 325, West Montanashire, Kentucky, 80882')
+    educator1 = Educator('764707335', 'Reichel', 'Morgan', '19781220', '630-251-6114', 'morgan.reichel@hotmail.com', '47180 Jenifer Plains Apt. 307, Clairebury, Alabama, 76390', 'North Highlands High School')
+    educator2 = Educator('360922899', 'Klocko', 'Alan', '19680402', '779-608-1590', 'alan.klocko82@yahoo.com', '635 Harmon Mill Suite 899, Port Dashawn, South Dakota, 95953', 'Sierra College')
     educator3 = Educator('888120722', 'Barrows', 'Americo', '19881015', '580-438-9671', 'americo.barrows68@outlook.com', '5677 Witting Rest Suite 120, East Harmony, California, 66444', 'P.S. 112')
     library.patrons[patron1.card_num] = patron1
     library.patrons[patron2.card_num] = patron2
