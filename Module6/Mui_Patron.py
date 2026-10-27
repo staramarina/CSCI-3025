@@ -33,7 +33,7 @@ class Patron:
         self.card_num = num
         self.last_name = last
         self.first_name = first
-        self.__dob = dob
+        self.dob = dob
         self.__phone = phone
         self.__email = email
         self.__address = address
