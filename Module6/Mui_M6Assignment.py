@@ -127,7 +127,6 @@ if __name__ == "__main__":
                         auth = input('Author: ')
                         title = input('Title: ')
                         qty = input('Quantity: ')
-                        print(qty) # test line remove later
                         if '' == qty:
                             qty = None
                         qty_chk = int_check(qty)
@@ -244,7 +243,10 @@ if __name__ == "__main__":
             patron = mml.find_patron(card)
             if not patron:
                 print('Account not found. Please consult staff.')
-                break
+                print('')
+                mml.print_main_menu()
+                usr_in = input()
+                continue
             print('')
             mml.print_patron_menu()
             usr_in = input()
@@ -256,8 +258,7 @@ if __name__ == "__main__":
                               'like to checkout')
                         isbn = input()
                         book = mml.find_book(isbn)
-                        avail = mml.book_avail(book)
-                        if book and avail:
+                        if book and mml.book_avail(book):
                             flag = patron.checkout_book(book)
                             print(flag[1])
                         elif book:
@@ -290,8 +291,7 @@ if __name__ == "__main__":
                               'like to be added to the waitlist for')
                         isbn = input()
                         book = mml.find_book(isbn)
-                        avail = mml.book_avail(book)
-                        if avail:
+                        if mml.book_avail(book):
                             print('Book is available for checkout.')
                             print('Select option 1 to checkout book.')
                         elif book:
@@ -312,15 +312,21 @@ if __name__ == "__main__":
                         if ed_flag and book:
                             data = mml.ed_hold_prompt()
                             qty_in = input('Quantity: ')
-                            start = date_format(data[0]) # TODO update with new date_format
-                            end = date_format(data[1]) # TODO update with new date_format
+                            start = date_format(data[0], True)
+                            end = date_format(data[1], True)
                             qty = int_check(qty_in)
-                            if start and end and qty[0]:
-                                flag = patron.hold_request(book, start, 
-                                                           end, qty[1])
-                                print(flag[1])
+                            if not start[0]:
+                                print(start[1])
+                            elif not end[0]:
+                                print(end[1])
+                            elif not qty[0]:
+                                print('Invalid quantity')
+                            elif 1 > qty[1]:
+                                print('Quantity cannot be negative or zero')
                             else:
-                                ('Input is in the wrong format')
+                                flag = patron.hold_request(book, start[0], 
+                                                           end[0], qty[1])
+                                print(flag[1])
                         elif ed_flag:
                             print('Book does not exist in the library database')
                         else:
@@ -333,13 +339,16 @@ if __name__ == "__main__":
                         ed_flag = isinstance(patron, Educator)
                         if ed_flag and book:
                             data = mml.ed_hold_prompt()
-                            start = date_format(data[0]) # TODO update with new date_format
-                            end = date_format(data[1]) # TODO update with new date_format
-                            if start and end:
-                                flag = patron.hold_update(book, start, end)
-                                print(flag[1])
+                            start = date_format(data[0], True)
+                            end = date_format(data[1], True)
+                            if not start[0]:
+                                print(start[1])
+                            elif not end[0]:
+                                print(end[1])
                             else:
-                                ('Input is in the wrong format')
+                                flag = patron.hold_update(book, start[0], 
+                                                          end[0])
+                                print(flag[1])
                         elif ed_flag:
                             print('Book does not exist in the library database')
                         else:
