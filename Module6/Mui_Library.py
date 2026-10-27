@@ -172,21 +172,15 @@ class Library:
         """
         if self.book_out_exists(book):
             qty_orig = self.books_out[book.isbn].qty
-            if 1 < qty_orig:
-                self.books_out[book.isbn].qty -= 1
-                qty_new = self.books_out[book.isbn].qty
-                if (qty_new < qty_orig) and self.add_book(book):
-                    return True
+            if self.book_in_exists(book):
+                if 1 < qty_orig:
+                    self.books_out[book.isbn].qty -= 1
                 else:
-                    return False
-            if 1 == qty_orig:
-                self.books_out.pop(book.isbn)
-                if self.book_out_exists(book):
-                    return False
-                elif self.add_book(book):
-                    return True
-                else:
-                    return False
+                    self.books_out.pop(book.isbn)
+                self.books[book.isbn].qty += 1
+                return True
+            else:
+                return False
         else:
             return False
 
