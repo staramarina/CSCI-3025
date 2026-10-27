@@ -108,3 +108,30 @@ class TestAddBook:
         """Tests the case when a book does not already exist"""
         flag = sample_lib.add_book(sample_book_single)
         assert flag
+
+
+class TestRemoveBook:
+    """Class to test the remove_book(self, book) method"""
+
+
+    def test_dec_pass(self, samp_pop_lib, sample_book_many):
+        """Tests the case when a book decrement passes"""
+        flag = samp_pop_lib.remove_book(sample_book_many)
+        assert flag
+        assert 14 == samp_pop_lib.books[sample_book_many.isbn].tot_qty
+        assert 14 == samp_pop_lib.books[sample_book_many.isbn].qty
+
+
+    def test_remove_pass(self, samp_pop_lib, sample_book_single):
+        """Tests the case when a book is fully removed"""
+        flag = samp_pop_lib.remove_book(sample_book_single)
+        assert flag
+        assert sample_book_single not in samp_pop_lib.books.values()
+
+    def test_qty_zero(self, samp_pop_lib, sample_book_single):
+        """Tests the case when there is no copies of the books"""
+        samp_pop_lib.books[sample_book_single.isbn].qty = 0
+        flag = samp_pop_lib.remove_book(sample_book_single)
+        assert not flag
+        assert 1 == samp_pop_lib.books[sample_book_single.isbn].tot_qty
+        assert 0 == samp_pop_lib.books[sample_book_single.isbn].qty
