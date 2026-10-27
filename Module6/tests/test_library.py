@@ -72,7 +72,7 @@ class TestInLib:
 
 
     def book_avail_fail(self, sample_lib, sample_book_single):
-        """Thests whether book available is false when its not present"""
+        """Tests whether book available is false when its not present"""
         flag = sample_lib.book_avail(sample_book_single)
         assert not flag
 
@@ -90,7 +90,7 @@ class TestInLib:
         assert not flag
 
 
-    def test_patron_key_presesnt(self, sample_lib, sample_patron):
+    def test_patron_key_present(self, sample_lib, sample_patron):
         """Tests whether the patron is returned when given an existing key"""
         sample_lib.patrons[sample_patron.card_num] = sample_patron
         patron = sample_lib.find_patron('899261678')
@@ -201,7 +201,7 @@ class TestRecirculateBook:
 
 
     def test_recirc_one(self, samp_pop_lib, sample_book_single):
-        """Tests the case when there is on copy out of circulation"""
+        """Tests the case when there is one copy out of circulation"""
         samp_pop_lib.decirc_book(sample_book_single)
         flag = samp_pop_lib.recirc_book(sample_book_single)
         assert flag
