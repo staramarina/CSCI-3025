@@ -504,4 +504,4 @@ Author: Tiffany M. Mui
 Institution: State University of New York: Empire State University  
 Course: CSCI-3025 - Python Programming  
 Instructor: Dr. Sahand Ziabari  
-Date: XX Oct 2026  
+Date: 27 Oct 2026  
