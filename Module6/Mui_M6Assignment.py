@@ -53,9 +53,8 @@ if __name__ == "__main__":
                 try:
                     book = Book(data[0], data[1], data[2], int_flag[1])
                 except (TypeError, ValueError) as err:
-                    book_reader.close()
-                    print(err)
-                    sys.exit(0)
+                    print(f'Line skipped: {err}')
+                    continue
                 else:
                     mml.add_book(book)
             else:
@@ -77,9 +76,8 @@ if __name__ == "__main__":
                     patron = Patron(data[0], data[1], data[2], data[3],
                                     data[4], data[5], address)
                 except ValueError as err:
-                    patron_reader.close()
-                    print(err)
-                    sys.exit(0)
+                    print(f'Line skipped: {err}')
+                    continue
                 else:
                     mml.add_patron(patron)
     patron_reader.close()
@@ -99,9 +97,8 @@ if __name__ == "__main__":
                     educator = Educator(data[0], data[1], data[2], data[3],
                                     data[4], data[5], address, data[10])
                 except ValueError as err:
-                    educator_reader.close()
-                    print(err)
-                    sys.exit(0)
+                    print(f'Line skipped: {err}')
+                    continue
                 else:
                     mml.add_patron(educator)
     educator_reader.close()
@@ -130,7 +127,14 @@ if __name__ == "__main__":
                         if '' == qty:
                             qty = None
                         qty_chk = int_check(qty)
-                        if qty_chk[0] or None == qty:
+                        if qty is None:
+                            new_b = Book(isbn, auth, title)
+                            flag = mml.add_book(new_b)
+                            if flag:
+                                print('Book added!')
+                            else:
+                                print('Book could not be added.')
+                        elif qty_chk[0]:
                             try:
                                 new_b = Book(isbn, auth, title, qty_chk[1])
                             except (TypeError, ValueError) as err:
@@ -291,7 +295,7 @@ if __name__ == "__main__":
                               'like to be added to the waitlist for')
                         isbn = input()
                         book = mml.find_book(isbn)
-                        if mml.book_avail(book):
+                        if book and mml.book_avail(book):
                             print('Book is available for checkout.')
                             print('Select option 1 to checkout book.')
                         elif book:
