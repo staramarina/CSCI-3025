@@ -106,20 +106,20 @@ class Library:
             True if book removed successfully, otherwise False
         """
         if self.book_in_exists(book):
+            tot_qty_orig = self.books[book.isbn].tot_qty
             qty_orig = self.books[book.isbn].qty
-            if 1 < qty_orig:
+            if (1 < tot_qty_orig) and (1 < qty_orig):
+                self.books[book.isbn].tot_qty -= 1
                 self.books[book.isbn].qty -= 1
+                tot_qty_new = self.books[book.isbn].tot_qty
                 qty_new = self.books[book.isbn].qty
-                if qty_new < qty_orig:
+                if (qty_new < qty_orig) and (tot_qty_new < tot_qty_orig):
                     return True
                 else:
                     return False
-            elif 1 == qty_orig:
+            elif (1 == qty_orig) and (1 == tot_qty_orig):
                 self.books.pop(book.isbn)
-                if self.book_in_exists(book):
-                    return False
-                else:
-                    return True
+                return True
             else:
                 return False
         else:
