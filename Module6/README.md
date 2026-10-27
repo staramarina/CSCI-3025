@@ -124,7 +124,8 @@ Book was successfully checked out
           ├── test_ancillary.py  # Tests for Mui_Ancillary.py
           ├── test_book.py       # Tests for Mui_Book.py
           ├── test_library.py    # Tests for Mui_Library.py
-          └── test_patron.py     # Tests for Mui_Patron.py
+          ├── test_patron.py     # Tests for Mui_Patron.py
+          └── utilities.py       # Helper functions for testing
 ```
 
 ## Modules
@@ -171,7 +172,7 @@ Provides library book inventory and patron management.
 | print_search_menu(self) | Prints the search menu to the console | None (Output to console) |
 | print_type_menu(self) | Prints the patron or educator type menu to the console | None (Output to console) |
 | patron_create_prompt | Gives prompts to enter patron information and handles user input | data as a 7-tuple with all input for patron initialization |
-| ed_hold_prompt(self) | Gives prompt to enter hold information and handles user input | data as a 3-tuple including start date, end date, and quantity |
+| ed_hold_prompt(self) | Gives prompt to enter hold information and handles user input | data as a 2-tuple including start date and end date |
 | __str__(self) | Provides library name, phone number, and address information | String default output |
 | show_books(self) | Prints all books in the library to the console | None (Output to console) |
 | search_isbn(self, search) | Prints book information for the given ISBN if it exists | None (Output to console) |
@@ -282,7 +283,7 @@ Provides additional functions and checks
 | -------- | -------- | -------- |
 | file_exists(file_name) | Checks if a file can be opened and read (duplicated function from Module5) | (True, success message) if successful, otherwise (False, error message) |
 | int_check(num_str) | Determines whether a string can be converted to an integer | (True, int) if successful, otherwise (False, error message) |
-| date_format(date_str) | Formats a string into a datetime | (datetime value, None) if successful, otherwise (None, error message) |
+| date_format(date_str, future = False) | Formats a string into a datetime | (datetime value, None) if successful, otherwise (None, error message) |
 
 ## Input Files
 The following files are used to populate a new library instance with example data. Further interaction is intended to occur via the console. Verification rules are the same for both unless otherwise noted. The file names are currently hard-coded, but all such variables are defined immediately following the instantiation of main in the Mui_M6Assignment.py file. 
