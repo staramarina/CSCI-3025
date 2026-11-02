@@ -34,14 +34,19 @@ The weather tool was created for State University of New York (SUNY): Empire Sta
 - External Dependencies [TODO: list external libraries and APIs]
 
 ### Setup Steps
-1. Download the repository from https://github.com/staramarina/CSCI-3025/tree/main/Module7
-2. Verify all files are present
+1. Request an API key from https://www.weatherapi.com/ (note: this does require an account creation)
+2. Download the repository from https://github.com/staramarina/CSCI-3025/tree/main/Module7
+3. Verify all files are present
 ```
    Module7/
     ├── Mui_M7Assignment.py      # Main program
     └── TBD
 ```
-3. Ensure Python path includes the Module7 directory or run from within it.
+4. Create a .env file within the Module7 directory that includes the following
+```
+WEATHER_API_KEY = <your_api_key>
+```
+5. Ensure Python path includes the Module7 directory or run from within it.
 
 ## Usage
 
