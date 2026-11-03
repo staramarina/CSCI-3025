@@ -42,11 +42,15 @@ The weather tool was created for State University of New York (SUNY): Empire Sta
     ├── Mui_M7Assignment.py      # Main program
     └── TBD
 ```
-4. Create a .env file within the Module7 directory that includes the following
+4. Install requests package: (note: it is recommended to utilize a virtual envrionment to segment dependencies)
+```
+python -m pip install requests
+```
+5. Create a .env file within the Module7 directory that includes the following
 ```
 WEATHER_API_KEY = <your_api_key>
 ```
-5. Ensure Python path includes the Module7 directory or run from within it.
+6. Ensure Python path includes the Module7 directory or run from within it.
 
 ## Usage
 
