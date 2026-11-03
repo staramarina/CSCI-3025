@@ -2,7 +2,7 @@
 
 [TODO: Add quick description]
 
-Estimated Minimum: ![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)    
+Estimated Minimum: ![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)    
 Development Environment: Python 3.14.4
 
 ## Table of Contents
@@ -30,7 +30,7 @@ The weather tool was created for State University of New York (SUNY): Empire Sta
 ## Installation
 
 ### Prerequisites
-- Python 3.10 or higher (estimated)
+- Python 3.11 or higher (estimated)
 - External Packages (TBR)
     - requests - handles http requests and responses
     - python-dotenv - handles loading environment variables
