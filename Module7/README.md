@@ -31,7 +31,11 @@ The weather tool was created for State University of New York (SUNY): Empire Sta
 
 ### Prerequisites
 - Python 3.10 or higher (estimated)
-- External Dependencies [TODO: list external libraries and APIs]
+- External Packages (TBR)
+    - requests - handles http requests and responses
+    - python-dotenv - handles loading environment variables
+- External APIs
+    - Weather API from https://www.weatherapi.com/
 
 ### Setup Steps
 1. Request an API key from https://www.weatherapi.com/ (note: this does require an account creation)
@@ -46,11 +50,15 @@ The weather tool was created for State University of New York (SUNY): Empire Sta
 ```
 python -m pip install requests
 ```
-5. Create a .env file within the Module7 directory that includes the following
+5. Install python-dotenv package: 
+```
+python -m pip install python-dotenv
+```
+6. Create a .env file within the Module7 directory that includes the following
 ```
 WEATHER_API_KEY = <your_api_key>
 ```
-6. Ensure Python path includes the Module7 directory or run from within it.
+7. Ensure Python path includes the Module7 directory or run from within it.
 
 ## Usage
 
