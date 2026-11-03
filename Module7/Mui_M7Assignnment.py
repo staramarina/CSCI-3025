@@ -7,9 +7,15 @@
 
 import os
 import requests
+from pathlib import Path
+from dotenv import load_dotenv
 
 
-api_key = os.getenv("WEATHER_API_KEY") # TODO t/s why this isn't pulling in the key
+# Load environment variables
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
+
+
+api_key = os.getenv("WEATHER_API_KEY")
 base_url = "https://api.weatherapi.com/v1/" # base url for all requests
 current_url = "current.json?" # gets current weather
 forecast_url = "forecast.json?" # gets forecast weather up to 14 days
@@ -21,13 +27,12 @@ day_url = "&days=7"
 # Example: https://api.weatherapi.com/v1/forecast.json?key=YOUR_API_KEY&q07112&days=7 # gets weather for the next 7 days at zip 07112
 
 
-print(api_key) # test line TODO REMOVE so that this doesn't actually print the key when it's working
 
 
-"""
+
+# Example attempt
 url = f"https://api.weatherapi.com/v1/current.json?key={api_key}&qLondon"
 r = requests.get(url, timeout=10)
 r.raise_for_status()
 data = r.json()
 print(data)
-"""
