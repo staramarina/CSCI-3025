@@ -7,6 +7,7 @@
 
 import os
 import requests
+import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -26,8 +27,29 @@ day_url = "&days=7"
 # Example: https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&qLondon # gets current weather in london
 # Example: https://api.weatherapi.com/v1/forecast.json?key=YOUR_API_KEY&q07112&days=7 # gets weather for the next 7 days at zip 07112
 
+location = 'London' # TODO: implement this as input later
+
+query_url_cur = base_url + current_url + key_url + q_url + location
+query_url_for = base_url + forecast_url + key_url + q_url + location + day_url
 
 
+url = 'https://api.weatherapi.com/v1/current.json?key=None&qLondon' # invalid url used to test HTTP error response
+
+
+try:
+    r = requests.get(url, timeout=10) # TODO: update later with proper urls
+    r.raise_for_status()
+    data = r.json()
+except requests.exceptions.Timeout:
+    print('ERROR: The request timed out.')
+except requests.exceptions.HTTPError as http_err: # TODO handle different statuses so API key isn't revealed.
+    print('ERROR: An HTTP error occurred')
+except requests.exceptions.RequestException as req_err:
+    print('ERROR: A request exception occured.')
+    print(req_err)
+except ValueError as json_err:
+    print('ERROR: Failed to decode JSON')
+    print(json_err)
 
 """
 # Example attempt -- WORKS!
