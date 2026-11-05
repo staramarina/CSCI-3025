@@ -8,6 +8,7 @@
 import sys
 from pathlib import Path
 from unittest.mock import patch, MagicMock
+import requests
 
 
 #Adds parent directory to front of module search path
@@ -186,3 +187,38 @@ class TestWxrSuccess:
         mock_get.return_value = make_response()
         wxr.wxr_api_call(SAMPLE_URL, timeout=5)
         mock_get.assert_called_once_with(SAMPLE_URL, timeout=5)
+
+
+class TestWxrTimeout:
+    """Class to test the timeout path in wxr_api_call function"""
+
+
+    @patch("Mui_WxrHandle.requests.get")
+    def test_timeout_return(self, mock_get):
+        """Tests that a timeout will return None"""
+        mock_get.side_effect = requests.exceptions.Timeout
+        data = wxr.wxr_api_call(SAMPLE_URL)
+        assert None == data
+
+
+    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.requests.get")
+    def test_timeout_print(self, mock_get, mock_log, capsys):
+        """Tests that the timeout message is printed, but not logged"""
+        mock_get.side_effect = requests.exceptions.Timeout
+        wxr.wxr_api_call(SAMPLE_URL)
+        captured = capsys.readouterr()
+        assert "ERROR: The request timed out" in captured.out
+        mock_log.assert_not_called()
+
+
+#class TestWxrHTTP:
+    """Class to test the HTTP error path in wxr_api_call function"""
+
+
+#class TestWxrRequest:
+    """Class to test the request exception path in wxr_api_call function"""
+
+
+#class TestWxrJSON:
+    """Class to test the value error path in wxr_api_call function"""
