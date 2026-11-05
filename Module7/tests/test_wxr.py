@@ -219,7 +219,7 @@ class TestWxrHTTP:
     @patch("Mui_WxrHandle.print_log")
     @patch("Mui_WxrHandle.requests.get")
     def test_http_none(self, mock_get, tmp_path):
-        """An HTTP error should result in None return"""
+        """Tests that an HTTP eror results in None return"""
         err = requests.exceptions.HTTPError("401 Client Error: Unauthorized "
                 "for url: https://api.weatherapi.com/v1/")
         mock_get.return_value = make_response(http_err=err)
@@ -229,11 +229,10 @@ class TestWxrHTTP:
         assert None == data
 
 
-
     @patch("Mui_WxrHandle.print_log")
     @patch("Mui_WxrHandle.requests.get")
     def test_http_error(self, mock_get, mock_log, capsys, tmp_path):
-        """Tests than HTTP error is logged and printed error points to logs"""
+        """Tests that HTTP error is logged and printed error points to logs"""
         err = requests.exceptions.HTTPError("401 Client Error")
         mock_get.return_value = make_response(http_err=err)
         mock_log.return_value = (True, "File printed successfully")
@@ -249,8 +248,16 @@ class TestWxrHTTP:
         assert str(log_file) in captured.out
 
 
-#class TestWxrRequest:
+class TestWxrRequest:
     """Class to test the request exception path in wxr_api_call function"""
+
+
+    def test_connect_none():
+        """Tests that a connection failure results in none return"""
+
+
+    def test_req_err():
+        """Tests that request error is logged and reported"""
 
 
 #class TestWxrJSON:
