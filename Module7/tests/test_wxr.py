@@ -25,8 +25,8 @@ class TestEnvURL:
         assert None != key
 
 
-    def test_current_good(self):
-        """Tests building the URL to pull current weather data
+    def test_url_good(self):
+        """Tests building the URL to pull forecast weather data
         
         Args:
         
@@ -34,8 +34,10 @@ class TestEnvURL:
         """
         key = '0123456789'
         loc = 'Manassas'
-        url = wxr.build_current_url(key, loc)
+        days = '3'
+        url = wxr.build_url(key, loc, days)
         assert 'weatherapi' in url
-        assert 'current' in url
+        assert 'forecast' in url
         assert key in url
         assert loc in url
+        assert days in url
