@@ -224,7 +224,6 @@ class TestWxrHTTP:
                 "for url: https://api.weatherapi.com/v1/")
         mock_get.return_value = make_response(http_err=err)
         log_file = tmp_path / "log.txt"
-        err_log = str(log_file)
         data = wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
         assert None == data
 
@@ -252,12 +251,28 @@ class TestWxrRequest:
     """Class to test the request exception path in wxr_api_call function"""
 
 
-    def test_connect_none():
+    @patch("Mui_WxrHandle.requests.get")
+    def test_connect_none(self, mock_get):
         """Tests that a connection failure results in none return"""
+        mock_get.side_effect = requests.exceptions.ConnectionError(
+                "Connection refused")
+        data = wxr.wxr_api_call(SAMPLE_URL)
+        assert None == data
 
 
-    def test_req_err():
+    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.requests.get")
+    def test_req_err(self, mock_get, mock_log, capsys, tmp_path):
         """Tests that request error is logged and reported"""
+        mock_get.side_effect = requests.exceptions.ConnectionError(
+                "Connection refused")
+        mock_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
+        mock_log.assert_called_once()
+        captured = capsys.readouterr()
+        assert "An error occurred with the Weather API" in captured.out
+        assert str(log_file) in captured.out
 
 
 #class TestWxrJSON:
