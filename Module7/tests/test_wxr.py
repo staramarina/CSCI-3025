@@ -12,6 +12,7 @@ from pathlib import Path
 #Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+
 import Mui_WxrHandle as wxr
 
 

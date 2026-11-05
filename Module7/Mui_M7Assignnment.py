@@ -2,7 +2,10 @@
 # Module 7 Assignment - Main Program
 # CSCI-3025: Python Programming
 # Purpose: Weather and forecast tool
-# Dependencies: TBD
+# Dependencies:
+#   Standard: os, pathlib, datetime
+#   External: dotenv, requests
+#   Custom: Mui_Logging.py, Mui_WxrHandle.py
 
 
 import Mui_WxrHandle as wxr

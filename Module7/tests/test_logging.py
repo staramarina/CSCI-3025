@@ -4,6 +4,7 @@
 # Purpose: Tests for Mui_Logging.py module
 # Run with: pytest tests/test_logging.py -v
 
+
 import sys
 from pathlib import Path
 from datetime import datetime

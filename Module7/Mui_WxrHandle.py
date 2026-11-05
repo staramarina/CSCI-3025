@@ -2,7 +2,10 @@
 # Module 7 Assignment - Weather API Handling Module
 # CSCI-3025: Python Programming
 # Purpose: Functions to handle interacting with the Weather API
-# Dependencies: TBD
+# Dependencies: 
+#   Standard: os, pathlib 
+#   External: dotenv, requests 
+#   Custom: Mui_Logging.py
 
 
 import os
