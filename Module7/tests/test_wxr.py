@@ -251,12 +251,15 @@ class TestWxrRequest:
     """Class to test the request exception path in wxr_api_call function"""
 
 
+    @patch("Mui_WxrHandle.print_log")
     @patch("Mui_WxrHandle.requests.get")
-    def test_connect_none(self, mock_get):
+    def test_connect_none(self, mock_get, mock_log, tmp_path):
         """Tests that a connection failure results in none return"""
         mock_get.side_effect = requests.exceptions.ConnectionError(
                 "Connection refused")
-        data = wxr.wxr_api_call(SAMPLE_URL)
+        mock_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        data = wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
         assert None == data
 
 
