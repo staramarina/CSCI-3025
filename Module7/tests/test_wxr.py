@@ -212,8 +212,21 @@ class TestWxrTimeout:
         mock_log.assert_not_called()
 
 
-#class TestWxrHTTP:
+class TestWxrHTTP:
     """Class to test the HTTP error path in wxr_api_call function"""
+
+
+    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.requests.get")
+    def test_http_none(self, mock_get, mock_log, tmp_path): # TODO figure out why this doesn't work
+        """An HTTP error should result in None return"""
+        err = requests.exceptions.HTTPError("401 Client Error: Unauthorized "
+                "for url: https://api.weatherapi.com/v1/")
+        mock_get.return_value = make_response(http_err=err)
+        log_file = tmp_path / "log.txt"
+        err_log = str(log_file)
+        data = wxr.wxr_api_call(SAMPLE_URL, err_log)
+        assert None == data
 
 
 #class TestWxrRequest:
