@@ -9,20 +9,18 @@ import Mui_WxrHandle as wxr
 
 
 if __name__ == "__main__":
-    api_key = wxr.load_env()
-    location = 'London' # TODO: implement this as input later
+    err_log = 'Mui_M7_Log.txt'
     days = '7'
+    timeout = 10
+    location = 'London' # TODO: implement this as input later
+    api_key = wxr.load_env()
     url_cur = wxr.build_current_url(api_key, location)
     url_for = wxr.build_forecast_url(api_key, location, days)
-    err_log = 'Mui_M7_Log.txt'
-    timeout = 10
 
-    print(url_cur)
-    print(url_for)
 
 
     url = 'https://api.weatherapi.com/v1/current.json?key=None&qLondon' # invalid url used to test HTTP error response
-    data = wxr.wxr_api_call(url, timeout, err_log)
+    data = wxr.wxr_api_call(url, timeout, err_log) # TODO: put real URLs later when ready to make real calls
 
 
 """
