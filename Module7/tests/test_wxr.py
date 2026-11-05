@@ -76,7 +76,7 @@ def make_response(data = None, json_err = None, http_err = None):
             r.json.return_value = SAMPLE_DATA
         else:
             r.json.return_value = data
-        return r
+    return r
 
 
 class TestEnvURL:
@@ -218,15 +218,35 @@ class TestWxrHTTP:
 
     @patch("Mui_WxrHandle.print_log")
     @patch("Mui_WxrHandle.requests.get")
-    def test_http_none(self, mock_get, mock_log, tmp_path): # TODO figure out why this doesn't work
+    def test_http_none(self, mock_get, tmp_path):
         """An HTTP error should result in None return"""
         err = requests.exceptions.HTTPError("401 Client Error: Unauthorized "
                 "for url: https://api.weatherapi.com/v1/")
         mock_get.return_value = make_response(http_err=err)
         log_file = tmp_path / "log.txt"
         err_log = str(log_file)
-        data = wxr.wxr_api_call(SAMPLE_URL, err_log)
+        data = wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
         assert None == data
+
+
+
+    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.requests.get")
+    def test_http_error(self, mock_get, mock_log, capsys, tmp_path):
+        """Tests than HTTP error is logged and printed error points to logs"""
+        err = requests.exceptions.HTTPError("401 Client Error")
+        mock_get.return_value = make_response(http_err=err)
+        mock_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
+        mock_log.assert_called_once()
+        args, _ = mock_log.call_args
+        assert isinstance(args[0], requests.exceptions.HTTPError)
+        assert str(log_file) == args[1]
+        captured = capsys.readouterr()
+        assert "An error occurred with the Weather API" in captured.out
+        assert "See" in captured.out
+        assert str(log_file) in captured.out
 
 
 #class TestWxrRequest:
