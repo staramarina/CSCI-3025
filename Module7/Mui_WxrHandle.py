@@ -26,6 +26,22 @@ def load_env():
     return api_key
 
 
+def loc_parsing(raw):
+    """Parses location input and formats it for use in the API URL
+    
+    Args:
+        raw: unformated city, zip/postal code of the desired weather data
+    
+    Returns:
+        loc: formated location string
+    """
+    raw = str(raw)
+    raw = raw.strip()
+    raw = raw.title()
+    loc = raw.replace(' ', '+')
+    return loc
+
+
 def build_url(api_key, location, days): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
     """Builds the query URL for forecast portion of weather API
     
