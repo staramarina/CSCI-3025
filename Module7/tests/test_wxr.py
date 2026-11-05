@@ -50,6 +50,7 @@ SAMPLE_DATA = {
         }]
     }
 }
+SAMPLE_URL = "https://api.weatherapi.com/v1/x.json"
 
 
 def make_response(data = None, json_err = None, http_err = None):
@@ -71,7 +72,7 @@ def make_response(data = None, json_err = None, http_err = None):
         r.raise_for_status.side_effect = http_err
     else:
         if None == data:
-            r.json.return_value = sample_data()
+            r.json.return_value = SAMPLE_DATA
         else:
             r.json.return_value = data
         return r
@@ -163,7 +164,25 @@ class TestWxrSuccess:
     """Class to test the successful path in wxr_api_call function"""
 
 
-    @patch("wxr.requests.get")
+    @patch("Mui_WxrHandle.requests.get")
     def test_return(self, mock_get):
         """Tests that a mock call returns mock JSON data"""
         mock_get.return_value = make_response()
+        data = wxr.wxr_api_call(SAMPLE_URL)
+        assert SAMPLE_DATA == data
+
+
+    @patch("Mui_WxrHandle.requests.get")
+    def test_timeout_default(self, mock_get):
+        """Tests that the timeout is the default if not specified"""
+        mock_get.return_value = make_response()
+        wxr.wxr_api_call(SAMPLE_URL)
+        mock_get.assert_called_once_with(SAMPLE_URL, timeout=10)
+
+
+    @patch("Mui_WxrHandle.requests.get")
+    def test_timeout_specified(self, mock_get):
+        """Tests that the specified timeout is used when given"""
+        mock_get.return_value = make_response()
+        wxr.wxr_api_call(SAMPLE_URL, timeout=5)
+        mock_get.assert_called_once_with(SAMPLE_URL, timeout=5)
