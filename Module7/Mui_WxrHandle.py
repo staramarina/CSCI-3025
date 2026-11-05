@@ -26,25 +26,7 @@ def load_env():
     return api_key
 
 
-def build_current_url(api_key, location): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
-    """Builds the query URL for current portion of weather API
-    
-    Args:
-        api_key: The API key that was returned from load_env()
-        location: city, zip/postal code of the desired weather data
-    
-    Returns:
-        url: The URL used to query for current weather data
-        e.g.: https://api.weatherapi.com/v1/current.json?key=KEY&qLondon
-    """
-    base_url = "https://api.weatherapi.com/v1/"
-    current_url = "current.json?"
-    key_url = f"key={api_key}&q="
-    url = base_url + current_url + key_url + str(location)
-    return url
-
-
-def build_forecast_url(api_key, location, days): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
+def build_url(api_key, location, days): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
     """Builds the query URL for forecast portion of weather API
     
     Args:
@@ -55,12 +37,9 @@ def build_forecast_url(api_key, location, days): # TODO: probably need to fix th
         url: The URL used to query for forecast weather data
         e.g.: https://api.weatherapi.com/v1/forecast.json?key=KEY&q07112&days=7
     """
-    base_url = "https://api.weatherapi.com/v1/"
-    forecast_url = "forecast.json?"
-    key_url = f"key={api_key}&q="
+    base_url = f"https://api.weatherapi.com/v1/forecast.json?key={api_key}&q="
     day_url = "&days="
-    url = (base_url + forecast_url + key_url + str(location) 
-           + day_url + str(days))
+    url = base_url + str(location) + day_url + str(days)
     return url
 
 

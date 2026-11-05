@@ -15,7 +15,7 @@ if __name__ == "__main__":
     #location = 'London' # TODO: implement this as input later
     location = 'Colorado+Springs' # TODO account for spaces, this is a correct query
     api_key = wxr.load_env()
-    url_cur = wxr.build_current_url(api_key, location)
+    #url_cur = wxr.build_current_url(api_key, location) # Don't need this, current included with forecast
     url_for = wxr.build_forecast_url(api_key, location, days)
 
 
