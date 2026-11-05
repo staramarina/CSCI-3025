@@ -278,5 +278,32 @@ class TestWxrRequest:
         assert str(log_file) in captured.out
 
 
-#class TestWxrJSON:
+class TestWxrJSON:
     """Class to test the value error path in wxr_api_call function"""
+
+
+    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.requests.get")
+    def test_json_none(self, mock_get, tmp_path):
+        """Tests that bad JSON data results in None return"""
+        err = ValueError("Expecting value: line 1 column 1")
+        mock_get.return_value = make_response(json_err=err)
+        log_file = tmp_path / "log.txt"
+        data = wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
+        assert None == data
+
+
+    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.requests.get")
+    def test_json_err(self, mock_get, mock_log, capsys, tmp_path):
+        """Tests that bad JSON data error is logged and reported"""
+        err = ValueError("Expecting value: line 1 column 1")
+        mock_get.return_value = make_response(json_err=err)
+        mock_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
+        mock_log.assert_called_once()
+        captured = capsys.readouterr()
+        assert "An error occurred with the Weather API" in captured.out
+        assert "See" in captured.out
+        assert str(log_file) in captured.out
