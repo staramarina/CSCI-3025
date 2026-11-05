@@ -1,5 +1,5 @@
 # Tiffany M. Mui
-# Module 7 Assignment
+# Module 7 Assignment - Main Program
 # CSCI-3025: Python Programming
 # Purpose: Weather and forecast tool
 # Dependencies: TBD
@@ -7,9 +7,9 @@
 
 import os
 import requests
-import logging
 from pathlib import Path
 from dotenv import load_dotenv
+from Mui_Logging import print_log
 
 
 # Load environment variables
@@ -35,21 +35,37 @@ query_url_for = base_url + forecast_url + key_url + q_url + location + day_url
 
 url = 'https://api.weatherapi.com/v1/current.json?key=None&qLondon' # invalid url used to test HTTP error response
 
-
+err_log = 'Mui_M7_Log.txt'
 try:
     r = requests.get(url, timeout=10) # TODO: update later with proper urls
     r.raise_for_status()
     data = r.json()
 except requests.exceptions.Timeout:
     print('ERROR: The request timed out.')
-except requests.exceptions.HTTPError as http_err: # TODO handle different statuses so API key isn't revealed.
-    print('ERROR: An HTTP error occurred')
+except requests.exceptions.HTTPError as http_err:
+    flag = print_log(http_err, err_log)
+    if flag[0]:
+        print('ERROR: An error occurred with the Weather API. ' 
+              f'See {err_log} for details.')
+    else:
+        print('ERROR: An error occurred with the Weather API.')
+        print(f'Could not send error to the logs: {flag[1]}')
 except requests.exceptions.RequestException as req_err:
-    print('ERROR: A request exception occured.')
-    print(req_err)
+    flag = print_log(req_err, err_log)
+    if flag[0]:
+        print('ERROR: An error occurred with the Weather API.' 
+              f'See {err_log} for details.')
+    else:
+        print('ERROR: An error occurred with the Weather API.')
+        print(f'Could not send error to the logs: {flag[1]}')
 except ValueError as json_err:
-    print('ERROR: Failed to decode JSON')
-    print(json_err)
+    flag = print_log(json_err, err_log)
+    if flag[0]:
+        print('ERROR: An error occurred with the Weather API.' 
+              f'See {err_log} for details.')
+    else:
+        print('ERROR: An error occurred with the Weather API.')
+        print(f'Could not send error to the logs: {flag[1]}')
 
 """
 # Example attempt -- WORKS!
