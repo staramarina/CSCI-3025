@@ -26,7 +26,7 @@ def load_env():
     return api_key
 
 
-def build_current_url(api_key, location):
+def build_current_url(api_key, location): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
     """Builds the query URL for current portion of weather API
     
     Args:
@@ -44,7 +44,7 @@ def build_current_url(api_key, location):
     return url
 
 
-def build_forecast_url(api_key, location, days):
+def build_forecast_url(api_key, location, days): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
     """Builds the query URL for forecast portion of weather API
     
     Args:
