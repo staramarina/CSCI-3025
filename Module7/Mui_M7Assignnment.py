@@ -12,60 +12,59 @@ from dotenv import load_dotenv
 from Mui_Logging import print_log
 
 
-# Load environment variables
-load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
+if __name__ == "__main__":
+    # Load environment variables
+    load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
 
 
-api_key = os.getenv("WEATHER_API_KEY")
-base_url = "https://api.weatherapi.com/v1/" # base url for all requests
-current_url = "current.json?" # gets current weather
-forecast_url = "forecast.json?" # gets forecast weather up to 14 days
-alert_url = "alerts.json?" # gets any active alerts (might already be included in forecast with alerts=yes)
-key_url = f"key={api_key}" # url component with the api key
-q_url = "&q="
-day_url = "&days=7"
-# Example: https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&qLondon # gets current weather in london
-# Example: https://api.weatherapi.com/v1/forecast.json?key=YOUR_API_KEY&q07112&days=7 # gets weather for the next 7 days at zip 07112
+    api_key = os.getenv("WEATHER_API_KEY")
+    base_url = "https://api.weatherapi.com/v1/" # base url for all requests
+    current_url = "current.json?" # gets current weather
+    forecast_url = "forecast.json?" # gets forecast weather up to 14 days
+    key_url = f"key={api_key}&q=" # url component with the api key
+    day_url = "&days=7"
+    # Example: https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&qLondon # gets current weather in london
+    # Example: https://api.weatherapi.com/v1/forecast.json?key=YOUR_API_KEY&q07112&days=7 # gets weather for the next 7 days at zip 07112
 
-location = 'London' # TODO: implement this as input later
+    location = 'London' # TODO: implement this as input later
 
-query_url_cur = base_url + current_url + key_url + q_url + location
-query_url_for = base_url + forecast_url + key_url + q_url + location + day_url
+    query_url_cur = base_url + current_url + key_url + location
+    query_url_for = base_url + forecast_url + key_url + location + day_url
 
 
-url = 'https://api.weatherapi.com/v1/current.json?key=None&qLondon' # invalid url used to test HTTP error response
+    url = 'https://api.weatherapi.com/v1/current.json?key=None&qLondon' # invalid url used to test HTTP error response
 
-err_log = 'Mui_M7_Log.txt'
-try:
-    r = requests.get(url, timeout=10) # TODO: update later with proper urls
-    r.raise_for_status()
-    data = r.json()
-except requests.exceptions.Timeout:
-    print('ERROR: The request timed out.')
-except requests.exceptions.HTTPError as http_err:
-    flag = print_log(http_err, err_log)
-    if flag[0]:
-        print('ERROR: An error occurred with the Weather API. ' 
-              f'See {err_log} for details.')
-    else:
-        print('ERROR: An error occurred with the Weather API.')
-        print(f'Could not send error to the logs: {flag[1]}')
-except requests.exceptions.RequestException as req_err:
-    flag = print_log(req_err, err_log)
-    if flag[0]:
-        print('ERROR: An error occurred with the Weather API.' 
-              f'See {err_log} for details.')
-    else:
-        print('ERROR: An error occurred with the Weather API.')
-        print(f'Could not send error to the logs: {flag[1]}')
-except ValueError as json_err:
-    flag = print_log(json_err, err_log)
-    if flag[0]:
-        print('ERROR: An error occurred with the Weather API.' 
-              f'See {err_log} for details.')
-    else:
-        print('ERROR: An error occurred with the Weather API.')
-        print(f'Could not send error to the logs: {flag[1]}')
+    err_log = 'Mui_M7_Log.txt'
+    try:
+        r = requests.get(url, timeout=10) # TODO: update later with proper urls
+        r.raise_for_status()
+        data = r.json()
+    except requests.exceptions.Timeout:
+        print('ERROR: The request timed out.')
+    except requests.exceptions.HTTPError as http_err:
+        flag = print_log(http_err, err_log)
+        if flag[0]:
+            print('ERROR: An error occurred with the Weather API. ' 
+                  f'See {err_log} for details.')
+        else:
+            print('ERROR: An error occurred with the Weather API.')
+            print(f'Could not send error to the logs: {flag[1]}')
+    except requests.exceptions.RequestException as req_err:
+        flag = print_log(req_err, err_log)
+        if flag[0]:
+            print('ERROR: An error occurred with the Weather API.' 
+                  f'See {err_log} for details.')
+        else:
+            print('ERROR: An error occurred with the Weather API.')
+            print(f'Could not send error to the logs: {flag[1]}')
+    except ValueError as json_err:
+        flag = print_log(json_err, err_log)
+        if flag[0]:
+            print('ERROR: An error occurred with the Weather API.' 
+                  f'See {err_log} for details.')
+        else:
+            print('ERROR: An error occurred with the Weather API.')
+            print(f'Could not send error to the logs: {flag[1]}')
 
 """
 # Example attempt -- WORKS!
