@@ -12,7 +12,8 @@ if __name__ == "__main__":
     err_log = 'Mui_M7_Log.txt'
     days = '7'
     timeout = 10
-    location = 'London' # TODO: implement this as input later
+    #location = 'London' # TODO: implement this as input later
+    location = 'Colorado+Springs' # TODO account for spaces, this is a correct query
     api_key = wxr.load_env()
     url_cur = wxr.build_current_url(api_key, location)
     url_for = wxr.build_forecast_url(api_key, location, days)
@@ -21,6 +22,8 @@ if __name__ == "__main__":
 
     url = 'https://api.weatherapi.com/v1/current.json?key=None&qLondon' # invalid url used to test HTTP error response
     data = wxr.wxr_api_call(url, timeout, err_log) # TODO: put real URLs later when ready to make real calls
+    #data = wxr.wxr_api_call(url_for, timeout, err_log) # WORKS with location = 'Colorado+Springs'
+    print(data)
 
 
 """
