@@ -42,7 +42,7 @@ def loc_parsing(raw):
     return loc
 
 
-def build_url(api_key, location, days): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
+def build_url(api_key, location='London', days='7'): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
     """Builds the query URL for forecast portion of weather API
     
     Args:
