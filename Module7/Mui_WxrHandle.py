@@ -3,7 +3,7 @@
 # CSCI-3025: Python Programming
 # Purpose: Functions to handle interacting with the Weather API
 # Dependencies: 
-#   Standard: os, pathlib 
+#   Standard: os, pathlib, copy, datetime
 #   External: dotenv, requests 
 #   Custom: Mui_Logging.py
 
