@@ -266,7 +266,6 @@ class TestWxrHTTP:
     """Class to test the HTTP error path in wxr_api_call function"""
 
 
-    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_http_none(self, mock_get, tmp_path):
         """Tests that an HTTP error causes exit with code 1"""
@@ -337,7 +336,6 @@ class TestWxrJSON:
     """Class to test the value error path in wxr_api_call function"""
 
 
-    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_json_none(self, mock_get, tmp_path):
         """Tests that bad JSON data causes exit with code 1"""
