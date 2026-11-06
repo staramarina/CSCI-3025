@@ -2,7 +2,7 @@
 # Module 7 Assignment - Logging Module
 # CSCI-3025: Python Programming
 # Purpose: Logging functions for errors
-# Dependencies: dateime
+# Dependencies: datetime
 
 from datetime import datetime
 
