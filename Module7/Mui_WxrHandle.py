@@ -57,7 +57,7 @@ def build_url(api_key, location='London', days='7'):
     
     Returns:
         url: The URL used to query for forecast weather data
-        e.g.: https://api.weatherapi.com/v1/forecast.json?key=KEY&q07112&days=7
+        e.g.: https://api.weatherapi.com/v1/forecast.json?key=KEY&q=07112&days=7
     """
     base_url = f"https://api.weatherapi.com/v1/forecast.json?key={api_key}&q="
     day_url = "&days="
