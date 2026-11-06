@@ -3,7 +3,7 @@
 # CSCI-3025: Python Programming
 # Purpose: Weather and forecast tool
 # Dependencies:
-#   Standard: os, pathlib, copy, datetime
+#   Standard: sys, os, pathlib, copy, datetime
 #   External: dotenv, requests
 #   Custom: Mui_Logging.py, Mui_WxrHandle.py
 
@@ -18,9 +18,11 @@ if __name__ == "__main__":
     print('\nWelcome to the Weather Tool!')
     print('Search by the city name or zip/postal code')
     loc_in = input()
+    print(loc_in)
     location = wxr.loc_parsing(loc_in)
     api_key = wxr.load_env()
     url = wxr.build_url(api_key, location, days)
     raw = wxr.wxr_api_call(url, timeout, err_log)
+    print(raw)
     data = wxr.json_parsing(raw)
     wxr.wxr_display(data)
