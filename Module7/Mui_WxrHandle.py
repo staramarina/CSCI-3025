@@ -11,6 +11,7 @@
 import os
 from pathlib import Path
 from copy import deepcopy
+from datetime import datetime
 from dotenv import load_dotenv
 import requests
 from Mui_Logging import print_log
@@ -133,18 +134,7 @@ def json_parsing(data):
         con = dtg["day"]["condition"]["text"]
         par[this_date] = [max, min, con]
     return par
-    """temporary example of what this generates
-    par = {
-        'name': 'Colorado Springs', 
-        'region': 'Colorado', 
-        'country': 'United States of America', 
-        'last': '2026-11-04 19:00', 
-        'temp_now': 46.4, 
-        'feels': 44.2, 
-        'con_text': 'Thundery outbreaks in nearby', 
-        '2026-11-04': [52.7, 32.7, 'Sunny']
-    }
-    """
+
 
 def wxr_display(par):
     """Prints weather information to the console
@@ -169,3 +159,16 @@ def wxr_display(par):
     print(f'Current Temperature: {temp_now}\N{DEGREE SIGN} F')
     print(f'Feels Like: {feels}\N{DEGREE SIGN} F')
     print(f'Last Updated: {last}\n')
+    for key, value in data.items():
+        day_comp = key.split('-')
+        year = int(day_comp[0])
+        month = int(day_comp[1])
+        day = int(day_comp[2])
+        date = datetime(year, month, day)
+        print(f'Date: {date.strftime("%a, %d %b %Y")}')
+        max = value[0]
+        min = value[1]
+        con = value[2]
+        print(f'Condition: {con}')
+        print(f'High: {max}\N{DEGREE SIGN} F')
+        print(f'Low: {min}\N{DEGREE SIGN} F\n')
