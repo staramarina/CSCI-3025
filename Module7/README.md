@@ -1,6 +1,6 @@
 # Tiffany Mui - Module 7 Assignment
 
-A weather tool that pulls lives data from weatherapi.com.
+A weather tool that pulls live data from weatherapi.com.
 
 Estimated Minimum: ![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)    
 Development Environment: Python 3.14.4
