@@ -36,10 +36,10 @@ def loc_parsing(raw):
     """Parses location input and formats it for use in the API URL
     
     Args:
-        raw: unformated city, zip/postal code of the desired weather data
+        raw: unformatted city, zip/postal code of the desired weather data
     
     Returns:
-        loc: formated location string
+        loc: formatted location string
     """
     raw = str(raw)
     raw = raw.strip()

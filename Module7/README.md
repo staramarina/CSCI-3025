@@ -166,7 +166,7 @@ Low: 36.8° F
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
 | load_env() | Loads API configuration from environment variables file | The API key stored as environment variable |
-| loc_parsing(raw) | Parses location input and formats it for use in the API URL | formated location string |
+| loc_parsing(raw) | Parses location input and formats it for use in the API URL | formatted location string |
 | build_url(api_key, location='London', days='7') | Builds the query URL for forecast portion of weather API | The URL used to query for forecast weather data |
 | wxr_api_call(url, timeout=10, err_log='log.txt') | Calls the weather API | JSON data from the Weather API |
 | json_parsing(data, err_log='log.txt') | Parses JSON data received from weather API to a dictionary | Parsed data including only values used by program |
@@ -229,7 +229,7 @@ python -m pytest
 | TestWxrRequest |  | Class to test the request exception path in wxr_api_call function |
 |  | test_connect_none(self, mock_get, mock_log, tmp_path) | Tests that a connection failure causes exit with code 1 |
 |  | test_req_err(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that request error is logged and reported |
-|  TestWxrJSON|  | Class to test the value error path in wxr_api_call function |
+| TestWxrJSON |  | Class to test the value error path in wxr_api_call function |
 |  | test_json_none(self, mock_get, tmp_path) | Tests that bad JSON data causes exit with code 1 |
 |  | test_json_err(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that bad JSON data error is logged and reported |
 | TestJSONParsing |  | Class to test the json_parsing function |
