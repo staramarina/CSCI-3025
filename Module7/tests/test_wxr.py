@@ -7,6 +7,8 @@
 
 import sys
 from pathlib import Path
+from copy import deepcopy
+import pytest
 from unittest.mock import patch, MagicMock
 import requests
 
@@ -65,7 +67,29 @@ SAMPLE_DATA = {
         ]
     }
 }
+META_KEYS = ('name', 'region', 'country', 'last', 'temp_now', 
+             'feels', 'con_text')
 SAMPLE_URL = "https://api.weatherapi.com/v1/x.json"
+
+
+@pytest.fixture
+def sample_json():
+    """Returns a deepcopy of SAMPLE_DATA to prevent modification"""
+    return deepcopy(SAMPLE_DATA)
+
+
+@pytest.fixture
+def parsed(sample_json):
+    """Returns a parsed data set using json_parsing function"""
+    data = wxr.json_parsing(sample_json)
+    return data
+
+
+@pytest.fixture
+def print_out(capsys, parsed):
+    """Returns read out data of a fresh sample_json"""
+    wxr.wxr_display(deepcopy(parsed))
+    return capsys.readouterr().out
 
 
 def make_response(data = None, json_err = None, http_err = None):
@@ -321,3 +345,69 @@ class TestWxrJSON:
         assert "An error occurred with the Weather API" in captured.out
         assert "See" in captured.out
         assert str(log_file) in captured.out
+
+
+class TestJSONParsing:
+    """Class to test the json_parsing function"""
+
+
+    def test_single_values(self, parsed):
+        """Tests that single values are placed into the dictionary"""
+        for key in META_KEYS:
+            assert key in parsed
+        assert 'Colorado Springs' == parsed['name']
+        assert 'Colorado' == parsed['region']
+        assert 'United States of America' == parsed['country']
+        assert '2026-11-04 19:00' == parsed['last']
+        assert 46.4 == parsed['temp_now']
+        assert 44.2 == parsed['feels']
+        assert 'Thundery outbreaks in nearby' == parsed['con_text']
+
+
+    def test_variable_keys(self, parsed):
+        """Tests that variable date keys are placed into the dictionary"""
+        assert '2026-11-04' in parsed
+        assert '2026-11-05' in parsed
+
+
+    @pytest.mark.parametrize(
+        "date, expected", [
+            ('2026-11-04', [52.7, 32.7, 'Sunny']),
+            ('2026-11-05', [54.1, 31.8, 'Sunny'])
+        ]
+    )
+
+
+    def test_day_values(self, parsed, date, expected):
+        """Tests that values for date keys are present as expected"""
+        assert expected == parsed[date]
+
+
+class TestWxrDisplay:
+    """Class to test the wxr_display function"""
+
+
+    def test_current_contents(self, print_out):
+        """Tests that locations and current weather data print"""
+        assert ('Location: Colorado Springs, Colorado, '
+                'United States of America') in print_out
+        assert 'Current Condition: Thundery outbreaks in nearby' in print_out
+        assert f'Current Temperature: 46.4\N{DEGREE SIGN} F' in print_out
+        assert f'Feels Like: 44.2\N{DEGREE SIGN} F' in print_out
+        assert 'Last Updated: 2026-11-04 19:00' in print_out
+
+
+    def test_day1_values(self, print_out):
+        """Tests that the first day values are present in the print out"""
+        assert 'Date: Wed, 04 Nov 2026' in print_out
+        assert 'Condition: Sunny' in print_out
+        assert 'High: 52.7' in print_out
+        assert 'Low: 32.7' in print_out
+
+
+    def test_day2_values(self, print_out):
+        """Tests that the second day values are present in the print out"""
+        assert 'Date: Thu, 05 Nov 2026' in print_out
+        assert 'Condition: Sunny' in print_out
+        assert 'High: 54.1' in print_out
+        assert 'Low: 31.8' in print_out
