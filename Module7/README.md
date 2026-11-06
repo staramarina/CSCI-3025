@@ -57,7 +57,7 @@ Ground work for the following features is included, but not fully implemented:
    Module7/
     ├── Mui_Logging.py           # Provides support for generating error/audit logs
     ├── Mui_M7Assignment.py      # Main program
-    └── Mui_WxrHandle.py         # Module that handles API calls, environment variables, as well as parsing and displaying data
+    └── Mui_WxrHandle.py         # Module that handles API calls, environment variables, parsing and displaying data
 ```
 4. Install requests package: (note: it is recommended to utilize a virtual environment to segment dependencies)
 ```
@@ -156,10 +156,21 @@ Low: 36.8° F
 - requests for handling API calls
 
 ### Logging Module (Mui_Logging.py)
-[TODO: add details]
+| Function | Purpose | Return |
+| ----- | ----- | ----- |
+| can_write_file(file_name) | Checks if a file can be appended | (bool, str) - success flag, message (duplicated from Module5) |
+| print_log(data, file_name) | Prints log entries to an existing file (will create if not present) | (bool, str) - success flag, message |
+| err_handle(err_msg, err_log='log.txt') | Handles various errors, prints console message and calls print_log | None (console output) |
 
 ### Weather Handling Module (Mui_WxrHandle.py)
-[TODO: add details]
+| Function | Purpose | Return |
+| ----- | ----- | ----- |
+| load_env() | Loads API configuration from environment variables file |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
 
 ## Testing
 TBD (separate manual and automated testing)
