@@ -99,10 +99,10 @@ def json_parsing(data, err_log='log.txt'):
     """Parses JSON data received from weather API to a dictionary
     
     Args:
-        data: raw JSON data received from the weather API
+        data: Raw JSON data received from the weather API
     
     Returns:
-        par: parsed data including only values used by program
+        par: Parsed data including only values used by program
     """
     try:
         par = {
@@ -131,10 +131,10 @@ def wxr_display(par):
     """Prints weather information to the console
     
     Args:
-        data: parsed data from json_parsing(data)
+        data: Parsed data from json_parsing(data)
     
     Returns:
-        None (Console output only)
+        None (console output only)
     """
     data = deepcopy(par)
     city = data.pop('name')
