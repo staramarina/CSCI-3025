@@ -47,7 +47,7 @@ def loc_parsing(raw):
     return loc
 
 
-def build_url(api_key, location='London', days='7'): # TODO: probably need to fix this with multiname cities e.g. Colorado Springs
+def build_url(api_key, location='London', days='7'):
     """Builds the query URL for forecast portion of weather API
     
     Args:
@@ -74,7 +74,6 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
     Returns:
         data: JSON data from the Weather API
     """
-    print(url) # test line remove later
     std_err = 'ERROR: An error occurred with the Weather API.'
     see_log = f'See {err_log} for details.'
     log_err = 'Could not send error to the logs:'
@@ -126,13 +125,13 @@ def json_parsing(data):
         'temp_now': data["current"]["temp_f"],
         'feels': data["current"]["feels_like_f"],
         'con_text': data["current"]["condition"]["text"],
-    } # this is good
+    }
     for dtg in data["forecast"]["forecastday"]:
-        this_date = dtg["date"] # something wrong here
-        max = dtg["day"]["maxtemp_f"]
-        min = dtg["day"]["mintemp_f"]
+        this_date = dtg["date"]
+        max_t = dtg["day"]["maxtemp_f"]
+        min_t = dtg["day"]["mintemp_f"]
         con = dtg["day"]["condition"]["text"]
-        par[this_date] = [max, min, con]
+        par[this_date] = [max_t, min_t, con]
     return par
 
 
