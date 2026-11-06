@@ -69,8 +69,9 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
     """Calls the weather API
     
     Args:
-        url: URL generated from either build_current_url or build_forecast_url
+        url: URL generated from build_url
         timeout: length of time in seconds to wait for a response from the API
+        err_log: the file path where the log is located
     
     Returns:
         data: JSON data from the Weather API
@@ -100,6 +101,7 @@ def json_parsing(data, err_log='log.txt'):
     
     Args:
         data: Raw JSON data received from the weather API
+        err_log: the file path where the log is located
     
     Returns:
         par: Parsed data including only values used by program
