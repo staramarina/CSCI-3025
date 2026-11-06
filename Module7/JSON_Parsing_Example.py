@@ -33,26 +33,33 @@ city_dot = data["location"]["city"]
 print(f"Extracted Data using Dot Notation:")
 print(f"Country: {country_dot}")
 print(f"City: {city_dot}")
-
+"""
 Extracted Data using Dot Notation:
 Country: India
 City: Greater Noida
-
+"""
 
 # Extract nested data using list comprehension
-edu_departments = [dept for org in data["organizations"]
-                   if org["name"] == "GeeksforGeeks" for dept in org["departments"]]
+#edu_departments = [dept for org in data["organizations"]
+#                   if org["name"] == "GeeksforGeeks" for dept in org["departments"]]
+edu_departments = []
+for org in data["organizations"]:
+    if org["name"] == "GeeksforGeeks":
+        for dept in org["departments"]:
+            edu_departments.append(dept)
+
+
 completed_projects = [project for status, projects in data["projects"].items(
 ) if status == "completed" for project in projects]
 
 print(f"Extracted Data using List Comprehension:")
 print(f"Educational Departments: {edu_departments}")
 print(f"Completed Projects: {completed_projects}")
-
+"""
 Extracted Data using List Comprehension:
 Educational Departments: ['Computer Science', 'Mathematics', 'Physics']
 Completed Projects: ['ProjectX', 'ProjectY']
-
+"""
 
 # Extract nested data using recursion
 def extract_data_recursive(data, keys):
@@ -64,6 +71,7 @@ edu_department_recursive = extract_data_recursive(
 
 print(f"Extracted Data using Recursion:")
 print(f"Educational Department (Recursive): {edu_department_recursive}")
-
+"""
 Extracted Data using Recursion:
 Educational Department (Recursive): Computer Science
+"""
