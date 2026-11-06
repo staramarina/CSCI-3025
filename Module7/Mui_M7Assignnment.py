@@ -22,5 +22,5 @@ if __name__ == "__main__":
     api_key = wxr.load_env()
     url = wxr.build_url(api_key, location, days)
     raw = wxr.wxr_api_call(url, timeout, err_log)
-    data = wxr.json_parsing(raw)
+    data = wxr.json_parsing(raw, err_log)
     wxr.wxr_display(data)
