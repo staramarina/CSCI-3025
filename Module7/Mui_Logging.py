@@ -54,7 +54,15 @@ def print_log(data, file_name):
 
 
 def err_handle(err_msg, err_log='log.txt'):
-    """Handles various errors, prints console message and calls print_log"""
+    """Handles various errors, prints console message and calls print_log
+    
+    Args:
+        err_msg: the error message to log
+        err_log: the file path where the log is located
+    
+    Returns:
+        None (console output)
+    """
     std_err = 'ERROR: An error occurred with the Weather API.'
     see_log = f'See {err_log} for details.'
     log_err = 'Could not send error to the logs:'

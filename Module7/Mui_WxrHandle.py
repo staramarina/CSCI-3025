@@ -25,7 +25,7 @@ def load_env():
         None
     
     Returns:
-        api_key
+        api_key: The API key stored as environment variable
     """
     load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
     api_key = os.getenv("WEATHER_API_KEY")
