@@ -192,7 +192,7 @@ python -m pytest
 
 #### Weather Handling Module Tests (test_wxr.py)
 
-##### Testing Fixtures, Variables, TBR
+##### Testing Fixtures, Variables, and Functions
 | Type | Name | Purpose |
 | ----- | ------ | ------ |
 | Global variable | SAMPLE_DATA | Sample data taken from a portion of a real response |
@@ -226,6 +226,7 @@ python -m pytest
 | TestWxrHTTP |  | Class to test the HTTP error path in wxr_api_call function |
 |  | test_http_none(self, mock_get, tmp_path) | Tests that an HTTP error causes exit with code 1 |
 |  | test_http_error(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that HTTP error is logged and printed error points to logs |
+| TestWxrRequest |  | Class to test the request exception path in wxr_api_call function |
 |  | test_connect_none(self, mock_get, mock_log, tmp_path) | Tests that a connection failure causes exit with code 1 |
 |  | test_req_err(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that request error is logged and reported |
 |  TestWxrJSON|  | Class to test the value error path in wxr_api_call function |
