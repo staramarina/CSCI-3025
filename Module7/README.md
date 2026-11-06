@@ -178,6 +178,68 @@ Low: 36.8° F
 All testing with the real weather API was conducted manually to prevent excessive calls to the API. Manual testing included verifying that the API was successfully pulled from environment variables file, the call URL was built correctly, the raw data was successfully received, and the data was successfully parsed then displayed. A full end-to-end manual test was conducted with various user input to include no input. 
 
 ### Automated Testing
+Automated testing was conducted with pytest. All API calls are mocked instead of calling the real API, thus all tests can be run with a dummy API key. To run the test, enter the following from within the Module7 directory.
+```
+python -m pytest
+```
+
+#### Logging Module Tests (test_logging.py)
+| Class | Method | Purpose |
+| ----- | ------ | ------ |
+| TestPrintLog |  | Tests the print_log(data, file_name) function |
+|  | test_print_new(self, tmp_path) | Tests that a new file can be generated and written to |
+|  | test_append(self, tmp_path) | Tests that an existing file can be opened and appended |
+
+#### Weather Handling Module Tests (test_wxr.py)
+
+##### Testing Fixtures, Variables, TBR
+| Type | Name | Purpose |
+| ----- | ------ | ------ |
+| Global variable | SAMPLE_DATA | Sample data taken from a portion of a real response |
+| Global variable | META_KEYS | Dictionary key names as a tuple|
+| Global variable | SAMPLE_URL | A portion of the real URL used in mock tests |
+| Fixture | sample_json() | Returns a deepcopy of SAMPLE_DATA to prevent modification |
+| Fixture | parsed(sample_json) | Returns a parsed data set using json_parsing function |
+| Fixture | print_out(capsys, parsed) | Returns read out data of a fresh sample_json |
+| Function | make_response(data = None, json_err = None, http_err = None) | Returns a mock response object for requests |
+
+##### Testing Classes & Methods
+| Class | Method | Purpose |
+| ----- | ------ | ------ |
+| TestEnvURL |  | Class to test pulling the API key and building the query URLs |
+|  | test_pull_key(self) | Tests pulling the API key from the env file |
+|  | test_url_good(self) | Tests building the URL to pull forecast weather data |
+|  | test_url_defaults(self) | Tests that default values are applied if not supplied |
+| TestLocation |  | Class to test formatting the location variable |
+|  | test_single_word(self) | Tests the loc_parsing with the case of a single word |
+|  | test_multiple_word(self) | Tests the loc_parsing with the case of multiple words |
+|  | test_mixed_case(self) | Tests the loc_parsing with the case multiple words of mixed case |
+|  | test_empty(self) | Tests the loc_parsing with the case of an empty string |
+|  | test_number(self) | Tests the loc_parsing with the case of a number |
+| TestWxrSuccess |  | Class to test the successful path in wxr_api_call function |
+|  | test_return(self, mock_get) | Tests that a mock call returns mock JSON data |
+|  | test_timeout_default(self, mock_get) | Tests that the timeout is the default if not specified |
+|  | test_timeout_specified(self, mock_get) | Tests that the specified timeout is used when given |
+| TestWxrTimeout |  | Class to test the timeout path in wxr_api_call function |
+|  | test_timeout_return(self, mock_get, tmp_path) | Tests that a timeout causes exit with code 1 |
+|  | test_timeout_print(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that a timeout is logged and printed error points to logs |
+| TestWxrHTTP |  | Class to test the HTTP error path in wxr_api_call function |
+|  | test_http_none(self, mock_get, tmp_path) | Tests that an HTTP error causes exit with code 1 |
+|  | test_http_error(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that HTTP error is logged and printed error points to logs |
+|  | test_connect_none(self, mock_get, mock_log, tmp_path) | Tests that a connection failure causes exit with code 1 |
+|  | test_req_err(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that request error is logged and reported |
+|  TestWxrJSON|  | Class to test the value error path in wxr_api_call function |
+|  | test_json_none(self, mock_get, tmp_path) | Tests that bad JSON data causes exit with code 1 |
+|  | test_json_err(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that bad JSON data error is logged and reported |
+| TestJSONParsing |  | Class to test the json_parsing function |
+|  | test_single_values(self, parsed) | Tests that single values are placed into the dictionary |
+|  | test_variable_keys(self, parsed) | Tests that variable date keys are placed into the dictionary |
+|  | test_day_values(self, parsed, date, expected) | Tests that values for date keys are present as expected |
+|  | test_key_missing(self, mock_print_log, capsys, tmp_path, sample_json) | Tests that KeyError is caught when parsing JSON |
+| TestWxrDisplay |  | Class to test the wxr_display function |
+|  | test_current_contents(self, print_out) | Tests that locations and current weather data print |
+|  | test_day1_values(self, print_out) | Tests that the first day values are present in the print out |
+|  | test_day2_values(self, print_out) | Tests that the second day values are present in the print out |
 
 ## Author & Credits
 Author: Tiffany M. Mui  
