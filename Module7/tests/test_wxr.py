@@ -242,29 +242,24 @@ class TestWxrTimeout:
         assert 1 == exc_info.value.code
 
 
-    @patch("Mui_WxrHandle.err_handle")
+    @patch("Mui_Logging.print_log")
     @patch("Mui_WxrHandle.requests.get")
-    def test_timeout_print(self, mock_get, mock_log, capsys, tmp_path):
+    def test_timeout_print(self, mock_get, mock_print_log, capsys, tmp_path):
         """Tests that a timeout is logged and printed error points to logs"""
         mock_get.side_effect = requests.exceptions.Timeout(
                 "Connection timed out")
-        mock_log.return_value = (True, "File printed successfully")
+        mock_print_log.return_value = (True, "File printed successfully")
         log_file = tmp_path / "log.txt"
         with pytest.raises(SystemExit):
             wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
-        mock_log.assert_called_once()
+        mock_print_log.assert_called_once()
+        args, _ = mock_print_log.call_args
+        assert isinstance(args[0], requests.exceptions.Timeout)
+        assert str(log_file) == args[1]
         captured = capsys.readouterr()
         assert "An error occurred with the Weather API" in captured.out
         assert "See" in captured.out
         assert str(log_file) in captured.out
-        """
-        mock_get.side_effect = requests.exceptions.Timeout
-        with pytest.raises(SystemExit):
-            wxr.wxr_api_call(SAMPLE_URL)
-        captured = capsys.readouterr()
-        assert "ERROR: The request timed out" in captured.out
-        mock_log.assert_not_called()
-        """
 
 
 class TestWxrHTTP:
@@ -284,18 +279,18 @@ class TestWxrHTTP:
         assert 1 == exc_info.value.code
 
 
-    @patch("Mui_WxrHandle.err_handle")
+    @patch("Mui_Logging.print_log")
     @patch("Mui_WxrHandle.requests.get")
-    def test_http_error(self, mock_get, mock_log, capsys, tmp_path):
+    def test_http_error(self, mock_get, mock_print_log, capsys, tmp_path):
         """Tests that HTTP error is logged and printed error points to logs"""
         err = requests.exceptions.HTTPError("401 Client Error")
         mock_get.return_value = make_response(http_err=err)
-        mock_log.return_value = (True, "File printed successfully")
+        mock_print_log.return_value = (True, "File printed successfully")
         log_file = tmp_path / "log.txt"
         with pytest.raises(SystemExit):
             wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
-        mock_log.assert_called_once()
-        args, _ = mock_log.call_args
+        mock_print_log.assert_called_once()
+        args, _ = mock_print_log.call_args
         assert isinstance(args[0], requests.exceptions.HTTPError)
         assert str(log_file) == args[1]
         captured = capsys.readouterr()
@@ -321,17 +316,17 @@ class TestWxrRequest:
         assert 1 == exc_info.value.code
 
 
-    @patch("Mui_WxrHandle.err_handle")
+    @patch("Mui_Logging.print_log")
     @patch("Mui_WxrHandle.requests.get")
-    def test_req_err(self, mock_get, mock_log, capsys, tmp_path):
+    def test_req_err(self, mock_get, mock_print_log, capsys, tmp_path):
         """Tests that request error is logged and reported"""
         mock_get.side_effect = requests.exceptions.ConnectionError(
                 "Connection refused")
-        mock_log.return_value = (True, "File printed successfully")
+        mock_print_log.return_value = (True, "File printed successfully")
         log_file = tmp_path / "log.txt"
         with pytest.raises(SystemExit):
             wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
-        mock_log.assert_called_once()
+        mock_print_log.assert_called_once()
         captured = capsys.readouterr()
         assert "An error occurred with the Weather API" in captured.out
         assert "See" in captured.out
@@ -354,17 +349,17 @@ class TestWxrJSON:
         assert 1 == exc_info.value.code
 
 
-    @patch("Mui_WxrHandle.err_handle")
+    @patch("Mui_Logging.print_log")
     @patch("Mui_WxrHandle.requests.get")
-    def test_json_err(self, mock_get, mock_log, capsys, tmp_path):
+    def test_json_err(self, mock_get, mock_print_log, capsys, tmp_path):
         """Tests that bad JSON data error is logged and reported"""
         err = ValueError("Expecting value: line 1 column 1")
         mock_get.return_value = make_response(json_err=err)
-        mock_log.return_value = (True, "File printed successfully")
+        mock_print_log.return_value = (True, "File printed successfully")
         log_file = tmp_path / "log.txt"
         with pytest.raises(SystemExit):
             wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
-        mock_log.assert_called_once()
+        mock_print_log.assert_called_once()
         captured = capsys.readouterr()
         assert "An error occurred with the Weather API" in captured.out
         assert "See" in captured.out
@@ -405,6 +400,22 @@ class TestJSONParsing:
     def test_day_values(self, parsed, date, expected):
         """Tests that values for date keys are present as expected"""
         assert expected == parsed[date]
+
+
+    @patch("Mui_Logging.print_log")
+    def test_key_missing(self, mock_print_log, capsys, tmp_path, sample_json):
+        """Tests that KeyError is caught when parsing JSON"""
+        del sample_json['current']
+        mock_print_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit) as exc_info:
+            wxr.json_parsing(sample_json, err_log=str(log_file))
+        assert 1 == exc_info.value.code
+        mock_print_log.assert_called_once()
+        captured = capsys.readouterr()
+        assert "An error occurred with the Weather API" in captured.out
+        assert "See" in captured.out
+        assert str(log_file) in captured.out
 
 
 class TestWxrDisplay:
