@@ -82,8 +82,13 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
         r = requests.get(url, timeout=timeout)
         r.raise_for_status()
         data = r.json()
-    except requests.exceptions.Timeout:
-        print('ERROR: The request timed out.')
+    except requests.exceptions.Timeout as time_err:
+        flag = print_log(time_err, err_log)
+        if flag[0]:
+            print(f'{std_err} {see_log}')
+        else:
+            print(f'{std_err}')
+            print(f'{log_err} {flag[1]}')
         sys.exit(1)
     except requests.exceptions.HTTPError as http_err:
         flag = print_log(http_err, err_log)
@@ -122,6 +127,7 @@ def json_parsing(data):
     Returns:
         par: parsed data including only values used by program
     """
+    # TODO check that keys exist to prevent key error
     par = {
         'name': data["location"]["name"],
         'region': data["location"]["region"],

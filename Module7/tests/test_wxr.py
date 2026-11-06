@@ -243,14 +243,27 @@ class TestWxrTimeout:
 
     @patch("Mui_WxrHandle.print_log")
     @patch("Mui_WxrHandle.requests.get")
-    def test_timeout_print(self, mock_get, mock_log, capsys):
-        """Tests that the timeout message is printed, but not logged"""
+    def test_timeout_print(self, mock_get, mock_log, capsys, tmp_path):
+        """Tests that a timeout is logged and printed error points to logs"""
+        mock_get.side_effect = requests.exceptions.Timeout(
+                "Connection timed out")
+        mock_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit):
+            wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
+        mock_log.assert_called_once()
+        captured = capsys.readouterr()
+        assert "An error occurred with the Weather API" in captured.out
+        assert "See" in captured.out
+        assert str(log_file) in captured.out
+        """
         mock_get.side_effect = requests.exceptions.Timeout
         with pytest.raises(SystemExit):
             wxr.wxr_api_call(SAMPLE_URL)
         captured = capsys.readouterr()
         assert "ERROR: The request timed out" in captured.out
         mock_log.assert_not_called()
+        """
 
 
 class TestWxrHTTP:
