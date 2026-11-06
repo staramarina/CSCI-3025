@@ -15,7 +15,9 @@ if __name__ == "__main__":
     err_log = 'Mui_M7_Log.txt'
     days = '7'
     timeout = 10
-    loc_in = 'Colorado Springs' # TODO: implement this as input later
+    print('\nWelcome to the Weather Tool!')
+    print('Search by the city name or zip/postal code')
+    loc_in = input()
     location = wxr.loc_parsing(loc_in)
     api_key = wxr.load_env()
     url = wxr.build_url(api_key, location, days)
