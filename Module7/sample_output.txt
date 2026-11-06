@@ -1,0 +1,45 @@
+Welcome to the Weather Tool!
+Search by the city name or zip/postal code
+colorado springs
+
+
+Location: Colorado Springs, Colorado, United States of America
+Current Condition: Clear
+Current Temperature: 37.4° F
+Feels Like: 31.8° F
+Last Updated: 2026-11-05 20:45
+
+Date: Thu, 05 Nov 2026
+Condition: Sunny
+High: 54.0° F
+Low: 32.9° F
+
+Date: Fri, 06 Nov 2026
+Condition: Overcast
+High: 53.4° F
+Low: 33.1° F
+
+Date: Sat, 07 Nov 2026
+Condition: Sunny
+High: 58.2° F
+Low: 34.1° F
+
+Date: Sun, 08 Nov 2026
+Condition: Sunny
+High: 63.4° F
+Low: 34.0° F
+
+Date: Mon, 09 Nov 2026
+Condition: Sunny
+High: 65.2° F
+Low: 39.3° F
+
+Date: Tue, 10 Nov 2026
+Condition: Partly Cloudy
+High: 61.1° F
+Low: 36.4° F
+
+Date: Wed, 11 Nov 2026
+Condition: Partly Cloudy
+High: 56.8° F
+Low: 36.8° F
