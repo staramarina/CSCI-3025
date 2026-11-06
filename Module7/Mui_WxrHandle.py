@@ -123,7 +123,7 @@ def json_parsing(data):
         'country': data["location"]["country"],
         'last': data["current"]["last_updated"],
         'temp_now': data["current"]["temp_f"],
-        'feels': data["current"]["feels_like_f"],
+        'feels': data["current"]["feelslike_f"],
         'con_text': data["current"]["condition"]["text"],
     }
     for dtg in data["forecast"]["forecastday"]:
