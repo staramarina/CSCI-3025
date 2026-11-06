@@ -57,8 +57,9 @@ if __name__ == "__main__":
 
     #testing parsing data from sample to avoid repeated API calls
     data = wxr.json_parsing(SAMPLE_DATA)
-    print(data)    
-    
+    print(data)
+    print('\n')
+    wxr.wxr_display(data)
     #data = json.dumps(SAMPLE_DATA)
     #print(data)
 

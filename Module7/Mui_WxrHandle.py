@@ -10,6 +10,7 @@
 
 import os
 from pathlib import Path
+from copy import deepcopy
 from dotenv import load_dotenv
 import requests
 from Mui_Logging import print_log
@@ -125,16 +126,46 @@ def json_parsing(data):
         'feels': data["current"]["feels_like_f"],
         'con_text': data["current"]["condition"]["text"],
     } # this is good
-    for fc_day in data["forecast"]:
-        #this_date = fc_day["date"] # something wrong here
-        this_date = fc_day[0]
-        #max = fc_day["day"]["maxtemp_f"]
-        #min = fc_day["day"]["mintemp_f"]
-        #con = fc_day["day"]["condition"]["text"]
-        #par[this_date] = [max, min, con]
-    return this_date
+    for dtg in data["forecast"]["forecastday"]:
+        this_date = dtg["date"] # something wrong here
+        max = dtg["day"]["maxtemp_f"]
+        min = dtg["day"]["mintemp_f"]
+        con = dtg["day"]["condition"]["text"]
+        par[this_date] = [max, min, con]
+    return par
+    """temporary example of what this generates
+    par = {
+        'name': 'Colorado Springs', 
+        'region': 'Colorado', 
+        'country': 'United States of America', 
+        'last': '2026-11-04 19:00', 
+        'temp_now': 46.4, 
+        'feels': 44.2, 
+        'con_text': 'Thundery outbreaks in nearby', 
+        '2026-11-04': [52.7, 32.7, 'Sunny']
+    }
+    """
+
+def wxr_display(par):
+    """Prints weather information to the console
     
+    Args:
+        data: parsed data from json_parsing(data)
     
-    
-    
-    data_loc = SAMPLE_DATA["location"]["name"]
+    Returns:
+        None (Console output only)
+    """
+    data = deepcopy(par)
+    city = data.pop('name')
+    state = data.pop('region')
+    country = data.pop('country')
+    last = data.pop('last')
+    temp_now = data.pop('temp_now')
+    feels = data.pop('feels')
+    con_text = data.pop('con_text')
+    print('\n')
+    print(f'Location: {city}, {state}, {country}')
+    print(f'Current Condition: {con_text}')
+    print(f'Current Temperature: {temp_now}\N{DEGREE SIGN} F')
+    print(f'Feels Like: {feels}\N{DEGREE SIGN} F')
+    print(f'Last Updated: {last}\n')
