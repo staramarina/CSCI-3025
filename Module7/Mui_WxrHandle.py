@@ -105,3 +105,36 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
             print(f'{log_err}  {flag[1]}')
     else:
         return data
+
+
+def json_parsing(data):
+    """Parses JSON data received from weather API to a dictionary
+    
+    Args:
+        data: raw JSON data received from the weather API
+    
+    Returns:
+        par: parsed data including only values used by program
+    """
+    par = {
+        'name': data["location"]["name"],
+        'region': data["location"]["region"],
+        'country': data["location"]["country"],
+        'last': data["current"]["last_updated"],
+        'temp_now': data["current"]["temp_f"],
+        'feels': data["current"]["feels_like_f"],
+        'con_text': data["current"]["condition"]["text"],
+    } # this is good
+    for fc_day in data["forecast"]:
+        #this_date = fc_day["date"] # something wrong here
+        this_date = fc_day[0]
+        #max = fc_day["day"]["maxtemp_f"]
+        #min = fc_day["day"]["mintemp_f"]
+        #con = fc_day["day"]["condition"]["text"]
+        #par[this_date] = [max, min, con]
+    return this_date
+    
+    
+    
+    
+    data_loc = SAMPLE_DATA["location"]["name"]
