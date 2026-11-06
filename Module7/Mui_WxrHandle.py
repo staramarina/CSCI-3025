@@ -3,11 +3,12 @@
 # CSCI-3025: Python Programming
 # Purpose: Functions to handle interacting with the Weather API
 # Dependencies: 
-#   Standard: os, pathlib, copy, datetime
+#   Standard: sys, os, pathlib, copy, datetime
 #   External: dotenv, requests 
 #   Custom: Mui_Logging.py
 
 
+import sys
 import os
 from pathlib import Path
 from copy import deepcopy
@@ -83,6 +84,7 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
         data = r.json()
     except requests.exceptions.Timeout:
         print('ERROR: The request timed out.')
+        sys.exit(1)
     except requests.exceptions.HTTPError as http_err:
         flag = print_log(http_err, err_log)
         if flag[0]:
@@ -90,6 +92,7 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
         else:
             print(f'{std_err}')
             print(f'{log_err} {flag[1]}')
+        sys.exit(1)
     except requests.exceptions.RequestException as req_err:
         flag = print_log(req_err, err_log)
         if flag[0]:
@@ -97,6 +100,7 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
         else:
             print(f'{std_err}')
             print(f'{log_err}  {flag[1]}')
+        sys.exit(1)
     except ValueError as json_err:
         flag = print_log(json_err, err_log)
         if flag[0]:
@@ -104,6 +108,7 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
         else:
             print(f'{std_err}')
             print(f'{log_err}  {flag[1]}')
+        sys.exit(1)
     else:
         return data
 
