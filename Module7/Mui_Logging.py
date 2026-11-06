@@ -48,7 +48,6 @@ def print_log(data, file_name):
         time_now = datetime.now()
         with open(file_name, "a") as f:
             f.write(f"{time_now}: {data}\n")
-        f.close()
         return can_write
     else:
         return can_write
