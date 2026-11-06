@@ -33,10 +33,11 @@ SAMPLE_DATA = {
             'text': 'Thundery outbreaks in nearby',
             'code': 1087
         },
-        'feels_like_f': 44.2
+        'feelslike_f': 44.2
     },
     'forecast': {
-        'forecastday': [{
+        'forecastday': [
+            {
             'date': '2026-11-04',
             'date_epoch': '1793750400',
             'day': {
@@ -48,7 +49,20 @@ SAMPLE_DATA = {
                     'code': 1000
                 }
             }
-        }]
+            }, {
+            'date': '2026-11-05',
+            'date_epoch': '1793836800',
+            'day': {
+                'maxtemp_f': 54.1,
+                'mintemp_f': 31.8,
+                'avgtemp_f': 43.6,
+                'condition': {
+                    'text': 'Sunny',
+                    'code': 1000
+                }
+            }
+            }
+        ]
     }
 }
 SAMPLE_URL = "https://api.weatherapi.com/v1/x.json"
