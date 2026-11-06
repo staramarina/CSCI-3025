@@ -157,9 +157,9 @@ def wxr_display(par):
         day = int(day_comp[2])
         date = datetime(year, month, day)
         print(f'Date: {date.strftime("%a, %d %b %Y")}')
-        max = value[0]
-        min = value[1]
+        max_t = value[0]
+        min_t = value[1]
         con = value[2]
         print(f'Condition: {con}')
-        print(f'High: {max}\N{DEGREE SIGN} F')
-        print(f'Low: {min}\N{DEGREE SIGN} F\n')
+        print(f'High: {max_t}\N{DEGREE SIGN} F')
+        print(f'Low: {min_t}\N{DEGREE SIGN} F\n')
