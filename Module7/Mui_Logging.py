@@ -36,6 +36,7 @@ def print_log(data, file_name):
     
     Args:
         data: information to be written to the log
+        file_name: the file path of the error log
     
     Returns:
         2-tuple with the following characteristics
