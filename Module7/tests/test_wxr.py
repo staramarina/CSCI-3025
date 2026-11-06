@@ -233,15 +233,16 @@ class TestWxrTimeout:
 
 
     @patch("Mui_WxrHandle.requests.get")
-    def test_timeout_return(self, mock_get):
+    def test_timeout_return(self, mock_get, tmp_path):
         """Tests that a timeout causes exit with code 1"""
         mock_get.side_effect = requests.exceptions.Timeout
+        log_file = tmp_path / "log.txt"
         with pytest.raises(SystemExit) as exc_info:
-            wxr.wxr_api_call(SAMPLE_URL)
+            wxr.wxr_api_call(SAMPLE_URL, err_log=str(log_file))
         assert 1 == exc_info.value.code
 
 
-    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_timeout_print(self, mock_get, mock_log, capsys, tmp_path):
         """Tests that a timeout is logged and printed error points to logs"""
@@ -270,7 +271,7 @@ class TestWxrHTTP:
     """Class to test the HTTP error path in wxr_api_call function"""
 
 
-    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_http_none(self, mock_get, tmp_path):
         """Tests that an HTTP error causes exit with code 1"""
@@ -283,7 +284,7 @@ class TestWxrHTTP:
         assert 1 == exc_info.value.code
 
 
-    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_http_error(self, mock_get, mock_log, capsys, tmp_path):
         """Tests that HTTP error is logged and printed error points to logs"""
@@ -307,7 +308,7 @@ class TestWxrRequest:
     """Class to test the request exception path in wxr_api_call function"""
 
 
-    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_connect_none(self, mock_get, mock_log, tmp_path):
         """Tests that a connection failure causes exit with code 1"""
@@ -320,7 +321,7 @@ class TestWxrRequest:
         assert 1 == exc_info.value.code
 
 
-    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_req_err(self, mock_get, mock_log, capsys, tmp_path):
         """Tests that request error is logged and reported"""
@@ -341,7 +342,7 @@ class TestWxrJSON:
     """Class to test the value error path in wxr_api_call function"""
 
 
-    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_json_none(self, mock_get, tmp_path):
         """Tests that bad JSON data causes exit with code 1"""
@@ -353,7 +354,7 @@ class TestWxrJSON:
         assert 1 == exc_info.value.code
 
 
-    @patch("Mui_WxrHandle.print_log")
+    @patch("Mui_WxrHandle.err_handle")
     @patch("Mui_WxrHandle.requests.get")
     def test_json_err(self, mock_get, mock_log, capsys, tmp_path):
         """Tests that bad JSON data error is logged and reported"""

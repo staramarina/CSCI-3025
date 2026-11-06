@@ -4,7 +4,6 @@
 # Purpose: Logging functions for errors
 # Dependencies: dateime
 
-
 from datetime import datetime
 
 
@@ -52,3 +51,16 @@ def print_log(data, file_name):
         return can_write
     else:
         return can_write
+
+
+def err_handle(err_msg, err_log='log.txt'):
+    """Handles various errors, prints console message and calls print_log"""
+    std_err = 'ERROR: An error occurred with the Weather API.'
+    see_log = f'See {err_log} for details.'
+    log_err = 'Could not send error to the logs:'
+    flag = print_log(err_msg, err_log)
+    if flag[0]:
+        print(f'{std_err} {see_log}')
+    else:
+        print(f'{std_err}')
+        print(f'{log_err} {flag[1]}')

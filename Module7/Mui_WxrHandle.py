@@ -15,7 +15,7 @@ from copy import deepcopy
 from datetime import datetime
 from dotenv import load_dotenv
 import requests
-from Mui_Logging import print_log
+from Mui_Logging import err_handle
 
 
 def load_env():
@@ -75,50 +75,27 @@ def wxr_api_call(url, timeout=10, err_log='log.txt'):
     Returns:
         data: JSON data from the Weather API
     """
-    std_err = 'ERROR: An error occurred with the Weather API.'
-    see_log = f'See {err_log} for details.'
-    log_err = 'Could not send error to the logs:'
     try:
         r = requests.get(url, timeout=timeout)
         r.raise_for_status()
         data = r.json()
     except requests.exceptions.Timeout as time_err:
-        flag = print_log(time_err, err_log)
-        if flag[0]:
-            print(f'{std_err} {see_log}')
-        else:
-            print(f'{std_err}')
-            print(f'{log_err} {flag[1]}')
+        err_handle(time_err, err_log)
         sys.exit(1)
     except requests.exceptions.HTTPError as http_err:
-        flag = print_log(http_err, err_log)
-        if flag[0]:
-            print(f'{std_err} {see_log}')
-        else:
-            print(f'{std_err}')
-            print(f'{log_err} {flag[1]}')
+        err_handle(http_err, err_log)
         sys.exit(1)
     except requests.exceptions.RequestException as req_err:
-        flag = print_log(req_err, err_log)
-        if flag[0]:
-            print(f'{std_err} {see_log}')
-        else:
-            print(f'{std_err}')
-            print(f'{log_err}  {flag[1]}')
+        err_handle(req_err, err_log)
         sys.exit(1)
     except ValueError as json_err:
-        flag = print_log(json_err, err_log)
-        if flag[0]:
-            print(f'{std_err} {see_log}')
-        else:
-            print(f'{std_err}')
-            print(f'{log_err}  {flag[1]}')
+        err_handle(json_err, err_log)
         sys.exit(1)
     else:
         return data
 
 
-def json_parsing(data):
+def json_parsing(data, err_log='log.txt'):
     """Parses JSON data received from weather API to a dictionary
     
     Args:
@@ -127,23 +104,27 @@ def json_parsing(data):
     Returns:
         par: parsed data including only values used by program
     """
-    # TODO check that keys exist to prevent key error
-    par = {
-        'name': data["location"]["name"],
-        'region': data["location"]["region"],
-        'country': data["location"]["country"],
-        'last': data["current"]["last_updated"],
-        'temp_now': data["current"]["temp_f"],
-        'feels': data["current"]["feelslike_f"],
-        'con_text': data["current"]["condition"]["text"],
-    }
-    for dtg in data["forecast"]["forecastday"]:
-        this_date = dtg["date"]
-        max_t = dtg["day"]["maxtemp_f"]
-        min_t = dtg["day"]["mintemp_f"]
-        con = dtg["day"]["condition"]["text"]
-        par[this_date] = [max_t, min_t, con]
-    return par
+    try:
+        par = {
+            'name': data["location"]["name"],
+            'region': data["location"]["region"],
+            'country': data["location"]["country"],
+            'last': data["current"]["last_updated"],
+            'temp_now': data["current"]["temp_f"],
+            'feels': data["current"]["feelslike_f"],
+            'con_text': data["current"]["condition"]["text"],
+        }
+        for dtg in data["forecast"]["forecastday"]:
+            this_date = dtg["date"]
+            max_t = dtg["day"]["maxtemp_f"]
+            min_t = dtg["day"]["mintemp_f"]
+            con = dtg["day"]["condition"]["text"]
+            par[this_date] = [max_t, min_t, con]
+    except KeyError as key_err:
+        err_handle(key_err, err_log)
+        sys.exit(1)
+    else:
+        return par
 
 
 def wxr_display(par):
