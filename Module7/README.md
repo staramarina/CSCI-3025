@@ -157,23 +157,27 @@ Low: 36.8° F
 
 ### Logging Module (Mui_Logging.py)
 | Function | Purpose | Return |
-| ----- | ----- | ----- |
+| ----- | ------ | ------ |
 | can_write_file(file_name) | Checks if a file can be appended | (bool, str) - success flag, message (duplicated from Module5) |
 | print_log(data, file_name) | Prints log entries to an existing file (will create if not present) | (bool, str) - success flag, message |
 | err_handle(err_msg, err_log='log.txt') | Handles various errors, prints console message and calls print_log | None (console output) |
 
 ### Weather Handling Module (Mui_WxrHandle.py)
 | Function | Purpose | Return |
-| ----- | ----- | ----- |
-| load_env() | Loads API configuration from environment variables file |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| ----- | ------ | ------ |
+| load_env() | Loads API configuration from environment variables file | The API key stored as environment variable |
+| loc_parsing(raw) | Parses location input and formats it for use in the API URL | formated location string |
+| build_url(api_key, location='London', days='7') | Builds the query URL for forecast portion of weather API | The URL used to query for forecast weather data |
+| wxr_api_call(url, timeout=10, err_log='log.txt') | Calls the weather API | JSON data from the Weather API |
+| json_parsing(data, err_log='log.txt') | Parses JSON data received from weather API to a dictionary | Parsed data including only values used by program |
+| wxr_display(par) | Prints weather information to the console | None (console output only) |
 
 ## Testing
-TBD (separate manual and automated testing)
+
+### Manual Testing
+All testing with the real weather API was conducted manually to prevent excessive calls to the API. Manual testing included verifying that the API was successfully pulled from environment variables file, the call URL was built correctly, the raw data was successfully received, and the data was successfully parsed then displayed. A full end-to-end manual test was conducted with various user input to include no input. 
+
+### Automated Testing
 
 ## Author & Credits
 Author: Tiffany M. Mui  
