@@ -10,3 +10,5 @@ Repository for CSCI-3025: Python Programming, Fall 2026
 - Module5: Modular programming and code reuse
 - Module6: Object-Oriented Programming in Python
 - Module7: Working with external libraries and APIs
+- Module8: Analyzing and Visualizing Data with Python Tools
+- Module9: Debugging, Testing, and Final Project
