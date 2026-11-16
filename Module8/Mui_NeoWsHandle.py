@@ -77,7 +77,7 @@ def build_lookup_url(api_key, asteroid_id):
         url: The URL used to query for specific asteroid data
         e.g.: https://api.nasa.gov/neo/rest/v1/neo/3542519?api_key=DEMO_KEY
     """
-    base_url = 'https://api.nasa.gov/neo/rest/v1/neo'
+    base_url = 'https://api.nasa.gov/neo/rest/v1/neo/'
     id_url = f'{asteroid_id}?'
     key_url = f'api_key={api_key}'
     url = base_url + id_url + key_url
