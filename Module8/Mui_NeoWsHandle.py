@@ -14,7 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-def load_env(): # Copied from Module 7
+def load_env(): # Reused from Module 7
     """Loads API configuration from environment variables file
     
     Args:
