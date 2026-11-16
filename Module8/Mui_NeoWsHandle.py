@@ -11,7 +11,7 @@
 import sys
 import os
 from pathlib import Path
-from copy import deepcopy
+from copy import deepcopy, copy
 from datetime import datetime
 from dotenv import load_dotenv
 import requests
@@ -181,7 +181,6 @@ def trim_common_data(data):
 # TODO build a lookup data trim function after I decide what I'm doing with that
 
 
-# TODO build separate data cleaning/formatting function
 def clean_common_data(data_raw):
     """Handles missing or malformed data within a dataframe
     
@@ -191,96 +190,33 @@ def clean_common_data(data_raw):
     Returns:
         data_clean: feed/lookup data with values in expected formats
     """
-    data_clean = deepcopy(data_raw)
-    for value in data_clean['absolute_magnitude_h']:
-        if 'NaN' == value:
-            value = 0
-        else:
-            check = aux.float_check(value)
-            if check[0]:
-                value = check[1]
-            else:
-                value = 0
-    for value in data_clean['id']:
-        if 'NaN' == value:
-            value = None
-        else:
-            check = aux.int_check(value)
-            if check[0]:
-                value = check[1]
-            else:
-                value = None
-    for value in data_clean['is_potentially_hazardous_asteroid']:
-        if 'NaN' == value:
-            value = None
-        elif 'True' == value:
-            value = True
-        elif 'False' == value:
-            value = False
-        else:
-            value = None
-    for value in data_clean['name']:
-        if 'NaN' == value:
-            value = 'Missing Name'
-    for value in data_clean['nasa_jpl_url']:
-        if 'NaN' == value:
-            value = None
-    for value in data_clean['close_approach_date_full']:
-        if 'NaN' == value:
-            value = None
-        else:
-            format_str = "%Y-%b-%d %H:%M"
-            check = aux.dtg_check(value, format_str)
-            if check[0]:
-                value = check[1]
-            else:
-                value = None
-    for value in data_clean['orbiting_body']:
-        if 'NaN' == value:
-            value = None
-    for value in data_clean['miss_distance_kilometers']:
-        if 'NaN' == value:
-            value = None
-        else:
-            check = aux.float_check(value)
-            if check[0]:
-                value = check[1]
-            else:
-                value = None
-    for value in data_clean['miss_distance_lunar']:
-        if 'NaN' == value:
-            value = None
-        else:
-            check = aux.float_check(value)
-            if check[0]:
-                value = check[1]
-            else:
-                value = None
-    for value in data_clean['relative_velocity_kilometers_per_second']:
-        if 'NaN' == value:
-            value = None
-        else:
-            check = aux.float_check(value)
-            if check[0]:
-                value = check[1]
-            else:
-                value = None
-    for value in data_clean['meters_estimated_diameter_max']:
-        if 'NaN' == value:
-            value = None
-        else:
-            check = aux.float_check(value)
-            if check[0]:
-                value = check[1]
-            else:
-                value = None
-    for value in data_clean['meters_estimated_diameter_min']:
-        if 'NaN' == value:
-            value = None
-        else:
-            check = aux.float_check(value)
-            if check[0]:
-                value = check[1]
-            else:
-                value = None
+    num_col = [
+        'absolute_magnitude_h',
+        'id',
+        'close_approach_date_full',
+        'miss_distance_kilometers',
+        'miss_distance_lunar',
+        'relative_velocity_kilometers_per_second',
+        'meters_estimated_diameter_max',
+        'meters_estimated_diameter_min'
+    ]
+    pho_map = {
+        'True': True,
+        True: True,
+        'False': False,
+        False: False
+    }
+    data_clean = copy(data_raw)
+    for col in num_col:
+        data_clean[col] = pd.to_numeric(data_clean[col], errors='corece')
+    data_clean['is_potentially_hazardous_asteroid'] = (
+        data_clean['is_potentially_hazardous_asteroid'].map(pho_map)
+    )
+    data_clean['close_approach_date_full'] = pd.to_datetime(
+        data_clean['close_approach_date_full'],
+        format="%Y-%b-%d %H:%M", errors='coerce'
+    )
     return(data_clean)
+
+
+# TODO build lookup specific data cleaning/formatting function
