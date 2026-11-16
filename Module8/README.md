@@ -41,19 +41,23 @@ TBD
 ```
 TBD
 ```
-4. Install requests package: (note: it is recommended to utilize a virtual environment to segment dependencies)
-```
-python -m pip install requests
-```
-5. Install python-dotenv package: 
+4. Install python-dotenv package: (note: it is recommended to utilize a virtual environment to segment dependencies)
 ```
 python -m pip install python-dotenv
 ```
-6. Create a .env file within the Module8 directory that includes the following
+5. Install requests package:
+```
+python -m pip install requests
+```
+6. Install pandas package:
+```
+python -m pip install pandas
+```
+7. Create a .env file within the Module8 directory that includes the following
 ```
 API_KEY = <your_api_key>
 ```
-7. Ensure Python path includes the Module8 directory or run from within it.
+8. Ensure Python path includes the Module8 directory or run from within it.
 
 ## Usage
 
@@ -83,11 +87,11 @@ TBD
 - pathlib for paths to call for .env file
 - copy to make deep copies without affecting original instances
 - datetime for representing dates
-- TBR
 
 ### External Packages
 - dotenv for portable handling of environment variables
 - requests for handling API calls
+- pandas for handling large quantity of data
 
 ### Custom Modules
 TODO
