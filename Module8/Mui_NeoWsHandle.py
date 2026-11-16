@@ -5,13 +5,18 @@
 # Dependencies: 
 #   Standard: sys, os, pathlib, copy, datetime
 #   External: dotenv, requests 
-#   Custom: TBD
+#   Custom: Mui_Logging.py, Mui_Ancilly.py
 
 
 import sys
 import os
 from pathlib import Path
+from copy import deepcopy
+from datetime import datetime
 from dotenv import load_dotenv
+import requests
+from Mui_Ancillary import date_format
+from Mui_Logging import err_handle
 
 
 def load_env(): # Reused from Module 7
@@ -28,7 +33,7 @@ def load_env(): # Reused from Module 7
     return api_key
 
 
-def build_feed_url(api_key, start, end):
+def build_feed_url(api_key, start, end, err_log='log.txt'):
     """Builds the Neo-Feed query URL
     
     Args:
@@ -41,8 +46,20 @@ def build_feed_url(api_key, start, end):
         e.g.: https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY
     """
     base_url = 'https://api.nasa.gov/neo/rest/v1/feed?'
-    start_url = f'start_date={start}'
-    end_url = f'&end_date={end}'
+    start_check = date_format(start)
+    if start_check[0]:
+        start_url = f'start_date={start}'
+    else:
+        start_url = 'start_date=2026-10-28'
+        err = start_check[1] + ' Defaulted to 2026-10-28'
+        err_handle(err, err_log)
+    end_check = date_format(end)
+    if end_check[0]:
+        end_url = f'&end_date={end}'
+    else:
+        end_url = '&end_date=2026-10-29'
+        err = end_check[1] + ' Defaulted to 2026-10-29'
+        err_handle(err, err_log)
     key_url = f'&api_key={api_key}'
     url = base_url + start_url + end_url + key_url
     return url
@@ -64,3 +81,34 @@ def build_lookup_url(api_key, asteroid_id):
     key_url = f'api_key={api_key}'
     url = base_url + id_url + key_url
     return url
+
+
+def neows_call(url, timeout=10, err_log='log.txt'): # Heavy reuse from Module 7
+    """Calls the NASA NeoWs API
+    
+    Args:
+        url: URL generated from build_feed_url or build_lookup_url
+        timeout: length of time in seconds to wait for a response from the API
+        err_log: the file path where the log is located
+    
+    Returns:
+        data: JSON data from the NASA NeoWs API
+    """
+    try:
+        r = requests.get(url, timeout=timeout)
+        r.raise_for_status()
+        data = r.json()
+    except requests.exceptions.Timeout as time_err:
+        err_handle(time_err, err_log)
+        sys.exit(1)
+    except requests.exceptions.HTTPError as http_err:
+        err_handle(http_err, err_log)
+        sys.exit(1)
+    except requests.exceptions.RequestException as req_err:
+        err_handle(req_err, err_log)
+        sys.exit(1)
+    except ValueError as json_err:
+        err_handle(json_err, err_log)
+        sys.exit(1)
+    else:
+        return data
