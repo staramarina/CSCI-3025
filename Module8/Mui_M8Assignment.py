@@ -27,6 +27,7 @@ if __name__ == "__main__":
     feed_data = neows.build_dataframe(TEMP_DATA) # TODO: replace with real data later
     didymos_fdata = neows.build_dataframe(DIDYMOS_DATA) # TODO replace with real data from API later
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
+        f.write(feed_data.to_string(header=True, index=True)) # TODO: Test line, remove later
         f.write(didymos_fdata.to_string(header=True, index=True)) # TODO: Test line, remove later
     #print(data) # TODO: Test line, remove later
 
