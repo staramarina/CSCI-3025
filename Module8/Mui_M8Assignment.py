@@ -21,6 +21,7 @@ if __name__ == "__main__":
     api_key = neows.load_env()
     start = '2026-11-01' # TODO: Change this to user input later
     end = '2026-11-03' # TODO: Change this to user input later
+    # TODO handle 404 errors differently, right now exists and error in the logs, maybe try a reprompting or maybe keep it as it is to slow down DDoS
     url = neows.build_feed_url(api_key, start, end, err_log)
     #json_data = neows.neows_call(url, timeout, err_log)
     feed_data = neows.build_dataframe(TEMP_DATA) # TODO: replace with real data later
