@@ -130,7 +130,7 @@ def build_dataframe(json_data):
             all_neo.extend(neo_list)
         df = pd.DataFrame(all_neo)
     else:
-        df = pd.DataFrame(json_data)
+        df = pd.DataFrame([json_data])
     df = df.explode('close_approach_data', ignore_index=True)
     cad = pd.json_normalize(df['close_approach_data'], sep='_')
     col_flat = []
