@@ -122,6 +122,18 @@ def build_dataframe(json_data):
         json_data: raw nested JSON data
 
     Returns:
+        data: 
     """
-    data = pd.json_normalize(json_data)
+    all_neo = []
+    for neo_list in json_data['near_earth_objects'].values():
+        for neo in neo_list:
+            all_neo.append(neo)
+    df = pd.DataFrame(all_neo)
+    df = df.explode('close_approach_data', ignore_index=True)
+    cad = pd.json_normalize(df['close_approach_data'], sep='_')
+    data = pd.concat([df.drop(columns='close_approach_data'), cad], axis=1)
+    # TODO need to flatten estimated_diameter as well
     return data
+
+
+# TODO build separate data cleaning/formatting function
