@@ -29,8 +29,9 @@ TBD
 ### Prerequisites
 - Python 3.11 or higher (estimated)
 - External Packages
-    - requests - handles http requests and responses
-    - python-dotenv - handles loading environment variables
+    - requests - handles http requests and responses (estimated minimum: 2.31, dev/test environment: 2.34.2)
+    - python-dotenv - handles loading environment variables (estimated minimum: 1.0, dev/test environment: 1.2.4)
+    - pandas - handles data formatting and analysis (estimated minimum: 1.1, dev/test environment: 3.1.1)
 - External APIs
     - NASA NeoWs API from https://api.nasa.gov
 
@@ -91,7 +92,7 @@ TBD
 ### External Packages
 - dotenv for portable handling of environment variables
 - requests for handling API calls
-- pandas for handling large quantity of data
+- pandas for handling large data formatting and analysis
 
 ### Custom Modules
 TODO
