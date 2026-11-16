@@ -122,17 +122,24 @@ def build_dataframe(json_data):
         json_data: raw nested JSON data
 
     Returns:
-        data: 
+        data: pandas dataframe with close approach and nested dicts flattened
     """
     all_neo = []
     for neo_list in json_data['near_earth_objects'].values():
-        for neo in neo_list:
-            all_neo.append(neo)
+        all_neo.extend(neo_list)
     df = pd.DataFrame(all_neo)
     df = df.explode('close_approach_data', ignore_index=True)
     cad = pd.json_normalize(df['close_approach_data'], sep='_')
-    data = pd.concat([df.drop(columns='close_approach_data'), cad], axis=1)
-    # TODO need to flatten estimated_diameter as well
+    col_flat = []
+    for col in df.columns:
+        if ('close_approach_data' != col
+                and df[col].map(type).eq(dict).any()):
+            col_flat.append(col)
+    frame_flat = [df.drop(columns=['close_approach_data'] + col_flat), cad]
+    for col in col_flat:
+        flat = pd.json_normalize(df[col], sep='_')
+        frame_flat.append(flat)
+    data = pd.concat(frame_flat, axis=1)
     return data
 
 

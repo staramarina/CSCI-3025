@@ -14,9 +14,6 @@ TEMP_DATA = {'element_count': 16, 'links': {'next': 'http://api.nasa.gov/neo/res
 import Mui_NeoWsHandle as neows
 
 
-import pandas as pd
-
-
 if __name__ == "__main__":
     err_log = 'Mui_M8_Log.txt'
     timeout = 10
@@ -26,7 +23,7 @@ if __name__ == "__main__":
     end = '2026-11-03' # TODO: Change this to user input later
     url = neows.build_feed_url(api_key, start, end, err_log)
     #json_data = neows.neows_call(url, timeout, err_log)
-    data = neows.build_dataframe(TEMP_DATA)
+    data = neows.build_dataframe(TEMP_DATA) # TODO: replace with real data later
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
         f.write(data.to_string(header=True, index=True)) # TODO: Test line, remove later
     #print(data) # TODO: Test line, remove later
