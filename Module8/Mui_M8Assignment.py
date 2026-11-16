@@ -23,9 +23,10 @@ if __name__ == "__main__":
     end = '2026-11-03' # TODO: Change this to user input later
     url = neows.build_feed_url(api_key, start, end, err_log)
     #json_data = neows.neows_call(url, timeout, err_log)
-    data = neows.build_dataframe(TEMP_DATA) # TODO: replace with real data later
+    feed_data = neows.build_dataframe(TEMP_DATA) # TODO: replace with real data later
+    didymos_fdata = neows.build_dataframe(DIDYMOS_DATA) # TODO replace with real data from API later
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
-        f.write(data.to_string(header=True, index=True)) # TODO: Test line, remove later
+        f.write(didymos_fdata.to_string(header=True, index=True)) # TODO: Test line, remove later
     #print(data) # TODO: Test line, remove later
 
 
