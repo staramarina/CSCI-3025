@@ -24,8 +24,10 @@ if __name__ == "__main__":
     # TODO handle 404 errors differently, right now exists and error in the logs, maybe try a reprompting or maybe keep it as it is to slow down DDoS
     url = neows.build_feed_url(api_key, start, end, err_log)
     #json_data = neows.neows_call(url, timeout, err_log)
-    feed_data = neows.build_dataframe(TEMP_DATA) # TODO: replace with real data later
-    didymos_fdata = neows.build_dataframe(DIDYMOS_DATA) # TODO replace with real data from API later
+    feed_raw = neows.build_dataframe(TEMP_DATA) # TODO: replace with real data later
+    feed_data = neows.trim_common_data(feed_raw)
+    didymos_rdata = neows.build_dataframe(DIDYMOS_DATA) # TODO replace with real data from API later
+    didymos_fdata = neows.trim_common_data(didymos_rdata)
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
         f.write(feed_data.to_string(header=True, index=True)) # TODO: Test line, remove later
         f.write(didymos_fdata.to_string(header=True, index=True)) # TODO: Test line, remove later

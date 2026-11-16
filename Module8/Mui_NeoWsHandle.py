@@ -146,4 +146,38 @@ def build_dataframe(json_data):
     return data
 
 
+def trim_common_data(data):
+    """Removes unused columns from feed or lookup dataframe
+    
+    Args:
+        data: full feed/lookup data in a pandas dataframe
+    
+    Returns:
+        trim: trimmed feed/lookup data with unused columns removed
+    """
+    trim = deepcopy(data)
+    col_list = [
+        'is_sentry_object',
+        'neo_reference_id',
+        'close_approach_date',
+        'epoch_date_close_approach',
+        'miss_distance_astronomical',
+        'miss_distance_miles',
+        'relative_velocity_kilometers_per_hour',
+        'relative_velocity_miles_per_hour',
+        'feet_estimated_diameter_max',
+        'feet_estimated_diameter_min',
+        'kilometers_estimated_diameter_max',
+        'kilometers_estimated_diameter_min',
+        'miles_estimated_diameter_max',
+        'miles_estimated_diameter_min',
+        'self'
+    ]
+    trim = trim.drop(col_list, axis=1)
+    return trim
+
+
+# TODO build a lookup data trim function after I decide what I'm doing with that
+
+
 # TODO build separate data cleaning/formatting function
