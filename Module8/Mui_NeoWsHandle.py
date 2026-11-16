@@ -4,7 +4,7 @@
 # Purpose: Functions to handle interacting with the NeoWs API
 # Dependencies: 
 #   Standard: sys, os, pathlib, copy, datetime
-#   External: dotenv, requests 
+#   External: dotenv, requests, pandas
 #   Custom: Mui_Logging.py, Mui_Ancilly.py
 
 
@@ -15,6 +15,7 @@ from copy import deepcopy
 from datetime import datetime
 from dotenv import load_dotenv
 import requests
+import pandas as pd
 from Mui_Ancillary import date_format
 from Mui_Logging import err_handle
 
@@ -112,3 +113,15 @@ def neows_call(url, timeout=10, err_log='log.txt'): # Heavy reuse from Module 7
         sys.exit(1)
     else:
         return data
+
+
+def build_dataframe(json_data):
+    """Builds pandas dataframe from nested JSON data
+    
+    Args:
+        json_data: raw nested JSON data
+
+    Returns:
+    """
+    data = pd.json_normalize(json_data)
+    return data
