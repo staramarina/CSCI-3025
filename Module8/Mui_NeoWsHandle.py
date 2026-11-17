@@ -223,7 +223,6 @@ def clean_common_data(data_raw):
     num_col = [
         'absolute_magnitude_h',
         'id',
-        'close_approach_date_full',
         'miss_distance_kilometers',
         'miss_distance_lunar',
         'relative_velocity_kilometers_per_second',
