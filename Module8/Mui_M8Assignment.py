@@ -28,9 +28,10 @@ if __name__ == "__main__":
     feed_data = neows.trim_common_data(feed_raw)
     didymos_rdata = neows.build_dataframe(DIDYMOS_DATA) # TODO replace with real data from API later
     didymos_fdata = neows.trim_common_data(didymos_rdata)
+    didymos_tdata = neows.trim_lookup_data(didymos_fdata)
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
         f.write(feed_data.to_string(header=True, index=True)) # TODO: Test line, remove later
-        f.write(didymos_fdata.to_string(header=True, index=True)) # TODO: Test line, remove later
+        f.write(didymos_tdata.to_string(header=True, index=True)) # TODO: Test line, remove later
     #print(data) # TODO: Test line, remove later
 
 
