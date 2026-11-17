@@ -238,7 +238,7 @@ def clean_common_data(data_raw):
     }
     data_clean = copy(data_raw)
     for col in num_col:
-        data_clean[col] = pd.to_numeric(data_clean[col], errors='corece')
+        data_clean[col] = pd.to_numeric(data_clean[col], errors='coerce')
     data_clean['is_potentially_hazardous_asteroid'] = (
         data_clean['is_potentially_hazardous_asteroid'].map(pho_map)
     )
@@ -272,5 +272,5 @@ def clean_lookup_data(data_raw):
     ]
     data_clean = copy(data_raw)
     for col in col_list:
-        data_clean[col] = pd.to_numeric(data_clean[col], errors='corece')
+        data_clean[col] = pd.to_numeric(data_clean[col], errors='coerce')
     return data_clean
