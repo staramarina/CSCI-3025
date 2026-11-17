@@ -174,7 +174,7 @@ def trim_common_data(data):
             'self'
         ]
     trim = copy(data)
-    trim = trim.drop(col_list, axis=1)
+    trim = trim.drop(col_list, axis=1, errors='ignore')
     return trim
 
 
@@ -207,12 +207,12 @@ def trim_lookup_data(data):
         'orbit_class_orbit_class_range'
     ]
     trim = copy(data)
-    trim = trim.drop(col_list, axis=1)
+    trim = trim.drop(col_list, axis=1, errors='ignore')
     return trim
 
 
 def clean_common_data(data_raw):
-    """Handles missing or malformed data within a dataframe
+    """Handles common missing or malformed data within a dataframe
     
     Args:
         data_raw: trimmed feed/lookup data with unused columns removed
@@ -245,11 +245,14 @@ def clean_common_data(data_raw):
         data_clean['close_approach_date_full'],
         format="%Y-%b-%d %H:%M", errors='coerce'
     )
+    data_clean = data_clean.drop_duplicates(
+        subset=['id', 'close_approach_date_full']
+    )
     return data_clean
 
 
 def clean_lookup_data(data_raw):
-    """Handles missing or malformed data within a dataframe
+    """Handles lookup specific missing or malformed data within a dataframe
     
     Args:
         data_raw: trimmed lookup data with unused columns removed
