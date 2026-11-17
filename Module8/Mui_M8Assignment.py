@@ -15,27 +15,36 @@ import Mui_NeoWsHandle as neows
 
 
 if __name__ == "__main__":
+    # NeoWs Feed Endpoint Exploration
     err_log = 'Mui_M8_Log.txt'
     timeout = 10
     print('\nLet\'s explore Near-Earth Objects!')
     api_key = neows.load_env()
     start = '2026-11-01' # TODO: Change this to user input later
     end = '2026-11-03' # TODO: Change this to user input later
-    # TODO handle 404 errors differently, right now exists and error in the logs, maybe try a reprompting or maybe keep it as it is to slow down DDoS
-    url = neows.build_feed_url(api_key, start, end, err_log)
-    #json_data = neows.neows_call(url, timeout, err_log)
-    feed_raw = neows.build_dataframe(TEMP_DATA) # TODO: replace with real data later
-    feed_data = neows.trim_common_data(feed_raw)
-    didymos_rdata = neows.build_dataframe(DIDYMOS_DATA) # TODO replace with real data from API later
-    didymos_fdata = neows.trim_common_data(didymos_rdata)
-    didymos_tdata = neows.trim_lookup_data(didymos_fdata)
+    feed_url = neows.build_feed_url(api_key, start, end, err_log)
+    print(feed_url) # TODO test line, remove later
+    #feed_json_data = neows.neows_call(feed_url, timeout, err_log) # TODO add this back in later
+    feed_all_data = neows.build_dataframe(TEMP_DATA) # TODO swap TEMP_DATA with feed_json_data later
+    feed_trim_data = neows.trim_common_data(feed_all_data)
+    feed_data_clean = neows.clean_common_data(feed_trim_data)
+
+    # Didymos Analysis
+    didymos_spk_id = '2065803'
+    lookup_url = neows.build_lookup_url(api_key, didymos_spk_id)
+    print(lookup_url) # TODO test line, remove later
+    #lookup_json_data = neows.neows_call(lookup_url, timeout, err_log) # TODO add this back in later
+    lookup_all_data = neows.build_dataframe(DIDYMOS_DATA) # TODO swap DIDYMOS_DATA with lookup_json_data later
+    lookup_trim_data_c = neows.trim_common_data(lookup_all_data)
+    lookup_trim_data_s = neows.trim_lookup_data(lookup_trim_data_c)
+    lookup_data_c_clean = neows.clean_common_data(lookup_trim_data_s)
+    lookup_data_clean = neows.clean_lookup_data(lookup_data_c_clean)
+
+    
+    # Temporary Data Dump for Testing
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
-        f.write(feed_data.to_string(header=True, index=True)) # TODO: Test line, remove later
-        f.write(didymos_tdata.to_string(header=True, index=True)) # TODO: Test line, remove later
-    #print(data) # TODO: Test line, remove later
+        f.write(feed_data_clean.to_string(header=True, index=True)) # TODO: Test line, remove later
+        f.write('\n\n') # TODO: Test line, remove later
+        f.write(lookup_data_clean.to_string(header=True, index=True)) # TODO: Test line, remove later
+    
 
-
-    #didymos_spk_id = '2065803'
-    #didymos_url = neows.build_lookup_url(api_key, didymos_spk_id)
-    #didymos_data_raw = neows.neows_call(didymos_url, timeout, err_log)
-    #print(didymos_data_raw) # TODO test line, remove later
