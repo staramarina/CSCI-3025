@@ -246,7 +246,31 @@ def clean_common_data(data_raw):
         data_clean['close_approach_date_full'],
         format="%Y-%b-%d %H:%M", errors='coerce'
     )
-    return(data_clean)
+    return data_clean
 
 
-# TODO build lookup specific data cleaning/formatting function
+def clean_lookup_data(data_raw):
+    """Handles missing or malformed data within a dataframe
+    
+    Args:
+        data_raw: trimmed lookup data with unused columns removed
+    
+    Returns:
+        data_clean: lookup data with values in expected formats
+    """
+    col_list = [
+        'ascending_node_longitude',
+        'eccentricity',
+        'inclination',
+        'mean_anomaly',
+        'orbit_uncertainty',
+        'orbital_period',
+        'perihelion_argument',
+        'perihelion_distance',
+        'perihelion_time',
+        'semi_major_axis'
+    ]
+    data_clean = copy(data_raw)
+    for col in col_list:
+        data_clean[col] = pd.to_numeric(data_clean[col], errors='corece')
+    return data_clean
