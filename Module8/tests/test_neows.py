@@ -327,3 +327,139 @@ class TestNeoWsSuccess:
         mock_get.return_value = make_feed_response()
         neows.neows_call(SAMPLE_URL, timeout=5)
         mock_get.assert_called_once_with(SAMPLE_URL, timeout=5)
+
+
+class TestNeoWsTimeout:
+    """Class to test the timeout path in neows_call function"""
+
+
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_timeout_return(self, mock_get, tmp_path):
+        """Tests that a timeout causes exit with code 1"""
+        mock_get.side_effect = requests.exceptions.Timeout
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit) as exc_info:
+            neows.neows_call(SAMPLE_URL, err_log=str(log_file))
+        assert 1 == exc_info.value.code
+
+
+    @patch("Mui_Logging.print_log")
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_timeout_print(self, mock_get, mock_print_log, capsys, tmp_path):
+        """Tests that a timeout is logged and printed error points to logs"""
+        mock_get.side_effect = requests.exceptions.Timeout(
+                "Connection timed out")
+        mock_print_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit):
+            neows.neows_call(SAMPLE_URL, err_log=str(log_file))
+        mock_print_log.assert_called_once()
+        args, _ = mock_print_log.call_args
+        assert isinstance(args[0], requests.exceptions.Timeout)
+        assert str(log_file) == args[1]
+        captured = capsys.readouterr()
+        assert "An error occurred with the API" in captured.out
+        assert "See" in captured.out
+        assert str(log_file) in captured.out
+
+
+class TestNeoWsHTTP:
+    """Class to test the HTTP error path in neows_call function"""
+
+
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_http_none(self, mock_get, tmp_path):
+        """Tests that an HTTP error causes exit with code 1"""
+        err = requests.exceptions.HTTPError("401 Client Error: Unauthorized "
+                "for url: https://api.weatherapi.com/v1/")
+        mock_get.return_value = make_feed_response(http_err=err)
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit) as exc_info:
+            neows.neows_call(SAMPLE_URL, err_log=str(log_file))
+        assert 1 == exc_info.value.code
+
+
+    @patch("Mui_Logging.print_log")
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_http_error(self, mock_get, mock_print_log, capsys, tmp_path):
+        """Tests that HTTP error is logged and printed error points to logs"""
+        err = requests.exceptions.HTTPError("401 Client Error")
+        mock_get.return_value = make_feed_response(http_err=err)
+        mock_print_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit):
+            neows.neows_call(SAMPLE_URL, err_log=str(log_file))
+        mock_print_log.assert_called_once()
+        args, _ = mock_print_log.call_args
+        assert isinstance(args[0], requests.exceptions.HTTPError)
+        assert str(log_file) == args[1]
+        captured = capsys.readouterr()
+        assert "An error occurred with the API" in captured.out
+        assert "See" in captured.out
+        assert str(log_file) in captured.out
+
+
+class TestNeoWsRequest:
+    """Class to test the request exception path in neows_call function"""
+
+
+    @patch("Mui_NeoWsHandle.err_handle")
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_connect_none(self, mock_get, mock_log, tmp_path):
+        """Tests that a connection failure causes exit with code 1"""
+        mock_get.side_effect = requests.exceptions.ConnectionError(
+                "Connection refused")
+        mock_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit) as exc_info:
+            neows.neows_call(SAMPLE_URL, err_log=str(log_file))
+        assert 1 == exc_info.value.code
+
+
+    @patch("Mui_Logging.print_log")
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_req_err(self, mock_get, mock_print_log, capsys, tmp_path):
+        """Tests that request error is logged and reported"""
+        mock_get.side_effect = requests.exceptions.ConnectionError(
+                "Connection refused")
+        mock_print_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit):
+            neows.neows_call(SAMPLE_URL, err_log=str(log_file))
+        mock_print_log.assert_called_once()
+        captured = capsys.readouterr()
+        assert "An error occurred with the API" in captured.out
+        assert "See" in captured.out
+        assert str(log_file) in captured.out
+
+
+class TestNeoWsJSON:
+    """Class to test the value error path in neows_call function"""
+
+
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_json_none(self, mock_get, tmp_path):
+        """Tests that bad JSON data causes exit with code 1"""
+        err = ValueError("Expecting value: line 1 column 1")
+        mock_get.return_value = make_feed_response(json_err=err)
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit) as exc_info:
+            neows.neows_call(SAMPLE_URL, err_log=str(log_file))
+        assert 1 == exc_info.value.code
+
+
+    @patch("Mui_Logging.print_log")
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_json_err(self, mock_get, mock_print_log, capsys, tmp_path):
+        """Tests that bad JSON data error is logged and reported"""
+        err = ValueError("Expecting value: line 1 column 1")
+        mock_get.return_value = make_feed_response(json_err=err)
+        mock_print_log.return_value = (True, "File printed successfully")
+        log_file = tmp_path / "log.txt"
+        with pytest.raises(SystemExit):
+            neows.neows_call(SAMPLE_URL, err_log=str(log_file))
+        mock_print_log.assert_called_once()
+        captured = capsys.readouterr()
+        assert "An error occurred with the API" in captured.out
+        assert "See" in captured.out
+        assert str(log_file) in captured.out
