@@ -124,7 +124,25 @@ TODO
     - Estimated Minimum: 1.1
     - Development Environment: 3.1.1
 
-### Custom Modules
+### Analysis Module (Mui_Analysis.py)
+| Function | Purpose | Return |
+| ----- | ------ | ------ |
+TODO
+
+### Ancillary Module (Mui_Ancillary.py)
+| Function | Purpose | Return |
+| ----- | ------ | ------ |
+TODO
+
+### Logging Module (Mui_Logging.py)
+Note: This module is largely unchanged from Module 7, included again here for completness.
+| Function | Purpose | Return |
+| ----- | ------ | ------ |
+TODO
+
+### NeoWs Handle Module (Mui_NeoWsHandle.py)
+| Function | Purpose | Return |
+| ----- | ------ | ------ |
 TODO
 
 ## Testing
@@ -141,7 +159,21 @@ Data output was visually inspected within a file using the following code within
 ```
 
 ### Automated Testing
+Automated testing was conducted with pytest. All API calls are mocked instead of calling the real API, thus all tests can be run with a dummy API key. To run the test, enter the following from within the Module8 directory.
+```
+python -m pytest
+```
+
+#### NeoWs Handle Module Tests (test_neows.py)
+
+##### Testing Fixtures, Variables, and Functions
+| Type | Name | Purpose |
+| ----- | ------ | ------ |
 TODO
+
+##### Testing Classes & Methods
+| Class | Method | Purpose |
+| ----- | ------ | ------ |
 
 ## Author & Credits
 Author: Tiffany M. Mui  
