@@ -186,7 +186,7 @@ LOOKUP_JSON = {
 		'semi_major_axis': '1.642709608529702'
 	}
 }
-
+SAMPLE_URL = 'http://api.nasa.gov/neo/rest/v1/neo/'
 
 @pytest.fixture
 def feed_df():
@@ -225,7 +225,7 @@ def make_feed_response(data = None, json_err = None, http_err = None):
     return r
 
 
-def make_feed_response(data = None, json_err = None, http_err = None):
+def make_lookup_response(data = None, json_err = None, http_err = None):
     """Returns a mock response object for requests
     
     Args:
@@ -291,3 +291,39 @@ class TestEnvURL:
         url = neows.build_lookup_url(key, neo_id)
         assert key in url
         assert neo_id in url
+
+
+class TestNeoWsSuccess:
+    """Class to test the successful path in wxr_api_call function"""
+
+
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_return(self, mock_get):
+        """Tests that a mock call to feed endpoint returns mock feed data"""
+        mock_get.return_value = make_feed_response()
+        data = neows.neows_call(SAMPLE_URL)
+        assert FEED_JSON == data
+
+
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_return(self, mock_get):
+        """Tests that a mock call to feed endpoint returns mock feed data"""
+        mock_get.return_value = make_lookup_response()
+        data = neows.neows_call(SAMPLE_URL)
+        assert LOOKUP_JSON == data
+
+
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_timeout_default(self, mock_get):
+        """Tests that the timeout is the default if not specified"""
+        mock_get.return_value = make_feed_response()
+        neows.neows_call(SAMPLE_URL)
+        mock_get.assert_called_once_with(SAMPLE_URL, timeout=10)
+
+
+    @patch("Mui_NeoWsHandle.requests.get")
+    def test_timeout_specified(self, mock_get):
+        """Tests that the specified timeout is used when given"""
+        mock_get.return_value = make_feed_response()
+        neows.neows_call(SAMPLE_URL, timeout=5)
+        mock_get.assert_called_once_with(SAMPLE_URL, timeout=5)
