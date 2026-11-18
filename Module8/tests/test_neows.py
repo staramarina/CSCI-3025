@@ -7,6 +7,7 @@
 
 import sys
 from pathlib import Path
+from datetime import datetime
 import pytest
 from unittest.mock import patch, MagicMock
 import requests
@@ -33,7 +34,8 @@ def make_cad(date, d_lun, v_kms):
     """
     cad = {
         'close_approach_date': date,
-		'close_approach_date_full': '2026-Nov-01 00:20', 
+		'close_approach_date_full': datetime.strptime(
+            date, '%Y-%m-%d').strftime('%Y-%b-%d 00:20'),
 		'epoch_date_close_approach': 1793492400000, 
 		'miss_distance': {
 			'astronomical': '0.3065928938', 
