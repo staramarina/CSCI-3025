@@ -200,6 +200,56 @@ def lookup_df():
     return neows.build_dataframe(LOOKUP_JSON)
 
 
+def make_feed_response(data = None, json_err = None, http_err = None):
+    """Returns a mock response object for requests
+    
+    Args:
+        data: Mock data that would be received from the API
+        json_err: JSON error to raise instead of returning
+        http_err: HTTP error to raise instead of returning
+    
+    Returns:
+        r: A MagicMock object that responds like a request
+    """
+    r = MagicMock()
+    r.raise_for_status.return_value = None
+    if None != json_err:
+        r.json.side_effect = json_err
+    elif None != http_err:
+        r.raise_for_status.side_effect = http_err
+    else:
+        if None == data:
+            r.json.return_value = FEED_JSON
+        else:
+            r.json.return_value = data
+    return r
+
+
+def make_feed_response(data = None, json_err = None, http_err = None):
+    """Returns a mock response object for requests
+    
+    Args:
+        data: Mock data that would be received from the API
+        json_err: JSON error to raise instead of returning
+        http_err: HTTP error to raise instead of returning
+    
+    Returns:
+        r: A MagicMock object that responds like a request
+    """
+    r = MagicMock()
+    r.raise_for_status.return_value = None
+    if None != json_err:
+        r.json.side_effect = json_err
+    elif None != http_err:
+        r.raise_for_status.side_effect = http_err
+    else:
+        if None == data:
+            r.json.return_value = LOOKUP_JSON
+        else:
+            r.json.return_value = data
+    return r
+
+
 class TestEnvURL:
     """Class to test pulling the API key and building the query URLs"""
 
