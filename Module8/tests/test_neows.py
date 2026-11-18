@@ -581,3 +581,69 @@ class TestTrimData:
             'semi_major_axis'
         ]:
             assert col in trim.columns
+
+
+class TestCleanData:
+    """Class to test data cleaning functions"""
+
+
+    def test_num_convert(self, feed_df):
+        """Tests that numbers in common columns are successfully converted"""
+        trim = neows.trim_common_data(feed_df)
+        clean = neows.clean_common_data(trim)
+        for col in [
+            'miss_distance_kilometers',
+            'relative_velocity_kilometers_per_second',
+            'meters_estimated_diameter_min'
+        ]:
+            assert pd.api.types.is_numeric_dtype(clean[col])
+
+
+    def test_dtg_convert(self, feed_df):
+        """Tests that date time groups in common columns are converted"""
+        trim = neows.trim_common_data(feed_df)
+        clean = neows.clean_common_data(trim)
+        assert pd.api.types.is_datetime64_any_dtype(
+            clean['close_approach_date_full']
+        )
+
+
+    def test_bool_map(self, feed_df):
+        """Tests that PHO bool is successfully mapped and converted"""
+        trim = neows.trim_common_data(feed_df)
+        clean = neows.clean_common_data(trim)
+        assert bool == clean['is_potentially_hazardous_asteroid'].dtype
+
+
+    def test_duplicates(self):
+        """Tests that duplicate rows are removed"""
+        data = {
+            'near_earth_objects': {
+                '2026-11-01': [
+                    make_neo('4001', 'Dup Test', [
+                        make_cad('2026-11-01', '118.7647184455', '4.6212629351')
+                    ]),
+                    make_neo('4001', 'Dup Test', [
+                        make_cad('2026-11-01', '118.7647184455', '4.6212629351')
+                    ])
+                ]
+            }
+        }
+        df = neows.build_dataframe(data)
+        trim = neows.trim_common_data(df)
+        clean = neows.clean_common_data(trim)
+        assert 1 == len(clean)
+
+
+    def test_orbit_num(self, lookup_df):
+        """Tests that lookup orbital data is converted to numbers"""
+        trim = neows.trim_common_data(lookup_df)
+        trim = neows.trim_lookup_data(trim)
+        clean = neows.clean_common_data(trim)
+        clean = neows.clean_lookup_data(clean)
+        for col in [
+            'ascending_node_longitude',
+            'perihelion_argument',
+            'perihelion_time'
+        ]:
+            assert pd.api.types.is_numeric_dtype(clean[col])
