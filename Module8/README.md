@@ -88,10 +88,20 @@ TODO
 ## Project Structure
 ```
    Module8/
-    ├── Mui_M8Assignment.py      # Main program
-    ├── README.md                # Read me file (current file)
-    ├── pyproject.toml           # Project configuration file
-    └── TBD
+    ├── Mui_Analysis.py                 # Specific analysis functions, including data trimming/cleaning
+    ├── Mui_Ancillary.py                # General purpose ancillary tools
+    ├── Mui_Logging.py                  # Provides support for generating error/audit logs
+    ├── Mui_M8Assignment.py             # Main program
+    ├── Mui_NeoWsHandle.py              # Handles API calls, environment variables, as well as general data trimming/cleaning
+    ├── README.md                       # Read me file (current file)
+    ├── pyproject.toml                  # Project configuration file
+    └── tests                           # Test files for pytest
+          ├── __init__.py               # Tells Python this is a package
+          ├── test_analysys.py          # Tests for Mui_Analysis.py
+          └── test_neows.py             # Tests for Mui_NeoWsHandle.py
+    └── exampledata
+          ├── feed_sampledata.txt       # Real feed endpoint output data used for manual tests
+          └── didymos_sampledata.txt    # Real lookup endpoint output data used for manual tests
 ```
 
 ## Modules
