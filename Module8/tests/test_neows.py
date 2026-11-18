@@ -7,7 +7,6 @@
 
 import sys
 from pathlib import Path
-from copy import deepcopy
 import pytest
 from unittest.mock import patch, MagicMock
 import requests
@@ -187,6 +186,7 @@ LOOKUP_JSON = {
 	}
 }
 SAMPLE_URL = 'http://api.nasa.gov/neo/rest/v1/neo/'
+
 
 @pytest.fixture
 def feed_df():
