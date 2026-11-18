@@ -5,7 +5,7 @@
 # Dependencies: 
 #   Standard: sys, os, pathlib, copy
 #   External: dotenv, requests, pandas
-#   Custom: Mui_Logging.py, Mui_Ancilly.py
+#   Custom: Mui_Logging.py, Mui_Ancillary.py
 
 
 import sys
