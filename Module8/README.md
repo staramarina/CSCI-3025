@@ -99,9 +99,9 @@ TODO
     │     ├── __init__.py               # Tells Python this is a package
     │     ├── test_analysys.py          # Tests for Mui_Analysis.py
     │     └── test_neows.py             # Tests for Mui_NeoWsHandle.py
-    └── exampledata
-          ├── feed_sampledata.txt       # Real feed endpoint output data used for manual tests
-          └── didymos_sampledata.txt    # Real lookup endpoint output data used for manual tests
+    └── exampledata                     # Data used for manual tests
+          ├── feed_sampledata.txt       # Real feed endpoint output data
+          └── didymos_sampledata.txt    # Real lookup endpoint output data
 ```
 
 ## Modules
