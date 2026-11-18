@@ -213,12 +213,12 @@ def make_feed_response(data = None, json_err = None, http_err = None):
     """
     r = MagicMock()
     r.raise_for_status.return_value = None
-    if None != json_err:
+    if json_err is not None:
         r.json.side_effect = json_err
-    elif None != http_err:
+    elif http_err is not None:
         r.raise_for_status.side_effect = http_err
     else:
-        if None == data:
+        if data is None:
             r.json.return_value = FEED_JSON
         else:
             r.json.return_value = data
@@ -238,12 +238,12 @@ def make_lookup_response(data = None, json_err = None, http_err = None):
     """
     r = MagicMock()
     r.raise_for_status.return_value = None
-    if None != json_err:
+    if json_err is not None:
         r.json.side_effect = json_err
-    elif None != http_err:
+    elif http_err is not None:
         r.raise_for_status.side_effect = http_err
     else:
-        if None == data:
+        if data is None:
             r.json.return_value = LOOKUP_JSON
         else:
             r.json.return_value = data
@@ -255,9 +255,10 @@ class TestEnvURL:
 
 
     def test_pull_key(self):
-        """Tests pulling the API key from the env file"""
+        """Tests pulling the API key from the env file
+        Note: this is purposefully testing the local environment"""
         key = neows.load_env()
-        assert None != key
+        assert key is not None
 
 
     def test_feed_url_good(self):
@@ -294,11 +295,11 @@ class TestEnvURL:
 
 
 class TestNeoWsSuccess:
-    """Class to test the successful path in wxr_api_call function"""
+    """Class to test the successful path in neows_call function"""
 
 
     @patch("Mui_NeoWsHandle.requests.get")
-    def test_return(self, mock_get):
+    def test_feed_return(self, mock_get):
         """Tests that a mock call to feed endpoint returns mock feed data"""
         mock_get.return_value = make_feed_response()
         data = neows.neows_call(SAMPLE_URL)
@@ -306,7 +307,7 @@ class TestNeoWsSuccess:
 
 
     @patch("Mui_NeoWsHandle.requests.get")
-    def test_return(self, mock_get):
+    def test_lookup_return(self, mock_get):
         """Tests that a mock call to feed endpoint returns mock feed data"""
         mock_get.return_value = make_lookup_response()
         data = neows.neows_call(SAMPLE_URL)
@@ -371,7 +372,7 @@ class TestNeoWsHTTP:
     def test_http_none(self, mock_get, tmp_path):
         """Tests that an HTTP error causes exit with code 1"""
         err = requests.exceptions.HTTPError("401 Client Error: Unauthorized "
-                "for url: https://api.weatherapi.com/v1/")
+                "for url: http://api.nasa.gov/neo/rest/v1/neo/")
         mock_get.return_value = make_feed_response(http_err=err)
         log_file = tmp_path / "log.txt"
         with pytest.raises(SystemExit) as exc_info:
@@ -560,7 +561,7 @@ class TestTrimData:
     def test_lookup_remove(self, lookup_df):
         """Tests that intended specific lookup columns are removed"""
         trim = neows.trim_common_data(lookup_df)
-        trim = neows.trim_lookup_data(lookup_df)
+        trim = neows.trim_lookup_data(trim)
         for col in [
             'designation',
             'name_limited',
@@ -574,7 +575,7 @@ class TestTrimData:
     def test_lookup_keep(self, lookup_df):
         """Tests that intended specific lookup columns are kept"""
         trim = neows.trim_common_data(lookup_df)
-        trim = neows.trim_lookup_data(lookup_df)
+        trim = neows.trim_lookup_data(trim)
         for col in [
             'eccentricity',
             'orbital_period',
@@ -612,7 +613,9 @@ class TestCleanData:
         """Tests that PHO bool is successfully mapped and converted"""
         trim = neows.trim_common_data(feed_df)
         clean = neows.clean_common_data(trim)
-        assert bool == clean['is_potentially_hazardous_asteroid'].dtype
+        assert pd.api.types.is_boolean_dtype(
+            clean['is_potentially_hazardous_asteroid']
+        )
 
 
     def test_duplicates(self):
@@ -647,3 +650,12 @@ class TestCleanData:
             'perihelion_time'
         ]:
             assert pd.api.types.is_numeric_dtype(clean[col])
+
+
+    def test_unique_cad(self, lookup_df):
+        """Tests that unique cad for same ID is kept"""
+        trim = neows.trim_common_data(lookup_df)
+        trim = neows.trim_lookup_data(trim)
+        clean = neows.clean_common_data(trim)
+        clean = neows.clean_lookup_data(clean)
+        assert 3 == len(clean)
