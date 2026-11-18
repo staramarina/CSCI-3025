@@ -3,7 +3,7 @@
 # CSCI-3025: Python Programming
 # Purpose: Functions to handle interacting with the NeoWs API
 # Dependencies: 
-#   Standard: sys, os, pathlib, copy, datetime
+#   Standard: sys, os, pathlib, copy
 #   External: dotenv, requests, pandas
 #   Custom: Mui_Logging.py, Mui_Ancilly.py
 
@@ -11,11 +11,10 @@
 import sys
 import os
 from pathlib import Path
-from copy import deepcopy, copy
-from datetime import datetime
-from dotenv import load_dotenv
+from copy import copy
 import requests
 import pandas as pd
+from dotenv import load_dotenv
 import Mui_Ancillary as aux
 from Mui_Logging import err_handle
 
