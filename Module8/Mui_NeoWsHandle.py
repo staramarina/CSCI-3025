@@ -238,7 +238,8 @@ def clean_common_data(data_raw):
     for col in num_col:
         data_clean[col] = pd.to_numeric(data_clean[col], errors='coerce')
     data_clean['is_potentially_hazardous_asteroid'] = (
-        data_clean['is_potentially_hazardous_asteroid'].map(pho_map)
+        data_clean['is_potentially_hazardous_asteroid'].map(
+            pho_map).astype('boolean')
     )
     data_clean['close_approach_date_full'] = pd.to_datetime(
         data_clean['close_approach_date_full'],
