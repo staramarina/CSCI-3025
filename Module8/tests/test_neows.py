@@ -613,7 +613,7 @@ class TestCleanData:
         """Tests that PHO bool is successfully mapped and converted"""
         trim = neows.trim_common_data(feed_df)
         clean = neows.clean_common_data(trim)
-        assert pd.api.types.is_boolean_dtype(
+        assert pd.api.types.is_bool_dtype(
             clean['is_potentially_hazardous_asteroid']
         )
 
