@@ -463,3 +463,55 @@ class TestNeoWsJSON:
         assert "An error occurred with the API" in captured.out
         assert "See" in captured.out
         assert str(log_file) in captured.out
+
+
+class TestBuildDataframe:
+    """Class to test the build_dataframe function"""
+
+
+    def test_cad_exploded(self, feed_df):
+        """Test that the cad data exploded results in correct row count"""
+        assert 3 == len(feed_df)
+
+
+    def test_dict_remain(self, feed_df):
+        """Tests that no unflattened dictionaries are present"""
+        dict_col = feed_df.columns[
+            feed_df.apply(lambda col: col.map(type).eq(dict).any())
+        ]
+        assert 0 == len(dict_col)
+
+
+    def test_nested_columns(self, feed_df):
+        """Tests that all nested columns are flattened"""
+        for col in [
+            'close_approach_date_full',
+            'miss_distance_lunar',
+            'relative_velocity_kilometers_per_second',
+            'meters_estimated_diameter_max'
+        ]:
+            assert col in feed_df.columns
+
+
+    def test_lookup_build(self, lookup_df):
+        """Tests that lookup specific rows are included when present"""
+        for col in [
+            'name_limited',
+            'eccentricity',
+            'orbit_class_orbit_class_type'
+        ]:
+            assert col in lookup_df.columns
+        assert 3 == len(lookup_df)
+
+
+    def test_empty_cad(self):
+        """Tests the case when there is no close approach data (edge case)"""
+        neo = {
+            'near_earth_objects': {
+                '2026-11-01': [
+                    make_neo('3001', 'Test I', [])
+                ]
+            }
+        }
+        neo_df = neows.build_dataframe(neo)
+        assert 1 == len(neo_df)
