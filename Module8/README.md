@@ -95,10 +95,10 @@ TODO
     ├── Mui_NeoWsHandle.py              # Handles API calls, environment variables, as well as general data trimming/cleaning
     ├── README.md                       # Read me file (current file)
     ├── pyproject.toml                  # Project configuration file
-    └── tests                           # Test files for pytest
-          ├── __init__.py               # Tells Python this is a package
-          ├── test_analysys.py          # Tests for Mui_Analysis.py
-          └── test_neows.py             # Tests for Mui_NeoWsHandle.py
+    ├── tests                           # Test files for pytest
+    │     ├── __init__.py               # Tells Python this is a package
+    │     ├── test_analysys.py          # Tests for Mui_Analysis.py
+    │     └── test_neows.py             # Tests for Mui_NeoWsHandle.py
     └── exampledata
           ├── feed_sampledata.txt       # Real feed endpoint output data used for manual tests
           └── didymos_sampledata.txt    # Real lookup endpoint output data used for manual tests
