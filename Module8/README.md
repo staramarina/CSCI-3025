@@ -46,6 +46,7 @@ Ground work for the following features is included, but not fully implemented:
     - requests - handles http requests and responses
     - python-dotenv - handles loading environment variables
     - pandas - handles data formatting and analysis
+    - seaborn - creates graphs
 - External APIs
     - NASA NeoWs API from https://api.nasa.gov
 
@@ -68,11 +69,15 @@ python -m pip install requests
 ```
 python -m pip install pandas
 ```
-7. Create a .env file within the Module8 directory that includes the following
+7. Install seaborn package:
+```
+python -m pip install seaborn
+```
+8. Create a .env file within the Module8 directory that includes the following
 ```
 API_KEY = <your_api_key>
 ```
-8. Ensure Python path includes the Module8 directory or run from within it.
+9. Ensure Python path includes the Module8 directory or run from within it.
 
 ## Usage
 
@@ -123,6 +128,9 @@ TODO
 - pandas for handling large data formatting and analysis
     - Estimated Minimum: 1.1
     - Development Environment: 3.1.1
+- seaborn for creating graphs
+    - Estimated Minimum: TODO
+    - Development Environment: 0.13.2
 
 ### Analysis Module (Mui_Analysis.py)
 | Function | Purpose | Return |
