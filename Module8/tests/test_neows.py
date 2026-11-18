@@ -106,17 +106,17 @@ FEED_JSON = {
     },
     'near_earth_objects': {
         '2026-11-01': [
-            {make_neo('1001', 'Test A', [
+            make_neo('1001', 'Test A', [
                 make_cad('2026-11-01', '119.2646356882', '16.0941424487')
-            ])},
-            {make_neo('1002', 'Test B', [
+            ]),
+            make_neo('1002', 'Test B', [
                 make_cad('2026-11-01', '118.7647184455', '4.6212629351')
-            ])}
+            ])
         ],
         '2026-11-02': [
-            {make_neo('1003', 'Test C', [
+            make_neo('1003', 'Test C', [
                 make_cad('2026-11-02', '24.1831825905', '12.6714610504')
-            ])}
+            ])
         ]
     }
 }
@@ -198,3 +198,46 @@ def feed_df():
 def lookup_df():
     """Returns a dataframe of LOOKUP_JSON"""
     return neows.build_dataframe(LOOKUP_JSON)
+
+
+class TestEnvURL:
+    """Class to test pulling the API key and building the query URLs"""
+
+
+    def test_pull_key(self):
+        """Tests pulling the API key from the env file"""
+        key = neows.load_env()
+        assert None != key
+
+
+    def test_feed_url_good(self):
+        """Tests the successful path of build_feed_url"""
+        key = 'KEY'
+        start = '2026-11-01'
+        end = '2026-11-03'
+        url = neows.build_feed_url(key, start, end)
+        assert 'nasa.gov' in url
+        assert 'feed' in url
+        assert key in url
+        assert start in url
+        assert end in url
+
+
+    def test_feed_bad_date(self, tmp_path):
+        """Tests the bad end date path of build_feed_url"""
+        key = 'KEY'
+        start = '2026-11-01'
+        end = '2026-Nov-03'
+        log_file = tmp_path / "log.txt"
+        url = neows.build_feed_url(key, start, end, err_log=str(log_file))
+        assert '2026-10-29' in url
+        assert log_file.exists()
+
+
+    def test_lookup_url(self):
+        """Tests that build_lookup_url is successful"""
+        key = 'KEY'
+        neo_id = '1234567'
+        url = neows.build_lookup_url(key, neo_id)
+        assert key in url
+        assert neo_id in url
