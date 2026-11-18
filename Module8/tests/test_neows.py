@@ -515,3 +515,69 @@ class TestBuildDataframe:
         }
         neo_df = neows.build_dataframe(neo)
         assert 1 == len(neo_df)
+
+
+class TestTrimData:
+    """Class to test data trimming functions"""
+
+
+    def test_common_remove(self, feed_df):
+        """Tests that intended common columns are removed"""
+        trim = neows.trim_common_data(feed_df)
+        for col in [
+            'is_sentry_object',
+            'neo_reference_id',
+            'close_approach_date',
+            'miss_distance_miles',
+            'relative_velocity_miles_per_hour',
+            'miles_estimated_diameter_min',
+            'self'
+        ]:
+            assert col not in trim.columns
+
+
+    def test_common_keep(self, feed_df):
+        """Tests that intended common columns are kept"""
+        trim = neows.trim_common_data(feed_df)
+        for col in [
+            'id',
+            'is_potentially_hazardous_asteroid',
+            'close_approach_date_full',
+            'miss_distance_lunar',
+            'relative_velocity_kilometers_per_second',
+            'meters_estimated_diameter_max'
+        ]:
+            assert col in trim.columns
+
+
+    def test_missing_column(self, feed_df):
+        """Tests that missing column error is masked"""
+        self_link_miss = feed_df.drop(columns=['self'])
+        trim = neows.trim_common_data(self_link_miss)
+        assert 'id' in trim.columns
+
+
+    def test_lookup_remove(self, lookup_df):
+        """Tests that intended specific lookup columns are removed"""
+        trim = neows.trim_common_data(lookup_df)
+        trim = neows.trim_lookup_data(lookup_df)
+        for col in [
+            'designation',
+            'name_limited',
+            'equinox',
+            'jupiter_tisserand_invariant',
+            'orbit_class_orbit_class_description',
+        ]:
+            assert col not in trim.columns
+
+
+    def test_lookup_keep(self, lookup_df):
+        """Tests that intended specific lookup columns are kept"""
+        trim = neows.trim_common_data(lookup_df)
+        trim = neows.trim_lookup_data(lookup_df)
+        for col in [
+            'eccentricity',
+            'orbital_period',
+            'semi_major_axis'
+        ]:
+            assert col in trim.columns
