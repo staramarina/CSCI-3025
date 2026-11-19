@@ -2,10 +2,7 @@
 # Module 8 Assignment - Analysis Module
 # CSCI-3025: Python Programming
 # Purpose: Functions to handle specific analysis
-# Dependencies: 
-#   Standard: TBD
-#   External: pandas, seaborn, matplotlib
-#   Custom: TBD
+# Dependencies: pandas, seaborn, matplotlib
 
 
 import pandas as pd
@@ -179,7 +176,7 @@ def pho_size_trim(data):
 
 
 def pho_size_chart(data, didymos_data):
-    """Generates box-and-whisker chart to distribution of diameters of all PHOs,
+    """Generates box-and-whisker chart distribution of diameters of all PHOs,
     with comparison against Didymos
 
     Args:
@@ -236,7 +233,7 @@ def didymos_orbit_trim(data):
 
 
 def didymos_orbit_chart(data):
-    """Generated a scatter plot of Didymos miss distance by flyby body
+    """Generates a scatter plot of Didymos miss distance by flyby body
     
     Args:
         data: lookup pandas dataframe for Didymos in expected formats
@@ -256,7 +253,7 @@ def didymos_orbit_chart(data):
     )
     ax.xaxis.set_major_locator(mplticker.MaxNLocator(integer=True))
     ax.set_title('Didymos Miss Distance (Lunar) by Flyby Body')
-    ax.set_xlabel('Date (Close Approach)')
+    ax.set_xlabel('Year (Close Approach)')
     ax.set_ylabel('Miss Distance (Lunar)')
     ax.legend(title='Flyby Body')
     plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
