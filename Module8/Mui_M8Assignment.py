@@ -14,6 +14,8 @@ DIDYMOS_DATA = {'absolute_magnitude_h': 18.11, 'close_approach_data': [{'close_a
 
 
 import Mui_NeoWsHandle as neows
+import Mui_Analysis as analysis
+import Mui_Ancillary as aux
 
 
 if __name__ == "__main__":
@@ -42,9 +44,15 @@ if __name__ == "__main__":
     lookup_data_c_clean = neows.clean_common_data(lookup_trim_data_s)
     lookup_data_clean = neows.clean_lookup_data(lookup_data_c_clean)
 
-    # Analysis and Chart Generation TODO
-
-    # Save Charts TODO
+    # Generate and Save Charts
+    neo_chart = analysis.neo_pho_chart(feed_data_clean)
+    lun_chart = analysis.lun_miss_chart(feed_data_clean)
+    pho_chart = analysis.pho_size_chart(feed_data_clean, lookup_data_clean)
+    didymos_chart = analysis.didymos_orbit_chart(lookup_data_clean)
+    check_neo = aux.chart_save(neo_chart, 'charts/neo_chart.png')
+    check_lun = aux.chart_save(lun_chart, 'charts/lun_chart.png')
+    check_pho = aux.chart_save(pho_chart, 'charts/pho_chart.png')
+    check_didymos = aux.chart_save(didymos_chart, 'charts/didymos_chart.png')
     
     # Temporary Data Dump for Testing
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
