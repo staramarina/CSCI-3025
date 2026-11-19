@@ -20,7 +20,7 @@ import Mui_Logging as log
 
 
 if __name__ == "__main__":
-    # NeoWs Feed Endpoint Data Generation and Cleanup
+    # NeoWs Feed Endpoint Data Load and General Cleanup
     err_log = 'Mui_M8_Log.txt'
     timeout = 10
     print('\nLet\'s explore Near-Earth Objects!')
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     feed_trim_data = neows.trim_common_data(feed_all_data)
     feed_data_clean = neows.clean_common_data(feed_trim_data)
 
-    # Didymos Data Generation and Cleanup
+    # Didymos Data Load and General Cleanup
     didymos_spk_id = '2065803'
     lookup_url = neows.build_lookup_url(api_key, didymos_spk_id)
     print(lookup_url) # TODO test line, remove later
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     lookup_data_c_clean = neows.clean_common_data(lookup_trim_data_s)
     lookup_data_clean = neows.clean_lookup_data(lookup_data_c_clean)
 
-    # Generate and Save Charts
+    # Tailored Cleaning, Analysis, and Chart Generation
     neo_chart = analysis.neo_pho_chart(feed_data_clean)
     lun_chart = analysis.lun_miss_chart(feed_data_clean)
     pho_chart = analysis.pho_size_chart(feed_data_clean, lookup_data_clean)
