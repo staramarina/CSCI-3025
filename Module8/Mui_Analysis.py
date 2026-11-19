@@ -83,11 +83,11 @@ def neo_pho_chart(data):
     day = sorted(trim['date'].unique())
     palette = sns.color_palette()[:2]
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.countplot(data=trim, x = 'date', hue = 'pho_status', hue_order=['PHO',
-            'Not PHO'], order=day, palette=palette, ax=ax)
-    ax.axhline(avg[0], ls='--', color=palette[1], 
+    sns.countplot(data=trim, x = 'date', hue = 'pho_status', 
+            hue_order=['Not PHO', 'PHO'], order=day, palette=palette, ax=ax)
+    ax.axhline(avg[0], ls='--', color=palette[0], 
             label=f'Mean non-PHO/day: {avg[0]:.2f}')
-    ax.axhline(avg[1], ls=':', color=palette[0],
+    ax.axhline(avg[1], ls=':', color=palette[1],
             label=f'Mean PHO/day: {avg[1]:.2f}')
     ax.set_title('Near-Earth Objects per Day (Close Approach)')
     ax.set_xlabel('Date (Close Approach)')
@@ -246,7 +246,7 @@ def didymos_orbit_chart(data):
     """
     trim = didymos_orbit_trim(data)
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.scatterplot(
+    sns.lineplot(
         data=trim, x='year', 
         y='miss_distance_lunar', hue='orbiting_body',
         style='orbiting_body', s=60, ax=ax
