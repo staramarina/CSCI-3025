@@ -24,8 +24,8 @@ def neo_pho_trim(data):
     
     Returns:
         trim: trimmed dataframe with only close_approach_date_full and 
-                   is_potentially_hazardous_asteroid columns, with
-                   missing values removed
+              is_potentially_hazardous_asteroid values, with
+              missing values removed
     """
     pho_map = {
         True: 'PHO',
@@ -76,7 +76,7 @@ def neo_pho_chart(data):
               (from clean_common_data)
     
     Returns:
-        graph: a 2-tuple with the following format
+        chart: a 2-tuple with the following format
             [0]: matplotlib figure
             [1]: matplotlib axes
     """
@@ -97,20 +97,84 @@ def neo_pho_chart(data):
     ax.legend()
     plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
     fig.tight_layout()
-    graph = (fig, ax)
-    return graph
+    chart = (fig, ax)
+    return chart
 
 
 # Second analysis: Lunar close approach per day with comparing average
-# TODO: function for trimming to just lunar close data, should only need close_approach_date_full on X, miss_distance_lunar on Y, make sure clean and ordered
-# TODO: function to find values for bar/whisker chart (may not need, check chart options)
+def lun_miss_trim(data):
+    """Trims data for analysis and plotting of lunar miss distance per day 
+    with comparing averages
+    
+    Args:
+        data: feed pandas dataframe with values in expected formats 
+              (from clean_common_data)
+    
+    Returns:
+        trim: trimmed dataframe with only close_approach_date_full and 
+              miss_distance_lunar values, with missing values removed
+    """
+    trim = data[['close_approach_date_full',
+            'miss_distance_lunar']].copy()
+    trim.rename(columns={'close_approach_date_full': 'date', 
+            'miss_distance_lunar': 'd_miss'}, inplace=True)
+    trim = trim.dropna()
+    trim = trim.sort_values(by='date')
+    trim['date'] = pd.to_date(trim['date']).dt.date
+    return trim
+
+
 # TODO: function to generate bar/whisker chart with average lines
 
+
 # Third analysis: Compare min/max diameter of all PHOs, compare against Didymos
-# TODO: function for trimming to just PHO true data, then trim columns to close_approach_date_full (X), meters_estimated_diameter_max and meters_estimated_diameter_min (Y)
-# TODO: function to find values for bar/whisker chart (may not need, check chart options)
+def pho_size_trim(data):
+    """Trims data for analysis and plotting of min/max diameter of PHO 
+    with comparison against Didymos
+    
+    Args:
+        data: feed pandas dataframe with values in expected formats 
+              (from clean_common_data)
+    
+    Returns:
+        trim: long format trimmed dataframe with min/max and estimated 
+              diameter columns of only PHOs with missing values removed
+    """
+    mask = data['is_potentially_hazardous_asteroid'].eq(True).fillna(False)
+    pho = data.loc[mask, ['meters_estimated_diameter_min', 
+            'meters_estimated_diameter_max']].dropna()
+    trim = pho.melt(var_name='diameter', value_name='diameter_m')
+    label_map = {
+        'meters_estimated_diameter_min': 'Estimated min diameter (m)',
+        'meters_estimated_diameter_max': 'Estimated max diameter (m)'
+    }
+    trim['diameter'] = trim['diameter'].replace(label_map)
+    return trim
+
+
 # TODO: function to generate bar/whisker chart with Didymos comparison lines
 
+
 # Fourth analysis: Didymos Mars vs Earth with miss distance
-# TODO: function to trim/separate close approach data, one for Earth one for Mars, then trim columns to close_approach_date_full (X) and miss_distance_lunar (Y)
+def didymos_orbit_trim(data):
+    """Trims data for analysis and plotting of Didymos orbiting patterns
+    
+    Args: 
+        data: feed pandas dataframe with values in expected formats 
+              (from clean_lookup_data)
+    
+    Returns:
+        trim: trimmed dataframe with only close_approach_date_full, 
+              miss_distance_lunar, and orbiting_body values, with
+              missing values removed
+    """
+    trim = data.loc[
+        data['orbiting_body'].isin(['Earth', 'Mars']),
+        ['close_approach_date_full', 'miss_distance_lunar', 'orbiting_body']
+    ].copy()
+    trim = trim.dropna()
+    trim = trim.sort_values(by='close_approach_date_full')
+    return trim
+
+
 # TODO: function to generate scatter plot chart
