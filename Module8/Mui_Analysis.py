@@ -4,7 +4,7 @@
 # Purpose: Functions to handle specific analysis
 # Dependencies: 
 #   Standard: TBD
-#   External: TBD
+#   External: pandas, seaborn, matplotlib
 #   Custom: TBD
 
 
@@ -13,8 +13,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-# First analysis: PHO vs. non-PHO per day over two weeks, with comparing averages
-# TODO: function for trimming to just PHO data, should only need close_approach_date_full on X and is_potentially_hazardous_asteroid on Y, make sure clean and ordered
+# First analysis: PHO vs. non-PHO per day, with comparing averages
 def neo_pho_trim(data):
     """Trims data for analysis and plotting of PHO vs. non-PHO per day 
     with comparing averages
@@ -42,7 +41,7 @@ def neo_pho_trim(data):
     trim['pho_status'] = trim['pho_status'].map(pho_map)
     return trim
 
-# TODO: function to bucket True/False PHO data by day, calculate average of each, then calculate total NEO qty avg
+
 def neo_avg_calc(trim):
     """Calculates average PHO statistics
     
@@ -67,7 +66,7 @@ def neo_avg_calc(trim):
     neo_avg = (not_pho_avg, pho_avg, tot_avg)
     return neo_avg
     
-# TODO: function to generate clustered column chart with average lines
+
 def neo_pho_chart(data):
     """Generates a clustered column chart of PHO/non-PHO per day 
     with average comparison lines
@@ -100,8 +99,6 @@ def neo_pho_chart(data):
     fig.tight_layout()
     graph = (fig, ax)
     return graph
-
-
 
 
 # Second analysis: Lunar close approach per day with comparing average
