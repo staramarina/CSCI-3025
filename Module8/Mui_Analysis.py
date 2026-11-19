@@ -124,7 +124,6 @@ def lun_miss_trim(data):
     return trim
 
 
-# TODO: function to generate bar/whisker chart with average lines
 def lun_miss_chart(data):
     """Generates box-and-whisker chart of lunar miss distance per day
     
@@ -178,7 +177,38 @@ def pho_size_trim(data):
     return trim
 
 
-# TODO: function to generate bar/whisker chart with Didymos comparison lines
+def pho_size_chart(data, didymos_data):
+    """Generates box-and-whisker chart to distribution of diameters of all PHOs,
+    with comparison against Didymos
+
+    Args:
+        data: feed pandas dataframe with values in expected formats 
+              (from clean_common_data)
+        didymos_data: lookup pandas dataframe for Didymos
+                      (from clean_lookup_data)
+    
+    Returns:
+        chart: a 2-tuple with the following format
+            [0]: matplotlib figure
+            [1]: matplotlib axes
+    """
+    trim = pho_size_trim(data)
+    dm_min = float(didymos_data['meters_estimated_diameter_min'].iloc[0])
+    dm_max = float(didymos_data['meters_estimated_diameter_max'].iloc[0])
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.boxplot(data=trim, x='diameter', y='diameter_m',
+            order=['Estimated min diameter (m)', 'Estimated max diameter (m)'],
+            ax=ax)
+    ax.axhline(dm_min, ls='--', label=f'Didymos min: {dm_min}:.2f')
+    ax.axhline(dm_max, ls='--', label=f'Didymos max: {dm_max}:.2f')
+    ax.set_title('PHO Estimated Diameters vs. Didymos')
+    ax.set_xlabel('')
+    ax.set_ylabel('Estimated diameter (m)')
+    ax.legend()
+    ax.set_yscale('log') # TODO may not need this, check display
+    fig.tight_layout()
+    chart = (fig, ax)
+    return chart
 
 
 # Fourth analysis: Didymos Mars vs Earth with miss distance
