@@ -16,6 +16,7 @@ DIDYMOS_DATA = {'absolute_magnitude_h': 18.11, 'close_approach_data': [{'close_a
 import Mui_NeoWsHandle as neows
 import Mui_Analysis as analysis
 import Mui_Ancillary as aux
+import Mui_Logging as log
 
 
 if __name__ == "__main__":
@@ -50,9 +51,17 @@ if __name__ == "__main__":
     pho_chart = analysis.pho_size_chart(feed_data_clean, lookup_data_clean)
     didymos_chart = analysis.didymos_orbit_chart(lookup_data_clean)
     check_neo = aux.chart_save(neo_chart, 'charts/neo_chart.png')
+    if not check_neo[0]:
+        log.err_handle(check_neo[1], err_log)
     check_lun = aux.chart_save(lun_chart, 'charts/lun_chart.png')
+    if not check_lun[0]:
+        log.err_handle(check_lun[1], err_log)
     check_pho = aux.chart_save(pho_chart, 'charts/pho_chart.png')
+    if not check_pho[0]:
+        log.err_handle(check_pho[1], err_log)
     check_didymos = aux.chart_save(didymos_chart, 'charts/didymos_chart.png')
+    if not check_didymos[0]:
+        log.err_handle(check_didymos[1], err_log)
     
     # Temporary Data Dump for Testing
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
