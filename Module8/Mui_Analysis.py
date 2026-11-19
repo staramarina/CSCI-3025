@@ -139,7 +139,8 @@ def lun_miss_chart(data):
     mean_all = trim['d_miss'].mean()
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.boxplot(data=trim, x='date', y='d_miss', order=day, ax=ax)
-    ax.axhline(mean_all, ls='--', label=f'Overall mean: {mean_all:.2f} lunar')
+    ax.axhline(mean_all, ls='--', color='red', 
+            label=f'Overall mean: {mean_all:.2f} lunar')
     ax.set_title('Miss Distance (Lunar) per Day (Close Approach)')
     ax.set_xlabel('Date (Close Approach)')
     ax.set_ylabel('Miss Distance (Lunar)')
@@ -249,7 +250,8 @@ def didymos_orbit_chart(data):
     sns.lineplot(
         data=trim, x='year', 
         y='miss_distance_lunar', hue='orbiting_body',
-        style='orbiting_body', s=60, ax=ax
+        style='orbiting_body', markers=['s', 'o'],
+        markersize=8, dashes=False, estimator=None, ax=ax
     )
     ax.xaxis.set_major_locator(mplticker.MaxNLocator(integer=True))
     ax.set_title('Didymos Miss Distance (Lunar) by Flyby Body')
