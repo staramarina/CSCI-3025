@@ -47,6 +47,7 @@ Ground work for the following features is included, but not fully implemented:
     - python-dotenv - handles loading environment variables
     - pandas - handles data formatting and analysis
     - seaborn - creates graphs
+    - matplotlib - handles the underlying settings for graphs
 - External APIs
     - NASA NeoWs API from https://api.nasa.gov
 
@@ -69,7 +70,7 @@ python -m pip install requests
 ```
 python -m pip install pandas
 ```
-7. Install seaborn package:
+7. Install seaborn package: (note: this includes matplotlib installation)
 ```
 python -m pip install seaborn
 ```
@@ -102,7 +103,8 @@ TODO
     ├── pyproject.toml                  # Project configuration file
     ├── tests                           # Test files for pytest
     │     ├── __init__.py               # Tells Python this is a package
-    │     ├── test_analysys.py          # Tests for Mui_Analysis.py
+    │     ├── test_analysis.py          # Tests for Mui_Analysis.py
+    │     ├── test_ancillary.py         # Tests for Mui_Ancillary.py
     │     └── test_neows.py             # Tests for Mui_NeoWsHandle.py
     └── exampledata                     # Data used for manual tests
           ├── feed_sampledata.txt       # Real feed endpoint output data
