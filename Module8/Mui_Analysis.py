@@ -233,4 +233,30 @@ def didymos_orbit_trim(data):
     return trim
 
 
-# TODO: function to generate scatter plot chart
+def didymos_orbit_chart(data):
+    """Generated a scatter plot of Didymos miss distance by flyby body
+    
+    Args:
+        data: lookup pandas dataframe for Didymos in expected formats
+              (from clean_lookup_data)
+    
+    Returns:
+        chart: a 2-tuple with the following format
+            [0]: matplotlib figure
+            [1]: matplotlib axes
+    """
+    trim = didymos_orbit_trim(data)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.scatterplot(
+        data=trim, x='close_approach_date_full', 
+        y='miss_distance_lunar', hue='orbiting_body',
+        style='orbiting_body', s=60, ax=ax
+    )
+    ax.set_title('Didymos Miss Distance (Lunar) by Flyby Body')
+    ax.set_xlabel('Date (Close Approach)')
+    ax.set_ylabel('Miss Distance (Lunar)')
+    ax.legend(title='Flyby Body')
+    plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
+    fig.tight_layout()
+    chart = (fig, ax)
+    return chart
