@@ -187,7 +187,7 @@ def pho_size_trim(data):
 
 
 def pho_size_chart(data, didymos_data):
-    """Generates box-and-whisker chart distribution of diameters of all PHOs,
+    """Generates bar chart of diameters of all PHOs per day,
     with comparison against Didymos
 
     Args:
@@ -204,13 +204,18 @@ def pho_size_chart(data, didymos_data):
     trim = pho_size_trim(data)
     dm_min = float(didymos_data['meters_estimated_diameter_min'].iloc[0])
     dm_max = float(didymos_data['meters_estimated_diameter_max'].iloc[0])
+    palette = sns.color_palette()[:2]
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(data=trim, x='date', y='diameter_m', hue = 'diameter',
-            order=['Estimated min diameter (m)', 'Estimated max diameter (m)'],
-            ax=ax)
-    ax.axhline(dm_min, ls='--', label=f'Didymos min: {dm_min:.2f}')
-    ax.axhline(dm_max, ls='--', label=f'Didymos max: {dm_max:.2f}')
-    ax.set_title('PHO Estimated Diameters vs. Didymos')
+    sns.barplot(data=trim, x='date', y='diameter_m', hue = 'diameter',
+            hue_order=['Estimated min diameter (m)', 
+            'Estimated max diameter (m)'], palette=dict(zip(
+                ['Estimated min diameter (m)', 'Estimated max diameter (m)'], 
+                palette)), ax=ax)
+    ax.axhline(dm_min, ls='--', color=palette[0], 
+            label=f'Didymos min: {dm_min:.2f}')
+    ax.axhline(dm_max, ls='--', color=palette[1], 
+            label=f'Didymos max: {dm_max:.2f}')
+    ax.set_title('PHO Estimated Diameters/Day vs. Didymos')
     ax.set_xlabel('Date (Close Approach)')
     ax.set_ylabel('Estimated diameter (m)')
     ax.legend()
