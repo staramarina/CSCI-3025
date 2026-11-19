@@ -4,7 +4,7 @@
 # Purpose: NASA NeoWs Exploration
 # Dependencies: 
 #   Standard: sys, os, pathlib, copy, datetime
-#   External: dotenv, requests, pandas
+#   External: dotenv, requests, pandas, matplotlib, seaborn
 #   Custom: Mui_NeoWsHandle.py, Mui_Logging.py, 
 #           Mui_Ancillary.py, Mui_Analysis.py
 
@@ -17,7 +17,7 @@ import Mui_NeoWsHandle as neows
 
 
 if __name__ == "__main__":
-    # NeoWs Feed Endpoint Exploration
+    # NeoWs Feed Endpoint Data Generation and Cleanup
     err_log = 'Mui_M8_Log.txt'
     timeout = 10
     print('\nLet\'s explore Near-Earth Objects!')
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     feed_trim_data = neows.trim_common_data(feed_all_data)
     feed_data_clean = neows.clean_common_data(feed_trim_data)
 
-    # Didymos Analysis
+    # Didymos Data Generation and Cleanup
     didymos_spk_id = '2065803'
     lookup_url = neows.build_lookup_url(api_key, didymos_spk_id)
     print(lookup_url) # TODO test line, remove later
@@ -41,6 +41,10 @@ if __name__ == "__main__":
     lookup_trim_data_s = neows.trim_lookup_data(lookup_trim_data_c)
     lookup_data_c_clean = neows.clean_common_data(lookup_trim_data_s)
     lookup_data_clean = neows.clean_lookup_data(lookup_data_c_clean)
+
+    # Analysis and Chart Generation TODO
+
+    # Save Charts TODO
     
     # Temporary Data Dump for Testing
     with open('temp_dump.txt', "a") as f: # TODO: Test line, remove later
