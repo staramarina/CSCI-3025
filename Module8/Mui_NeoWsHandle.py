@@ -40,6 +40,7 @@ def build_feed_url(api_key, start, end, err_log='log.txt'):
         api_key: The API key that was returned from load_env()
         start: Start date in format YYYY-MM-DD
         end: End date in format YYYY-MM-DD
+        err_log: file path to print error logs to
     
     Returns:
         url: The URL used to query for asteroids based on closest approach date
