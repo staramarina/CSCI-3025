@@ -125,6 +125,32 @@ def lun_miss_trim(data):
 
 
 # TODO: function to generate bar/whisker chart with average lines
+def lun_miss_chart(data):
+    """Generates box-and-whisker chart of lunar miss distance per day
+    
+    Args:
+        data: feed pandas dataframe with values in expected formats 
+              (from clean_common_data)
+    
+    Returns:
+        chart: a 2-tuple with the following format
+            [0]: matplotlib figure
+            [1]: matplotlib axes
+    """
+    trim = lun_miss_trim(data)
+    day = sorted(trim['date'].unique())
+    mean_all = trim['d_miss'].mean()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.boxplot(data=trim, x='date', y='d_miss', order=day, ax=ax)
+    ax.axhline(mean_all, ls='--', label=f'Overall mean: {mean_all}:.2f lunar')
+    ax.set_title('Miss Distance (Lunary) per Day (Close Approach)')
+    ax.set_xlabel('Date (Close Approach)')
+    ax.set_ylabel('Miss Distance (Lunar)')
+    ax.legend()
+    plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
+    fig.tight_layout()
+    chart = (fig, ax)
+    return chart
 
 
 # Third analysis: Compare min/max diameter of all PHOs, compare against Didymos
