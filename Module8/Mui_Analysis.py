@@ -245,6 +245,7 @@ def didymos_orbit_chart(data):
             [0]: matplotlib figure
             [1]: matplotlib axes
     """
+    dart_impact = 2022 + (269/365)
     trim = didymos_orbit_trim(data)
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.lineplot(
@@ -253,6 +254,8 @@ def didymos_orbit_chart(data):
         style='orbiting_body', markers=['s', 'o'],
         markersize=8, dashes=False, estimator=None, ax=ax
     )
+    ax.axvline(dart_impact, ls='-.', color='grey',
+            label='DART Impact (26 Sep 2022)')
     ax.xaxis.set_major_locator(mplticker.MaxNLocator(integer=True))
     ax.set_title('Didymos Miss Distance (Lunar) by Flyby Body')
     ax.set_xlabel('Year (Close Approach)')
