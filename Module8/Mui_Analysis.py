@@ -37,7 +37,7 @@ def neo_pho_trim(data):
             'is_potentially_hazardous_asteroid': 'pho_status'}, inplace=True)
     trim = trim.dropna()
     trim = trim.sort_values(by='date')
-    trim['date'] = pd.to_date(trim['date']).dt.date
+    trim['date'] = pd.to_datetime(trim['date']).dt.date
     trim['pho_status'] = trim['pho_status'].map(pho_map)
     return trim
 
@@ -87,10 +87,10 @@ def neo_pho_chart(data):
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.countplot(data=trim, x = 'date', hue = 'pho_status', hue_order=['PHO',
             'Not PHO'], order=day, palette=palette, ax=ax)
-    ax.axhline(avg[1], ls='--', color=palette[0], 
-            label=f'Mean non-PHO/day: {avg[1]:.2f}')
-    ax.axline(avg[0], ls=':', color=palette[1],
-            label=f'Mean PHO/day: {avg[0]:.2f}')
+    ax.axhline(avg[0], ls='--', color=palette[1], 
+            label=f'Mean non-PHO/day: {avg[0]:.2f}')
+    ax.axhline(avg[1], ls=':', color=palette[0],
+            label=f'Mean PHO/day: {avg[1]:.2f}')
     ax.set_title('Near-Earth Objects per Day (Close Approach)')
     ax.set_xlabel('Date (Close Approach)')
     ax.set_ylabel('Number of NEOs')
@@ -120,7 +120,7 @@ def lun_miss_trim(data):
             'miss_distance_lunar': 'd_miss'}, inplace=True)
     trim = trim.dropna()
     trim = trim.sort_values(by='date')
-    trim['date'] = pd.to_date(trim['date']).dt.date
+    trim['date'] = pd.to_datetime(trim['date']).dt.date
     return trim
 
 
@@ -141,8 +141,8 @@ def lun_miss_chart(data):
     mean_all = trim['d_miss'].mean()
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.boxplot(data=trim, x='date', y='d_miss', order=day, ax=ax)
-    ax.axhline(mean_all, ls='--', label=f'Overall mean: {mean_all}:.2f lunar')
-    ax.set_title('Miss Distance (Lunary) per Day (Close Approach)')
+    ax.axhline(mean_all, ls='--', label=f'Overall mean: {mean_all:.2f} lunar')
+    ax.set_title('Miss Distance (Lunar) per Day (Close Approach)')
     ax.set_xlabel('Date (Close Approach)')
     ax.set_ylabel('Miss Distance (Lunar)')
     ax.legend()
@@ -199,8 +199,8 @@ def pho_size_chart(data, didymos_data):
     sns.boxplot(data=trim, x='diameter', y='diameter_m',
             order=['Estimated min diameter (m)', 'Estimated max diameter (m)'],
             ax=ax)
-    ax.axhline(dm_min, ls='--', label=f'Didymos min: {dm_min}:.2f')
-    ax.axhline(dm_max, ls='--', label=f'Didymos max: {dm_max}:.2f')
+    ax.axhline(dm_min, ls='--', label=f'Didymos min: {dm_min:.2f}')
+    ax.axhline(dm_max, ls='--', label=f'Didymos max: {dm_max:.2f}')
     ax.set_title('PHO Estimated Diameters vs. Didymos')
     ax.set_xlabel('')
     ax.set_ylabel('Estimated diameter (m)')
