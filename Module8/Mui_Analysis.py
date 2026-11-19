@@ -11,6 +11,7 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mplticker
 
 
 # First analysis: PHO vs. non-PHO per day, with comparing averages
@@ -216,8 +217,8 @@ def didymos_orbit_trim(data):
     """Trims data for analysis and plotting of Didymos orbiting patterns
     
     Args: 
-        data: feed pandas dataframe with values in expected formats 
-              (from clean_lookup_data)
+        data: lookup pandas dataframe for Didymos with values in expected 
+              formats (from clean_lookup_data)
     
     Returns:
         trim: trimmed dataframe with only close_approach_date_full, 
@@ -230,6 +231,7 @@ def didymos_orbit_trim(data):
     ].copy()
     trim = trim.dropna()
     trim = trim.sort_values(by='close_approach_date_full')
+    trim['year'] = pd.to_datetime(trim['close_approach_date_full']).dt.year
     return trim
 
 
@@ -248,10 +250,11 @@ def didymos_orbit_chart(data):
     trim = didymos_orbit_trim(data)
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.scatterplot(
-        data=trim, x='close_approach_date_full', 
+        data=trim, x='year', 
         y='miss_distance_lunar', hue='orbiting_body',
         style='orbiting_body', s=60, ax=ax
     )
+    ax.xaxis.set_major_locator(mplticker.MaxNLocator(integer=True))
     ax.set_title('Didymos Miss Distance (Lunar) by Flyby Body')
     ax.set_xlabel('Date (Close Approach)')
     ax.set_ylabel('Miss Distance (Lunar)')
