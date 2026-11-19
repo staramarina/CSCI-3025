@@ -154,7 +154,7 @@ def lun_miss_chart(data):
 # Third analysis: Compare min/max diameter of all PHOs, compare against Didymos
 def pho_size_trim(data):
     """Trims data for analysis and plotting of min/max diameter of PHO 
-    with comparison against Didymos
+    per day with comparison against Didymos
     
     Args:
         data: feed pandas dataframe with values in expected formats 
@@ -165,14 +165,24 @@ def pho_size_trim(data):
               diameter columns of only PHOs with missing values removed
     """
     mask = data['is_potentially_hazardous_asteroid'].eq(True).fillna(False)
-    pho = data.loc[mask, ['meters_estimated_diameter_min', 
-            'meters_estimated_diameter_max']].dropna()
-    trim = pho.melt(var_name='diameter', value_name='diameter_m')
-    label_map = {
-        'meters_estimated_diameter_min': 'Estimated min diameter (m)',
-        'meters_estimated_diameter_max': 'Estimated max diameter (m)'
-    }
-    trim['diameter'] = trim['diameter'].replace(label_map)
+    trim = data.loc[mask, [ 'close_approach_date_full', 
+            'meters_estimated_diameter_min', 
+            'meters_estimated_diameter_max']].copy()
+    trim.rename(columns={
+        'close_approach_date_full': 'date',
+        'meters_estimated_diameter_min': 'min_diameter',
+        'meters_estimated_diameter_max': 'max_diameter'
+    }, inplace=True)
+    trim = trim.dropna()
+    trim = trim.sort_values(by='date')
+    trim['date'] = pd.to_datetime(trim['date']).dt.date
+    trim = (trim.groupby('date')[['min_diameter', 'max_diameter']]
+            .mean().rename(columns={
+                'min_diameter': 'Estimated min diameter (m)',
+                'max_diameter': 'Estimated max diameter (m)'
+            }))
+    trim = trim.reset_index().melt(id_vars = 'date',
+            var_name = 'diameter', value_name = 'diameter_m')
     return trim
 
 
@@ -195,13 +205,13 @@ def pho_size_chart(data, didymos_data):
     dm_min = float(didymos_data['meters_estimated_diameter_min'].iloc[0])
     dm_max = float(didymos_data['meters_estimated_diameter_max'].iloc[0])
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(data=trim, x='diameter', y='diameter_m',
+    sns.boxplot(data=trim, x='date', y='diameter_m', hue = 'diameter',
             order=['Estimated min diameter (m)', 'Estimated max diameter (m)'],
             ax=ax)
     ax.axhline(dm_min, ls='--', label=f'Didymos min: {dm_min:.2f}')
     ax.axhline(dm_max, ls='--', label=f'Didymos max: {dm_max:.2f}')
     ax.set_title('PHO Estimated Diameters vs. Didymos')
-    ax.set_xlabel('')
+    ax.set_xlabel('Date (Close Approach)')
     ax.set_ylabel('Estimated diameter (m)')
     ax.legend()
     ax.set_yscale('log') # TODO may not need this, check display
