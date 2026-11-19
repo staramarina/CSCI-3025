@@ -128,11 +128,14 @@ TODO
     - Estimated Minimum: 2.31
     - Development Environment: 2.34.2
 - pandas for handling large data formatting and analysis
-    - Estimated Minimum: 1.1
+    - Estimated Minimum: 2.0
     - Development Environment: 3.1.1
 - seaborn for creating graphs
-    - Estimated Minimum: TODO
+    - Estimated Minimum: 0.13
     - Development Environment: 0.13.2
+- matplotlib for handling graph input
+    - Estimated Minimum: 3.7
+    - Development Environment: 3.11.2
 
 ### Analysis Module (Mui_Analysis.py)
 | Function | Purpose | Return |
