@@ -205,7 +205,7 @@ def lookup_df():
 
 
 def make_feed_response(data=None, json_err=None, http_err=None):
-    """Returns a mock response object for requests
+    """Returns a mock response object for requests on the feed endpoint
 
     Args:
         data: Mock data that would be received from the API
@@ -230,7 +230,7 @@ def make_feed_response(data=None, json_err=None, http_err=None):
 
 
 def make_lookup_response(data=None, json_err=None, http_err=None):
-    """Returns a mock response object for requests
+    """Returns a mock response object for requests on the lookup endpoint
 
     Args:
         data: Mock data that would be received from the API
