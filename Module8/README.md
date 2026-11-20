@@ -394,4 +394,8 @@ Author: Tiffany M. Mui
 Institution: State University of New York: Empire State University  
 Course: CSCI-3025 - Python Programming  
 Instructor: Dr. Sahand Ziabari  
-Date: XX Nov 2026  
+Date: 20 Nov 2026  
+
+### Tools & AI Use Disclosure
+- Black 26.10.1 was utilized to ensure PEP8 compliance. All changes were manually reviewed and approved/disapproved as appropriate. 
+- Lumo 2.0 was utilized for syntax and troubleshooting assistance (e.g. "What is the correct pandas syntax to convert string to datetime at the column level?"). Suggestions used were at the individual line level only. Code generation, control flow, module separation, etc. remained under the purview of the author (i.e. at no point were wholesale copy/paste of generated code inserted into this assignment).
