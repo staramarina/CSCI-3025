@@ -126,16 +126,12 @@ Charts are located in the charts folder.
 
 ### Generated Charts
 
-#### PHO vs. non-PHO per Day with Average Statistics
 ![chart of PHO vs. non-PHO per Day with Average Statistics](charts/neo_chart.png)
 
-#### Miss distance per Day with Average Statistics
 ![chart of Miss distance per Day with Average Statistics](charts/lun_chart.png)
 
-#### PHO Minimum and Maximum Diameter per Day with Didymos Comparison Points
 ![chart of PHO Minimum and Maximum Diameter per Day with Didymos Comparison Points](charts/pho_chart.png)
 
-#### Didymos Orbiting Patterns for Earth and Mars with Comparison against DART Impact
 ![chart of Didymos Orbiting Patterns for Earth and Mars with Comparison against DART Impact](charts/didymos_chart.png)
 
 ## Project Structure
