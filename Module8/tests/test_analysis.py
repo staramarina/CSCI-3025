@@ -7,7 +7,7 @@
 
 import sys
 from pathlib import Path
-from datetime import date, datetime
+from datetime import date
 import pytest
 import pandas as pd
 import matplotlib
@@ -176,7 +176,7 @@ class TestNeoPhoTrim:
     """Class to test the neo_pho_trim function"""
 
 
-    def test_col_rename(self, feed_data):
+    def test_neo_rename(self, feed_data):
         """Tests that columns are renamed to date and pho_status"""
         data = analysis.neo_pho_trim(feed_data)
         assert 'date' in data.columns
@@ -191,10 +191,11 @@ class TestNeoPhoTrim:
         assert 'pho_status' not in feed_data.columns
 
 
-    def test_miss_drop(self, feed_data):
+    def test_neo_drop(self, feed_data):
         """Tests that rows with missing values are dropped"""
         data = analysis.neo_pho_trim(feed_data)
         assert 8 == len(data)
+        assert not data.isna().any().any()
 
 
     def test_pho_map(self, feed_data):
@@ -204,7 +205,7 @@ class TestNeoPhoTrim:
         assert {'PHO', 'Not PHO'} == status
 
 
-    def test_date_sort(self, feed_data):
+    def test_neo_sort(self, feed_data):
         """Tests that dates are date objects and sorted"""
         data = analysis.neo_pho_trim(feed_data)
         dates = list(data['date'])
@@ -286,8 +287,33 @@ class TestNeoPhoChart:
         assert f'{exp_pho_avg:.2f}' in pho[0]
 
 
-#class LunMissTrim:
+class LunMissTrim:
     """Class to test the lun_miss_trim function"""
+
+
+    def test_lun_rename(self, feed_data):
+        """Tests that columns are renamed to date and pho_status"""
+        data = analysis.lun_miss_trim(feed_data)
+        assert 'date' in data.columns
+        assert 'd_miss' in data.columns
+        assert 'close_approach_date_full' not in data.columns
+
+
+    def test_lun_drop(self, feed_data):
+        """Tests that rows with missing values are dropped"""
+        data = analysis.lun_miss_trim(feed_data)
+        assert 8 == len(data)
+        assert not data.isna().any().any()
+
+
+    def test_lun_sort(self, feed_data):
+        """Tests that dates are date objects and sorted"""
+        data = analysis.lun_miss_trim(feed_data)
+        dates = list(data['date'])
+        assert isinstance(data['date'].iloc[0], date)
+        assert dates == sorted(dates)
+
+
 #class LunMissChart:
     """Class to test the lun_miss_chart function"""
 #class PhoSizeTrim:
