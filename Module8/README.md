@@ -229,9 +229,9 @@ Note: This module is largely unchanged from Module 7, included again here for co
 ## Testing
 
 ### Manual Testing
-All testing with NASA's NeoWs API was conducted manually to prevent excessive calls to the API. Manual testing included verifying that the API was successfully pulled from environment variables file, the call URL was built correctly, the raw data was successfully received, and the data was successfully inserted into pandas dataframes. A full end-to-end manual test was conducted with various user input to include no input. 
+All testing with NASA's NeoWs API was conducted manually to prevent excessive calls to the API. Manual testing included verifying that the API was successfully pulled from environment variables file, the call URL was built correctly, the raw data was successfully received, and the data was successfully inserted into pandas dataframes. A full end-to-end manual test was conducted and chart generation was inspected. 
 
-Data output was visually inspected within a file using the following code within the main program to dump the data to a text file. 
+Data output was visually inspected within a file using the following code within the main program to dump the data to a text file. This code only existed for testing purposes and was removed after completion.
 ```
    with open('exampledata/test_dump.txt', "a") as f:
         f.write(feed_data_clean.to_string(header=True, index=True)) # dumps data from feed endpoint
@@ -240,21 +240,154 @@ Data output was visually inspected within a file using the following code within
 ```
 
 ### Automated Testing
-Automated testing was conducted with pytest. All API calls are mocked instead of calling the real API, thus all tests can be run with a dummy API key. To run the test, enter the following from within the Module8 directory.
+Automated testing was conducted with pytest. All API calls are mocked instead of calling the real API, thus all tests can be run with a dummy API key, provided it exists within an environment variables file. Note: the logging module (Mui_Logging.py) was copied from Module7 and the only changes include generalizing variable naming and contents within print statement. Thus, it was deemed that there is no need to retest the module.
+
+To run all tests, enter the following from within the Module8 directory.
 ```
 python -m pytest
 ```
+
+#### Analysis Module Tests (test_analysis.py)
+
+##### Testing Fixtures, Variables, and Functions
+| Type | Name | Purpose |
+| ----- | ------ | ------ |
+| Helper Function | make_common_row(neo_id, date, pho, d_lunar, d_min, d_max, orbit="Earth") | Builds a row that mimicks the output of clean_common_data |
+| Global Variable | FEED_DATA | Simulates the output data of clean_common_data using real feed endpoint data |
+| Global Variable | ORBIT_DATA | Simulates the output data of clean_lookup_data using real lookup endpoint data |
+| Global Variable | DIDYMOS_MIN | Didymous minimum estimated diameter |
+| Global Variable | DIDYMOS_MAX | Didymous maximum estimated diameter |
+| Fixture Function | feed_data() | Returns a pandas dataframe mimicking clean feed data |
+| Fixture Function | orbit_data() | Returns a pandas dataframe mimicking clean Didymos data |
+| Fixture Function | didymos_diameter() | returns a single-row pandas dataframe for Didymos diameter data |
+| Fixture Function | close_plot() | Closes charts after each test |
+| Helper Function | hline_label(ax) | Collects labels of reference lines |
+
+##### Testing Classes & Methods
+| Class | Method | Purpose |
+| ----- | ------ | ------ |
+| TestNeoPhoTrim |  | Class to test the neo_pho_trim function |
+|  | test_neo_rename(self, feed_data) | Tests that columns are renamed to date and pho_status |
+|  | test_neo_orig_change(self, feed_data) | Tests that the original dataframe is unchanged |
+|  | test_neo_drop(self, feed_data) | Tests that rows with missing values are dropped |
+|  | test_pho_map(self, feed_data) | Tests that PHO boolean is mapped to labels |
+|  | test_neo_sort(self, feed_data) | Tests that dates are date objects and sorted |
+| TestNeoAvgCalc |  | Class to test the neo_avg_calc function |
+|  | test_avg_value(self, feed_data) | Tests that average is calculated correctly |
+|  | test_zero_day(self) | Tests that days with no PHOs still count toward average |
+| TestNeoPhoChart |  | Class to test the neo_pho_chart function |
+|  | test_neo_return_fig(self, feed_data) | Tests that both figure and axes is returned |
+|  | test_neo_label(self, feed_data) | Tests that chart title and axis label are correct |
+|  | test_neo_avg_label(self, feed_data) | Tests that both average lines are labeled |
+| TestLunMissTrim |  | Class to test the lun_miss_trim function |
+|  | test_lun_rename(self, feed_data) | Tests that columns are renamed to date and d_miss |
+|  | test_lun_orig_change(self, feed_data) | Tests that the original dataframe is unchanged |
+|  | test_lun_drop(self, feed_data) | Tests that rows with missing values are dropped |
+|  | test_lun_sort(self, feed_data) | Tests that dates are date objects and sorted |
+| TestLunMissChart |  | Class to test the lun_miss_chart function |
+|  | test_lun_return_fig(self, feed_data) | Tests that both figure and axes is returned |
+|  | test_lun_label(self, feed_data) | Tests that chart title and axis label are correct |
+|  | test_lun_avg_label(self, feed_data) | Tests that both average lines are labeled |
+| TestPhoSizeTrim |  | Class to test the pho_size_trim function |
+|  | test_pho_orig_change(self, feed_data) | Tests that the original dataframe is unchanged |
+|  | test_pho_drop(self, feed_data) | Tests that rows with missing values are dropped |
+|  | test_pho_avg(self, feed_data) | Tests that min and max diameters are averaged per day |
+|  | test_pho_long(self, feed_data) | Tests that output is melted to long format |
+|  | test_no_pho(self, feed_data) | Tests the case when no PHOs are in the data |
+| TestPhoSizeChart |  | Class to test the pho_size_chart function |
+|  | test_pho_return_fig(self, feed_data, didymos_diameter) | Tests that both figure and axes is returned |
+|  | test_pho_label(self, feed_data, didymos_diameter) | Tests that chart title and axis label are correct |
+|  | test_pho_did_label(self, feed_data, didymos_diameter) | Tests that both average lines are labeled |
+| TestDidymosOrbitTrim |  | Class to test the didymos_orbit_trim function |
+|  | test_did_drop(self, orbit_data) | Tests that rows with missing values are dropped |
+|  | test_did_sort(self, orbit_data) | Tests that close_approach_date_full converts to year |
+| TestDidymosOrbitChart |  | Class to test the didymos_orbit_chart function |
+|  | test_did_return_fig(self, orbit_data) | Tests that both figure and axes is returned |
+|  | test_did_label(self, orbit_data) | Tests that chart title and axis label are correct |
+|  | test_dart_line(self, orbit_data) | Tests that DART impact line is labeled |
+|  | test_did_legend(self, orbit_data) | Tests that both Earth and Mars are in the legend |
+
+#### Ancillary Module Tests (test_ancillary.py)
+
+##### Testing Fixtures, Variables, and Functions
+| Type | Name | Purpose |
+| ----- | ------ | ------ |
+| Helper Function | make_chart() | Returns simple matplotlib (figure, axes) for chart_save tests |
+| Fixture Function | close_plot() | Closes charts after each test |
+
+##### Testing Classes & Methods
+| Class | Method | Purpose |
+| ----- | ------ | ------ |
+| TestDateCheck |  | Class to test the dtg_check function |
+|  | test_dtg_success(self) | Tests that a datetime object is returned when successful |
+|  | test_no_input(self) | Tests that no input returns an error and does not crash |
+|  | test_wrong_type(self) | Tests the case of wrong input type |
+|  | test_not_date(self) | Tests the case when the date does not exist |
+| TestChartSave |  | Class to test the chart_save function |
+|  | test_save_success(self, tmp_path) | Tests that a chart was saved successfully |
+|  | test_custom_dpi(self, tmp_path) | Tests that a custom dpi is accepted |
+|  | test_bad_path(self, tmp_path) | Tests that nonexistent directory returns error |
+|  | test_miss_ext(self, tmp_path) | Tests that a file name with missing extension save as .png |
 
 #### NeoWs Handle Module Tests (test_neows.py)
 
 ##### Testing Fixtures, Variables, and Functions
 | Type | Name | Purpose |
 | ----- | ------ | ------ |
-TODO
+| Helper Function | make_cad(date, d_lun, v_kms) | Builds sample close_approach_data |
+| Helper Function | make_neo(neo_id, name, cad_ls) | Builds a sample Near-Earth Object entry |
+| Global Variable | FEED_JSON | Trimmed down version of real data obtained from the feed endpoint |
+| Global Variable | LOOKUP_JSON | Trimmed down version of real data obtained from the lookup endpoint |
+| Global Variable | SAMPLE_URL | Truncated version of the real API URL (does not work for true calls) |
+| Fixture Function | feed_df() | Returns a dataframe of FEED_JSON |
+| Fixture Function | lookup_df() | Returns a dataframe of LOOKUP_JSON |
+| Helper Function | make_feed_response(data=None, json_err=None, http_err=None) | Returns a mock response object for requests on the feed endpoint |
+| Helper Function | make_lookup_response(data=None, json_err=None, http_err=None) | Returns a mock response object for requests on the lookup endpoint |
 
 ##### Testing Classes & Methods
 | Class | Method | Purpose |
 | ----- | ------ | ------ |
+| TestEnvURL |  | Class to test pulling the API key and building the query URLs |
+|  | test_pull_key(self) | Tests pulling the API key from the env file |
+|  | test_feed_url_good(self) | Tests the successful path of build_feed_url |
+|  | test_feed_bad_date(self, tmp_path) | Tests the bad end date path of build_feed_url |
+|  | test_lookup_url(self) | Tests that build_lookup_url is successful |
+| TestNeoWsSuccess |  | Class to test the successful path in neows_call function |
+|  | test_feed_return(self, mock_get) | Tests that a mock call to feed endpoint returns mock feed data |
+|  | test_lookup_return(self, mock_get) | Tests that a mock call to feed endpoint returns mock feed data |
+|  | test_timeout_default(self, mock_get) | Tests that the timeout is the default if not specified |
+|  | test_timeout_specified(self, mock_get) | Tests that the specified timeout is used when given |
+| TestNeoWsTimeout |  | Class to test the timeout path in neows_call function |
+|  | test_timeout_return(self, mock_get, tmp_path) | Tests that a timeout causes exit with code 1 |
+|  | test_timeout_print(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that a timeout is logged and printed error points to logs |
+| TestNeoWsHTTP |  | Class to test the HTTP error path in neows_call function |
+|  | test_http_none(self, mock_get, tmp_path) | Tests that an HTTP error causes exit with code 1 |
+|  | test_http_error(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that HTTP error is logged and printed error points to logs |
+| TestNeoWsRequest |  | Class to test the request exception path in neows_call function |
+|  | test_connect_none(self, mock_get, mock_log, tmp_path) | Tests that a connection failure causes exit with code 1 |
+|  | test_req_err(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that request error is logged and reported |
+| TestNeoWsJSON |  | Class to test the value error path in neows_call function |
+|  | test_json_none(self, mock_get, tmp_path) | Tests that bad JSON data causes exit with code 1 |
+|  | test_json_err(self, mock_get, mock_print_log, capsys, tmp_path) | Tests that bad JSON data error is logged and reported |
+| TestBuildDataframe |  | Class to test the build_dataframe function |
+|  | test_cad_exploded(self, feed_df) | Test that the cad data exploded results in correct row count |
+|  | test_dict_remain(self, feed_df) | Tests that no unflattened dictionaries are present |
+|  | test_nested_columns(self, feed_df) | Tests that all nested columns are flattened |
+|  | test_lookup_build(self, lookup_df) | Tests that lookup specific rows are included when present |
+|  | test_empty_cad(self) | Tests the case when there is no close approach data (edge case) |
+| TestTrimData |  | Class to test data trimming functions |
+|  | test_common_remove(self, feed_df) | Tests that intended common columns are removed |
+|  | test_common_keep(self, feed_df) | Tests that intended common columns are kept |
+|  | test_missing_column(self, feed_df) | Tests that missing column error is masked |
+|  | test_lookup_remove(self, lookup_df) | Tests that intended specific lookup columns are removed |
+|  | test_lookup_keep(self, lookup_df) | Tests that intended specific lookup columns are kept |
+| TestCleanData |  | Class to test data cleaning functions |
+|  | test_num_convert(self, feed_df) | Tests that numbers in common columns are successfully converted |
+|  | test_dtg_convert(self, feed_df) | Tests that date time groups in common columns are converted |
+|  | test_bool_map(self, feed_df) | Tests that PHO bool is successfully mapped and converted |
+|  | test_duplicates(self) | Tests that duplicate rows are removed |
+|  | test_orbit_num(self, lookup_df) | Tests that lookup orbital data is converted to numbers |
+|  | test_unique_cad(self, lookup_df) | Tests that unique cad for same ID is kept |
 
 ## Author & Credits
 Author: Tiffany M. Mui  
