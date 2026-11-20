@@ -20,13 +20,21 @@ Development Environment: Python 3.14.4
 ## Overview
 The NeoWs analysis was created for State University of New York (SUNY): Empire State University (ESU), CSCI-3025: Python Programming course as the Module 8 assignment.
 
-The Neows analysis: 
-- TODO: describe flow of main program
+The NeoWs analysis: 
+- Pulls JSON data from the feed and lookup endpoints of NASA's NeoWs API.
+- Loads JSON data into pandas dataframes
+- Trims superfluous data
+- Cleans data to ensure that missing values are consistently marked and converts from strings to expected datatypes (e.g. float, int, datetime)
+- Copies the dataframe and performs analysis objective trimming (e.g. all unused columns are removed) - this is done per analysis (in the analysis module) and leaves the original data alone
+- Performs statistical calculations based on analysis objective - this is done per analysis (in the analysis module)
+- Generates charts using matplotlib and seaborn - this is done per analysis (in the analysis module)
+- Saves charts to a separate charts folder for clean directories
 
 Ground work for the following features is included, but not fully implemented:
 - NeoWs lookup endpoint is fully fleshed out, but main program hard-codes Didymos for this specific analysis
+- NeoWs feed endpoint is fully fleshed out, but main program hard-codes analysis dates for consistent analysis
 - General API handling with data trimming/cleanup is performed separately than the analysis trimming/cleanup
-    - Allows reuse of NeoWs Handle module for other analysis objectives, simply replace the Analysis module
+    - Allows reuse of NeoWs Handle module for other analysis objectives, simply replace the Analysis module and place calls in the main program for it.
     - Trimmed common columns in NeoWs Handle module were conducted for security related (exposing API key), conversions (miles, kilometers), or near duplicate data (close approach date vs. close approach date full)
     - Trimmed lookup data in NeoWs Handle was done for brevity, but ensured enough data points to fully plot the orbit
 
@@ -37,6 +45,7 @@ Ground work for the following features is included, but not fully implemented:
 - Reusable logging module that is file/path agnostic
 - All errors are logged with a datetime object
 - Reusable ancillary module for general purpose helper and data checking functions
+- Analysis agnostic NASA NeoWs API handling module
 
 ## Installation
 
