@@ -354,7 +354,7 @@ class TestNeoWsTimeout:
         assert isinstance(args[0], requests.exceptions.Timeout)
         assert str(log_file) == args[1]
         captured = capsys.readouterr()
-        assert "An error occurred with the API" in captured.out
+        assert "An error has occurred" in captured.out
         assert "See" in captured.out
         assert str(log_file) in captured.out
 
@@ -390,7 +390,7 @@ class TestNeoWsHTTP:
         assert isinstance(args[0], requests.exceptions.HTTPError)
         assert str(log_file) == args[1]
         captured = capsys.readouterr()
-        assert "An error occurred with the API" in captured.out
+        assert "An error has occurred" in captured.out
         assert "See" in captured.out
         assert str(log_file) in captured.out
 
@@ -424,7 +424,7 @@ class TestNeoWsRequest:
             neows.neows_call(SAMPLE_URL, err_log=str(log_file))
         mock_print_log.assert_called_once()
         captured = capsys.readouterr()
-        assert "An error occurred with the API" in captured.out
+        assert "An error has occurred" in captured.out
         assert "See" in captured.out
         assert str(log_file) in captured.out
 
@@ -454,7 +454,7 @@ class TestNeoWsJSON:
             neows.neows_call(SAMPLE_URL, err_log=str(log_file))
         mock_print_log.assert_called_once()
         captured = capsys.readouterr()
-        assert "An error occurred with the API" in captured.out
+        assert "An error has occurred" in captured.out
         assert "See" in captured.out
         assert str(log_file) in captured.out
 
