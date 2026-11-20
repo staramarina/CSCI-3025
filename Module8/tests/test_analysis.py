@@ -184,7 +184,7 @@ class TestNeoPhoTrim:
         assert 'close_approach_date_full' not in data.columns
 
 
-    def test_orig_change(self, feed_data):
+    def test_neo_orig_change(self, feed_data):
         """Tests that the original dataframe is unchanged"""
         analysis.neo_pho_trim(feed_data)
         assert 'close_approach_date_full' in feed_data.columns
@@ -297,6 +297,13 @@ class TestLunMissTrim:
         assert 'date' in data.columns
         assert 'd_miss' in data.columns
         assert 'close_approach_date_full' not in data.columns
+
+
+    def test_lun_orig_change(self, feed_data):
+        """Tests that the original dataframe is unchanged"""
+        analysis.lun_miss_trim(feed_data)
+        assert 'close_approach_date_full' in feed_data.columns
+        assert 'd_miss' not in feed_data.columns
 
 
     def test_lun_drop(self, feed_data):
