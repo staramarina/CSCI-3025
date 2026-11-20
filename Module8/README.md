@@ -189,23 +189,42 @@ Charts are located in the charts folder.
 ### Analysis Module (Mui_Analysis.py)
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
-TODO
+| neo_pho_trim(data) | Trims data for analysis and plotting of PHO vs. non-PHO per day with comparing averages | trimmed dataframe with only close_approach_date_full and is_potentially_hazardous_asteroid values, with missing values removed |
+| neo_avg_calc(trim) | Calculates average PHO statistics | A 3-tuple of the format (average non-PHO, average PHO, average NEO)|
+| neo_pho_chart(data) | Generates a clustered column chart of PHO/non-PHO per day with average comparison lines | A 2-tuple of the format (matplotlib figure, matplotlib axes) |
+| lun_miss_trim(data) | Trims data for analysis and plotting of lunar miss distance per day with comparing averages | trimmed dataframe with only close_approach_date_full and miss_distance_lunar values, with missing values removed |
+| lun_miss_chart(data) | Generates box-and-whisker chart of lunar miss distance per day | A 2-tuple of the format (matplotlib figure, matplotlib axes) |
+| pho_size_trim(data) | Trims data for analysis and plotting of min/max diameter of PHO per day with comparison against Didymos | long format trimmed dataframe with min/max and estimated diameter columns of only PHOs with missing values removed |
+| pho_size_chart(data, didymos_data) | Generates bar chart of diameters of all PHOs per day, with comparison against Didymos | A 2-tuple of the format (matplotlib figure, matplotlib axes) |
+| didymos_orbit_trim(data) | Trims data for analysis and plotting of Didymos orbiting patterns | trimmed dataframe with only close_approach_date_full, miss_distance_lunar, and orbiting_body values, with missing values removed |
+| didymos_orbit_chart(data) | Generates a line plot of Didymos miss distance by flyby body | A 2-tuple of the format (matplotlib figure, matplotlib axes) |
 
 ### Ancillary Module (Mui_Ancillary.py)
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
-TODO
+| dtg_check(date_str, format_str) | Determines whether a string can be converted to a datetime object | (True, datetime object) if successful, otherwise (False, error message) |
+| chart_save(chart, file_name, dpi=150) | Saves a chart as an image file | A 2-tuple with True/False success flag and additional information |
 
 ### Logging Module (Mui_Logging.py)
 Note: This module is largely unchanged from Module 7, included again here for completness.
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
-TODO
+| can_write_file(file_name) | Checks if a file can be appended | (bool, str) - success flag, message (duplicated from Module5) |
+| print_log(data, file_name) | Prints log entries to an existing file (will create if not present) | (bool, str) - success flag, message (duplicated from Module7) |
+| err_handle(err_msg, err_log='log.txt') | Handles various errors, prints console message and calls print_log | None (console output) (heavy reuse from Module7) |
 
 ### NeoWs Handle Module (Mui_NeoWsHandle.py)
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
-TODO
+| load_env() | Loads API configuration from environment variables file | The API key stored as environment variable (reused from Module7) |
+| build_feed_url(api_key, start, end, err_log="log.txt") | Builds the Neo-Feed query URL | The URL used to query for asteroids based on closest approach date |
+| build_lookup_url | Builds the Neo-Lookup query URL | The URL used to query for specific asteroid data |
+| neows_call(url, timeout=10, err_log="log.txt") | Calls the NASA NeoWs API | JSON data from the NASA NeoWs API (exits with error and logs) |
+| build_dataframe(json_data) | Builds pandas dataframe from nested JSON data | pandas dataframe with close approach and nested dicts flattened |
+| trim_common_data(data) | Removes unused columns from feed or lookup dataframe | trimmed feed/lookup data with unused columns removed |
+| trim_lookup_data(data) | Removes unused columns that only appear in the lookup dataframe | trimmed lookup data with unused columns removed |
+| clean_common_data(data_raw) | Handles common missing or malformed data within a dataframe | feed/lookup data with values in expected formats |
+| clean_lookup_data(data_raw) | Handles lookup specific missing or malformed data within a dataframe | lookup data with values in expected formats |
 
 ## Testing
 
