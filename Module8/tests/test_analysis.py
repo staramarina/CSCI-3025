@@ -150,7 +150,7 @@ def didymos_diameter():
     return diameter
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def close_plot():
     """Closes charts after each test"""
     yield
