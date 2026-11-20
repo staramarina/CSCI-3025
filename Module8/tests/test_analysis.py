@@ -413,8 +413,42 @@ class TestPhoSizeTrim:
             assert col in data.columns
 
 
-#class TestPhoSizeChart:
+class TestPhoSizeChart:
     """Class to test the pho_size_chart function"""
+
+
+    def test_pho_return_fig(self, feed_data, didymos_diameter):
+        """Tests that both figure and axes is returned"""
+        fig, ax = analysis.pho_size_chart(feed_data, didymos_diameter)
+        assert fig is not None
+        assert ax is not None
+
+
+    def test_pho_label(self, feed_data, didymos_diameter):
+        """Tests that chart title and axis label are correct"""
+        fig, ax = analysis.pho_size_chart(feed_data, didymos_diameter)
+        assert 'PHO Estimated Diameters/Day' in ax.get_title()
+        assert 'Date' in ax.get_xlabel()
+        assert 'Estimated diameter (m)' in ax.get_ylabel()
+
+
+    def test_pho_did_label(self, feed_data, didymos_diameter):
+        """Tests that both average lines are labeled"""
+        fig, ax = analysis.pho_size_chart(feed_data, didymos_diameter)
+        label = hline_label(ax)
+        did_min_lab = []
+        did_max_lab = []
+        for lab in label:
+            if lab.startswith('Didymos min'):
+                did_min_lab.append(lab)
+            elif lab.startswith('Didymos max'):
+                did_max_lab.append(lab)
+        assert 1 == len(did_min_lab)
+        assert 1 == len(did_max_lab)
+        assert f'{DIDYMOS_MIN:.2f}' in did_min_lab[0]
+        assert f'{DIDYMOS_MAX:.2f}' in did_max_lab[0]
+
+
 #class TestDidymosOrbitTrim:
     """Class to test the didymos_orbit_trim function"""
 #class TestDidymosOrbitChart:
