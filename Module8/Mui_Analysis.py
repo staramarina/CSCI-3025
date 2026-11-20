@@ -219,7 +219,7 @@ def pho_size_chart(data, didymos_data):
     ax.set_xlabel('Date (Close Approach)')
     ax.set_ylabel('Estimated diameter (m)')
     ax.legend()
-    ax.set_yscale('log') # TODO may not need this, check display
+    ax.set_yscale('log')
     fig.tight_layout()
     chart = (fig, ax)
     return chart
