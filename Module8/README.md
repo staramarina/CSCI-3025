@@ -206,7 +206,7 @@ Charts are located in the charts folder.
 | chart_save(chart, file_name, dpi=150) | Saves a chart as an image file | A 2-tuple with True/False success flag and additional information |
 
 ### Logging Module (Mui_Logging.py)
-Note: This module is largely unchanged from Module 7, included again here for completness.
+Note: This module is largely unchanged from Module 7, included again here for completeness.
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
 | can_write_file(file_name) | Checks if a file can be appended | (bool, str) - success flag, message (duplicated from Module5) |
@@ -252,11 +252,11 @@ python -m pytest
 ##### Testing Fixtures, Variables, and Functions
 | Type | Name | Purpose |
 | ----- | ------ | ------ |
-| Helper Function | make_common_row(neo_id, date, pho, d_lunar, d_min, d_max, orbit="Earth") | Builds a row that mimicks the output of clean_common_data |
+| Helper Function | make_common_row(neo_id, date, pho, d_lunar, d_min, d_max, orbit="Earth") | Builds a row that mimics the output of clean_common_data |
 | Global Variable | FEED_DATA | Simulates the output data of clean_common_data using real feed endpoint data |
 | Global Variable | ORBIT_DATA | Simulates the output data of clean_lookup_data using real lookup endpoint data |
-| Global Variable | DIDYMOS_MIN | Didymous minimum estimated diameter |
-| Global Variable | DIDYMOS_MAX | Didymous maximum estimated diameter |
+| Global Variable | DIDYMOS_MIN | Didymos minimum estimated diameter |
+| Global Variable | DIDYMOS_MAX | Didymos maximum estimated diameter |
 | Fixture Function | feed_data() | Returns a pandas dataframe mimicking clean feed data |
 | Fixture Function | orbit_data() | Returns a pandas dataframe mimicking clean Didymos data |
 | Fixture Function | didymos_diameter() | returns a single-row pandas dataframe for Didymos diameter data |

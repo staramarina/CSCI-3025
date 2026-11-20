@@ -23,7 +23,7 @@ import Mui_Analysis as analysis
 
 
 def make_common_row(neo_id, date, pho, d_lunar, d_min, d_max, orbit="Earth"):
-    """Builds a row that mimicks the output of clean_common_data
+    """Builds a row that mimics the output of clean_common_data
 
     Args:
         neo_id: id (SPK-ID) as a number

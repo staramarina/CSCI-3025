@@ -591,7 +591,6 @@ class TestCleanData:
             clean["is_potentially_hazardous_asteroid"]
         )
 
-
     def test_duplicates(self):
         """Tests that duplicate rows are removed"""
         data = {
