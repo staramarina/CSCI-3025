@@ -59,11 +59,11 @@ if __name__ == "__main__":
 
     # Tailored Cleaning, Analysis, and Chart Generation
     print('Cleaning, analyzing, and plotting PHO vs. non-PHO per day with ' \
-          'average stastics.....', end='')
+          'average statistics.....', end='')
     neo_chart = analysis.neo_pho_chart(feed_data_clean)
     print(' Done!')
     print('Cleaning, analyzing, and plotting miss distance per day with ' \
-          'average stastics.....', end='')
+          'average statistics.....', end='')
     lun_chart = analysis.lun_miss_chart(feed_data_clean)
     print(' Done!')
     print('Cleaning, analyzing, and plotting PHO minimum and maximum ' \
