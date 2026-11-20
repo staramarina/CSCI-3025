@@ -77,7 +77,7 @@ FEED_DATA = [
         None, 13.631856, 30.481756
     ),
     make_common_row(
-        1006, '2026-11-02 19:10', False,
+        1006, '2026-11-03 19:10', False,
         179.038968, 205.378500, 459.240286
     ),
     make_common_row( # missing min diameter data, expect drop at pho_size_trim
@@ -174,10 +174,118 @@ def hline_label(ax):
 
 class TestNeoPhoTrim:
     """Class to test the neo_pho_trim function"""
-#class TestNeoAvgCalc:
+
+
+    def test_col_rename(self, feed_data):
+        """Tests that columns are renamed to date and pho_status"""
+        data = analysis.neo_pho_trim(feed_data)
+        assert 'date' in data.columns
+        assert 'pho_status' in data.columns
+        assert 'close_approach_date_full' not in data.columns
+
+
+    def test_orig_change(self, feed_data):
+        """Tests that the original dataframe is unchanged"""
+        analysis.neo_pho_trim(feed_data)
+        assert 'close_approach_date_full' in feed_data.columns
+        assert 'pho_status' not in feed_data.columns
+
+
+    def test_miss_drop(self, feed_data):
+        """Tests that rows with missing values are dropped"""
+        data = analysis.neo_pho_trim(feed_data)
+        assert 8 == len(data)
+
+
+    def test_pho_map(self, feed_data):
+        """Tests that PHO boolean is mapped to labels"""
+        data = analysis.neo_pho_trim(feed_data)
+        status = set(data['pho_status'].unique())
+        assert {'PHO', 'Not PHO'} == status
+
+
+    def test_date_sort(self, feed_data):
+        """Tests that dates are date objects and sorted"""
+        data = analysis.neo_pho_trim(feed_data)
+        dates = list(data['date'])
+        assert isinstance(data['date'].iloc[0], date)
+        assert dates == sorted(dates)
+
+
+class TestNeoAvgCalc:
     """Class to test the neo_avg_calc function"""
-#class TestNeoPhoChart:
+
+
+    def test_avg_value(self, feed_data):
+        """Tests that average is calculated correctly
+        Expected counts per day:
+            01 Nov - Non-PHO: 2, PHO: 2, Total: 4
+            02 Nov - Non-PHO: 1, PHO: 2, Total 3
+            03 Nov - Non-PHO: 1, PHO: 0, Total 1
+        """
+        exp_not_pho_avg = (2 + 1 + 1) / 3
+        exp_pho_avg = (2 + 2 + 0) / 3
+        exp_tot_avg = (4 + 3 + 1) / 3
+        data = analysis.neo_pho_trim(feed_data)
+        avg = analysis.neo_avg_calc(data)
+        assert exp_not_pho_avg == avg[0]
+        assert exp_pho_avg == avg[1]
+        assert exp_tot_avg == avg[2]
+
+
+    def test_zero_day(self):
+        """Tests that days with no PHOs still count toward average"""
+        data = pd.DataFrame({
+            'date': [date(2026, 11, 1), date(2026, 11, 1), date(2026, 11, 2)],
+            'pho_status': ['Not PHO', 'Not PHO', 'Not PHO']
+        })
+        exp_not_pho_avg = (2 + 1) / 2
+        exp_pho_avg = 0
+        exp_tot_avg = (2 + 1) / 2
+        avg = analysis.neo_avg_calc(data)
+        assert exp_not_pho_avg == avg[0]
+        assert exp_pho_avg == avg[1]
+        assert exp_tot_avg == avg[2]
+
+
+class TestNeoPhoChart:
     """Class to test the neo_pho_chart function"""
+
+
+    def test_return_fig(self, feed_data):
+        """Tests that both figure and axes is returned"""
+        fig, ax = analysis.neo_pho_chart(feed_data)
+        assert fig is not None
+        assert ax is not None
+
+
+    def test_label(self, feed_data):
+        """Tests that chart title and axis label are correct"""
+        fig, ax = analysis.neo_pho_chart(feed_data)
+        assert 'Near-Earth Objects per Day' in ax.get_title()
+        assert 'Date' in ax.get_xlabel()
+        assert 'Number of NEOs' in ax.get_ylabel()
+
+
+    def test_avg_label(self, feed_data):
+        """Tests that both average lines are labeled"""
+        exp_not_pho_avg = (2 + 1 + 1) / 3
+        exp_pho_avg = (2 + 2 + 0) / 3
+        fig, ax = analysis.neo_pho_chart(feed_data)
+        label = hline_label(ax)
+        non_pho = []
+        pho = []
+        for lab in label:
+            if lab.startswith('Mean non-PHO/day'):
+                non_pho.append(lab)
+            elif lab.startswith('Mean PHO/day'):
+                pho.append(lab)
+        assert 1 == len(non_pho)
+        assert 1 == len(pho)
+        assert f'{exp_not_pho_avg:.2f}' in non_pho[0]
+        assert f'{exp_pho_avg:.2f}' in pho[0]
+
+
 #class LunMissTrim:
     """Class to test the lun_miss_trim function"""
 #class LunMissChart:
