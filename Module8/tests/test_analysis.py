@@ -126,3 +126,47 @@ ORBIT_DATA = [
 ]
 DIDYMOS_MIN = 634.680239
 DIDYMOS_MAX = 1419.188158
+
+
+@pytest.fixture
+def feed_data():
+    """Returns a pandas dataframe mimicking clean feed data"""
+    return pd.DataFrame(FEED_DATA)
+
+
+@pytest.fixture
+def orbit_data():
+    """Returns a pandas dataframe mimicking clean Didymos data"""
+    return pd.DataFrame(ORBIT_DATA)
+
+
+@pytest.fixture
+def didymos_diameter():
+    """returns a single-row pandas dataframe for Didymos diameter data"""
+    diameter = pd.DataFrame([{
+        'meters_estimated_diameter_min': DIDYMOS_MIN,
+        'meters_estimated_diameter_max': DIDYMOS_MAX
+    }])
+    return diameter
+
+
+@pytest.fixture
+def close_plot():
+    """Closes charts after each test"""
+    yield
+    plt.close('all')
+
+
+def hline_label(ax):
+    """Collects labels of reference lines
+    
+    Args:
+        ax: matplotlib axes
+    
+    Returns:
+        label: list of labels from objects on the axes
+    """
+    label = []
+    for line in ax.lines:
+        label.append(line.get_label())
+    return label
