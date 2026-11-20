@@ -449,8 +449,31 @@ class TestPhoSizeChart:
         assert f'{DIDYMOS_MAX:.2f}' in did_max_lab[0]
 
 
-#class TestDidymosOrbitTrim:
+class TestDidymosOrbitTrim:
     """Class to test the didymos_orbit_trim function"""
+
+
+    def test_did_drop(self, orbit_data):
+        """Tests that rows with missing values are dropped"""
+        data = analysis.didymos_orbit_trim(orbit_data)
+        assert 6 == len(data)
+        assert not data.isna().any().any()
+
+
+    def test_did_sort(self, orbit_data):
+        """Tests that close_approach_date_full converts to year"""
+        data = analysis.didymos_orbit_trim(orbit_data)
+        mars_year = data[data['orbiting_body'] == 'Mars']['year']
+        earth_year = data[data['orbiting_body'] == 'Earth']['year']
+        exp_year_list = {1901, 1967, 2022, 2144, 2184}
+        exp_mars_list = {1901, 1967, 2144}
+        exp_earth_list = {2022, 2144, 2184} 
+        assert exp_year_list == set(data['year'].unique())
+        assert exp_mars_list == mars_year
+        assert exp_earth_list == earth_year
+        
+
+
 #class TestDidymosOrbitChart:
     """Class to test the didymos_orbit_chart function"""
 
@@ -465,3 +488,30 @@ class TestPhoSizeChart:
 #max_dia = (1148.259319 + 430.566244 + 68.240151 + 420.765360 + 459.240286 + 156.329154 + 142.573883)
 
 
+ORBIT_DATA = [
+    {
+        'close_approach_date_full': pd.Timestamp('1901-02-04 17:18:00'),
+        'miss_distance_lunar': 20.287754,
+        'orbiting_body': 'Mars'
+    }, {
+        'close_approach_date_full': pd.Timestamp('1967-10-08 21:37'),
+        'miss_distance_lunar': 20.783773,
+        'orbiting_body': 'Mars'
+    }, {
+        'close_approach_date_full': pd.Timestamp('2022-10-04 09:48'),
+        'miss_distance_lunar': 27.709694,
+        'orbiting_body': 'Earth'
+    }, {
+        'close_approach_date_full': pd.Timestamp('2144-07-31 12:02'),
+        'miss_distance_lunar': 12.181374,
+        'orbiting_body': 'Mars'
+    }, {
+        'close_approach_date_full': pd.Timestamp('2144-12-02 23:10'),
+        'miss_distance_lunar': 69.311856,
+        'orbiting_body': 'Earth'
+    }, {
+        'close_approach_date_full': pd.Timestamp('2184-10-14 10:11'),
+        'miss_distance_lunar': 22.333426,
+        'orbiting_body': 'Earth'
+    }
+]
