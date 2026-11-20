@@ -354,8 +354,65 @@ class TestLunMissChart:
         assert f'{exp_avg:.2f}' in lab_avg[0]
 
 
-#class TestPhoSizeTrim:
+class TestPhoSizeTrim:
     """Class to test the pho_size_trim function"""
+
+
+    def test_pho_orig_change(self, feed_data):
+        """Tests that the original dataframe is unchanged"""
+        analysis.pho_size_trim(feed_data)
+        assert 'close_approach_date_full' in feed_data.columns
+
+
+    def test_pho_drop(self, feed_data):
+        """Tests that rows with missing values are dropped"""
+        data = analysis.pho_size_trim(feed_data)
+        assert 4 == len(data)
+        assert not data.isna().any().any()
+
+
+    def test_pho_avg(self, feed_data):
+        """Tests that min and max diameters are averaged per day"""
+        exp_day1_min = (192.555078 + 188.171989) / 2
+        exp_day1_max = (430.566244 + 420.765360) / 2
+        exp_day2_min = 69.912523
+        exp_day2_max = 156.329154
+        data = analysis.pho_size_trim(feed_data)
+        nov01 = data[data['date'] == date(2026, 11, 1)]
+        nov02 = data[data['date'] == date(2026, 11, 2)]
+        nov01_min = nov01[nov01['diameter'] == 'Estimated min diameter (m)'][
+                'diameter_m'].iloc[0]
+        nov01_max = nov01[nov01['diameter'] == 'Estimated max diameter (m)'][
+                'diameter_m'].iloc[0]
+        nov02_min = nov02[nov02['diameter'] == 'Estimated min diameter (m)'][
+                'diameter_m'].iloc[0]
+        nov02_max = nov02[nov02['diameter'] == 'Estimated max diameter (m)'][
+                'diameter_m'].iloc[0]
+        assert exp_day1_min == nov01_min
+        assert exp_day1_max == nov01_max
+        assert exp_day2_min == nov02_min
+        assert exp_day2_max == nov02_max
+
+
+    def test_pho_long(self, feed_data):
+        """Tests that output is melted to long format"""
+        data = analysis.pho_size_trim(feed_data)
+        for col in ['date', 'diameter', 'diameter_m']:
+            assert col in data.columns
+        assert {'Estimated min diameter (m)', 'Estimated max diameter (m)'
+                } == set(data['diameter'].unique())
+
+
+    def test_no_pho(self, feed_data):
+        """Tests the case when no PHOs are in the data"""
+        no_pho = feed_data.copy()
+        no_pho['is_potentially_hazardous_asteroid'] = False
+        data = analysis.pho_size_trim(no_pho)
+        assert 0 == len(data)
+        for col in ['date', 'diameter', 'diameter_m']:
+            assert col in data.columns
+
+
 #class TestPhoSizeChart:
     """Class to test the pho_size_chart function"""
 #class TestDidymosOrbitTrim:
