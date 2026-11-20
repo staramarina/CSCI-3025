@@ -170,3 +170,23 @@ def hline_label(ax):
     for line in ax.lines:
         label.append(line.get_label())
     return label
+
+
+class TestNeoPhoTrim:
+    """Class to test the neo_pho_trim function"""
+#class TestNeoAvgCalc:
+    """Class to test the neo_avg_calc function"""
+#class TestNeoPhoChart:
+    """Class to test the neo_pho_chart function"""
+#class LunMissTrim:
+    """Class to test the lun_miss_trim function"""
+#class LunMissChart:
+    """Class to test the lun_miss_chart function"""
+#class PhoSizeTrim:
+    """Class to test the pho_size_trim function"""
+#class PhoSizeChart:
+    """Class to test the pho_size_chart function"""
+#class DidymosOrbitTrim:
+    """Class to test the didymos_orbit_trim function"""
+#class DidymosOrbitChart:
+    """Class to test the didymos_orbit_chart function"""
