@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import Mui_Ancillary as aux
 
 
-def mark_chart():
+def make_chart():
     """Returns simple matplotlib (figure, axes) for chart_save tests"""
     fig, ax = plt.subplots()
     ax.plot([1, 2, 3], [4, 5, 6])
@@ -80,11 +80,41 @@ class TestChartSave:
     """Class to test the chart_save function"""
 
 
-    def test_save_success():
+    def test_save_success(self, tmp_path):
         """Tests that a chart was saved successfully"""
-    def test_custom_dpi():
+        chart = make_chart()
+        file_name = tmp_path / 'test_chart.png'
+        check = aux.chart_save(chart, str(file_name))
+        assert check[0]
+        assert 'saved' in check[1]
+        assert file_name.exists()
+
+
+    def test_custom_dpi(self, tmp_path):
         """Tests that a custom dpi is accepted"""
-    def test_bad_path():
+        chart = make_chart()
+        file_name = tmp_path / 'test_chart.png'
+        check = aux.chart_save(chart, str(file_name), dpi=300)
+        assert check[0]
+        assert 'saved' in check[1]
+        assert file_name.exists()
+
+
+    def test_bad_path(self, tmp_path):
         """Tests that nonexistent directory returns error"""
-    def test_miss_ext():
-        """Tests that a file name is a missing extension returns error"""
+        chart = make_chart()
+        file_name = tmp_path / 'Not Here' / 'test_chart.png'
+        check = aux.chart_save(chart, str(file_name))
+        assert not check[0]
+        assert 'Failed to save' in check[1]
+
+
+    def test_miss_ext(self, tmp_path):
+        """Tests that a file name with missing extension save as .png"""
+        chart = make_chart()
+        file_name = tmp_path / 'test_chart'
+        save = tmp_path / 'test_chart.png'
+        check = aux.chart_save(chart, str(file_name))
+        assert check[0]
+        assert 'saved' in check[1]
+        assert save.exists()
