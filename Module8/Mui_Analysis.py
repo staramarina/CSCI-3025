@@ -300,7 +300,7 @@ def didymos_orbit_trim(data):
 
 
 def didymos_orbit_chart(data):
-    """Generates a scatter plot of Didymos miss distance by flyby body
+    """Generates a line plot of Didymos miss distance by flyby body
 
     Args:
         data: lookup pandas dataframe for Didymos in expected formats
