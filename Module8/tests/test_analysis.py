@@ -253,14 +253,14 @@ class TestNeoPhoChart:
     """Class to test the neo_pho_chart function"""
 
 
-    def test_return_fig(self, feed_data):
+    def test_neo_return_fig(self, feed_data):
         """Tests that both figure and axes is returned"""
         fig, ax = analysis.neo_pho_chart(feed_data)
         assert fig is not None
         assert ax is not None
 
 
-    def test_label(self, feed_data):
+    def test_neo_label(self, feed_data):
         """Tests that chart title and axis label are correct"""
         fig, ax = analysis.neo_pho_chart(feed_data)
         assert 'Near-Earth Objects per Day' in ax.get_title()
@@ -268,7 +268,7 @@ class TestNeoPhoChart:
         assert 'Number of NEOs' in ax.get_ylabel()
 
 
-    def test_avg_label(self, feed_data):
+    def test_neo_avg_label(self, feed_data):
         """Tests that both average lines are labeled"""
         exp_not_pho_avg = (2 + 1 + 1) / 3
         exp_pho_avg = (2 + 2 + 0) / 3
@@ -287,12 +287,12 @@ class TestNeoPhoChart:
         assert f'{exp_pho_avg:.2f}' in pho[0]
 
 
-class LunMissTrim:
+class TestLunMissTrim:
     """Class to test the lun_miss_trim function"""
 
 
     def test_lun_rename(self, feed_data):
-        """Tests that columns are renamed to date and pho_status"""
+        """Tests that columns are renamed to date and d_miss"""
         data = analysis.lun_miss_trim(feed_data)
         assert 'date' in data.columns
         assert 'd_miss' in data.columns
@@ -314,13 +314,56 @@ class LunMissTrim:
         assert dates == sorted(dates)
 
 
-#class LunMissChart:
+class TestLunMissChart:
     """Class to test the lun_miss_chart function"""
-#class PhoSizeTrim:
+
+
+    def test_lun_return_fig(self, feed_data):
+        """Tests that both figure and axes is returned"""
+        fig, ax = analysis.lun_miss_chart(feed_data)
+        assert fig is not None
+        assert ax is not None
+
+
+    def test_lun_label(self, feed_data):
+        """Tests that chart title and axis label are correct"""
+        fig, ax = analysis.lun_miss_chart(feed_data)
+        assert 'Miss Distance (Lunar) per Day' in ax.get_title()
+        assert 'Date' in ax.get_xlabel()
+        assert 'Miss Distance (Lunar)' in ax.get_ylabel()
+
+
+    def test_lun_avg_label(self, feed_data):
+        """Tests that both average lines are labeled"""
+        exp_avg = (119.264636 + 24.183183 + 118.764718 + 24.183388 + 67.962402 
+                   + 179.038968 + 15.649873 + 140.499671) / 8
+        fig, ax = analysis.lun_miss_chart(feed_data)
+        label = hline_label(ax)
+        lab_avg = []
+        for lab in label:
+            if lab.startswith('Overall mean'):
+                lab_avg.append(lab)
+        assert 1 == len(lab_avg)
+        assert f'{exp_avg:.2f}' in lab_avg[0]
+
+
+#class TestPhoSizeTrim:
     """Class to test the pho_size_trim function"""
-#class PhoSizeChart:
+#class TestPhoSizeChart:
     """Class to test the pho_size_chart function"""
-#class DidymosOrbitTrim:
+#class TestDidymosOrbitTrim:
     """Class to test the didymos_orbit_trim function"""
-#class DidymosOrbitChart:
+#class TestDidymosOrbitChart:
     """Class to test the didymos_orbit_chart function"""
+
+
+
+
+
+
+
+#lunar_distance = (119.264636 + 24.183183 + 118.764718 + 24.183388 + 67.962402 + 179.038968 + 15.649873 + 140.499671)
+#min_dia = (513.517179 + 192.555078 + 30.517923 + 188.171989 + 205.378500 + 69.912523 + 63.760979)
+#max_dia = (1148.259319 + 430.566244 + 68.240151 + 420.765360 + 459.240286 + 156.329154 + 142.573883)
+
+
