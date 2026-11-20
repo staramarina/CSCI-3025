@@ -462,15 +462,15 @@ class TestDidymosOrbitTrim:
 
     def test_did_sort(self, orbit_data):
         """Tests that close_approach_date_full converts to year"""
-        data = analysis.didymos_orbit_trim(orbit_data)
-        mars_year = data[data['orbiting_body'] == 'Mars']['year']
-        earth_year = data[data['orbiting_body'] == 'Earth']['year']
         exp_year_list = {1901, 1967, 2022, 2144, 2184}
         exp_mars_list = {1901, 1967, 2144}
         exp_earth_list = {2022, 2144, 2184} 
+        data = analysis.didymos_orbit_trim(orbit_data)
+        mars = data[data['orbiting_body'] == 'Mars']
+        earth = data[data['orbiting_body'] == 'Earth']
         assert exp_year_list == set(data['year'].unique())
-        assert exp_mars_list == mars_year
-        assert exp_earth_list == earth_year
+        assert exp_mars_list == set(mars['year'].unique())
+        assert exp_earth_list == set(earth['year'].unique())
         
 
 
