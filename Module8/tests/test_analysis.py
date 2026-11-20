@@ -471,47 +471,44 @@ class TestDidymosOrbitTrim:
         assert exp_year_list == set(data['year'].unique())
         assert exp_mars_list == set(mars['year'].unique())
         assert exp_earth_list == set(earth['year'].unique())
-        
 
 
-#class TestDidymosOrbitChart:
+class TestDidymosOrbitChart:
     """Class to test the didymos_orbit_chart function"""
 
 
+    def test_did_return_fig(self, orbit_data):
+        """Tests that both figure and axes is returned"""
+        fig, ax = analysis.didymos_orbit_chart(orbit_data)
+        assert fig is not None
+        assert ax is not None
 
 
+    def test_did_label(self, orbit_data):
+        """Tests that chart title and axis label are correct"""
+        fig, ax = analysis.didymos_orbit_chart(orbit_data)
+        assert 'Didymos Miss Distance (Lunar) by Flyby Body' in ax.get_title()
+        assert 'Year (Close Approach)' in ax.get_xlabel()
+        assert 'Miss Distance (Lunar)' in ax.get_ylabel()
 
 
+    def test_dart_line(self, orbit_data):
+        """Tests that DART impact line is labeled"""
+        fig, ax = analysis.didymos_orbit_chart(orbit_data)
+        label = hline_label(ax)
+        dart = []
+        for lab in label:
+            if 'DART' in lab:
+                dart.append(lab)
+        assert 1 == len(dart)
+        assert '26 Sep 2022' in dart[0]
 
-#lunar_distance = (119.264636 + 24.183183 + 118.764718 + 24.183388 + 67.962402 + 179.038968 + 15.649873 + 140.499671)
-#min_dia = (513.517179 + 192.555078 + 30.517923 + 188.171989 + 205.378500 + 69.912523 + 63.760979)
-#max_dia = (1148.259319 + 430.566244 + 68.240151 + 420.765360 + 459.240286 + 156.329154 + 142.573883)
 
-
-ORBIT_DATA = [
-    {
-        'close_approach_date_full': pd.Timestamp('1901-02-04 17:18:00'),
-        'miss_distance_lunar': 20.287754,
-        'orbiting_body': 'Mars'
-    }, {
-        'close_approach_date_full': pd.Timestamp('1967-10-08 21:37'),
-        'miss_distance_lunar': 20.783773,
-        'orbiting_body': 'Mars'
-    }, {
-        'close_approach_date_full': pd.Timestamp('2022-10-04 09:48'),
-        'miss_distance_lunar': 27.709694,
-        'orbiting_body': 'Earth'
-    }, {
-        'close_approach_date_full': pd.Timestamp('2144-07-31 12:02'),
-        'miss_distance_lunar': 12.181374,
-        'orbiting_body': 'Mars'
-    }, {
-        'close_approach_date_full': pd.Timestamp('2144-12-02 23:10'),
-        'miss_distance_lunar': 69.311856,
-        'orbiting_body': 'Earth'
-    }, {
-        'close_approach_date_full': pd.Timestamp('2184-10-14 10:11'),
-        'miss_distance_lunar': 22.333426,
-        'orbiting_body': 'Earth'
-    }
-]
+    def test_did_legend(self, orbit_data):
+        """Tests that both Earth and Mars are in the legend"""
+        fig, ax = analysis.didymos_orbit_chart(orbit_data)
+        legend_txt = []
+        for text in ax.get_legend().get_texts():
+            legend_txt.append(text.get_text())
+        assert 'Mars' in legend_txt
+        assert 'Earth' in legend_txt
