@@ -34,8 +34,8 @@ def neo_pho_trim(data):
     trim.rename(columns={'close_approach_date_full': 'date', 
             'is_potentially_hazardous_asteroid': 'pho_status'}, inplace=True)
     trim = trim.dropna()
-    trim = trim.sort_values(by='date')
     trim['date'] = pd.to_datetime(trim['date']).dt.date
+    trim = trim.sort_values(by='date')
     trim['pho_status'] = trim['pho_status'].map(pho_map)
     return trim
 
@@ -117,8 +117,8 @@ def lun_miss_trim(data):
     trim.rename(columns={'close_approach_date_full': 'date', 
             'miss_distance_lunar': 'd_miss'}, inplace=True)
     trim = trim.dropna()
-    trim = trim.sort_values(by='date')
     trim['date'] = pd.to_datetime(trim['date']).dt.date
+    trim = trim.sort_values(by='date')
     return trim
 
 
