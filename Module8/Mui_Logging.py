@@ -64,7 +64,7 @@ def err_handle(err_msg, err_log='log.txt'): # reused Module 7 Mui_Logging.py
     Returns:
         None (console output)
     """
-    std_err = 'ERROR: An error occurred with the API.'
+    std_err = 'ERROR: An error has occurred.'
     see_log = f'See {err_log} for details.'
     log_err = 'Could not send error to the logs:'
     flag = print_log(err_msg, err_log)
