@@ -128,7 +128,7 @@ Charts are located in the charts folder.
 
 ![chart of PHO vs. non-PHO per Day with Average Statistics](charts/neo_chart.png)
 
-Based on the chart above, it's clear that there are far more non-Potentially Hazardous Objects (PHOs) per day than PHOs. The mean non-PHOs per day is approximately 5.29, whereas PHOs are about 0.71 per day. While this is a small sample size, it is an interesting look at the distribution. Note that NASA classified PHOs as those that are greater than 150 meters in diameter and their orbit results in a flyby of Earth (or miss distance) less than 29.5 lunar distance.
+Based on the chart above, it's clear that there are far more non-Potentially Hazardous Objects (PHOs) per day than PHOs. The mean non-PHOs per day is approximately 5.29, whereas PHOs are about 0.71 per day. While this is a small sample size, it is an interesting look at the distribution. Note that NASA classified PHOs as those that are greater than 150 meters in diameter and their orbit results in a flyby of Earth (or miss distance) less than 19.5 lunar distance (NASA JPL, n.d.).
 
 
 ![chart of Miss distance per Day with Average Statistics](charts/lun_chart.png)
@@ -143,7 +143,7 @@ In the chart above, non-PHOs are explicitly removed from the data set. As such, 
 
 ![chart of Didymos Orbiting Patterns for Earth and Mars with Comparison against DART Impact](charts/didymos_chart.png)
 
-The Didymos binary system includes both Didymos and its moonlet Dimorphos. In 2022, the Double-Asteroid Redirection Test (DART) mission impacted Dimorphos in a test to determine whether the impact could alter the orbital characteristics. It was later confirmed that DART not only changed the orbit of Dimorphos around Didymos significantly, it also altered the orbit of Didymos around the Sun. From the chart above, a slight change can be observed, especially in the Mars flyby distances that were fairly consistent prior to the impact. Overall, the flyby distance of Didymos to Earth is far more volatile. Additional observation time may be needed to fully understand the long-term impact that the DART mission had. Note: Dimorphos data is not included within the NeoWs data set, only Didymos.
+The Didymos binary system includes both Didymos and its moonlet Dimorphos (NASA, n.d.). In 2022, the Double-Asteroid Redirection Test (DART) mission impacted Dimorphos in a test to determine whether the impact could alter the orbital characteristics (JHU APL, n.d.). It was later confirmed that DART not only changed the orbit of Dimorphos around Didymos significantly (NASA JPL, 2022), it also altered the orbit of Didymos around the Sun (NASA JPL, 2026). From the chart above, a slight change can be observed, especially in the Mars flyby distances that were fairly consistent prior to the impact. Overall, the flyby distance of Didymos to Earth is far more volatile. Additional observation time may be needed to fully understand the long-term impact that the DART mission had. Note: Dimorphos data is not included within the NeoWs data set, only Didymos.
 
 
 ## Project Structure
@@ -413,4 +413,8 @@ Date: 20 Nov 2026
 - Lumo 2.0 was utilized for syntax and troubleshooting assistance (e.g. "What is the correct pandas syntax to convert string to datetime at the column level?"). Suggestions used were at the individual line level only. Code generation, control flow, module separation, etc. remained under the purview of the author (i.e. at no point were wholesale copy/paste of generated code inserted into this assignment).
 
 ### Resources & References
-- 
+- JHU APL. (n.d.). DART Mission Overview. https://dart.jhuapl.edu/Mission/index.php
+- NASA. (n.d.). Didymos and Dimorphos. https://science.nasa.gov/solar-system/asteroids/didymos/
+- NASA JPL. (2022). Goldstone Radar Observations Planning: (65803) Didymos & Dimorphos. https://echo.jpl.nasa.gov/asteroids/Didymos/Didymos.2022.planning.html
+- NASA JPL. (2026). NASA's DART Mission Changed Orbit of Asteroid Didymos Around Sun. https://www.jpl.nasa.gov/news/nasas-dart-mission-changed-orbit-of-asteroid-didymos-around-sun/
+- NASA JPL. (n.d.). Next Five Asteroid Approaches. https://www.jpl.nasa.gov/asteroid-watch/next-five-approaches/
