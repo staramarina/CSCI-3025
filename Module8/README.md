@@ -128,7 +128,7 @@ Charts are located in the charts folder.
 
 ![chart of PHO vs. non-PHO per Day with Average Statistics](charts/neo_chart.png)
 
-Based on the chart above, it's clear that there are far more non-Potentially Hazardous Objects (PHOs) per day that PHOs. The mean non-PHOs per days is approximately 5.29, whereas PHOs are about 0.71 per day. While this is a small sample size, it is an interesting look at the distribution. Note that NASA classified PHOs as those that are greater than 150 meters in diameter and their orbit results in a flyby of Earth (or miss distance) less than 29.5 lunar distance.
+Based on the chart above, it's clear that there are far more non-Potentially Hazardous Objects (PHOs) per day than PHOs. The mean non-PHOs per day is approximately 5.29, whereas PHOs are about 0.71 per day. While this is a small sample size, it is an interesting look at the distribution. Note that NASA classified PHOs as those that are greater than 150 meters in diameter and their orbit results in a flyby of Earth (or miss distance) less than 29.5 lunar distance.
 
 
 ![chart of Miss distance per Day with Average Statistics](charts/lun_chart.png)
@@ -138,12 +138,12 @@ As depicted in the chart above, the distribution of the miss distance, which is 
 
 ![chart of PHO Minimum and Maximum Diameter per Day with Didymos Comparison Points](charts/pho_chart.png)
 
-In the chart above, non-PHOs are explicitly removed from the data set. As such, there are only 4 of the 7 days represented here. The removed dates are those that did not have a PHO included in the data set. Note that the estimated range of Didymos falls within PHOs on 13 Nov 2026, but is far larger than those on the other days. This might suggest that Didymos in a larger object than average, although the data set is too small to definitively confirm this. 
+In the chart above, non-PHOs are explicitly removed from the data set. As such, there are only 4 of the 7 days represented here. The removed dates are those that did not have a PHO included in the data set. Note that the estimated range of Didymos falls within PHOs on 13 Nov 2026, but is far larger than those on the other days. This might suggest that Didymos is a larger object than average, although the data set is too small to definitively confirm this. 
 
 
 ![chart of Didymos Orbiting Patterns for Earth and Mars with Comparison against DART Impact](charts/didymos_chart.png)
 
-The Didymos binary system includes both Didymos and its moonlet Dimporphus. In 2022, the Double-Asteroid Redirection Test (DART) mission impacted Dimorphus in a test to determine whether the impact could alter the orbital characteristics. It was later confirmed that DART not only changed the orbit of Dimorphus around Didymos significantly, it also altered the orbit of Didymos around the Sun. From the chart above, a slight change can be observed, especially in the Mars flyby distances that were fairly consistent prior to the impact. Overall, the flyby distance of Didymos to Earth is far more volatile. Additional observation time may be needed to fully understand the long-term impact that the DART mission had.
+The Didymos binary system includes both Didymos and its moonlet Dimorphos. In 2022, the Double-Asteroid Redirection Test (DART) mission impacted Dimorphos in a test to determine whether the impact could alter the orbital characteristics. It was later confirmed that DART not only changed the orbit of Dimorphos around Didymos significantly, it also altered the orbit of Didymos around the Sun. From the chart above, a slight change can be observed, especially in the Mars flyby distances that were fairly consistent prior to the impact. Overall, the flyby distance of Didymos to Earth is far more volatile. Additional observation time may be needed to fully understand the long-term impact that the DART mission had. Note: Dimorphos data is not included within the NeoWs data set, only Didymos.
 
 
 ## Project Structure
@@ -411,3 +411,6 @@ Date: 20 Nov 2026
 ### Tools & AI Use Disclosure
 - Black 26.10.1 was utilized to ensure PEP8 compliance. All changes were manually reviewed and approved/disapproved as appropriate. 
 - Lumo 2.0 was utilized for syntax and troubleshooting assistance (e.g. "What is the correct pandas syntax to convert string to datetime at the column level?"). Suggestions used were at the individual line level only. Code generation, control flow, module separation, etc. remained under the purview of the author (i.e. at no point were wholesale copy/paste of generated code inserted into this assignment).
+
+### Resources & References
+- 
