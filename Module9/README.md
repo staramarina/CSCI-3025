@@ -122,9 +122,14 @@ TODO
 TODO
 
 ### Automated Testing
-Automated testing was conducted with unittest. To run all tests, enter the following from within the Module9 directory.
+All test cases are compatible with both unittest and pytest.  
+To run all tests with unittest, enter the following from within the Module9 directory.
 ```
 python -m unittest
+```
+To run all tests with pytest, enter the following from within the Module9 directory.
+```
+python -m pytest
 ```
 
 #### Ancillary Module Tests (test_ancillary.py)
