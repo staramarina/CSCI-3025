@@ -134,3 +134,24 @@ def print_analysis_menu():
     print('4 -- Overall Balance Changes per Day')
     print('5 -- Top 5 Expenses')
     print('x -- Quit')
+
+
+def csv_input_handle(file_list, err_log):
+    """Asks user for transaction CSV file and check it
+    
+    Args:
+        file_list: current running list of files
+        err_log: the file path where the log is located
+    
+    Returns:
+        A 2-tuple with the following format:
+            [0]: True if file can be read, otherwise False
+            [1]: current list of files
+    """
+    usr_in = input("Please enter the file name of your transaction CSV: ")
+    check = file_exists(usr_in)
+    if check[0]:
+        file_list.append(usr_in)
+    else:
+        err_handle(check[1], err_log)
+    return (check[0], file_list)
