@@ -2,7 +2,7 @@
 # Module 9 Assignment - Ancillary Functions Module
 # CSCI-3025: Python Programming
 # Purpose: General purpose ancillary tools
-# Dependencies: TBD
+# Dependencies: None
 
 
 def int_check(num_str):  # Duplicated from Module6
