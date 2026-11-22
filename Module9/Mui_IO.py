@@ -80,27 +80,6 @@ def print_log(data, file_name):  # Duplicated from Module7
         return can_write
 
 
-def err_handle(err_msg, err_log='log.txt'):  # Heavy Reuse from Module7
-    """Handles various errors, prints console message and calls print_log
-    
-    Args:
-        err_msg: the error message to log
-        err_log: the file path where the log is located
-    
-    Returns:
-        None (console output)
-    """
-    std_err = 'ERROR: An error has occurred.'
-    see_log = f'See {err_log} for details.'
-    log_err = 'Could not send error to the logs:'
-    flag = print_log(err_msg, err_log)
-    if flag[0]:
-        print(f'{std_err} {see_log}')
-    else:
-        print(f'{std_err}')
-        print(f'{log_err} {flag[1]}')
-
-
 def chart_save(chart, file_name, dpi=150):  # Duplicated from Module8
     """Saves a chart as an image file
 
@@ -125,6 +104,46 @@ def chart_save(chart, file_name, dpi=150):  # Duplicated from Module8
         return (True, f"Chart saved to {file_name}")
 
 
+def file_input_handle():
+    """Asks user for file and check for it
+    
+    Args:
+        None
+    
+    Returns:
+        A 2-tuple with the following format:
+            [0]: True if file can be read, otherwise False
+            [1]: file name if successful, other error message
+    """
+    usr_in = input("Please enter the file name of your file: ")
+    check = file_exists(usr_in)
+    if check[0]:
+        return (True, usr_in)
+    else:
+        return (False, check[1])
+
+
+def err_handle(err_msg, err_log='log.txt'):  # Heavy Reuse from Module7
+    """Handles various errors, prints console message and calls print_log
+    
+    Args:
+        err_msg: the error message to log
+        err_log: the file path where the log is located
+    
+    Returns:
+        None (console output)
+    """
+    std_err = 'ERROR: An error has occurred.'
+    see_log = f'See {err_log} for details.'
+    log_err = 'Could not send error to the logs:'
+    flag = print_log(err_msg, err_log)
+    if flag[0]:
+        print(f'{std_err} {see_log}')
+    else:
+        print(f'{std_err}')
+        print(f'{log_err} {flag[1]}')
+
+
 def print_analysis_menu():
     """Prints menu with analysis options"""
     print('Please select one of the following options:')
@@ -134,24 +153,3 @@ def print_analysis_menu():
     print('4 -- Overall Balance Changes per Day')
     print('5 -- Top 5 Expenses')
     print('x -- Quit')
-
-
-def csv_input_handle(file_list, err_log):
-    """Asks user for transaction CSV file and check it
-    
-    Args:
-        file_list: current running list of files
-        err_log: the file path where the log is located
-    
-    Returns:
-        A 2-tuple with the following format:
-            [0]: True if file can be read, otherwise False
-            [1]: current list of files
-    """
-    usr_in = input("Please enter the file name of your transaction CSV: ")
-    check = file_exists(usr_in)
-    if check[0]:
-        file_list.append(usr_in)
-    else:
-        err_handle(check[1], err_log)
-    return (check[0], file_list)
