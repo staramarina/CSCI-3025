@@ -23,10 +23,12 @@ if __name__ == "__main__":
     # Ask user for their transaction files
     more_file = "y"
     while more_file in ["Y", "y"]:
-        check = io.csv_input_handle(file_list, err_log)
+        check = io.file_input_handle()
         if check[0]:
+            file_list.append(check[1])
             more_file = input("Would you like to include another file (Y/N): ")
         else:
+            io.err_handle(check[1], err_log)
             more_file = input("Would you like to try again (Y/N): ")
 
     # Data Parsing -- Actual functions in parse
