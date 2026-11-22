@@ -123,3 +123,14 @@ def chart_save(chart, file_name, dpi=150):  # Duplicated from Module8
         return (False, f"Failed to save file with error: {err}")
     else:
         return (True, f"Chart saved to {file_name}")
+
+
+def print_analysis_menu():
+    """Prints menu with analysis options"""
+    print('Please select one of the following options:')
+    print('1 -- Overall Spending per Day')
+    print('2 -- Spending by Category')
+    print('3 -- Spending by Source')
+    print('4 -- Overall Balance Changes per Day')
+    print('5 -- Top 5 Expenses')
+    print('x -- Quit')
