@@ -20,10 +20,7 @@ def build_dataframe(file_name):
     """
     line_count = 0
     char_count = 0
-    flag = False
     f = open(file_name, "r")
-
-
     for line in f:
         if line.isspace():
             continue
@@ -39,15 +36,6 @@ def build_dataframe(file_name):
         else:
             line_count += 1
             continue
-
-    """
-    while not flag:
-        line = f.readline()
-        if "," in line:
-            flag = True
-        else:
-            line_count += 1
-    """
     f.close()
     if 0 == line_count:
         if "Date" in line:
@@ -57,4 +45,3 @@ def build_dataframe(file_name):
     else:
         df = pd.read_csv(file_name, header=line_count)
     return df
-    # TODO strip any metadata/summary line from the bottom -- do this by verifying date column

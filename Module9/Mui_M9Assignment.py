@@ -36,7 +36,7 @@ if __name__ == "__main__":
     file_list = []
 
     # Ask user for their transaction files
-    """
+    """ # TODO add this back in later when ready to conduct full testing.
     more_file = "y"
     while more_file in ["Y", "y"]:
         check = io.file_input_handle()
@@ -48,20 +48,16 @@ if __name__ == "__main__":
             more_file = input("Would you like to try again (Y/N): ")
     """
     # Data Parsing -- Actual functions in parse
-    # TODO check for rows above header
-    # TODO port to pandas dataframe
-    #df = parse.build_dataframe(file_list[0])
     df_list = []
     for file in TEST_FILES: # TODO change to file_list later
         df = parse.build_dataframe(file)
+        # TODO detect column names, change to common if needed
+        # TODO handle missing data
+        # TODO handle data type conversion and malformed data, strip any metadata/summary line from the bottom
         df_list.append(df)
-    # TODO check for header, add if missing
-    # TODO detect column names, change to common if needed
-    # TODO handle missing data
-    # TODO handle data type conversion and malformed data
 
-
-    with open('test_dump.txt', "a") as f: # TODO test lines remove later
+    # TODO Temporary data dump for testins
+    with open('test_dump.txt', "a") as f: 
         for df in df_list:
             f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
             f.write('\n\n') # extra lines for readability
