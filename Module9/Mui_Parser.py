@@ -6,6 +6,7 @@
 
 
 import pandas as pd
+import Mui_IO as io
 
 
 def build_dataframe(file_name):
@@ -16,32 +17,28 @@ def build_dataframe(file_name):
             Note: assumes it exists
     
     Returns:
-        df: pandas dataframe containing the data from the input file
+        check: 2-tuple with the following characteristics
+            [0]: True if dataframe was generated, otherwise False
+            [1]: pandas dataframe on success, otherwise error message
     """
     line_count = 0
-    char_count = 0
-    f = open(file_name, "r")
-    for line in f:
-        if line.isspace():
-            continue
-        elif "," in line:
-            for char in line:
-                if "," == char:
-                    char_count += 1
-            if 3 > char_count:
+    with open(file_name, "r") as f: 
+        for line in f:
+            if line.isspace():
+                continue
+            elif "," in line:
+                char_count = line.count(",")
+                if 3 > char_count:
+                    line_count += 1
+                    continue
+                else:
+                    break
+            else:
                 line_count += 1
                 continue
-            else:
-                break
-        else:
-            line_count += 1
-            continue
-    f.close()
-    if 0 == line_count:
-        if "Date" in line:
-            df = pd.read_csv(file_name)
-        else:
-            df = pd.read_csv(file_name, header=None)
-    else:
-        df = pd.read_csv(file_name, header=line_count)
-    return df
+    if "Date" in line:
+        head_info = None
+    else: 
+        head_info = line_count
+    check = io.dataframe_check(file_name, head_info)
+    return check
