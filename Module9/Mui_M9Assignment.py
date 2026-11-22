@@ -15,6 +15,21 @@ import Mui_Parser as parse
 import Mui_Statement as stmnt
 
 
+TEST_FILES = [
+    'data/bofa_checking_example.csv',
+    'data/chase_checking_example.csv',
+    'data/chase_credit_example.csv',
+    'data/citibank_checking_example.csv',
+    'data/citibank_credit_example.csv',
+    'data/sample-bank-transactions.csv',
+    'data/SCU_checking_example.csv',
+    'data/SCU_credit_example.csv',
+    'data/USAA_checking_example.csv',
+    'data/USAA_credit_example.csv',
+    'data/wellsfargo_checking_example.csv',
+]
+
+
 if __name__ == "__main__":
     # Setup
     err_log = "Mui_M9_Log.txt"
@@ -36,7 +51,7 @@ if __name__ == "__main__":
     # TODO port to pandas dataframe
     df = parse.build_dataframe(file_list[0])
     df_list = []
-    for file in file_list:
+    for file in TEST_FILES: # TODO change to file_list later
         df = parse.build_dataframe(file)
         df_list.append(df)
     # TODO check for header, add if missing
