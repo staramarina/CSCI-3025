@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     # Ask user for their transaction files
     more_file = "y"
-    while ("Y" or "y") == more_file:
+    while more_file in ["Y", "y"]:
         check = io.csv_input_handle(file_list, err_log)
         if check[0]:
             more_file = input("Would you like to include another file (Y/N): ")
