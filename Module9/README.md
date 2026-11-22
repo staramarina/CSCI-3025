@@ -65,7 +65,7 @@ From the Module9 directory
 TODO
 ```
 
-### Generated Charts & Observations
+### Example Chart Generation
 TODO
 
 ## Project Structure
@@ -106,6 +106,11 @@ TODO
     - Estimated Minimum: 3.7
     - Development Environment: 3.11.2
 
+### Ancillary Module (Mui_Ancillary.py)
+| Function | Purpose | Return |
+| ----- | ------ | ------ |
+| int_check(num_str) | Determines whether a string can be converted to an integer | (True, int) on success, otherwise (False, error message) |
+
 ### XXX Module (Mui_XXX.py)
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
@@ -119,8 +124,17 @@ TODO
 ### Automated Testing
 Automated testing was conducted with unittest. To run all tests, enter the following from within the Module9 directory.
 ```
-TODO
+python -m unittest
 ```
+
+#### Ancillary Module Tests (test_ancillary.py)
+| Class | Method | Purpose |
+| ----- | ------ | ------ |
+| TestIntCheck(unittest.TestCase) |  | Class to test the int_check(num_str) function |
+|  | test_valid_num(self) | Tests various valid integers |
+|  | test_null_input(self) | Tests function with missing input |
+|  | test_char_input(self) | Tests function with character/string input |
+|  | test_decimal_input(self) | Tests function with decimal number input |
 
 #### Specfic Module Tests (test_XXX.py)
 
@@ -139,7 +153,7 @@ Author: Tiffany M. Mui
 Institution: State University of New York: Empire State University  
 Course: CSCI-3025 - Python Programming  
 Instructor: Dr. Sahand Ziabari  
-Date: XX Mon 2026  
+Date: XX Nov 2026  
 
 ### Tools & AI Use Disclosure
 - TODO
