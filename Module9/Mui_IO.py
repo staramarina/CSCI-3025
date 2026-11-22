@@ -2,10 +2,11 @@
 # Module 9 Assignment - Input/Output Module
 # CSCI-3025: Python Programming
 # Purpose: Handles all input/output for the program
-# Dependencies: datetime
+# Dependencies: datetime, pandas
 
 
 from datetime import datetime
+import pandas as pd
 
 
 def file_exists(file_name):  # Duplicated from Module5
@@ -67,8 +68,8 @@ def print_log(data, file_name):  # Duplicated from Module7
     
     Returns:
         2-tuple with the following characteristics
-        [0]: True if file was successfully written, otherwise False
-        [1]: f-string that provides more information beyond True/False
+            [0]: True if file was successfully written, otherwise False
+            [1]: f-string that provides more information beyond True/False
     """
     can_write = can_write_file(file_name)
     if can_write:
@@ -78,6 +79,32 @@ def print_log(data, file_name):  # Duplicated from Module7
         return can_write
     else:
         return can_write
+
+
+def dataframe_check(file_name, head_info=0):
+    """Checks that data is successfully imported into a pandas dataframe
+    
+    Args:
+        file_name: file name where the data is stored
+        head_info: header row location information
+    
+    Returns:
+        2-tuple with the following characteristics
+            [0]: True if dataframe was generated, otherwise False
+            [1]: pandas dataframe on success, otherwise error message
+    """
+    try:
+        df = pd.read_csv(file_name, header=head_info)
+    except FileNotFoundError:
+        return (False, f'{file_name} does not exist')
+    except pd.errors.EmptyDataError:
+        return (False, f'{file_name} has no parsable data.')
+    except pd.errors.ParserError as err:
+        return (False, f'Encountered parsing error: {err}')
+    except ValueError as err:
+        return (False, f'Encountered value error: {err}')
+    else:
+        return (True, df)
 
 
 def chart_save(chart, file_name, dpi=150):  # Duplicated from Module8
