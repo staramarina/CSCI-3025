@@ -30,9 +30,9 @@ if __name__ == "__main__":
             more_file = input("Would you like to try again (Y/N): ")
 
     # Data Parsing -- Actual functions in parse
-    # TODO port to pandas dataframe
     # TODO check for rows above header
     # TODO check for header, add if missing
+    # TODO port to pandas dataframe
     # TODO detect column names, change to common if needed
     # TODO handle missing data
     # TODO handle data type conversion and malformed data
