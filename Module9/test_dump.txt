@@ -1,3 +1,12 @@
+         Date                            Description   Amount  Balance
+0  11/18/2026                           GENOS STEAKS   -21.13  1773.85
+1  11/16/2026                       INSOMNIA COOKIES    -7.66  1794.98
+2  11/16/2026                             MCDONALD S   -28.79  1802.64
+3  11/15/2026                           Esso Station   -20.27  1831.43
+4  11/15/2026                        External Depost  1500.00  1851.70
+5  11/14/2026  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA     -5.42   351.70
+6  11/14/2026  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA     -7.59   357.12
+
          Date                            Description   Amount    Type  Balance
 0  11/18/2026                           GENOS STEAKS   -21.13   Debit  1773.85
 1  11/16/2026                       INSOMNIA COOKIES    -7.66   Debit  1794.98

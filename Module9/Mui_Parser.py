@@ -22,6 +22,7 @@ def build_dataframe(file_name):
             [1]: pandas dataframe on success, otherwise error message
     """
     line_count = 0
+    line = ''
     with open(file_name, "r") as f: 
         for line in f:
             if line.isspace():
@@ -36,9 +37,12 @@ def build_dataframe(file_name):
             else:
                 line_count += 1
                 continue
-    if "Date" in line:
-        head_info = None
-    else: 
+    if 0 == line_count:
+        if "Date" in line:
+            head_info = 0
+        else:
+            head_info = None
+    else:
         head_info = line_count
     check = io.dataframe_check(file_name, head_info)
     return check

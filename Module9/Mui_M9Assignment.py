@@ -9,6 +9,7 @@
 #           Mui_Parser.py, Mui_Statement.py
 
 
+import sys
 import Mui_Ancillary as aux
 import Mui_IO as io
 import Mui_Parser as parse
@@ -16,7 +17,7 @@ import Mui_Statement as stmnt
 
 
 TEST_FILES = [
-    #'data/bofa_checking_example.csv',
+    'data/bofa_checking_example.csv',
     'data/chase_checking_example.csv',
     'data/chase_credit_example.csv',
     'data/citibank_checking_example.csv',
@@ -50,11 +51,21 @@ if __name__ == "__main__":
     # Data Parsing -- Actual functions in parse
     df_list = []
     for file in TEST_FILES: # TODO change to file_list later
-        df = parse.build_dataframe(file)
-        # TODO detect column names, change to common if needed
-        # TODO handle missing data
-        # TODO handle data type conversion and malformed data, strip any metadata/summary line from the bottom
-        df_list.append(df)
+        check = parse.build_dataframe(file)
+        if check[0]:
+            df_list.append(check[1])
+        else:
+            io.err_handle(check[1], err_log)
+            print(f'{file} dropped, attempting to continue.')
+    if 0 == len(df_list):
+        print("No useable files. Please restart.")
+        sys.exit(1)
+
+
+
+    # TODO detect column names, change to common if needed
+    # TODO handle missing data
+    # TODO handle data type conversion and malformed data, strip any metadata/summary line from the bottom
 
     # TODO Temporary data dump for testins
     with open('test_dump.txt', "a") as f: 

@@ -100,9 +100,9 @@ def dataframe_check(file_name, head_info=0):
     except pd.errors.EmptyDataError:
         return (False, f'{file_name} has no parsable data.')
     except pd.errors.ParserError as err:
-        return (False, f'Encountered parsing error: {err}')
+        return (False, f'Encountered parsing error in {file_name}: {err}')
     except ValueError as err:
-        return (False, f'Encountered value error: {err}')
+        return (False, f'Encountered value error {file_name}: {err}')
     else:
         return (True, df)
 
