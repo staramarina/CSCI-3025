@@ -35,5 +35,6 @@ def build_dataframe(file_name):
             df = pd.read_csv(file_name, header=None)
     else:
         df = pd.read_csv(file_name, header=line_count)
+    return df
     # TODO strip any metadata/summary line from the bottom -- do this by verifying date column
     
