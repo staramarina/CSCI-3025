@@ -33,11 +33,22 @@ if __name__ == "__main__":
 
     # Data Parsing -- Actual functions in parse
     # TODO check for rows above header
-    # TODO check for header, add if missing
     # TODO port to pandas dataframe
+    df = parse.build_dataframe(file_list[0])
+    df_list = []
+    for file in file_list:
+        df = parse.build_dataframe(file)
+        df_list.append(df)
+    # TODO check for header, add if missing
     # TODO detect column names, change to common if needed
     # TODO handle missing data
     # TODO handle data type conversion and malformed data
+
+
+    with open('test_dump.txt', "a") as f: # TODO test lines remove later
+        for df in df_list:
+            f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
+            f.write('\n\n') # extra lines for readability
 
     # Spin up class instances
     # TODO use cleaned data to generate statement class instances -- init in statement class
