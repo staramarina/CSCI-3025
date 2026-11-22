@@ -6,10 +6,12 @@
 
 
 import unittest
+import os
 import sys
 import tempfile
 from pathlib import Path
 from datetime import datetime
+import pandas as pd
 import matplotlib
 
 
@@ -134,8 +136,91 @@ class TestPrintLog(unittest.TestCase):
         self.assertIn(data1, content)
 
 
-#class TestDataframeCheck(unittest.TestCase):
-    #"""Class to teach dataframe_check(file_name, head_info=0) function"""
+class TestDataframeCheck(unittest.TestCase):
+    """Class to teach dataframe_check(file_name, head_info=0) function"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Setup method to create temporary testing files for the class"""
+        cls.tmp_dir = tempfile.TemporaryDirectory()
+        base = cls.tmp_dir.name
+        with open(os.path.join(base, "good_no_lead.csv"), "w") as f:
+            f.write("Date,Description,Amount, Balance\n")
+            f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
+        with open(os.path.join(base, "good_lead.csv"), "w") as f:
+            f.write("Description,,Summary Amt.\n")
+            f.write("\n")
+            f.write("Date,Description,Amount, Balance\n")
+            f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
+        with open(os.path.join(base, "good_no_head.csv"), "w") as f:
+            f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
+        with open(os.path.join(base, "empty.csv"), "w") as f:
+            f.write("")
+        with open(os.path.join(base, "malformed.csv"), "w") as f:
+            f.write("Date,Description,MISSING\n")
+            f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
+            f.write("11/15/2026,Esso, Station,-20.27,1831.43\n")
+
+    @classmethod
+    def tearDownClass(cls):
+        """Tear down method to delete temprorary testing directory"""
+        cls.tmp_dir.cleanup()
+
+    def setUp(self):
+        """Setup method to create temporary testing directory per method"""
+        self.base = self.tmp_dir.name
+
+    def test_default_header(self):
+        """Tests the case when there is a header and no leading rows"""
+        file_name = os.path.join(self.base, "good_no_lead.csv")
+        check = io.dataframe_check(file_name)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+
+    def test_lead_rows(self):
+        """Tests the case when there is a header and leading rows"""
+        file_name = os.path.join(self.base, "good_lead.csv")
+        head_info = 1
+        check = io.dataframe_check(file_name, head_info)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+
+    def test_no_head(self):
+        """Tests the case when there is no header or leading rows"""
+        file_name = os.path.join(self.base, "good_no_head.csv")
+        head_info = None
+        check = io.dataframe_check(file_name, head_info)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+
+    def test_no_file(self):
+        """Tests the case when the file does not exist"""
+        file_name = os.path.join(self.base, "not_here.csv")
+        check = io.dataframe_check(file_name)
+        self.assertFalse(check[0])
+        self.assertIn("does not exist", check[1])
+
+    def test_empty_file(self):
+        """Tests the case when the file exists, but it's empty"""
+        file_name = os.path.join(self.base, "empty.csv")
+        check = io.dataframe_check(file_name)
+        self.assertFalse(check[0])
+        self.assertIn("no parsable data", check[1])
+
+    def test_parse_err(self):
+        """Tests that parsing error is returned if data is malformed"""
+        file_name = os.path.join(self.base, "malformed.csv")
+        check = io.dataframe_check(file_name)
+        self.assertFalse(check[0])
+        self.assertIn("Encountered parsing error", check[1])
+
+    def test_val_err(self):
+        """Tests that a value error is return if invalid header arg received"""
+        file_name = os.path.join(self.base, "good_no_lead.csv")
+        head_info = -1
+        check = io.dataframe_check(file_name, head_info)
+        self.assertFalse(check[0])
+        self.assertIn("Encountered value error", check[1])
 
 
 class TestChartSave(unittest.TestCase):
