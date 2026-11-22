@@ -134,6 +134,10 @@ class TestPrintLog(unittest.TestCase):
         self.assertIn(data1, content)
 
 
+#class TestDataframeCheck(unittest.TestCase):
+    #"""Class to teach dataframe_check(file_name, head_info=0) function"""
+
+
 class TestChartSave(unittest.TestCase):
     """Class to test chart_save(chart, file_name, dpi=150) function"""
 
