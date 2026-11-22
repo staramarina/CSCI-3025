@@ -16,7 +16,7 @@ import Mui_Statement as stmnt
 
 
 TEST_FILES = [
-    'data/bofa_checking_example.csv',
+    #'data/bofa_checking_example.csv',
     'data/chase_checking_example.csv',
     'data/chase_credit_example.csv',
     'data/citibank_checking_example.csv',
@@ -26,7 +26,7 @@ TEST_FILES = [
     'data/SCU_credit_example.csv',
     'data/USAA_checking_example.csv',
     'data/USAA_credit_example.csv',
-    'data/wellsfargo_checking_example.csv',
+    'data/wellsfargo_checking_example.csv'
 ]
 
 
@@ -36,6 +36,7 @@ if __name__ == "__main__":
     file_list = []
 
     # Ask user for their transaction files
+    """
     more_file = "y"
     while more_file in ["Y", "y"]:
         check = io.file_input_handle()
@@ -45,11 +46,11 @@ if __name__ == "__main__":
         else:
             io.err_handle(check[1], err_log)
             more_file = input("Would you like to try again (Y/N): ")
-
+    """
     # Data Parsing -- Actual functions in parse
     # TODO check for rows above header
     # TODO port to pandas dataframe
-    df = parse.build_dataframe(file_list[0])
+    #df = parse.build_dataframe(file_list[0])
     df_list = []
     for file in TEST_FILES: # TODO change to file_list later
         df = parse.build_dataframe(file)
