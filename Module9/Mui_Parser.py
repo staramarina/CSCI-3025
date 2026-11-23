@@ -76,26 +76,29 @@ def date_format(column: pd.Series):
         yr_first = True
         day_first = False
         determine = True
+        mixed = bool(yr_first_match["sep"].nunique() > 1)
     else:
         yr_first = False
         yr_match = date_col.str.extract(yr_last_re).dropna()
         a = pd.to_numeric(yr_match["x"], errors="coerce")
         b = pd.to_numeric(yr_match["z"], errors="coerce")
-        if 12 < a:
+        if (12 < a).any() and (12 < b).any():
             day_first = False
-            determine = True
-        elif 12 < b:
+            determine = False
+        elif (12 < a).any():
             day_first = True
+            determine = True
+        elif (12 < b).any():
+            day_first = False
             determine = True
         else:
             day_first = False
             determine = False
-    mixed = bool(
-        yr_first_match["sep"].nunique() > 1
-        or yr_match["sep"].nunique() > 1
-        or yr_match["yr"].str.len().nunique() > 1
-        or (a > 12 and b > 12)
-    )
+        mixed = bool(
+            yr_match["sep"].nunique() > 1
+            or yr_match["yr"].str.len().nunique() > 1
+            or ((12 < a).any() and (12 < b).any())
+        )
     return (yr_first, day_first, determine, mixed)
 
 
