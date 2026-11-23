@@ -23,7 +23,7 @@ def build_dataframe(file_name):
             [1]: pandas dataframe on success, otherwise error message
     """
     line_count = 0
-    #line = ''
+    line = ''
     with open(file_name, "r") as f: 
         for line in f:
             if line.isspace():
@@ -137,7 +137,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed):
         else:
             return (True, df)    
     elif not mixed:
-        return (False, f"Dates in '{col}' are abmiguous, "
+        return (False, f"Dates in '{col}' are ambiguous, "
                 "verify month first assumption")
     else:
         return (False, f"Dates in '{col}' have mixed format. "
@@ -162,8 +162,6 @@ def clean_dataframe(data_raw):
         if "date" in col.lower():
             date_col_ls.append(col)
     for col in date_col_ls:
-        if "post" not in col.lower():
-            data_clean.rename(columns={col: "Date"}, inplace=True,)
         format_check = date_format(data_clean[col])
         clean_check = date_clean(
             data_clean, col, 
@@ -173,7 +171,9 @@ def clean_dataframe(data_raw):
         if not clean_check[0]:
             return (False, clean_check[1]) # TODO: document this, be sure to raise as needed in main
         elif "post" not in col.lower():
-            data_clean = clean_check[1].dropna() # TODO: document behavior date must be presented, but post/posted date does not
+            data_clean = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be presented, but post/posted date does not
+            data_clean.rename(columns={col: "Date"}, inplace=True,)
+            
     # TODO: consolidate on bal for balance
     # TODO: consolidate on check for check number
     # TODO: consolidate on debit for debit
