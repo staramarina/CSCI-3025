@@ -23,7 +23,7 @@ def build_dataframe(file_name):
             [1]: pandas dataframe on success, otherwise error message
     """
     line_count = 0
-    line = ''
+    #line = ''
     with open(file_name, "r") as f: 
         for line in f:
             if line.isspace():
@@ -53,7 +53,7 @@ def date_format(column: pd.Series):
     """Attempts to determine the position of date values in string
     
     Args:
-        date_str: a date as a string with year, month, and day values
+        column: a pandas series with date values as strings
     
     Returns:
         date_pos: A 4-tuple of the following format
@@ -116,21 +116,21 @@ def date_clean(data, col, yr_first, day_first, determine, mixed):
     Returns:
         A 2-tuple of the following format:
             [0]: True if clean and conversion successful, otherwise false
-            [1]: pandas series on success, otherwise error message
+            [1]: pandas dataframe on success, otherwise error message
     """
     df = data.copy()
-    df[col] = col.astype("string").str.strip()
+    df[col] = df[col].astype("string").str.strip()
     if determine and not mixed:
-        df[col] = pd.to_datetime(col, errors="corece", dayfirst=day_first, 
-                                 yearfirst=yr_first).dt.date
+        df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=day_first, 
+                                 yearfirst=yr_first)
         check = df[col].isna().all()
         if check:
             return (False, f"Dates in '{col}' failed to convert")
         else:
             return (True, df)
     elif determine and mixed:
-        df[col] = pd.to_datetime(col, errors="corece", dayfirst=day_first, 
-                                 yearfirst=yr_first, format="mixed").dt.date
+        df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=day_first, 
+                                 yearfirst=yr_first, format="mixed")
         check = df[col].isna().all()
         if check:
             return (False, f"Dates in '{col}' failed to convert")
@@ -153,7 +153,7 @@ def clean_dataframe(data_raw):
     Returns:
         A 2-tuple of the following format:
             [0]: True if clean and conversion successful, otherwise false
-            [1]: pandas series on success, otherwise error message
+            [1]: pandas dataframe on success, otherwise error message
     """
     # TODO handle case of missing column names
     data_clean = data_raw.copy()
@@ -164,7 +164,7 @@ def clean_dataframe(data_raw):
     for col in date_col_ls:
         if "post" not in col.lower():
             data_clean.rename(columns={col: "Date"}, inplace=True,)
-        format_check = date_format(data_clean["Date"])
+        format_check = date_format(data_clean[col])
         clean_check = date_clean(
             data_clean, col, 
             format_check[0], format_check[1], 
