@@ -102,6 +102,48 @@ def date_format(column: pd.Series):
     return (yr_first, day_first, determine, mixed)
 
 
+def date_clean(data, col, yr_first, day_first, determine, mixed):
+    """Fixes formatting and converts to datetime of given pandas series
+    
+    Args:
+        data: pandas dataframe that has date column(s)
+        col: name of the column that needs cleaning
+        yr_first: whether year is first (True/False)
+        day_first: whether day is first (True/False)
+        determine: whether a determination was made (True/False)
+        mixed: whether the column has mixed date formats (True/False)
+
+    Returns:
+        A 2-tuple of the following format:
+            [0]: True if clean and conversion successful, otherwise false
+            [1]: pandas series on success, otherwise error message
+    """
+    df = data.copy()
+    df[col] = col.astype("string").str.strip()
+    if determine and not mixed:
+        df[col] = pd.to_datetime(col, errors="corece", dayfirst=day_first, 
+                                 yearfirst=yr_first).dt.date
+        check = df[col].isna().all()
+        if check:
+            return (False, f"Dates in '{col}' failed to convert")
+        else:
+            return (True, df)
+    elif determine and mixed:
+        df[col] = pd.to_datetime(col, errors="corece", dayfirst=day_first, 
+                                 yearfirst=yr_first, format="mixed").dt.date
+        check = df[col].isna().all()
+        if check:
+            return (False, f"Dates in '{col}' failed to convert")
+        else:
+            return (True, df)    
+    elif not mixed:
+        return (False, f"Dates in '{col}' are abmiguous, "
+                "verify month first assumption")
+    else:
+        return (False, f"Dates in '{col}' have mixed format. "
+                "Could not convert.")
+
+
 def clean_dataframe(data_raw):
     """Cleans column naming, missing data, and data type conversions
     
@@ -109,7 +151,9 @@ def clean_dataframe(data_raw):
         data_raw: full raw data pulled from the source, leading rows trimmed
     
     Returns:
-        data_clean: data with standardized column names and correct data types
+        A 2-tuple of the following format:
+            [0]: True if clean and conversion successful, otherwise false
+            [1]: pandas series on success, otherwise error message
     """
     # TODO handle case of missing column names
     data_clean = data_raw.copy()
@@ -120,12 +164,19 @@ def clean_dataframe(data_raw):
     for col in date_col_ls:
         if "post" not in col.lower():
             data_clean.rename(columns={col: "Date"}, inplace=True,)
-            format_check = date_format(data_clean["Date"])
-            # TODO handle mixed format, formats in files: MM/DD/YYYY, MM/DD/YY, MM-DD-YY
-            # TODO handle determine = False, mixed = True case (ambiguous and mixed)
-            # TODO change to datetime
-
-
-    # TODO detect column names, change to common if needed
-    # TODO handle missing data
-    # TODO handle data type conversion and malformed data, strip any metadata/summary line from the bottom
+        format_check = date_format(data_clean["Date"])
+        clean_check = date_clean(
+            data_clean, col, 
+            format_check[0], format_check[1], 
+            format_check[2], format_check[3]
+        )
+        if not clean_check[0]:
+            return (False, clean_check[1]) # TODO: document this, be sure to raise as needed in main
+        elif "post" not in col.lower():
+            data_clean = clean_check[1].dropna() # TODO: document behavior date must be presented, but post/posted date does not
+    # TODO: consolidate on bal for balance
+    # TODO: consolidate on check for check number
+    # TODO: consolidate on debit for debit
+    # TODO: consolidate on credit for credit
+    # TODO: merge debit and credit into amount
+    # TODO: convert amount to number, fix signs as needed (expense should  be negative)
