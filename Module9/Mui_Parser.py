@@ -62,14 +62,12 @@ def date_format(column: pd.Series):
             [2]: whether a determination was made (True/False)
             [3]: whether the column has mixed date formats (True/False)
     """
-    # regex to look for r"^(\d{1,2}|\d{4})([-/])(\d{1,2})\2(\d{1,2}|\d{4})$"
-    # r"^(?P<x>\d{1,2}|\d{4})(?P<sep>[-/])(?P<y>\d{1,2})\2(?P<z>\d{1,2}|\d{4})$"
     date_col = column.astype("string").str.strip()
     date_col = date_col.dropna()
     date_col = date_col[date_col != ""]
     yr_first_re = re.compile(
         r"^(?P<yr>\d{4})(?P<sep>[-/])(?P<x>\d{1,2})(?P=sep)(?P<z>\d{1,2})$"
-    ) # TODO: note in README that YY-MM-DD is not considered.
+    )
     yr_last_re = re.compile(
         r"^(?P<x>\d{1,2})(?P<sep>[-/])(?P<z>\d{1,2})(?P=sep)(?P<yr>\d{1,2}|\d{4})$"
     )
@@ -90,11 +88,13 @@ def date_format(column: pd.Series):
             day_first = True
             determine = True
         else:
-            day_first = False  # TODO: document assumption, this catches 01/02/03 case
+            day_first = False
             determine = False
     mixed = bool(
-        yr_match["sep"].nunique() > 1
+        yr_first_match["sep"].nunique() > 1
+        or yr_match["sep"].nunique() > 1
         or yr_match["yr"].str.len().nunique() > 1
+        or (a > 12 and b > 12)
     )
     return (yr_first, day_first, determine, mixed)
 
@@ -108,6 +108,7 @@ def clean_dataframe(data_raw):
     Returns:
         data_clean: data with standardized column names and correct data types
     """
+    # TODO handle case of missing column names
     data_clean = data_raw.copy()
     date_col_ls = []
     for col in data_clean.columns:
@@ -117,7 +118,8 @@ def clean_dataframe(data_raw):
         if "post" not in col.lower():
             data_clean.rename(columns={col: "Date"}, inplace=True,)
             format_check = date_format(data_clean["Date"])
-            # TODO handle mixed format, formats in files: MM/DD/YYYY, MM/DD/YY, MM-DD-YY, DD-MM-YY
+            # TODO handle mixed format, formats in files: MM/DD/YYYY, MM/DD/YY, MM-DD-YY
+            # TODO handle determine = False, mixed = True case (ambiguous and mixed)
             # TODO change to datetime
 
 
