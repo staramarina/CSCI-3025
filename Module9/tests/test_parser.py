@@ -313,7 +313,7 @@ class TestDateFormat(unittest.TestCase):
         self.assertFalse(mixed)
 
 
-class TestCleanDate(unittest.TestCase):  # TODO now requires err_log, need to fix, right now failing
+class TestCleanDate(unittest.TestCase):
     """Class to test the date_clean(data, col, yr_first, day_first, determine, 
     mixed, err_log) function"""
 
@@ -455,14 +455,300 @@ class TestCleanDate(unittest.TestCase):  # TODO now requires err_log, need to fi
         self.assertIn("Process aborted", check[1])
 
 
-#class TestCleanMoney(unittest.TestCase):
-    #"""Class to test the clean_money(data, col) function"""
+class TestCleanMoney(unittest.TestCase):
+    """Class to test the clean_money(data, col) function"""
 
-#class TestMergeDebCrd(unittest.TestCase):
-    #"""Class to test the merge_deb_crd(data) function"""
+    def test_num_convert(self):
+        """Tests that regular numbers are converted to floats"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            "Amount": [-21.13, "-7.66", 28.79, "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        exp = [-21.13, -7.66, 28.79, 1500.00]
+        check = parse.clean_money(df, "Amount")
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        for rx, ex in zip(check[1]["Amount"], exp):
+            self.assertAlmostEqual(rx, ex)
 
-#class TestCleanDataframe(unittest.TestCase):
-    #"""Class to test the clean_dataframe(data_raw) funciton"""
+    def test_symbol_strip(self):
+        """Tests that additional symbols are stripped when converting"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            "Amount": ["(21.13)", "-7.66", "$28.79", "1,500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        exp = [-21.13, -7.66, 28.79, 1500.00]
+        check = parse.clean_money(df, "Amount")
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        for rx, ex in zip(check[1]["Amount"], exp):
+            self.assertAlmostEqual(rx, ex)
+
+    def test_invalid_num(self):
+        """Tests that full invalid numbers result in error message"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            "Amount": ["-abc", "", "def", "xyz"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_money(df, "Amount")
+        self.assertFalse(check[0])
+        self.assertIn("has no values", check[1])
+
+    def test_orig_num(self):
+        """Tests that the original data was not modified"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            "Amount": ["(21.13)", "-7.66", "$28.79", "1,500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        exp = ["(21.13)", "-7.66", "$28.79", "1,500.00"]
+        parse.clean_money(df, "Amount")
+        for rx, ex in zip(df["Amount"], exp):
+            self.assertEqual(rx, ex)
+
+
+class TestMergeDebCrd(unittest.TestCase):
+    """Class to test the merge_deb_crd(data) function"""
+
+    def test_keep_sign(self):
+        """Tests the case of negative debit and positive credit in original"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["-21.13", "-7.66", "-28.79", ""],
+            "Credit": ["", "", "", "1500.00"],
+            "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        exp = [-21.13, -7.66, -28.79, 1500.00]
+        check = parse.merge_deb_crd(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Amount", check[1].columns)
+        self.assertNotIn("Debit", check[1].columns)
+        self.assertNotIn("Credit", check[1].columns)
+        for rx, ex in zip(check[1]["Amount"], exp):
+            self.assertAlmostEqual(rx, ex)
+
+
+    def test_chg_debit(self):
+        """Tests the case when debit is positive"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["21.13", "7.66", "28.79", ""],
+            "Credit": ["", "", "", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        exp = [-21.13, -7.66, -28.79, 1500.00]
+        check = parse.merge_deb_crd(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        for rx, ex in zip(check[1]["Amount"], exp):
+            self.assertAlmostEqual(rx, ex)
+
+    def test_chg_credt(self):
+        """Tests the case when credit is negative"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["-21.13", "-7.66", "-28.79", ""],
+            "Credit": ["", "", "", "-1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        exp = [-21.13, -7.66, -28.79, 1500.00]
+        check = parse.merge_deb_crd(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        for rx, ex in zip(check[1]["Amount"], exp):
+            self.assertAlmostEqual(rx, ex)
+
+    def test_deb_crd_conflict(self):
+        """Tests the case when there is data in both debit and credit columns"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["-21.13", "-7.66", "-28.79", ""],
+            "Credit": ["", "14.54", "", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.merge_deb_crd(df)
+        self.assertFalse(check[0])
+        self.assertIn("Conflicting debit/credit information", check[1])
+
+    def test_deb_crd_null(self):
+        """Tests the case when neither debit nor credit have data"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["", "", "", ""],
+            "Credit": ["", "", "", ""],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.merge_deb_crd(df)
+        self.assertFalse(check[0])
+        self.assertIn("Failed to merge columns", check[1])
+
+    def test_deb_crd_orig(self):
+        """Tests that the orignal dataframe still has debit/credit columns"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["-21.13", "-7.66", "-28.79", ""],
+            "Credit": ["", "", "", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        parse.merge_deb_crd(df)
+        self.assertIn("Debit", df.columns)
+        self.assertIn("Credit", df.columns)
+
+
+class TestCleanDataframe(unittest.TestCase):
+    """Class to test the clean_dataframe(data_raw, err_log) funciton"""
+
+    def setUp(self):
+        """Setup method to create temporary testing directory"""
+        self.__tmpdir = tempfile.TemporaryDirectory()
+        self.err_log = os.path.join(self.__tmpdir.name, "log.txt")
+
+    def tearDown(self):
+        """Tear down method to delete temprorary testing directory"""
+        self.__tmpdir.cleanup()
+
+    def test_simple_clean_success(self):
+        """Tests that case of Date, Amount, Description, Balance passes"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Date", check[1].columns)
+        self.assertIn("Amount", check[1].columns)
+        self.assertIn("Description", check[1].columns)
+        self.assertIn("Balance", check[1].columns)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
+        self.assertTrue(pd.api.types.is_float_dtype(check[1]["Amount"]))
+        self.assertTrue(pd.api.types.is_float_dtype(check[1]["Balance"]))
+
+    def test_call_infer_header(self):
+        """Tests that the infer_header is called appropriately when forced"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["-21.13", "-7.66", "-28.79", "1500.00"],
+            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        with patch("builtins.input", return_value="Y"):
+            check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIn("Date", check[1].columns)
+        self.assertIn("Amount", check[1].columns)
+        self.assertIn("Description", check[1].columns)
+
+    def test_header_warn_abort(self):
+        """Tests that aborting at the header warning stops processing"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["-21.13", "-7.66", "-28.79", "1500.00"],
+            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        with patch("builtins.input", return_value="N"):
+            check = parse.clean_dataframe(df, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("Process aborted", check[1])
+
+    def test_multi_date(self):
+        """Tests the case of multiple header rows"""
+        data = {
+            "Transaction Date": ["11/18/2026", "11/16/2026", 
+                                 "11/16/2026", "11/15/2026"],
+            "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            "Amount": [-21.13, "-7.66", 28.79, "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIn("Date", check[1].columns)
+        self.assertIn("Post Date", check[1].columns)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Post Date"]))
+
+    def test_force_ambig_date(self):
+        """Tests when ambiguous date assumption is accepted"""
+        data = {
+            "Date": ["07/01/10", "07/02/10", "07/02/10", "07/03/10"],
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+        }
+        df = pd.DataFrame(data)
+        with patch("builtins.input", return_value="Y"):
+            check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
+
+    def test_abort_ambig_date(self):
+        """Tests when ambiguous date processing is aborted"""
+        data = {
+            "Date": ["07/01/10", "07/02/10", "07/02/10", "07/03/10"],
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+        }
+        df = pd.DataFrame(data)
+        with patch("builtins.input", return_value="N"):
+            check = parse.clean_dataframe(df, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("Process aborted", check[1])
+
+    def test_deb_crd_merge(self):
+        """Tests that debit/credit columns renamed and merged"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Amount Debit": ["-21.13", "-7.66", "-28.79", ""],
+            "Amount Credit": ["", "", "", "1500.00"],
+            "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        exp = [-21.13, -7.66, -28.79, 1500.00]
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Amount", check[1].columns)
+        self.assertNotIn("Debit", check[1].columns)
+        self.assertNotIn("Credit", check[1].columns)
+        for rx, ex in zip(check[1]["Amount"], exp):
+            self.assertAlmostEqual(rx, ex)
+
+    def test_column_conflict(self):
+        """Tests the case when column labeling is conflicting"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("Could not determine column", check[1])
 
 
 if __name__ == "__main__":
