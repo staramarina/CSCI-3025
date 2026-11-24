@@ -212,7 +212,9 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
         warn_msg = f"Dates in '{col}' are ambiguous, will assume month first"
         force = io.warn_handle(warn_msg, err_log)
         if force:
-            df[col] = pd.to_datetime(df[col], errors="coerce")
+            df[col] = pd.to_datetime(df[col], errors="coerce", 
+                                     dayfirst=day_first, yearfirst=yr_first, 
+                                     format="mixed")
             check = df[col].isna().all()
             if check:
                 return (False, f"Dates in '{col}' failed to convert")
