@@ -156,7 +156,7 @@ class TestDateFormat(unittest.TestCase):
         self.assertFalse(determine)
         self.assertTrue(mixed)
 
-    def test_amiguous(self):
+    def test_ambiguous(self):
         """Tests the case when day position cannot be determined"""
         series = pd.Series([
             "01-02-03", "02-03-04", "03-04-05", 
@@ -167,6 +167,121 @@ class TestDateFormat(unittest.TestCase):
         self.assertFalse(day_first)
         self.assertFalse(determine)
         self.assertFalse(mixed)
+
+
+class TestCleanDate(unittest.TestCase):
+    """Class to test the date_clean(data, col, yr_first, day_first, determine, 
+    mixed) function"""
+
+    def test_yr1_det(self):
+        """Tests the case when the year is clearly first part"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "2026-11-18", "2026-11-19", "2026-11-20", 
+            "2026-11-21", "2026-11-22", "2026-11-23"
+        ]})
+        yr1 = True
+        day1 = False
+        det = True
+        mix = False
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
+
+    def test_day1_det(self):
+        """Tests the case when day is clearly first part"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "18-11-2026", "19-11-2026", "20-11-2026", 
+            "21-11-2026", "22-11-2026", "23-11-2026"
+        ]})
+        yr1 = False
+        day1 = True
+        det = True
+        mix = False
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
+
+    def test_mon1_det(self):
+        """Tests the case when day is clearly second part"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "11-18-2026", "11-19-2026", "11-20-2026", 
+            "11-21-2026", "11-22-2026", "11-23-2026"
+        ]})
+        yr1 = False
+        day1 = False
+        det = True
+        mix = False
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
+
+    def test_det_sep_mix(self):
+        """Tests the case when there are mixed separaters"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "11-18-2026", "11/19/2026", "11-20-2026", 
+            "11-21-2026", "11/22/2026", "11-23-2026"
+        ]})
+        yr1 = False
+        day1 = False
+        det = True
+        mix = True
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
+
+    def test_det_yr_mix(self):
+        """Tests the case when year is last and mixed YYYY and YY"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "11-18-2026", "11-19-26", "11-20-2026", 
+            "11-21-2026", "11-22-26", "11-23-2026"
+        ]})
+        yr1 = False
+        day1 = False
+        det = True
+        mix = True
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
+
+    def test_day1_mix(self):
+        """Tests the case when there is a mix of date first and second"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "11-18-2026", "19-11-2026", "11-20-2026", 
+            "11-21-2026", "22-11-2026", "11-23-2026"
+        ]})
+        yr1 = False
+        day1 = False
+        det = False
+        mix = True
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        self.assertFalse(check[0])
+        self.assertIn("have mixed format", check[1])
+
+    def test_all_false(self):
+        """Tests the case when day position cannot be determined"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "01-02-03", "02-03-04", "03-04-05", 
+            "04-05-03", "05-06-04", "10-11-12"
+        ]})
+        yr1 = False
+        day1 = False
+        det = False
+        mix = False
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        self.assertFalse(check[0])
+        self.assertIn("are ambiguous", check[1])
 
 
 #class TestCleanDataframe(unittest.TestCase):
