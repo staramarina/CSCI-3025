@@ -81,6 +81,148 @@ class TestBuildDataframe(unittest.TestCase):
         self.assertIn("no parsable data", check[1])
 
 
+class TestInferHeader(unittest.TestCase):
+    """Class to test the infer_header(data) function"""
+
+    def test_infer_date1(self):
+        """Tests the case of a single date column and one money column"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["-21.13", "-7.66", "-28.79", "1500.00"],
+            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Date", check[1].columns)
+        self.assertIn("Amount", check[1].columns)
+        self.assertIn("Description", check[1].columns)
+
+    def test_infer_date2(self):
+        """Tests the case of two date columns"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            2: ["-21.13", "-7.66", "-28.79", "1500.00"],
+            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Date", check[1].columns)
+        self.assertIn("Post Date", check[1].columns)
+
+    def test_infer_date3(self):
+        """Tests the case of three date columns"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            2: ["-21.13", "-7.66", "-28.79", "1500.00"],
+            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
+            4: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertFalse(check[0])
+        self.assertIn("Could not verify date", check[1])
+
+    def test_infer_date0(self):
+        """Tests the case of no date column"""
+        data = {
+            0: ["-21.13", "-7.66", "-28.79", "1500.00"],
+            1: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertFalse(check[0])
+        self.assertIn("Could not verify date", check[1])
+
+    def test_infer_deb_crd(self):
+        """Tests the case of two money columns, debit and credit"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["-21.13", "-7.66", "-28.79", ""],
+            2: ["", "", "", "1500.00"],
+            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Debit", check[1].columns)
+        self.assertIn("Credit", check[1].columns)
+
+    def test_infer_amt_bal(self):
+        """Tests the case of two money columns, amount and balance"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["-21.13", "-7.66", "-28.79", "1500.00"],
+            2: ["54.12", "12.54", "5.37", "1505.37"],
+            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Amount", check[1].columns)
+        self.assertIn("Balance", check[1].columns)
+
+    def test_infer_mon3(self):
+        """Tests the case of three money columns"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["-21.13", "-7.66", "-28.79", ""],
+            2: ["", "", "", "1500.00"],
+            3: ["54.12", "12.54", "5.37", "1505.37"],
+            4: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Debit", check[1].columns)
+        self.assertIn("Credit", check[1].columns)
+        self.assertIn("Balance", check[1].columns)
+
+    def test_infer_mon0(self):
+        """Tests the case of no money columns"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertFalse(check[0])
+        self.assertIn("Could not verify decimal", check[1])
+
+    def test_infer_misc0(self):
+        """Tests the case of no misc columns"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["-21.13", "-7.66", "-28.79", "1500.00"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+
+    def test_infer_misc2(self):
+        """Tests the case of two misc columns"""
+        data = {
+            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            1: ["-21.13", "-7.66", "-28.79", "1500.00"],
+            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
+            3: ["Purchase", "Purchase", "Purchase", "Payment"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.infer_header(df)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Description", check[1].columns)
+
+
 class TestDateFormat(unittest.TestCase):
     """Class to test the date_format(column: pd.Series) function"""
 
