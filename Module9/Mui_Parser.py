@@ -173,8 +173,8 @@ def date_format(column: pd.Series):
     return (yr_first, day_first, determine, mixed)
 
 
-def date_clean(data, col, yr_first, day_first, determine, mixed):
-    """Fixes formatting and converts to datetime of given pandas series
+def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
+    """Fixes formatting and converts to datetime within given pandas series
     
     Args:
         data: pandas dataframe that has date column(s)
@@ -183,6 +183,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed):
         day_first: whether day is first (True/False)
         determine: whether a determination was made (True/False)
         mixed: whether the column has mixed date formats (True/False)
+        err_log: file location to log warnings and errors
 
     Returns:
         A 2-tuple of the following format:
@@ -208,11 +209,73 @@ def date_clean(data, col, yr_first, day_first, determine, mixed):
         else:
             return (True, df)    
     elif not mixed:
-        return (False, f"Dates in '{col}' are ambiguous, "
-                "verify month first assumption")
+        warn_msg = f"Dates in '{col}' are ambiguous, will assume month first"
+        force = io.warn_handle(warn_msg, err_log)
+        if force:
+            df[col] = pd.to_datetime(df[col], errors="coerce")
+            check = df[col].isna().all()
+            if check:
+                return (False, f"Dates in '{col}' failed to convert")
+            else:
+                return (True, df)
+        else:
+            return (False, "Process aborted.")
+        #return (False, f"Dates in '{col}' are ambiguous, "
+        #        "verify month first assumption") # TODO old line, update tests to match
     else:
         return (False, f"Dates in '{col}' have mixed format. "
                 "Could not convert.")
+
+
+def clean_money(data, col):
+    """Fixes formatting and converts to number within given pandas series
+    
+    Args:
+        data: pandas dataframe that has debit and credit columns
+        col: name of the column that needs cleaning
+    
+    Returns:
+        A 2-tuple of the following format:
+            [0]: True if clean and conversion successful, otherwise false
+            [1]: pandas dataframe on success, otherwise error message
+    """
+    df = data.copy()
+    format_clean = (
+        df[col].astype("string").str.strip()
+        .str.replace(r"^\((.*)\)$", r"-\1", regex=True)
+        .str.replace(r"[$,]", "", regex=True))
+    df[col] = pd.to_numeric(format_clean, errors="coerce")
+    check = df[col].isna().all()
+    if check:
+        return (False, f"{col} has no values")
+    else:
+        return (True, df)
+
+
+def merge_deb_crd(data):
+    """Merges the debit and credit columns into single Amount column
+    
+    Args:
+        data: pandas dataframe that has debit and credit columns
+    
+    Returns:
+        A 2-tuple of the following format:
+            [0]: True if clean and conversion successful, otherwise false
+            [1]: pandas dataframe on success, otherwise error message
+    """
+    df = data.copy()
+    debit = df["Debit"]
+    credit = df["Credit"]
+    amount = pd.Series(pd.Na, index=df.index, dtype="Float64")
+    amount = amount.fillana(debit)
+    amount = amount.fillana(credit)
+    check = amount.isna().all()
+    if check:
+        return (False, "Failed to merge columns")
+    else:
+        df["Amount"] = amount
+        df = df.drop(columns=["Debit", "Credit"])
+        return (True, df)
 
 
 def clean_dataframe(data_raw, err_log):
@@ -228,7 +291,9 @@ def clean_dataframe(data_raw, err_log):
             [1]: pandas dataframe on success, otherwise error message
     """
     df = data_raw.copy()
-    col_ls = df[df.columns.str.contains("date", case=False)]
+
+    # Missing headers cleanup
+    col_ls = df.columns[df.columns.str.contains("date", case=False)]
     if 0 == len(col_ls):
         warn_msg = "Missing column headers detected, will infer"
         force = io.warn_handle(warn_msg, err_log)
@@ -241,6 +306,8 @@ def clean_dataframe(data_raw, err_log):
         else:
             err_msg = "Process aborted."
             return (False, err_msg)
+
+    # Date columns cleanup
     date_col_ls = []
     for col in df.columns:
         if "date" in col.lower():
@@ -250,7 +317,8 @@ def clean_dataframe(data_raw, err_log):
         clean_check = date_clean(
             df, col, 
             format_check[0], format_check[1], 
-            format_check[2], format_check[3]
+            format_check[2], format_check[3],
+            err_log
         )
         if not clean_check[0]:
             return (False, clean_check[1]) # TODO: document this, be sure to raise as needed in main
@@ -262,24 +330,51 @@ def clean_dataframe(data_raw, err_log):
             df = df.rename(columns={col: "Post Date"})
         else:
             df = clean_check[1]
-    bal_ls = df.columns[df.columns.str.contains("bal", case=False)]
-    if 0 < len(bal_ls):
-        df = df.rename(columns={bal_ls[0]: "Balance"})
-    chk_ls = df.columns[df.columns.str.contains("check", case=False)]
-    if 0 < len(chk_ls):
-        df = df.rename(columns={chk_ls[0]: "Check Number"})
-    deb_ls = df.columns[df.columns.str.contains("debit", case=False)]
-    if 0 < len(deb_ls):
-        df = df.rename(columns={deb_ls[0]: "Debit"})
-    cdt_ls = df.columns[df.columns.str.contains("credit", case=False)]
-    if 0 < len(cdt_ls):
-        df = df.rename(columns={cdt_ls[0]: "Credit"})
+
+    # Money columns cleanup
     amnt_ls = df.columns[df.columns.str.contains("amount", case=False)]
     if 0 < len(amnt_ls):
         df = df.rename(columns={amnt_ls[0]: "Amount"})
-            
-
-    # TODO: merge debit and credit into amount
-    # TODO: convert amount to number, fix signs as needed (expense should  be negative)
-
-
+        num_check = clean_money(df, "Amount")
+        if num_check:
+            df = num_check[1]
+        else:
+            force = io.warn_handle(num_check[1], err_log)
+            if not force:
+                return (False, f"Process aborted: {num_check[1]}.")
+    bal_ls = df.columns[df.columns.str.contains("bal", case=False)]
+    if 0 < len(bal_ls):
+        df = df.rename(columns={bal_ls[0]: "Balance"})
+        num_check = clean_money(df, "Balance")
+        if num_check:
+            df = num_check[1]
+        else:
+            force = io.warn_handle(num_check[1], err_log)
+            if not force:
+                return (False, f"Process aborted: {num_check[1]}.")
+    deb_ls = df.columns[df.columns.str.contains("debit", case=False)]
+    if 0 < len(deb_ls):
+        df = df.rename(columns={deb_ls[0]: "Debit"})
+        num_check = clean_money(df, "Debit")
+        if num_check:
+            df = num_check[1]
+        else:
+            force = io.warn_handle(num_check[1], err_log)
+            if not force:
+                return (False, f"Process aborted: {num_check[1]}.")
+    cdt_ls = df.columns[df.columns.str.contains("credit", case=False)]
+    if 0 < len(cdt_ls):
+        df = df.rename(columns={cdt_ls[0]: "Credit"})
+        num_check = clean_money(df, "Credit")
+        if num_check:
+            df = num_check[1]
+            merge_check = merge_deb_crd(df)
+            if merge_check:
+                df = merge_check[1]
+            else:
+                return (False, merge_check[1])
+        else:
+            force = io.warn_handle(num_check[1], err_log)
+            if not force:
+                return (False, f"Process aborted: {num_check[1]}.")
+    return (True, df)
