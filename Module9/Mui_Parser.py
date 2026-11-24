@@ -215,11 +215,12 @@ def date_clean(data, col, yr_first, day_first, determine, mixed):
                 "Could not convert.")
 
 
-def clean_dataframe(data_raw):
+def clean_dataframe(data_raw, err_log):
     """Cleans column naming, missing data, and data type conversions
     
     Args:
         data_raw: full raw data pulled from the source, leading rows trimmed
+        err_log: file location to log warnings and errors
     
     Returns:
         A 2-tuple of the following format:
@@ -229,11 +230,17 @@ def clean_dataframe(data_raw):
     data_clean = data_raw.copy()
     col_ls = data_clean[data_clean.columns.str.contains("date", case=False)]
     if 0 == len(col_ls):
-        head_check = infer_header(data_clean) # TODO: document this, send warning
-        if head_check[0]:
-            data_clean = head_check[1]
+        warn_msg = "Missing column headers detected, will infer"
+        force = io.warn_handle(warn_msg, err_log)
+        if force:
+            head_check = infer_header(data_clean) # TODO: document this
+            if head_check[0]:
+                data_clean = head_check[1]
+            else:
+                return (False, head_check[1])
         else:
-            return (False, head_check[1])
+            err_msg = "Process aborted."
+            return (False, err_msg)
     date_col_ls = []
     for col in data_clean.columns:
         if "date" in col.lower():
@@ -248,16 +255,31 @@ def clean_dataframe(data_raw):
         if not clean_check[0]:
             return (False, clean_check[1]) # TODO: document this, be sure to raise as needed in main
         elif "post" not in col.lower():
-            data_clean = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be presented, but post/posted date does not
-            data_clean.rename(columns={col: "Date"}, inplace=True,)
+            data_clean = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be present, but post/posted date does not
+            data_clean.rename(columns={col: "Date"}, inplace=True)
+        elif "post" in col.lower():
+            data_clean = clean_check[1]
+            data_clean.rename(columns={col: "Post Date"}, inplace=True)
         else:
             data_clean = clean_check[1]
+    bal_ls = data_clean[data_clean.columns.str.contains("bal", case=False)]
+    if 0 < len(bal_ls):
+        data_clean.rename(columns={bal_ls[0]: "Balance"}, inplace=True)
+    chk_ls = data_clean[data_clean.columns.str.contains("check", case=False)]
+    if 0 < len(chk_ls):
+        data_clean.rename(columns={chk_ls[0]: "Check Number"}, inplace=True)
+    deb_ls = data_clean[data_clean.columns.str.contains("debit", case=False)]
+    if 0 < len(deb_ls):
+        data_clean.rename(columns={deb_ls[0]: "Debit"}, inplace=True)
+    cdt_ls = data_clean[data_clean.columns.str.contains("credit", case=False)]
+    if 0 < len(cdt_ls):
+        data_clean.rename(columns={cdt_ls[0]: "Credit"}, inplace=True)
+    amnt_ls = data_clean[data_clean.columns.str.contains("amount", case=False)]
+    if 0 < len(amnt_ls):
+        data_clean.rename(columns={amnt_ls[0]: "Amount"}, inplace=True)
             
-    # TODO: consolidate on bal for balance
-    # TODO: consolidate on check for check number
-    # TODO: consolidate on debit for debit
-    # TODO: consolidate on credit for credit
+
     # TODO: merge debit and credit into amount
     # TODO: convert amount to number, fix signs as needed (expense should  be negative)
 
-    # TODO: add warn_log function to IO, used for sending warnings that we can continue through
+
