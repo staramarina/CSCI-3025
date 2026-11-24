@@ -49,6 +49,77 @@ def build_dataframe(file_name):
     return check
 
 
+def infer_header(data):
+    """Infers header columns if missing from the data set
+    
+    Args: pandas dataframe with placeholder column names
+    
+    Returns:
+        A 2-tuple of the following format:
+            [0]: True if headers were added, otherwise false
+            [1]: pandas dataframe on success, otherwise error message
+    """
+    df = data.copy()
+    yr_first_re = re.compile(
+        r"^(?P<yr>\d{4})(?P<sep>[-/])(?P<x>\d{1,2})(?P=sep)(?P<z>\d{1,2})$"
+    )
+    yr_last_re = re.compile(
+        r"^(?P<x>\d{1,2})(?P<sep>[-/])(?P<z>\d{1,2})(?P=sep)(?P<yr>\d{1,2}|\d{4})$"
+    )
+    money_re = re.compile(r"^-?\$?[\d,]+(\.\d{1,2})$")
+    date_col_ls = []
+    mon_col_ls = []
+    misc_col_ls = []
+    for col in df.columns:
+        df[col] = df[col].astype("string").str.strip()
+        if (
+            df[col].str.match(yr_first_re).any()
+            or df[col].str.match(yr_last_re).any()
+        ):
+            date_col_ls.append(col)
+        elif df[col].str.match(money_re).any():
+            mon_col_ls.append(col)
+        else:
+            misc_col_ls.append(col)
+    if 1 == len(date_col_ls):
+        df.rename(columns={date_col_ls[0]: "Date"}, inplace=True)
+    elif 2 == len(date_col_ls):
+        df.rename(columns={
+            date_col_ls[0]: "Date",
+            date_col_ls[1]: "Post Date"
+        }, inplace=True)
+    else:
+        return (False, "Could not verify date columns.")
+    if 1 == len(mon_col_ls):
+        df.rename(columns={mon_col_ls[0]: "Amount"}, inplace=True)
+    elif 2 == len(mon_col_ls):
+        if bool(
+            ((df[mon_col_ls[0]].notna() & "" != df[mon_col_ls[0]]) 
+             & (df[mon_col_ls[1]].notna() & "" != df[mon_col_ls[1]])
+            ).any()
+        ):
+            df.rename(columns={
+                mon_col_ls[0]: "Amount",
+                mon_col_ls[1]: "Balance"
+            }, inplace=True)
+        else:
+            df.rename(columns={
+                mon_col_ls[0]: "Debit",
+                mon_col_ls[1]: "Credit"
+            }, inplace=True)
+    elif 3 == len(mon_col_ls):
+        df.rename(columns={
+            mon_col_ls[0]: "Debit",
+            mon_col_ls[1]: "Credit",
+            mon_col_ls[2]: "Balance"
+        }, inplace=True)
+    else:
+        return (False, "Could not verify decimal columns.")
+    if 0 < len(misc_col_ls):
+        df.rename(columns={misc_col_ls[0]: "Description"}, inplace=True)
+    return (True, df)
+
+
 def date_format(column: pd.Series):
     """Attempts to determine the position of date values in string
     
@@ -155,8 +226,14 @@ def clean_dataframe(data_raw):
             [0]: True if clean and conversion successful, otherwise false
             [1]: pandas dataframe on success, otherwise error message
     """
-    # TODO handle case of missing column names
     data_clean = data_raw.copy()
+    col_ls = data_clean[data_clean.columns.str.contains("date", case=False)]
+    if 0 == len(col_ls):
+        head_check = infer_header(data_clean) # TODO: document this, send warning
+        if head_check[0]:
+            data_clean = head_check[1]
+        else:
+            return (False, head_check[1])
     date_col_ls = []
     for col in data_clean.columns:
         if "date" in col.lower():
@@ -173,6 +250,8 @@ def clean_dataframe(data_raw):
         elif "post" not in col.lower():
             data_clean = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be presented, but post/posted date does not
             data_clean.rename(columns={col: "Date"}, inplace=True,)
+        else:
+            data_clean = clean_check[1]
             
     # TODO: consolidate on bal for balance
     # TODO: consolidate on check for check number
@@ -180,3 +259,5 @@ def clean_dataframe(data_raw):
     # TODO: consolidate on credit for credit
     # TODO: merge debit and credit into amount
     # TODO: convert amount to number, fix signs as needed (expense should  be negative)
+
+    # TODO: add warn_log function to IO, used for sending warnings that we can continue through
