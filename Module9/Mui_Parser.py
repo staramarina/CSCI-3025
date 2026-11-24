@@ -264,9 +264,9 @@ def merge_deb_crd(data):
             [1]: pandas dataframe on success, otherwise error message
     """
     df = data.copy()
-    debit = df["Debit"].astype("Float64")
-    credit = df["Credit"].astype("Float64")
-    conflict = debit.notna() & credit.notna()
+    debit = pd.to_numeric(df["Debit"]).astype("Float64")
+    credit = pd.to_numeric(df["Credit"]).astype("Float64")
+    conflict = (debit.notna() & credit.notna())
     if conflict.any():
         return (False, "Conflicting debit/credit information")
     amount = pd.Series(pd.NA, index=df.index, dtype="Float64")
