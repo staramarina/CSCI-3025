@@ -374,20 +374,21 @@ def clean_dataframe(data_raw, err_log):
             if not force:
                 return (False, f"Process aborted: {num_check[1]}.")
 
-    # Merge debit and credit columns if they exist
-    if ("Debit" in df.columns 
-        and "Credit" in df.columns
-        and "Amount" not in df.columns):
+    # Hande debit/credit columns
+    if "Amount" in df.columns:
+        return (True, df)
+    elif ("Debit" in df.columns 
+        and "Credit" in df.columns):
         merge_check = merge_deb_crd(df)
         if merge_check[0]:
             df = merge_check[1]
         else:
             return (False, merge_check[1])
-    elif ("Debit" in df.columns 
-        and "Credit" not in df.columns
-        and "Amount" not in df.columns):
+    elif "Debit" in df.columns:
         df = df.rename(columns={"Debit": "Amount"})
-    elif ("Amount" in df.columns):
+        return (True, df)
+    elif "Credit" in df.columns:
+        df = df.rename(columns={"Credit": "Amount"})
         return (True, df)
     else:
-        return (False, "Indeterminate column labeling.")
+        return (False, "Could not determine column labeling.")
