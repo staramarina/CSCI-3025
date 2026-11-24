@@ -10,6 +10,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 import pandas as pd
 
 
@@ -17,6 +18,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
+import Mui_IO as io
 import Mui_Parser as parse
 
 
@@ -311,9 +313,18 @@ class TestDateFormat(unittest.TestCase):
         self.assertFalse(mixed)
 
 
-class TestCleanDate(unittest.TestCase):
+class TestCleanDate(unittest.TestCase):  # TODO now requires err_log, need to fix, right now failing
     """Class to test the date_clean(data, col, yr_first, day_first, determine, 
-    mixed) function"""
+    mixed, err_log) function"""
+
+    def setUp(self):
+        """Setup method to create temporary testing directory"""
+        self.__tmpdir = tempfile.TemporaryDirectory()
+        self.err_log = os.path.join(self.__tmpdir.name, "log.txt")
+
+    def tearDown(self):
+        """Tear down method to delete temprorary testing directory"""
+        self.__tmpdir.cleanup()
 
     def test_yr1_det(self):
         """Tests the case when the year is clearly first part"""
@@ -326,7 +337,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = False
-        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -342,7 +353,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = True
         det = True
         mix = False
-        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -358,7 +369,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = False
-        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -374,7 +385,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = True
-        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -390,7 +401,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = True
-        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -406,11 +417,11 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = False
         mix = True
-        check = parse.date_clean(df, col, yr1, day1, det, mix)
+        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
         self.assertFalse(check[0])
         self.assertIn("have mixed format", check[1])
 
-    def test_all_false(self):
+    def test_all_false_pass(self):
         """Tests the case when day position cannot be determined"""
         col = "Date"
         df = pd.DataFrame({ col: [
@@ -421,10 +432,34 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = False
         mix = False
-        check = parse.date_clean(df, col, yr1, day1, det, mix)
-        self.assertFalse(check[0])
-        self.assertIn("are ambiguous", check[1])
+        with patch("builtins.input", return_value="Y"):
+            check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
 
+    def test_all_false_fail(self):
+        """Tests the case when day position cannot be determined"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "01-02-03", "02-03-04", "03-04-05", 
+            "04-05-03", "05-06-04", "10-11-12"
+        ]})
+        yr1 = False
+        day1 = False
+        det = False
+        mix = False
+        with patch("builtins.input", return_value="N"):
+            check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("Process aborted", check[1])
+
+
+#class TestCleanMoney(unittest.TestCase):
+    #"""Class to test the clean_money(data, col) function"""
+
+#class TestMergeDebCrd(unittest.TestCase):
+    #"""Class to test the merge_deb_crd(data) function"""
 
 #class TestCleanDataframe(unittest.TestCase):
     #"""Class to test the clean_dataframe(data_raw) funciton"""
