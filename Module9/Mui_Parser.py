@@ -94,8 +94,8 @@ def infer_header(data):
         df.rename(columns={mon_col_ls[0]: "Amount"}, inplace=True)
     elif 2 == len(mon_col_ls):
         if bool(
-            ((df[mon_col_ls[0]].notna() & "" != df[mon_col_ls[0]]) 
-             & (df[mon_col_ls[1]].notna() & "" != df[mon_col_ls[1]])
+            ((df[mon_col_ls[0]].notna() & ("" != df[mon_col_ls[0]])) 
+             & (df[mon_col_ls[1]].notna() & ("" != df[mon_col_ls[1]]))
             ).any()
         ):
             df.rename(columns={
