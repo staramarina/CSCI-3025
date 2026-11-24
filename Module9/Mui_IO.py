@@ -171,6 +171,28 @@ def err_handle(err_msg, err_log='log.txt'):  # Heavy Reuse from Module7
         print(f'{log_err} {flag[1]}')
 
 
+def warn_handle(warn_msg, err_log='log.txt'):
+    """Handles various warnings, prints console message and calls print_log
+    
+    Args:
+        warn_msg: the warning message to log
+        err_log: the file path where the log is located
+    
+    Returns:
+        True to continue, otherwise False
+    """
+    std_warn = f'WARNING: {warn_msg}. Would you like to proceed (Y/N): '
+    log_err = 'Could not send error to the logs:'
+    flag = print_log(warn_msg, err_log)
+    if not flag[0]:
+        print(f'{log_err} {flag[1]}')
+    force = input(f'{std_warn}')
+    if force in ["Y", "y"]:
+        return True
+    else:
+        return False
+
+
 def print_analysis_menu():
     """Prints menu with analysis options"""
     print('Please select one of the following options:')
