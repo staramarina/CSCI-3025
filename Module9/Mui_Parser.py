@@ -82,41 +82,41 @@ def infer_header(data):
         else:
             misc_col_ls.append(col)
     if 1 == len(date_col_ls):
-        df.rename(columns={date_col_ls[0]: "Date"}, inplace=True)
+        df = df.rename(columns={date_col_ls[0]: "Date"})
     elif 2 == len(date_col_ls):
-        df.rename(columns={
+        df = df.rename(columns={
             date_col_ls[0]: "Date",
             date_col_ls[1]: "Post Date"
-        }, inplace=True)
+        })
     else:
         return (False, "Could not verify date columns.")
     if 1 == len(mon_col_ls):
-        df.rename(columns={mon_col_ls[0]: "Amount"}, inplace=True)
+        df = df.rename(columns={mon_col_ls[0]: "Amount"})
     elif 2 == len(mon_col_ls):
         if bool(
             ((df[mon_col_ls[0]].notna() & ("" != df[mon_col_ls[0]])) 
              & (df[mon_col_ls[1]].notna() & ("" != df[mon_col_ls[1]]))
             ).any()
         ):
-            df.rename(columns={
+            df = df.rename(columns={
                 mon_col_ls[0]: "Amount",
                 mon_col_ls[1]: "Balance"
-            }, inplace=True)
+            })
         else:
-            df.rename(columns={
+            df = df.rename(columns={
                 mon_col_ls[0]: "Debit",
                 mon_col_ls[1]: "Credit"
-            }, inplace=True)
+            })
     elif 3 == len(mon_col_ls):
-        df.rename(columns={
+        df = df.rename(columns={
             mon_col_ls[0]: "Debit",
             mon_col_ls[1]: "Credit",
             mon_col_ls[2]: "Balance"
-        }, inplace=True)
+        })
     else:
         return (False, "Could not verify decimal columns.")
     if 0 < len(misc_col_ls):
-        df.rename(columns={misc_col_ls[0]: "Description"}, inplace=True)
+        df = df.rename(columns={misc_col_ls[0]: "Description"})
     return (True, df)
 
 
@@ -256,27 +256,27 @@ def clean_dataframe(data_raw, err_log):
             return (False, clean_check[1]) # TODO: document this, be sure to raise as needed in main
         elif "post" not in col.lower():
             data_clean = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be present, but post/posted date does not
-            data_clean.rename(columns={col: "Date"}, inplace=True)
+            data_clean = data_clean.rename(columns={col: "Date"})
         elif "post" in col.lower():
             data_clean = clean_check[1]
-            data_clean.rename(columns={col: "Post Date"}, inplace=True)
+            data_clean.rename(columns={col: "Post Date"})
         else:
             data_clean = clean_check[1]
     bal_ls = data_clean[data_clean.columns.str.contains("bal", case=False)]
     if 0 < len(bal_ls):
-        data_clean.rename(columns={bal_ls[0]: "Balance"}, inplace=True)
+        data_clean = data_clean.rename(columns={bal_ls[0]: "Balance"})
     chk_ls = data_clean[data_clean.columns.str.contains("check", case=False)]
     if 0 < len(chk_ls):
-        data_clean.rename(columns={chk_ls[0]: "Check Number"}, inplace=True)
+        data_clean = data_clean.rename(columns={chk_ls[0]: "Check Number"})
     deb_ls = data_clean[data_clean.columns.str.contains("debit", case=False)]
     if 0 < len(deb_ls):
-        data_clean.rename(columns={deb_ls[0]: "Debit"}, inplace=True)
+        data_clean = data_clean.rename(columns={deb_ls[0]: "Debit"})
     cdt_ls = data_clean[data_clean.columns.str.contains("credit", case=False)]
     if 0 < len(cdt_ls):
-        data_clean.rename(columns={cdt_ls[0]: "Credit"}, inplace=True)
+        data_clean = data_clean.rename(columns={cdt_ls[0]: "Credit"})
     amnt_ls = data_clean[data_clean.columns.str.contains("amount", case=False)]
     if 0 < len(amnt_ls):
-        data_clean.rename(columns={amnt_ls[0]: "Amount"}, inplace=True)
+        data_clean = data_clean.rename(columns={amnt_ls[0]: "Amount"})
             
 
     # TODO: merge debit and credit into amount
