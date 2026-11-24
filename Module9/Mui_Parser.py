@@ -40,11 +40,11 @@ def build_dataframe(file_name):
                 continue
     if 0 == line_count:
         if "Date" in line:
-            head_info = 0
+            head_info = 0  # Missing column header case
         else:
-            head_info = None
+            head_info = None  # Normal header case
     else:
-        head_info = line_count
+        head_info = line_count  # Leading rows case
     check = io.dataframe_check(file_name, head_info)
     return check
 
@@ -66,7 +66,7 @@ def infer_header(data):
     yr_last_re = re.compile(
         r"^(?P<x>\d{1,2})(?P<sep>[-/])(?P<z>\d{1,2})(?P=sep)(?P<yr>\d{1,2}|\d{4})$"
     )
-    money_re = re.compile(r"^-?\$?[\d,]+(\.\d{1,2})$")
+    money_re = re.compile(r"^-?\$?[\d,]+(\.\d{1,2})?$")
     date_col_ls = []
     mon_col_ls = []
     misc_col_ls = []
@@ -81,33 +81,33 @@ def infer_header(data):
             mon_col_ls.append(col)
         else:
             misc_col_ls.append(col)
-    if 1 == len(date_col_ls):
+    if 1 == len(date_col_ls):  # Assumes date is always first
         df = df.rename(columns={date_col_ls[0]: "Date"})
-    elif 2 == len(date_col_ls):
+    elif 2 == len(date_col_ls):  # Assumes a second date column is post date
         df = df.rename(columns={
             date_col_ls[0]: "Date",
             date_col_ls[1]: "Post Date"
         })
     else:
         return (False, "Could not verify date columns.")
-    if 1 == len(mon_col_ls):
+    if 1 == len(mon_col_ls):  # Assumes one money column is amount
         df = df.rename(columns={mon_col_ls[0]: "Amount"})
     elif 2 == len(mon_col_ls):
         if bool(
             ((df[mon_col_ls[0]].notna() & ("" != df[mon_col_ls[0]])) 
              & (df[mon_col_ls[1]].notna() & ("" != df[mon_col_ls[1]]))
             ).any()
-        ):
+        ):  # Assumes amount/balance combo if rows have both values
             df = df.rename(columns={
                 mon_col_ls[0]: "Amount",
                 mon_col_ls[1]: "Balance"
             })
-        else:
+        else:  # Assumes debit/credit combo if no row has both values
             df = df.rename(columns={
                 mon_col_ls[0]: "Debit",
                 mon_col_ls[1]: "Credit"
             })
-    elif 3 == len(mon_col_ls):
+    elif 3 == len(mon_col_ls):  # Assumes Debit/Credit/Balance order
         df = df.rename(columns={
             mon_col_ls[0]: "Debit",
             mon_col_ls[1]: "Credit",
@@ -115,7 +115,7 @@ def infer_header(data):
         })
     else:
         return (False, "Could not verify decimal columns.")
-    if 0 < len(misc_col_ls):
+    if 0 < len(misc_col_ls):  # Assumes first string column is Description
         df = df.rename(columns={misc_col_ls[0]: "Description"})
     return (True, df)
 
@@ -143,7 +143,7 @@ def date_format(column: pd.Series):
         r"^(?P<x>\d{1,2})(?P<sep>[-/])(?P<z>\d{1,2})(?P=sep)(?P<yr>\d{1,2}|\d{4})$"
     )
     yr_first_match = date_col.str.extract(yr_first_re).dropna()
-    if 0 < len(yr_first_match):
+    if 0 < len(yr_first_match):  # Assumes date first is always YYYY, then MM
         yr_first = True
         day_first = False
         determine = True
@@ -153,16 +153,16 @@ def date_format(column: pd.Series):
         yr_match = date_col.str.extract(yr_last_re).dropna()
         a = pd.to_numeric(yr_match["x"], errors="coerce")
         b = pd.to_numeric(yr_match["z"], errors="coerce")
-        if (12 < a).any() and (12 < b).any():
+        if (12 < a).any() and (12 < b).any():  # Mixed format case
             day_first = False
             determine = False
-        elif (12 < a).any():
+        elif (12 < a).any():  # Always day first case
             day_first = True
             determine = True
-        elif (12 < b).any():
+        elif (12 < b).any():  # Always month first case
             day_first = False
             determine = True
-        else:
+        else:  # Ambiguous order case
             day_first = False
             determine = False
         mixed = bool(
@@ -192,7 +192,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
     """
     df = data.copy()
     df[col] = df[col].astype("string").str.strip()
-    if determine and not mixed:
+    if determine and not mixed:  # Pass as is case
         df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=day_first, 
                                  yearfirst=yr_first)
         check = df[col].isna().all()
@@ -200,7 +200,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
             return (False, f"Dates in '{col}' failed to convert")
         else:
             return (True, df)
-    elif determine and mixed:
+    elif determine and mixed:  # Pass as mixed format, pandas should handle
         df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=day_first, 
                                  yearfirst=yr_first, format="mixed")
         check = df[col].isna().all()
@@ -208,7 +208,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
             return (False, f"Dates in '{col}' failed to convert")
         else:
             return (True, df)    
-    elif not mixed:
+    elif not mixed:  # Ambiguous dates, assume month first or abort
         warn_msg = f"Dates in '{col}' are ambiguous, will assume month first"
         force = io.warn_handle(warn_msg, err_log)
         if force:
@@ -222,7 +222,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
             return (False, "Process aborted.")
         #return (False, f"Dates in '{col}' are ambiguous, "
         #        "verify month first assumption") # TODO old line, update tests to match
-    else:
+    else:  # Mixed failing case, cannot clean
         return (False, f"Dates in '{col}' have mixed format. "
                 "Could not convert.")
 
@@ -264,11 +264,14 @@ def merge_deb_crd(data):
             [1]: pandas dataframe on success, otherwise error message
     """
     df = data.copy()
-    debit = df["Debit"]
-    credit = df["Credit"]
-    amount = pd.Series(pd.Na, index=df.index, dtype="Float64")
-    amount = amount.fillana(debit)
-    amount = amount.fillana(credit)
+    debit = df["Debit"].astype("Float64")
+    credit = df["Credit"].astype("Float64")
+    conflict = debit.notna() & credit.notna()
+    if conflict.any():
+        return (False, "Conflicting debit/credit information")
+    amount = pd.Series(pd.NA, index=df.index, dtype="Float64")
+    amount = amount.fillna(-debit.abs())
+    amount = amount.fillna(credit.abs())
     check = amount.isna().all()
     if check:
         return (False, "Failed to merge columns")
@@ -321,7 +324,7 @@ def clean_dataframe(data_raw, err_log):
             err_log
         )
         if not clean_check[0]:
-            return (False, clean_check[1]) # TODO: document this, be sure to raise as needed in main
+            return (False, clean_check[1])
         elif "post" not in col.lower():
             df = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be present, but post/posted date does not
             df = df.rename(columns={col: "Date"})
@@ -331,12 +334,12 @@ def clean_dataframe(data_raw, err_log):
         else:
             df = clean_check[1]
 
-    # Money columns cleanup
+    # Rename and format money columns
     amnt_ls = df.columns[df.columns.str.contains("amount", case=False)]
     if 0 < len(amnt_ls):
         df = df.rename(columns={amnt_ls[0]: "Amount"})
         num_check = clean_money(df, "Amount")
-        if num_check:
+        if num_check[0]:
             df = num_check[1]
         else:
             force = io.warn_handle(num_check[1], err_log)
@@ -346,7 +349,7 @@ def clean_dataframe(data_raw, err_log):
     if 0 < len(bal_ls):
         df = df.rename(columns={bal_ls[0]: "Balance"})
         num_check = clean_money(df, "Balance")
-        if num_check:
+        if num_check[0]:
             df = num_check[1]
         else:
             force = io.warn_handle(num_check[1], err_log)
@@ -356,25 +359,30 @@ def clean_dataframe(data_raw, err_log):
     if 0 < len(deb_ls):
         df = df.rename(columns={deb_ls[0]: "Debit"})
         num_check = clean_money(df, "Debit")
-        if num_check:
+        if num_check[0]:
             df = num_check[1]
         else:
             force = io.warn_handle(num_check[1], err_log)
             if not force:
                 return (False, f"Process aborted: {num_check[1]}.")
-    cdt_ls = df.columns[df.columns.str.contains("credit", case=False)]
-    if 0 < len(cdt_ls):
-        df = df.rename(columns={cdt_ls[0]: "Credit"})
+    crd_ls = df.columns[df.columns.str.contains("credit", case=False)]
+    if 0 < len(crd_ls):
+        df = df.rename(columns={crd_ls[0]: "Credit"})
         num_check = clean_money(df, "Credit")
-        if num_check:
+        if num_check[0]:
             df = num_check[1]
-            merge_check = merge_deb_crd(df)
-            if merge_check:
-                df = merge_check[1]
-            else:
-                return (False, merge_check[1])
         else:
             force = io.warn_handle(num_check[1], err_log)
             if not force:
                 return (False, f"Process aborted: {num_check[1]}.")
+
+    # Merge debit and credit columns if they exist
+    if ("Debit" in df.columns 
+        and "Credit" in df.columns
+        and "Amount" not in df.columns):
+        merge_check = merge_deb_crd(df)
+        if merge_check:
+            df = merge_check[1]
+        else:
+            return (False, merge_check[1])
     return (True, df)
