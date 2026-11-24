@@ -227,56 +227,56 @@ def clean_dataframe(data_raw, err_log):
             [0]: True if clean and conversion successful, otherwise false
             [1]: pandas dataframe on success, otherwise error message
     """
-    data_clean = data_raw.copy()
-    col_ls = data_clean[data_clean.columns.str.contains("date", case=False)]
+    df = data_raw.copy()
+    col_ls = df[df.columns.str.contains("date", case=False)]
     if 0 == len(col_ls):
         warn_msg = "Missing column headers detected, will infer"
         force = io.warn_handle(warn_msg, err_log)
         if force:
-            head_check = infer_header(data_clean) # TODO: document this
+            head_check = infer_header(df) # TODO: document this
             if head_check[0]:
-                data_clean = head_check[1]
+                df = head_check[1]
             else:
                 return (False, head_check[1])
         else:
             err_msg = "Process aborted."
             return (False, err_msg)
     date_col_ls = []
-    for col in data_clean.columns:
+    for col in df.columns:
         if "date" in col.lower():
             date_col_ls.append(col)
     for col in date_col_ls:
-        format_check = date_format(data_clean[col])
+        format_check = date_format(df[col])
         clean_check = date_clean(
-            data_clean, col, 
+            df, col, 
             format_check[0], format_check[1], 
             format_check[2], format_check[3]
         )
         if not clean_check[0]:
             return (False, clean_check[1]) # TODO: document this, be sure to raise as needed in main
         elif "post" not in col.lower():
-            data_clean = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be present, but post/posted date does not
-            data_clean = data_clean.rename(columns={col: "Date"})
+            df = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be present, but post/posted date does not
+            df = df.rename(columns={col: "Date"})
         elif "post" in col.lower():
-            data_clean = clean_check[1]
-            data_clean.rename(columns={col: "Post Date"})
+            df = clean_check[1]
+            df = df.rename(columns={col: "Post Date"})
         else:
-            data_clean = clean_check[1]
-    bal_ls = data_clean[data_clean.columns.str.contains("bal", case=False)]
+            df = clean_check[1]
+    bal_ls = df.columns[df.columns.str.contains("bal", case=False)]
     if 0 < len(bal_ls):
-        data_clean = data_clean.rename(columns={bal_ls[0]: "Balance"})
-    chk_ls = data_clean[data_clean.columns.str.contains("check", case=False)]
+        df = df.rename(columns={bal_ls[0]: "Balance"})
+    chk_ls = df.columns[df.columns.str.contains("check", case=False)]
     if 0 < len(chk_ls):
-        data_clean = data_clean.rename(columns={chk_ls[0]: "Check Number"})
-    deb_ls = data_clean[data_clean.columns.str.contains("debit", case=False)]
+        df = df.rename(columns={chk_ls[0]: "Check Number"})
+    deb_ls = df.columns[df.columns.str.contains("debit", case=False)]
     if 0 < len(deb_ls):
-        data_clean = data_clean.rename(columns={deb_ls[0]: "Debit"})
-    cdt_ls = data_clean[data_clean.columns.str.contains("credit", case=False)]
+        df = df.rename(columns={deb_ls[0]: "Debit"})
+    cdt_ls = df.columns[df.columns.str.contains("credit", case=False)]
     if 0 < len(cdt_ls):
-        data_clean = data_clean.rename(columns={cdt_ls[0]: "Credit"})
-    amnt_ls = data_clean[data_clean.columns.str.contains("amount", case=False)]
+        df = df.rename(columns={cdt_ls[0]: "Credit"})
+    amnt_ls = df.columns[df.columns.str.contains("amount", case=False)]
     if 0 < len(amnt_ls):
-        data_clean = data_clean.rename(columns={amnt_ls[0]: "Amount"})
+        df = df.rename(columns={amnt_ls[0]: "Amount"})
             
 
     # TODO: merge debit and credit into amount
