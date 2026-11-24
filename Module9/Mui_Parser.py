@@ -296,6 +296,7 @@ def clean_dataframe(data_raw, err_log):
     df = data_raw.copy()
 
     # Missing headers cleanup
+    df.columns = [str(col) for col in df.columns]
     col_ls = df.columns[df.columns.str.contains("date", case=False)]
     if 0 == len(col_ls):
         warn_msg = "Missing column headers detected, will infer"
@@ -335,16 +336,6 @@ def clean_dataframe(data_raw, err_log):
             df = clean_check[1]
 
     # Rename and format money columns
-    amnt_ls = df.columns[df.columns.str.contains("amount", case=False)]
-    if 0 < len(amnt_ls):
-        df = df.rename(columns={amnt_ls[0]: "Amount"})
-        num_check = clean_money(df, "Amount")
-        if num_check[0]:
-            df = num_check[1]
-        else:
-            force = io.warn_handle(num_check[1], err_log)
-            if not force:
-                return (False, f"Process aborted: {num_check[1]}.")
     bal_ls = df.columns[df.columns.str.contains("bal", case=False)]
     if 0 < len(bal_ls):
         df = df.rename(columns={bal_ls[0]: "Balance"})
@@ -375,6 +366,16 @@ def clean_dataframe(data_raw, err_log):
             force = io.warn_handle(num_check[1], err_log)
             if not force:
                 return (False, f"Process aborted: {num_check[1]}.")
+    amnt_ls = df.columns[df.columns.str.contains("amount", case=False)]
+    if 0 < len(amnt_ls):
+        df = df.rename(columns={amnt_ls[0]: "Amount"})
+        num_check = clean_money(df, "Amount")
+        if num_check[0]:
+            df = num_check[1]
+        else:
+            force = io.warn_handle(num_check[1], err_log)
+            if not force:
+                return (False, f"Process aborted: {num_check[1]}.")
 
     # Hande debit/credit columns
     if "Amount" in df.columns:
@@ -384,6 +385,7 @@ def clean_dataframe(data_raw, err_log):
         merge_check = merge_deb_crd(df)
         if merge_check[0]:
             df = merge_check[1]
+            return (True, df)
         else:
             return (False, merge_check[1])
     elif "Debit" in df.columns:
