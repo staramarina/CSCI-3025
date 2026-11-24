@@ -39,7 +39,7 @@ def build_dataframe(file_name):
                 line_count += 1
                 continue
     if 0 == line_count:
-        if "Date" in line:
+        if "date" in line.lower():
             head_info = 0  # Missing column header case
         else:
             head_info = None  # Normal header case
@@ -220,8 +220,6 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
                 return (True, df)
         else:
             return (False, "Process aborted.")
-        #return (False, f"Dates in '{col}' are ambiguous, "
-        #        "verify month first assumption") # TODO old line, update tests to match
     else:  # Mixed failing case, cannot clean
         return (False, f"Dates in '{col}' have mixed format. "
                 "Could not convert.")
@@ -231,7 +229,7 @@ def clean_money(data, col):
     """Fixes formatting and converts to number within given pandas series
     
     Args:
-        data: pandas dataframe that has debit and credit columns
+        data: pandas dataframe that contains the named money column
         col: name of the column that needs cleaning
     
     Returns:
@@ -385,7 +383,11 @@ def clean_dataframe(data_raw, err_log):
             df = merge_check[1]
         else:
             return (False, merge_check[1])
+    elif ("Debit" in df.columns 
+        and "Credit" not in df.columns
+        and "Amount" not in df.columns):
+        df = df.rename(columns={"Debit": "Amount"})
     elif ("Amount" in df.columns):
         return (True, df)
     else:
-        return (False, "Mixed column labeling")
+        return (False, "Indeterminate column labeling.")
