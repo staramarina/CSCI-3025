@@ -34,14 +34,14 @@
 5 2026-11-14  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA     351.7   -5.42
 6 2026-11-14  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    357.12   -7.59
 
-    Status       Date                            Description  Member Name  Post Date  Amount
-0  Pending 2026-11-18                           GENOS STEAKS          NaN        NaT  -21.13
-1   Posted 2026-11-16                       INSOMNIA COOKIES          NaN 2026-11-19   -7.66
-2   Posted 2026-11-16                             MCDONALD S          NaN 2026-11-17  -28.79
-3   Posted 2026-11-15                           Esso Station          NaN 2026-11-16  -20.27
-4   Posted 2026-11-15                        External Depost          NaN 2026-11-15  1500.0
-5   Posted 2026-11-14  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA           NaN 2026-11-15   -5.42
-6   Posted 2026-11-14  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA           NaN 2026-11-15   -7.59
+    Status       Date                            Description  Post Date  Amount
+0  Pending 2026-11-18                           GENOS STEAKS        NaT  -21.13
+1   Posted 2026-11-16                       INSOMNIA COOKIES 2026-11-19   -7.66
+2   Posted 2026-11-16                             MCDONALD S 2026-11-17  -28.79
+3   Posted 2026-11-15                           Esso Station 2026-11-16  -20.27
+4   Posted 2026-11-15                        External Depost 2026-11-15  1500.0
+5   Posted 2026-11-14  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA  2026-11-15   -5.42
+6   Posted 2026-11-14  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA  2026-11-15   -7.59
 
          Date                            Description   Balance   Amount
 0  2026-09-01                      Beginning balance  12418.36     <NA>
@@ -86,14 +86,14 @@
 5          7130903822 2026-11-14    Purchase  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA     351.7           NaN   -5.42
 6          6915999738 2026-11-14    Purchase  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    357.12           NaN   -7.59
 
-   Transaction Number       Date Description                                   Memo  Balance  Check Number  Fees  Amount
-0          8148121138 2026-11-18    Purchase                           GENOS STEAKS    77.85           NaN   NaN  -21.13
-1          7992611639 2026-11-16    Purchase                       INSOMNIA COOKIES    56.72           NaN   NaN   -7.66
-2          7441109216 2026-11-16    Purchase                             MCDONALD S    49.06           NaN   NaN  -28.79
-3          7333617721 2026-11-15    Purchase                           Esso Station    20.27           NaN   NaN  -20.27
-4          7255644057 2026-11-15     Payment                        External Depost      0.0           NaN   NaN  456.15
-5          7130903822 2026-11-14    Purchase  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA    456.15           NaN   NaN   -5.42
-6          6915999738 2026-11-14    Purchase  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    448.56           NaN   NaN   -7.59
+   Transaction Number       Date Description                                   Memo  Balance  Amount
+0          8148121138 2026-11-18    Purchase                           GENOS STEAKS    77.85  -21.13
+1          7992611639 2026-11-16    Purchase                       INSOMNIA COOKIES    56.72   -7.66
+2          7441109216 2026-11-16    Purchase                             MCDONALD S    49.06  -28.79
+3          7333617721 2026-11-15    Purchase                           Esso Station    20.27  -20.27
+4          7255644057 2026-11-15     Payment                        External Depost      0.0  456.15
+5          7130903822 2026-11-14    Purchase  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA    456.15   -5.42
+6          6915999738 2026-11-14    Purchase  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    448.56   -7.59
 
         Date       Description                   Original Description     Category  Amount   Status
 0 2026-11-18      GENOS STEAKS                           GENOS STEAKS  Restaurants  -21.13  Pending
@@ -113,12 +113,12 @@
 5 2026-11-14    Amazon Digital  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA              Shopping    5.42   POSTED
 6 2026-11-14    Amazon Digital  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA              Shopping    7.59   POSTED
 
-        Date  Amount Description     3     4                                     5
-0 2026-11-18  -21.13           *  <NA>  <NA>                          GENOS STEAKS
-1 2026-11-16   -7.66           *  <NA>  <NA>                      INSOMNIA COOKIES
-2 2026-11-16  -28.79           *  <NA>  <NA>                            MCDONALD S
-3 2026-11-15  -20.27           *  <NA>  <NA>                          Esso Station
-4 2026-11-15  1500.0           *  <NA>  <NA>                       External Depost
-5 2026-11-14   -5.42           *  <NA>  <NA>  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA
-6 2026-11-14   -7.59           *  <NA>  <NA>  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA
+        Date  Amount  2                                     5
+0 2026-11-18  -21.13  *                          GENOS STEAKS
+1 2026-11-16   -7.66  *                      INSOMNIA COOKIES
+2 2026-11-16  -28.79  *                            MCDONALD S
+3 2026-11-15  -20.27  *                          Esso Station
+4 2026-11-15  1500.0  *                       External Depost
+5 2026-11-14   -5.42  *  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA
+6 2026-11-14   -7.59  *  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA
 

@@ -190,26 +190,18 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
     """
     df = data.copy()
     df[col] = df[col].astype("string").str.strip()
-    if determine and not mixed:  # Pass as is case TODO this is throwing mixed warning from pandas, need to figure out why
+    if determine:  # Format definitively determined
         df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=day_first, 
-                                 yearfirst=yr_first)
+                                 yearfirst=yr_first, format="mixed") # TODO document that we're letting python used mixed format, it's slower, but mitigates warnings, warning capture not threadsafe.
         check = df[col].isna().all()
         if check:
             return (False, f"Dates in '{col}' failed to convert")
         else:
             return (True, df)
-    elif determine and mixed:  # Pass as mixed format, pandas should handle
-        df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=day_first, 
-                                 yearfirst=yr_first, format="mixed")
-        check = df[col].isna().all()
-        if check:
-            return (False, f"Dates in '{col}' failed to convert")
-        else:
-            return (True, df)    
     elif not mixed:  # Ambiguous dates, assume month first or abort
         warn_msg = f"Dates in '{col}' are ambiguous, will assume month first"
         force = io.warn_handle(warn_msg, err_log)
-        if force: # TODO need to figure out why I need mixed here, shouldn't be mixed.
+        if force:
             df[col] = pd.to_datetime(df[col], errors="coerce", 
                                      dayfirst=day_first, yearfirst=yr_first, 
                                      format="mixed")
@@ -375,22 +367,34 @@ def clean_dataframe(data_raw, err_log):
             if not force:
                 return (False, f"Process aborted: {num_check[1]}.")
 
-    # Hande debit/credit columns
-    if "Amount" in df.columns:
-        return (True, df)
-    elif ("Debit" in df.columns 
-        and "Credit" in df.columns):
+    # Handle debit/credit columns
+    if (
+        "Debit" in df.columns
+        and "Credit" in df.columns
+        and "Amount" not in df.columns
+    ):
         merge_check = merge_deb_crd(df)
         if merge_check[0]:
             df = merge_check[1]
-            return (True, df)
         else:
             return (False, merge_check[1])
-    elif "Debit" in df.columns:
+    elif (
+        "Debit" in df.columns
+        and "Amount" not in df.columns
+    ):
         df = df.rename(columns={"Debit": "Amount"})
-        return (True, df)
-    elif "Credit" in df.columns:
+    elif (
+        "Credit" in df.columns
+        and "Amount" not in df.columns
+    ):
         df = df.rename(columns={"Credit": "Amount"})
+
+    # Drop full NA columns
+    if "Amount" in df.columns:
+        for col in df.columns:
+            if df[col].isna().all():
+                df = df.drop(columns=[col])
         return (True, df)
     else:
         return (False, "Could not determine column labeling.")
+        
