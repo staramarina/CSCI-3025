@@ -1,6 +1,6 @@
 # Tiffany Mui - Module 9 Assignment
 
-TODO: One-line description
+An expense tracker that accepts multiple CSV exports from a variety of banks.  
 
 Estimated Minimum: ![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)    
 Development Environment: Python 3.14.4
@@ -25,7 +25,8 @@ The personal expense tracker:
 - TODO
 
 Ground work for the following features is included, but not fully implemented:
-- TODO
+- Mixed date formatting flagging - the case of indeterminate day, month, or year first is caught and the user is prompted with a warning. Other mixed date formatting is caught with format="mixed" to avoid warnings from pandas when supporting unexpected date formats. 
+- Consistent signage on "Amount" values - For banks with "Debit" and "Credit" columns, the standard that expenses are negative and credits are positive is enforced. However, there is no method for determining the convention when a single "Amount" column is given. The convention varies between banks and in the case of USAA, depends on the account type. No assumption is made when performing the analysis, though it does result in negative numbers appears in charts. TDOD verify this when the charts are built.
 
 ## Features
 - TODO
@@ -72,23 +73,32 @@ TODO
 ## Project Structure
 ```
    Module9/
-    ├── Mui_Ancillary.py                # General purpose ancillary tools
-    ├── Mui_IO.py                       # Handles all input/output for the program
-    ├── Mui_M9Assignment.py             # Main program
-    ├── Mui_Parser.py                   # Normalizing and transforming CSVs to pandas dataframes
-    ├── Mui_Statement.py                # Class for bank statements, analysis, and chart generation
-    ├── pyproject.toml                  # Project configuration file
-    ├── README.md                       # Read me file (current file)
-    ├── charts                          # Directory to hold generated charts
-    │     └── TODO.png                  # TODO
-    ├── tests                           # Test files for unittest
-    │     ├── __init__.py               # Tells Python this is a package
-    │     ├── test_ancillary.py         # Tests for Mui_Ancillary.py
-    │     ├── test_io.py                # Tests for Mui_IO.py
-    │     ├── test_parser.py            # Tests for Mui_Parser.py
-    │     └── test_statement.py         # Tests for Mui_Statement.py
-    └── data                            # Data used for manual tests
-          └── TODO.txt                  # TODO
+    ├── Mui_Ancillary.py                        # General purpose ancillary tools
+    ├── Mui_IO.py                               # Handles all input/output for the program
+    ├── Mui_M9Assignment.py                     # Main program
+    ├── Mui_Parser.py                           # Normalizing and transforming CSVs to pandas dataframes
+    ├── Mui_Statement.py                        # Class for bank statements, analysis, and chart generation
+    ├── pyproject.toml                          # Project configuration file
+    ├── README.md                               # Read me file (current file)
+    ├── charts                                  # Directory to hold generated charts
+    │     └── TODO.png                          # TODO
+    ├── tests                                   # Test files for unittest
+    │     ├── __init__.py                       # Tells Python this is a package
+    │     ├── test_ancillary.py                 # Tests for Mui_Ancillary.py
+    │     ├── test_io.py                        # Tests for Mui_IO.py
+    │     ├── test_parser.py                    # Tests for Mui_Parser.py
+    │     └── test_statement.py                 # Tests for Mui_Statement.py
+    └── data                                    # Data used for manual tests
+    │     ├── bofa_checking_example.csv         # Estimated example of checking account export from Bank of America
+    │     ├── chase_checking_example.csv        # Estimated example of checking account export from Chase
+    │     ├── chase_credit_example.csv          # Estimated example of credit card account export from Chase
+    │     ├── citibank_checking_example.csv     # Estimated example of checking account export from Citibank
+    │     ├── citibank_credit_example.csv       # Estimated example of credit card account export from Citibank
+    │     ├── sample-bank-transactions.csv      # Sample generic bank export from https://getutilly.com/guides/sample-bank-statement-csv
+    │     ├── SCU_checking_example.csv          # Example of checking account export from SAFE Credit Union
+    │     ├── SCU_credit_example.csv            # Example of credit card account export from SAFE Credit Union
+    │     ├── USAA_checking_example.csv         # Example of checking account export from USAA
+    │     └── USAA_credit_example.csv           # Example of credit card account export from USAA
 ```
 
 ## Modules
@@ -138,11 +148,47 @@ The expense tracker has robust data validation and parsing rules as described in
 - Files that do not exist, exist but are empty, have malformed data, or result in other value errors will generate a notification to the terminal and log the full details of the error. 
 
 #### Data Parsing
-- The parser module will attempt to detect the date format with the following rules/assumptions
+- The parser module will attempt to detect the date format with the following rules/assumptions.
     - Separating characters are used and include "/" or "-"
     - Dates are not of formats YY-MM-DD, YY/MM/DD, YY-DD-MM, YY/DD/MM, i.e. if the year is first it must be 4 digits followed by month, then day.
-    - If the year is last as either YYYY or YY, a check is run to determine whether the day is first or not. In an amiguous case, the assumption is made that month is first (most common in the U.S.) and the user is notified of this assumption. Example: 10/11/12 is interpretted as 11 Oct 2012.
-    - Mixed formatting, e.g. MM/DD/YYYY and MM-DD-YY within the same column are handled, but position order must be consistent, i.e. cannot swap between MM/DD/YY and DD/MM/YY. 
+    - If the year is last as either YYYY or YY, a check is run to determine whether the day is first or not. In an amiguous case, the assumption is made that month is first (most common in the U.S.) and the user is prompted to approve this assumption. Example: 10/11/12 is interpretted as 11 Oct 2012.
+    - Mixed formatting, e.g. MM/DD/YYYY and MM-DD-YY within the same column are handled via pandas format="mixed", but position order must be consistent, i.e. cannot swap between MM/DD/YY and DD/MM/YY. While this fallback is slower, especially in cases that do not need it, it prevents excessive traceback warnings in the console. Masking the warning was considered, but there was a concern that additional masking would result as well as the thread-safety of conducting this. Ultimately, the design decision was made to avoid these concerns with a slight decrease in performance. 
+- CSVs with missing header row is accepted, but the following assumptions are made. The operator must approve the action before the assumed header row is added.
+    - There is a minimum of one and a maximum of two date columns. The first being for "Date" or "Transaction Date", the second being for "Posted Date"
+    - There is a minimum of one and a maximum of three money/float type columns. 
+        - If one is present, it is assumed to be "Amount" with mixed positive and negative numbers. 
+        - If two are present, a check is run to determine if the combination is "Debit", "Credit" or "Amount", "Balance". If there is any instance of values in both columns within the row, then the latter is assumed. Otherwise the former is assumed.
+        - If three are present, it is assumed to be "Debit", "Credit", and "Balance"
+- The parser assumes the following.
+    - All rows must have a "Date" value, though "Post Date" may be omitted.
+    - Any instance of "bal" represents "Balance", e.g. Running bal., Balance, etc.
+    - Any instance of "debit" represents "Debit", e.g. Debit, Amount Debit
+    - Any instance of "credit" represents "Credit", e.g. Credit, Amount Credit
+    - Any instance of "amount" other than those listed above represents "Amount"
+    - An "Amount" column must be present
+The parser also handles the following.
+    - If both "Debit" anad "Credit", but not "Amount" are present, "Debit" and "Credit" are merged into a single "Amount" column
+    - If only "Debit" or "Credit" is present, but not "Amount", the column is renamed as "Amount"
+    - Fully empty/NA columns are removed
+
+#### Warnings & Errors
+- The following are warnings and can be overridden via the console if the user chooses.
+    - Ambiguous dates detected, will assume month first if operator selects "Y"/"y", otherwise exit.
+    - Missing column header information detected, will infer if operator selects "Y"/"y", otherwise exit.
+    - If converting money columns to float data-type fails, the column can be skipped if operator selects "Y"/"y", otherwise exit.
+    - If a file could not be converted to a pandas data frame, the operator is given the option to skip that file with "Y"/"y", otherwise exit.
+    - If data parsing/cleaning fails on a single pandas data frame, the operator can continue with the next with "Y"/"y", otherwise exit.
+- The following are errors that cannot be overridden. The program will gracefully exit. 
+    - TBD
+- Exceptions to the behavior above are as follows.
+    - An error is generated when inputting a file fails, so a generic error is given. However, the operator can try the file input again.
+    - If all files could not be converted to a pandas data frame, the operator is notified and the program exits. Additional logs are not generated, as each instance was already logged. 
+    - If all data frames fail data parsing/cleaning, the operator is notified and the program exists. Additional logs are not generated, as each instance was already logged. 
+- Other warning and error information includes the following.
+    - Alls warnings and errors are logged in a file.
+    - Warnings inform the user what happened and give an option to proceed.
+    - Errors provide generic information in the console with details in the logs.
+
 
 ## Testing
 
