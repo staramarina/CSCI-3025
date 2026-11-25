@@ -72,7 +72,7 @@ def print_log(data, file_name):  # Duplicated from Module7
             [1]: f-string that provides more information beyond True/False
     """
     can_write = can_write_file(file_name)
-    if can_write:
+    if can_write[0]:
         time_now = datetime.now()
         with open(file_name, "a") as f:
             f.write(f"{time_now}: {data}\n")
