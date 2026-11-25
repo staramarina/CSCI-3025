@@ -259,3 +259,5 @@ data/wellsfargo_checking_example.csv
 5 2026-11-14   -5.42  *  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA
 6 2026-11-14   -7.59  *  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA
 
+------------------------------------------------------------POST COMBINE------------------------------------------------------------
+
