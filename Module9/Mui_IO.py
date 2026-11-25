@@ -26,16 +26,16 @@ def file_exists(file_name):  # Duplicated from Module5
     try:
         f = open(file_name, 'r')
     except FileNotFoundError: 
-        return (False, f'{file_name} does not exist')
+        return (False, f'{file_name} does not exist.')
     except PermissionError:
-        return (False, f'You do not have permission to read {file_name}')
+        return (False, f'You do not have permission to read {file_name}.')
     except IsADirectoryError:
-        return (False, f'{file_name} is not a file')
+        return (False, f'{file_name} is not a file.')
     except OSError as err:
-        return (False, f'Failed to read file with error: {err}')
+        return (False, f'Failed to read file with error: {err}.')
     else:
         f.close()
-        return (True, f'{file_name} exists')
+        return (True, f'{file_name} exists.')
 
 
 def can_write_file(file_name):  # Duplicated from Module5 TODO currently unused, remove this and associated tests if still unused later
@@ -54,12 +54,12 @@ def can_write_file(file_name):  # Duplicated from Module5 TODO currently unused,
     except FileNotFoundError:
         return (False, "Target directory does not exist.")
     except PermissionError:
-        return (False, f"You do not have permission to write to {file_name}")
+        return (False, f"You do not have permission to write to {file_name}.")
     except OSError as err:
-        return (False, f"Failed to write file with error: {err}")
+        return (False, f"Failed to write file with error: {err}.")
     else:
         file_open.close()
-        return (True, f"File printed successfully as {file_name}")
+        return (True, f"File printed successfully as {file_name}.")
 
 
 def dataframe_check(file_name, head_info=0):
@@ -77,13 +77,13 @@ def dataframe_check(file_name, head_info=0):
     try:
         df = pd.read_csv(file_name, header=head_info)
     except FileNotFoundError:
-        return (False, f'{file_name} does not exist')
+        return (False, f'{file_name} does not exist.')
     except pd.errors.EmptyDataError:
         return (False, f'{file_name} has no parsable data.')
     except pd.errors.ParserError as err:
-        return (False, f'Encountered parsing error in {file_name}: {err}')
+        return (False, f'Encountered parsing error in {file_name}: {err}.')
     except ValueError as err:
-        return (False, f'Encountered value error {file_name}: {err}')
+        return (False, f'Encountered value error {file_name}: {err}.')
     else:
         return (True, df)
 
@@ -105,11 +105,11 @@ def chart_save(chart, file_name, dpi=150):  # Duplicated from Module8
     try:
         fig.savefig(file_name, dpi=dpi, bbox_inches="tight")
     except PermissionError:
-        return (False, f"You do not have permission to save to {file_name}")
+        return (False, f"You do not have permission to save to {file_name}.")
     except (OSError, ValueError) as err:
-        return (False, f"Failed to save file with error: {err}")
+        return (False, f"Failed to save file with error: {err}.")
     else:
-        return (True, f"Chart saved to {file_name}")
+        return (True, f"Chart saved to {file_name}.")
 
 
 def file_input_handle():
@@ -175,7 +175,7 @@ def warn_handle(warn_msg, err_log='log.txt'):
         True to continue, otherwise False
     """
     _logger.warning(warn_msg)
-    std_warn = f'WARNING: {warn_msg}. Would you like to proceed (Y/N): '
+    std_warn = f'WARNING: {warn_msg} Would you like to proceed (Y/N): '
     force = input(f'{std_warn}')
     if force in ["Y", "y"]:
         return True
