@@ -122,3 +122,140 @@
 5 2026-11-14   -5.42  *  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA
 6 2026-11-14   -7.59  *  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA
 
+------------------------------------------------------------POST CLASSES------------------------------------------------------------
+
+data/bofa_checking_example.csv
+        Date                            Description  Amount  Balance
+0 2026-11-18                           GENOS STEAKS  -21.13  1773.85
+1 2026-11-16                       INSOMNIA COOKIES   -7.66  1794.98
+2 2026-11-16                             MCDONALD S  -28.79  1802.64
+3 2026-11-15                           Esso Station  -20.27  1831.43
+4 2026-11-15                        External Depost  1500.0   1851.7
+5 2026-11-14  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA    -5.42    351.7
+6 2026-11-14  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    -7.59   357.12
+
+data/chase_checking_example.csv
+        Date                            Description  Amount    Type  Balance
+0 2026-11-18                           GENOS STEAKS  -21.13   Debit  1773.85
+1 2026-11-16                       INSOMNIA COOKIES   -7.66   Debit  1794.98
+2 2026-11-16                             MCDONALD S  -28.79   Debit  1802.64
+3 2026-11-15                           Esso Station  -20.27   Debit  1831.43
+4 2026-11-15                        External Depost  1500.0  Credit   1851.7
+5 2026-11-14  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA    -5.42   Debit    351.7
+6 2026-11-14  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    -7.59   Debit   357.12
+
+data/chase_credit_example.csv
+        Date  Post Date                            Description             Category      Type  Amount                                           Memo
+0 2026-11-18        NaT                           GENOS STEAKS          Restaurants  Purchase   21.13                                            NaN
+1 2026-11-16 2026-11-19                       INSOMNIA COOKIES          Restaurants  Purchase    7.66                                            NaN
+2 2026-11-16 2026-11-17                             MCDONALD S            Fast Food  Purchase   28.79                                            NaN
+3 2026-11-15 2026-11-16                           Esso Station                  Gas  Purchase   20.27                                            NaN
+4 2026-11-15 2026-11-15                            Credit Card  Credit Card Payment   Payment -407.85  Principal $407.85; Interest $0.00; Fees $0.00
+5 2026-11-14 2026-11-15  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA              Shopping  Purchase    5.42                                            NaN
+6 2026-11-14 2026-11-15  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA              Shopping  Purchase    7.59                                            NaN
+
+data/citibank_checking_example.csv
+        Date                            Description  Balance  Amount
+0 2026-11-18                           GENOS STEAKS  1773.85  -21.13
+1 2026-11-16                       INSOMNIA COOKIES  1794.98   -7.66
+2 2026-11-16                             MCDONALD S  1802.64  -28.79
+3 2026-11-15                           Esso Station  1831.43  -20.27
+4 2026-11-15                        External Depost   1851.7  1500.0
+5 2026-11-14  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA     351.7   -5.42
+6 2026-11-14  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    357.12   -7.59
+
+data/citibank_credit_example.csv
+    Status       Date                            Description  Post Date  Amount
+0  Pending 2026-11-18                           GENOS STEAKS        NaT  -21.13
+1   Posted 2026-11-16                       INSOMNIA COOKIES 2026-11-19   -7.66
+2   Posted 2026-11-16                             MCDONALD S 2026-11-17  -28.79
+3   Posted 2026-11-15                           Esso Station 2026-11-16  -20.27
+4   Posted 2026-11-15                        External Depost 2026-11-15  1500.0
+5   Posted 2026-11-14  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA  2026-11-15   -5.42
+6   Posted 2026-11-14  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA  2026-11-15   -7.59
+
+data/sample-bank-transactions.csv
+         Date                            Description   Balance   Amount
+0  2026-09-01                      Beginning balance  12418.36     <NA>
+1  2026-09-01           ACH DEBIT GUSTO PAYROLL 0912   5998.18 -6420.18
+2  2026-09-01              STRIPE TRANSFER ST-K2M8Q4   9182.45  3184.27
+3  2026-09-02                             CHECK 2041   7332.45  -1850.0
+4  2026-09-02           ACH DEBIT AUSTIN ENERGY UTIL   6919.79  -412.66
+5  2026-09-03        POS PURCHASE OFFICE DEPOT #1123   6833.36   -86.43
+6  2026-09-04                MOBILE DEPOSIT REF 0904   9233.36   2400.0
+7  2026-09-05            ACH DEBIT INTUIT QUICKBOOKS   9143.36    -90.0
+8  2026-09-05            ZELLE FROM RIVERA DESIGN CO  10418.36   1275.0
+9  2026-09-08              STRIPE TRANSFER ST-P9X1L7  14430.91  4012.55
+10 2026-09-08                 ACH DEBIT ADP TAX 0908   13142.5 -1288.41
+11 2026-09-09        POS PURCHASE HEB #412 AUSTIN TX  12999.23  -143.27
+12 2026-09-10     WIRE TRANSFER IN NORTHWIND TRADERS  21499.23   8500.0
+13 2026-09-10                             CHECK 2042  20774.23   -725.0
+14 2026-09-11             ACH DEBIT GOOGLE WORKSPACE  20702.23    -72.0
+15 2026-09-12                ACH DEBIT AT&T BUSINESS  20512.89  -189.34
+16 2026-09-15           ACH DEBIT GUSTO PAYROLL 0926  14114.12 -6398.77
+17 2026-09-15              STRIPE TRANSFER ST-H4D6R2  16990.22   2876.1
+18 2026-09-16    ONLINE TRANSFER TO SAVINGS XXXX9921  14490.22  -2500.0
+19 2026-09-17           POS PURCHASE SHELL OIL 57444   14428.4   -61.82
+20 2026-09-18                ACH DEBIT AMEX EPAYMENT  11213.84 -3214.56
+21 2026-09-19                MOBILE DEPOSIT REF 0919  12163.84    950.0
+22 2026-09-22              STRIPE TRANSFER ST-B7N3V5  15704.72  3540.88
+23 2026-09-22  ACH DEBIT TEXAS COMPTROLLER SALES TAX  14537.43 -1167.29
+24 2026-09-23                             CHECK 2043  12437.43  -2100.0
+25 2026-09-24         POS PURCHASE COSTCO WHSE #0681  12118.98  -318.45
+26 2026-09-25             ZELLE FROM LAKESIDE DENTAL  12758.98    640.0
+27 2026-09-26           ACH DEBIT ADOBE CREATIVE CLD  12668.99   -89.99
+28 2026-09-29              STRIPE TRANSFER ST-Q5W8E1  14884.41  2215.42
+29 2026-09-29        ACH DEBIT BLUE CROSS TX PREMIUM  13452.31  -1432.1
+30 2026-09-30                    MONTHLY SERVICE FEE  13437.31    -15.0
+31 2026-09-30                       INTEREST PAYMENT  13440.52     3.21
+
+data/SCU_checking_example.csv
+   Transaction Number       Date Description                                   Memo  Balance  Check Number  Amount
+0          8148121138 2026-11-18    Purchase                           GENOS STEAKS  1773.85           NaN  -21.13
+1          7992611639 2026-11-16    Purchase                       INSOMNIA COOKIES  1794.98           NaN   -7.66
+2          7441109216 2026-11-16       Check                                    NaN  1802.64         154.0  -28.79
+3          7333617721 2026-11-15    Purchase                           Esso Station  1831.43           NaN  -20.27
+4          7255644057 2026-11-15     Payment                        External Depost   1851.7           NaN  1500.0
+5          7130903822 2026-11-14    Purchase  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA     351.7           NaN   -5.42
+6          6915999738 2026-11-14    Purchase  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    357.12           NaN   -7.59
+
+data/SCU_credit_example.csv
+   Transaction Number       Date Description                                   Memo  Balance  Amount
+0          8148121138 2026-11-18    Purchase                           GENOS STEAKS    77.85  -21.13
+1          7992611639 2026-11-16    Purchase                       INSOMNIA COOKIES    56.72   -7.66
+2          7441109216 2026-11-16    Purchase                             MCDONALD S    49.06  -28.79
+3          7333617721 2026-11-15    Purchase                           Esso Station    20.27  -20.27
+4          7255644057 2026-11-15     Payment                        External Depost      0.0  456.15
+5          7130903822 2026-11-14    Purchase  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA    456.15   -5.42
+6          6915999738 2026-11-14    Purchase  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA    448.56   -7.59
+
+data/USAA_checking_example.csv
+        Date       Description                   Original Description     Category  Amount   Status
+0 2026-11-18      GENOS STEAKS                           GENOS STEAKS  Restaurants  -21.13  Pending
+1 2026-11-16  INSOMNIA COOKIES                       INSOMNIA COOKIES  Restaurants   -7.66   Posted
+2 2026-11-16        MCDONALD S                             MCDONALD S    Fast Food  -28.79   Posted
+3 2026-11-15  Esso Gas Station                  Esso Station Location          Gas  -20.27   Posted
+4 2026-11-15         Workplace                           PAYCHECK 1/1     Paycheck  1500.0   Posted
+5 2026-11-14    Amazon Digital  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA      Shopping   -5.42   Posted
+6 2026-11-14    Amazon Digital  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA      Shopping   -7.59   Posted
+
+data/USAA_credit_example.csv
+        Date       Description                   Original Description             Category  Amount   Status
+0 2026-11-18      GENOS STEAKS                           GENOS STEAKS          Restaurants   21.13  PENDING
+1 2026-11-16  INSOMNIA COOKIES                       INSOMNIA COOKIES          Restaurants    7.66   POSTED
+2 2026-11-16        MCDONALD S                             MCDONALD S            Fast Food   28.79   POSTED
+3 2026-11-15  Esso Gas Station                  Esso Station Location                  Gas   20.27   POSTED
+4 2026-11-15       Credit Card                   CREDIT CARD PAYMENT   Credit Card Payment -407.85   POSTED
+5 2026-11-14    Amazon Digital  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA              Shopping    5.42   POSTED
+6 2026-11-14    Amazon Digital  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA              Shopping    7.59   POSTED
+
+data/wellsfargo_checking_example.csv
+        Date  Amount  2                                     5
+0 2026-11-18  -21.13  *                          GENOS STEAKS
+1 2026-11-16   -7.66  *                      INSOMNIA COOKIES
+2 2026-11-16  -28.79  *                            MCDONALD S
+3 2026-11-15  -20.27  *                          Esso Station
+4 2026-11-15  1500.0  *                       External Depost
+5 2026-11-14   -5.42  *  AMAZON DIGI* 6B539 WWW.AMAZON.CO, WA
+6 2026-11-14   -7.59  *  AMAZON DIGI* SZ81J WWW.AMAZON.CO, WA
+

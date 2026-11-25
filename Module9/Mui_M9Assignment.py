@@ -106,7 +106,11 @@ if __name__ == "__main__":
         sys.exit(1)
     print("Data successfully parsed and cleaned.")
 
- 
+    # Create a list of statement class instances
+    df_class = []
+    for file, df in df_clean.items():
+        statement = stmnt.Statement(df, file)  # TODO add validation check
+        df_class.append(statement)
 
     # Spin up class instances
     # TODO use cleaned data to generate statement class instances -- init in statement class
@@ -126,7 +130,9 @@ if __name__ == "__main__":
 
     # TODO Temporary data dump for testins
     with open('test_dump.txt', "a") as f: 
-        for df in df_clean.values():
-            f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
+        #for df in df_clean.values(): # pre-classes print
+            #f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
+            #f.write('\n\n') # extra lines for readability
+        for data in df_class:  # post-classes print
+            f.write(str(data))
             f.write('\n\n') # extra lines for readability
-
