@@ -115,7 +115,7 @@ def infer_header(data):
         })
     else:
         return (False, "Could not verify decimal columns.")
-    if 0 < len(misc_col_ls):  # Assumes first string column is Description
+    if 0 < len(misc_col_ls):  # Assumes first string column is Description -- TODO bad assumption, remove and update test cases
         df = df.rename(columns={misc_col_ls[0]: "Description"})
     return (True, df)
 
@@ -192,7 +192,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
     """
     df = data.copy()
     df[col] = df[col].astype("string").str.strip()
-    if determine and not mixed:  # Pass as is case
+    if determine and not mixed:  # Pass as is case TODO this is throwing mixed warning from pandas, need to figure out why
         df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=day_first, 
                                  yearfirst=yr_first)
         check = df[col].isna().all()
@@ -211,7 +211,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
     elif not mixed:  # Ambiguous dates, assume month first or abort
         warn_msg = f"Dates in '{col}' are ambiguous, will assume month first"
         force = io.warn_handle(warn_msg, err_log)
-        if force:
+        if force: # TODO need to figure out why I need mixed here, shouldn't be mixed.
             df[col] = pd.to_datetime(df[col], errors="coerce", 
                                      dayfirst=day_first, yearfirst=yr_first, 
                                      format="mixed")

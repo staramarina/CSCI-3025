@@ -48,30 +48,36 @@ if __name__ == "__main__":
             io.err_handle(check[1], err_log)
             more_file = input("Would you like to try again (Y/N): ")
     """
-    # Data Parsing -- Actual functions in parse
+    # Data Parsing -- Actual functions in parser module
     df_list = []
     for file in TEST_FILES: # TODO change to file_list later
         check = parse.build_dataframe(file)
         if check[0]:
             df_list.append(check[1])
         else:
-            io.err_handle(check[1], err_log)
-            print(f'{file} dropped, attempting to continue.')
+            force = io.warn_handle(check[1], err_log)
+            if force:
+                print("Continuing with next data set.")
+            else:
+                sys.exit(1)
     if 0 == len(df_list):
         print("No useable files. Please restart.")
         sys.exit(1)
+    df_clean = []
+    for df in df_list:
+        check = parse.clean_dataframe(df, err_log)
+        if check[0]:
+            df_clean.append(check[1])
+        else:
+            force = io.warn_handle(check[1], err_log)
+            if force:
+                print("Continuing with next data set.")
+            else:
+                sys.exit(1)
+    if 0 == len(df_clean):
+        print("No useable data. Please restart.")
+        sys.exit(1)
 
-
-
-    # TODO detect column names, change to common if needed
-    # TODO handle missing data
-    # TODO handle data type conversion and malformed data, strip any metadata/summary line from the bottom
-
-    # TODO Temporary data dump for testins
-    with open('test_dump.txt', "a") as f: 
-        for df in df_list:
-            f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
-            f.write('\n\n') # extra lines for readability
 
     # Spin up class instances
     # TODO use cleaned data to generate statement class instances -- init in statement class
@@ -86,3 +92,12 @@ if __name__ == "__main__":
 
     # Closing
     # TODO program closing message(s)
+
+
+
+    # TODO Temporary data dump for testins
+    with open('test_dump.txt', "a") as f: 
+        for df in df_clean:
+            f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
+            f.write('\n\n') # extra lines for readability
+
