@@ -16,19 +16,19 @@ import Mui_Parser as parse
 import Mui_Statement as stmnt
 
 
-TEST_FILES = [
-    'data/bofa_checking_example.csv',
-    'data/chase_checking_example.csv',
-    'data/chase_credit_example.csv',
-    'data/citibank_checking_example.csv',
-    'data/citibank_credit_example.csv',
-    'data/sample-bank-transactions.csv',
-    'data/SCU_checking_example.csv',
-    'data/SCU_credit_example.csv',
-    'data/USAA_checking_example.csv',
-    'data/USAA_credit_example.csv',
-    'data/wellsfargo_checking_example.csv'
-]
+TEST_FILES = {
+    'data/bofa_checking_example.csv': True,
+    'data/chase_checking_example.csv': True,
+    'data/chase_credit_example.csv': True,
+    'data/citibank_checking_example.csv': True,
+    'data/citibank_credit_example.csv': True,
+    'data/sample-bank-transactions.csv': True,
+    'data/SCU_checking_example.csv': True,
+    'data/SCU_credit_example.csv': True,
+    'data/USAA_checking_example.csv': True,
+    'data/USAA_credit_example.csv': True,
+    'data/wellsfargo_checking_example.csv': True
+}
 
 
 if __name__ == "__main__":
@@ -39,12 +39,12 @@ if __name__ == "__main__":
 
     # Ask user for their transaction files
     """ # TODO add this back in later when ready to conduct full testing.
-    file_list = []
+    file_list = {}
     more_file = "y"
     while more_file in ["Y", "y"]:
         check = io.file_input_handle()
         if check[0]:
-            file_list.append(check[1])
+            file_list[check[1]] = check[0]  # Forces unique files
             more_file = input("Would you like to include another file (Y/N): ")
         else:
             io.err_handle(check[1], err_log)
@@ -57,20 +57,25 @@ if __name__ == "__main__":
 
     # Build dataframes from CSV files
     print("\nBuilding data frames.")
-    df_list = []
+    df_list = {}
+    df_pop_ls = []
     for file in TEST_FILES:  # TODO replace with file_list later
         check = parse.build_dataframe(file)
         if check[0]:  # If dataframe successfully built
-            df_list.append(check[1])
+            df_list[file] = check[1]
         else:  # Error creating dataframe
             io.err_handle(check[1], err_log)
             warn_msg = f"Will drop {file}."
             force = io.warn_handle(warn_msg, err_log)
             if force:  # Continue with next data set
+                df_pop_ls.append(file)  # Add to removal flagged list
                 print("Continuing with next data set.")
             else:  # Gracefully terminate the program
                 io.err_handle("Process aborted.", err_log)
                 sys.exit(1)
+    for file in df_pop_ls:  # Removal of flagged files
+        df_list.pop(file)
+    df_pop_ls.clear()
     if 0 == len(df_list):
         print("No useable files. Please restart.")
         sys.exit(1)
@@ -78,20 +83,24 @@ if __name__ == "__main__":
 
     # Parse/clean dataframes
     print("\nParsing and cleaning data.")
-    df_clean = []
-    for df in df_list:
+    df_clean = {}
+    for file, df in df_list.items():
         check = parse.clean_dataframe(df, err_log)
         if check[0]:  # If dataframes successfully cleaned
-            df_clean.append(check[1])
+            df_clean[file] = check[1]
         else:  # Error cleaning dataframe
             io.err_handle(check[1], err_log)
             warn_msg = f"Will drop data."
             force = io.warn_handle(warn_msg, err_log)
             if force:  # Continue with next data set
+                df_pop_ls.append(file)  # Add to removal flagged list
                 print("Continuing with next data set.")
             else:  # Gracefully terminate the program
                 io.err_handle("Process aborted.", err_log)
                 sys.exit(1)
+    for file in df_pop_ls:  # Removal of flagged files
+        df_list.pop(file)
+    df_pop_ls.clear()
     if 0 == len(df_clean):
         print("No useable data. Please restart.")
         sys.exit(1)
@@ -117,7 +126,7 @@ if __name__ == "__main__":
 
     # TODO Temporary data dump for testins
     with open('test_dump.txt', "a") as f: 
-        for df in df_clean:
+        for df in df_clean.values():
             f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
             f.write('\n\n') # extra lines for readability
 
