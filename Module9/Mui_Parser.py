@@ -192,7 +192,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
     df[col] = df[col].astype("string").str.strip()
     if determine:  # Format definitively determined
         df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=day_first, 
-                                 yearfirst=yr_first, format="mixed") # TODO document that we're letting python used mixed format, it's slower, but mitigates warnings, warning capture not threadsafe.
+                                 yearfirst=yr_first, format="mixed")
         check = df[col].isna().all()
         if check:
             return (False, f"Dates in '{col}' failed to convert")
@@ -292,7 +292,7 @@ def clean_dataframe(data_raw, err_log):
         warn_msg = "Missing column headers detected, will infer"
         force = io.warn_handle(warn_msg, err_log)
         if force:
-            head_check = infer_header(df) # TODO: document this
+            head_check = infer_header(df)
             if head_check[0]:
                 df = head_check[1]
             else:
@@ -317,7 +317,7 @@ def clean_dataframe(data_raw, err_log):
         if not clean_check[0]:
             return (False, clean_check[1])
         elif "post" not in col.lower():
-            df = clean_check[1].dropna(subset=[col]) # TODO: document behavior date must be present, but post/posted date does not
+            df = clean_check[1].dropna(subset=[col])
             df = df.rename(columns={col: "Date"})
         elif "post" in col.lower():
             df = clean_check[1]
