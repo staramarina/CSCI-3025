@@ -13,6 +13,7 @@ Development Environment: Python 3.14.4
 - [Project Structure](#project-structure)
 - [Modules](#modules)
 - [Data Files](#data-files)
+- [Warnings/Errors] (#warnings--errors)
 - [Testing](#testing)
 - [Author/Credits](#author--credits)
 
@@ -26,7 +27,7 @@ The personal expense tracker:
 
 Ground work for the following features is included, but not fully implemented:
 - Mixed date formatting flagging - the case of indeterminate day, month, or year first is caught and the user is prompted with a warning. Other mixed date formatting is caught with format="mixed" to avoid warnings from pandas when supporting unexpected date formats. 
-- Consistent signage on "Amount" values - For banks with "Debit" and "Credit" columns, the standard that expenses are negative and credits are positive is enforced. However, there is no method for determining the convention when a single "Amount" column is given. The convention varies between banks and in the case of USAA, depends on the account type. No assumption is made when performing the analysis, though it does result in negative numbers appears in charts. TDOD verify this when the charts are built.
+- Consistent signage on "Amount" values - For banks with "Debit" and "Credit" columns, the standard that expenses are negative and credits are positive is enforced. However, there is no method for determining the convention when a single "Amount" column is given. The convention varies between banks and in the case of USAA, depends on the account type. No assumption is made when performing the analysis, though it does result in negative numbers appears in charts. TODO verify this when the charts are built.
 
 ## Features
 - TODO
@@ -151,8 +152,8 @@ The expense tracker has robust data validation and parsing rules as described in
 - The parser module will attempt to detect the date format with the following rules/assumptions.
     - Separating characters are used and include "/" or "-"
     - Dates are not of formats YY-MM-DD, YY/MM/DD, YY-DD-MM, YY/DD/MM, i.e. if the year is first it must be 4 digits followed by month, then day.
-    - If the year is last as either YYYY or YY, a check is run to determine whether the day is first or not. In an amiguous case, the assumption is made that month is first (most common in the U.S.) and the user is prompted to approve this assumption. Example: 10/11/12 is interpretted as 11 Oct 2012.
-    - Mixed formatting, e.g. MM/DD/YYYY and MM-DD-YY within the same column are handled via pandas format="mixed", but position order must be consistent, i.e. cannot swap between MM/DD/YY and DD/MM/YY. While this fallback is slower, especially in cases that do not need it, it prevents excessive traceback warnings in the console. Masking the warning was considered, but there was a concern that additional masking would result as well as the thread-safety of conducting this. Ultimately, the design decision was made to avoid these concerns with a slight decrease in performance. 
+    - If the year is last as either YYYY or YY, a check is run to determine whether the day is first or not. In an ambiguous case, the assumption is made that month is first (most common in the U.S.) and the user is prompted to approve this assumption. Example: 10/11/12 is interpreted as 11 Oct 2012.
+    - Mixed formatting, e.g. MM/DD/YYYY and MM-DD-YY within the same column are handled via pandas format="mixed", but position order must be consistent, i.e. cannot swap between MM/DD/YY and DD/MM/YY. While this fallback is slower, especially in cases that do not need it, it prevents excessive trace back warnings in the console. Masking the warning was considered, but there was a concern that additional masking would result as well as the thread-safety of conducting this. Ultimately, the design decision was made to avoid these concerns with a slight decrease in performance. 
 - CSVs with missing header row is accepted, but the following assumptions are made. The operator must approve the action before the assumed header row is added.
     - There is a minimum of one and a maximum of two date columns. The first being for "Date" or "Transaction Date", the second being for "Posted Date"
     - There is a minimum of one and a maximum of three money/float type columns. 
@@ -167,11 +168,11 @@ The expense tracker has robust data validation and parsing rules as described in
     - Any instance of "amount" other than those listed above represents "Amount"
     - An "Amount" column must be present
 The parser also handles the following.
-    - If both "Debit" anad "Credit", but not "Amount" are present, "Debit" and "Credit" are merged into a single "Amount" column
+    - If both "Debit" and "Credit", but not "Amount" are present, "Debit" and "Credit" are merged into a single "Amount" column
     - If only "Debit" or "Credit" is present, but not "Amount", the column is renamed as "Amount"
     - Fully empty/NA columns are removed
 
-#### Warnings & Errors
+## Warnings & Errors
 - The following are warnings and can be overridden via the console if the user chooses.
     - Ambiguous dates detected, will assume month first if operator selects "Y"/"y", otherwise exit.
     - Missing column header information detected, will infer if operator selects "Y"/"y", otherwise exit.
@@ -179,13 +180,13 @@ The parser also handles the following.
     - If a file could not be converted to a pandas data frame, the operator is given the option to skip that file with "Y"/"y", otherwise exit.
     - If data parsing/cleaning fails on a single pandas data frame, the operator can continue with the next with "Y"/"y", otherwise exit.
 - The following are errors that cannot be overridden. The program will gracefully exit. 
-    - TBD
+    - TODO
 - Exceptions to the behavior above are as follows.
     - An error is generated when inputting a file fails, so a generic error is given. However, the operator can try the file input again.
     - If all files could not be converted to a pandas data frame, the operator is notified and the program exits. Additional logs are not generated, as each instance was already logged. 
     - If all data frames fail data parsing/cleaning, the operator is notified and the program exists. Additional logs are not generated, as each instance was already logged. 
 - Other warning and error information includes the following.
-    - Alls warnings and errors are logged in a file.
+    - All warnings and errors are logged in a file.
     - Warnings inform the user what happened and give an option to proceed.
     - Errors provide generic information in the console with details in the logs.
 
@@ -215,7 +216,7 @@ python -m pytest
 |  | test_char_input(self) | Tests function with character/string input |
 |  | test_decimal_input(self) | Tests function with decimal number input |
 
-#### Specfic Module Tests (test_XXX.py)
+#### Specific Module Tests (test_XXX.py)
 
 ##### Testing Fixtures, Variables, and Functions
 | Type | Name | Purpose |
@@ -235,7 +236,11 @@ Instructor: Dr. Sahand Ziabari
 Date: XX Nov 2026  
 
 ### Tools & AI Use Disclosure
-- TODO
+- Black 26.10.1 was utilized to ensure PEP8 compliance. All changes were manually reviewed and approved/disapproved as appropriate.
+- Proton Lumo 2.0 was utilized as a search engine and included the following tasks:
+	- Researching consumer CSV export header formats and column structures for Chase, Bank of America, Wells Fargo, and Citibank.
+	- Explaining package function behaviors, e.g. how pandas evaluates to_datetime when performed at the column level and what it does when there is not a consistent format.
+	- Various syntax clarification, e.g. what is the syntax to determine whether any value within a pandas dataframe column matches a regex shape.
 
 ### Resources & References
-- TODO
+- Utilly. (2026). Free sample bank statement CSV (fictional, with known totals). https://getutilly.com/guides/sample-bank-statement-csv
