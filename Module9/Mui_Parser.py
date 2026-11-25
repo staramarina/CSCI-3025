@@ -195,11 +195,11 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
                                  yearfirst=yr_first, format="mixed")
         check = df[col].isna().all()
         if check:
-            return (False, f"Dates in '{col}' failed to convert")
+            return (False, f"Dates in '{col}' failed to convert.")
         else:
             return (True, df)
     elif not mixed:  # Ambiguous dates, assume month first or abort
-        warn_msg = f"Dates in '{col}' are ambiguous, will assume month first"
+        warn_msg = f"Dates in '{col}' are ambiguous, will assume month first."
         force = io.warn_handle(warn_msg, err_log)
         if force:
             df[col] = pd.to_datetime(df[col], errors="coerce", 
@@ -207,7 +207,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
                                      format="mixed")
             check = df[col].isna().all()
             if check:
-                return (False, f"Dates in '{col}' failed to convert")
+                return (False, f"Dates in '{col}' failed to convert.")
             else:
                 return (True, df)
         else:
@@ -237,7 +237,7 @@ def clean_money(data, col):
     df[col] = pd.to_numeric(format_clean, errors="coerce")
     check = df[col].isna().all()
     if check:
-        return (False, f"{col} has no values")
+        return (False, f"{col} has no values.")
     else:
         return (True, df)
 
@@ -258,13 +258,13 @@ def merge_deb_crd(data):
     credit = pd.to_numeric(df["Credit"]).astype("Float64")
     conflict = (debit.notna() & credit.notna())
     if conflict.any():
-        return (False, "Conflicting debit/credit information")
+        return (False, "Conflicting debit/credit information.")
     amount = pd.Series(pd.NA, index=df.index, dtype="Float64")
     amount = amount.fillna(-debit.abs())
     amount = amount.fillna(credit.abs())
     check = amount.isna().all()
     if check:
-        return (False, "Failed to merge columns")
+        return (False, "Failed to merge columns.")
     else:
         df["Amount"] = amount
         df = df.drop(columns=["Debit", "Credit"])
@@ -289,7 +289,7 @@ def clean_dataframe(data_raw, err_log):
     df.columns = [str(col) for col in df.columns]
     col_ls = df.columns[df.columns.str.contains("date", case=False)]
     if 0 == len(col_ls):
-        warn_msg = "Missing column headers detected, will infer"
+        warn_msg = "Missing column headers detected, will infer."
         force = io.warn_handle(warn_msg, err_log)
         if force:
             head_check = infer_header(df)
