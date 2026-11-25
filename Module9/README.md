@@ -13,7 +13,7 @@ Development Environment: Python 3.14.4
 - [Project Structure](#project-structure)
 - [Modules](#modules)
 - [Data Files](#data-files)
-- [Warnings/Errors] (#warnings--errors)
+- [Warnings/Errors](#warnings--errors)
 - [Testing](#testing)
 - [Author/Credits](#author--credits)
 
