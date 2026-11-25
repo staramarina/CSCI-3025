@@ -158,7 +158,7 @@ def err_handle(err_msg, err_log='log.txt'):
         err_log: the file path where the log is located
     
     Returns:
-        None (console output)
+        None (console/log output)
     """
     _logger.error(err_msg)
     print(f'ERROR: An error has occurred. See {err_log} for details.')
