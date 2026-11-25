@@ -491,6 +491,36 @@ class TestCleanMoney(unittest.TestCase):
         for rx, ex in zip(df["Amount"], exp):
             self.assertEqual(rx, ex)
 
+    def test_bal_chg(self):
+        """Tests that a mostly negative balance column is updated"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            "Amount": [-21.13, -7.66, -28.79, 1500.00],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": [-54.12, -12.54, -5.37, -1505.37]
+        }
+        df = pd.DataFrame(data)
+        exp = [54.12, 12.54, 5.37, 1505.37]
+        parse.clean_money(df, "Balance")
+        for rx, ex in zip(df["Balance"], exp):
+            self.assertEqual(rx, ex)
+
+    def test_amnt_chg(self):
+        """Tests that a mostly postive amount column is updated"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            "Amount": [21.13, 7.66, 28.79, -1500.00],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": [54.12, 12.54, 5.37, 1505.37]
+        }
+        df = pd.DataFrame(data)
+        exp = [-21.13, -7.66, -28.79, 1500.00]
+        parse.clean_money(df, "Amount")
+        for rx, ex in zip(df["Amount"], exp):
+            self.assertEqual(rx, ex)
+
 
 class TestMergeDebCrd(unittest.TestCase):
     """Class to test the merge_deb_crd(data) function"""
