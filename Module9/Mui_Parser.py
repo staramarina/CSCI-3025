@@ -115,8 +115,6 @@ def infer_header(data):
         })
     else:
         return (False, "Could not verify decimal columns.")
-    if 0 < len(misc_col_ls):  # Assumes first string column is Description -- TODO bad assumption, remove and update test cases
-        df = df.rename(columns={misc_col_ls[0]: "Description"})
     return (True, df)
 
 

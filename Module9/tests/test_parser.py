@@ -99,7 +99,6 @@ class TestInferHeader(unittest.TestCase):
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertIn("Date", check[1].columns)
         self.assertIn("Amount", check[1].columns)
-        self.assertIn("Description", check[1].columns)
 
     def test_infer_date2(self):
         """Tests the case of two date columns"""
@@ -198,31 +197,6 @@ class TestInferHeader(unittest.TestCase):
         check = parse.infer_header(df)
         self.assertFalse(check[0])
         self.assertIn("Could not verify decimal", check[1])
-
-    def test_infer_misc0(self):
-        """Tests the case of no misc columns"""
-        data = {
-            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
-            1: ["-21.13", "-7.66", "-28.79", "1500.00"]
-        }
-        df = pd.DataFrame(data)
-        check = parse.infer_header(df)
-        self.assertTrue(check[0])
-        self.assertIsInstance(check[1], pd.DataFrame)
-
-    def test_infer_misc2(self):
-        """Tests the case of two misc columns"""
-        data = {
-            0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
-            1: ["-21.13", "-7.66", "-28.79", "1500.00"],
-            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
-            3: ["Purchase", "Purchase", "Purchase", "Payment"]
-        }
-        df = pd.DataFrame(data)
-        check = parse.infer_header(df)
-        self.assertTrue(check[0])
-        self.assertIsInstance(check[1], pd.DataFrame)
-        self.assertIn("Description", check[1].columns)
 
 
 class TestDateFormat(unittest.TestCase):
@@ -658,7 +632,6 @@ class TestCleanDataframe(unittest.TestCase):
         self.assertTrue(check[0])
         self.assertIn("Date", check[1].columns)
         self.assertIn("Amount", check[1].columns)
-        self.assertIn("Description", check[1].columns)
 
     def test_header_warn_abort(self):
         """Tests that aborting at the header warning stops processing"""
