@@ -121,14 +121,14 @@ if __name__ == "__main__":
     with open('test_dump.txt', "a") as f: 
         f.write('------------------------CLEAN DATAFRAMES------------------------\n')
         for df in df_clean.values(): # pre-classes print
-            f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
+            f.write(df.to_string(header=True, index=True)) # dumps data
             f.write('\n\n') # extra lines for readability
 
 
     # Create a list of statement class instances
     df_class = []
     for file, df in df_clean.items():
-        statement = stmnt.Statement(df, file)  # TODO add validation check
+        statement = stmnt.Statement(df, file)  # TODO add validation check, wrap in try/except
         df_class.append(statement)
 
 
