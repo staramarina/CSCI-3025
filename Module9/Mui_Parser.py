@@ -243,25 +243,17 @@ def clean_money(data, col):
         num_val = num_val.dropna()
         qty_neg = (num_val < 0).sum()
         pcnt_neg = qty_neg / len(num_val)
-        print(f'Column Name: {col}')   # TODO test line remove later
-        print(f'Total numbers: {len(num_val)}')   # TODO test line remove later
-        print(f'Negative Number: {qty_neg}')   # TODO test line remove later
-        print(f'Percent Negative: {pcnt_neg}')   # TODO test line remove later
         if ("bal" in col.lower() or "credit" in col.lower()):
             if 0.50 > pcnt_neg:  # Balance and Credit should be mostly positive  TODO document this, add test case
-                print('Took 0.50 > pcnt_neg bal branch')  # TODO test line remove later
                 return (True, df)
             else:
-                print('else bal branch')  # TODO test line remove later
                 df[col] *= -1
                 return (True, df)
         else:  # All other money columns should be mostly negative TODO document this, add test case
             if 0.50 > pcnt_neg:
-                print('Took 0.50 > pcnt_neg amount branch')  # TODO test line remove later
                 df[col] = df[col] * -1
                 return (True, df)
             else:
-                print('else amount branch')  # TODO test line remove later
                 return (True, df)
 
 

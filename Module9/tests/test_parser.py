@@ -502,8 +502,9 @@ class TestCleanMoney(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         exp = [54.12, 12.54, 5.37, 1505.37]
-        parse.clean_money(df, "Balance")
-        for rx, ex in zip(df["Balance"], exp):
+        check = parse.clean_money(df, "Balance")
+        self.assertTrue(check[0])
+        for rx, ex in zip(check[1]["Balance"], exp):
             self.assertEqual(rx, ex)
 
     def test_amnt_chg(self):
@@ -517,8 +518,9 @@ class TestCleanMoney(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, -28.79, 1500.00]
-        parse.clean_money(df, "Amount")
-        for rx, ex in zip(df["Amount"], exp):
+        check = parse.clean_money(df, "Amount")
+        self.assertTrue(check[0])
+        for rx, ex in zip(check[1]["Amount"], exp):
             self.assertEqual(rx, ex)
 
 
