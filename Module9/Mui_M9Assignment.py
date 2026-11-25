@@ -35,10 +35,11 @@ if __name__ == "__main__":
     # Setup
     err_log = "Mui_M9_Log.txt"
     io.log_setup(err_log)
-    file_list = []
+    print("\nWelcome to the expense tracker!\n")
 
     # Ask user for their transaction files
     """ # TODO add this back in later when ready to conduct full testing.
+    file_list = []
     more_file = "y"
     while more_file in ["Y", "y"]:
         check = io.file_input_handle()
@@ -48,37 +49,55 @@ if __name__ == "__main__":
         else:
             io.err_handle(check[1], err_log)
             more_file = input("Would you like to try again (Y/N): ")
+    if 0 == len(file_list):
+        print("No files received. Please restart.")
+        sys.exit(1)
     """
-    # Data Parsing -- Actual functions in parser module
+    print("File(s) received.")
+
+    # Build dataframes from CSV files
+    print("\nBuilding data frames.")
     df_list = []
-    for file in TEST_FILES: # TODO change to file_list later
+    for file in TEST_FILES:  # TODO replace with file_list later
         check = parse.build_dataframe(file)
-        if check[0]:
+        if check[0]:  # If dataframe successfully built
             df_list.append(check[1])
-        else:
-            force = io.warn_handle(check[1], err_log)
-            if force:
+        else:  # Error creating dataframe
+            io.err_handle(check[1], err_log)
+            warn_msg = f"Will drop {file}."
+            force = io.warn_handle(warn_msg, err_log)
+            if force:  # Continue with next data set
                 print("Continuing with next data set.")
-            else:
+            else:  # Gracefully terminate the program
+                io.err_handle("Process aborted.", err_log)
                 sys.exit(1)
     if 0 == len(df_list):
         print("No useable files. Please restart.")
         sys.exit(1)
+    print("Data frame(s) created.")
+
+    # Parse/clean dataframes
+    print("\nParsing and cleaning data.")
     df_clean = []
     for df in df_list:
         check = parse.clean_dataframe(df, err_log)
-        if check[0]:
+        if check[0]:  # If dataframes successfully cleaned
             df_clean.append(check[1])
-        else:
-            force = io.warn_handle(check[1], err_log)
-            if force:
+        else:  # Error cleaning dataframe
+            io.err_handle(check[1], err_log)
+            warn_msg = f"Will drop data."
+            force = io.warn_handle(warn_msg, err_log)
+            if force:  # Continue with next data set
                 print("Continuing with next data set.")
-            else:
+            else:  # Gracefully terminate the program
+                io.err_handle("Process aborted.", err_log)
                 sys.exit(1)
     if 0 == len(df_clean):
         print("No useable data. Please restart.")
         sys.exit(1)
+    print("Data successfully parsed and cleaned.")
 
+ 
 
     # Spin up class instances
     # TODO use cleaned data to generate statement class instances -- init in statement class
