@@ -10,7 +10,6 @@ import os
 import sys
 import tempfile
 from pathlib import Path
-from datetime import datetime
 from unittest.mock import patch
 import pandas as pd
 import matplotlib
@@ -93,48 +92,6 @@ class TestCanWriteFile(unittest.TestCase):
         check = io.file_exists(str(dir_path))
         self.assertFalse(check[0])
         self.assertIn("does not exist", check[1])
-
-
-class TestPrintLog(unittest.TestCase):
-    """Tests the print_log(data, file_name) function"""
-
-    def setUp(self):
-        """Setup method to create temporary testing directory"""
-        self.__tmpdir = tempfile.TemporaryDirectory()
-        self.tmp_dir = Path(self.__tmpdir.name)
-
-    def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
-        self.__tmpdir.cleanup()
-
-    def test_print_new(self):
-        """Tests that a new file can be generated and written to"""
-        test_file = self.tmp_dir / "log.txt"
-        time_now = datetime.now()
-        data = f'{time_now}: This is an error test.'
-        check = io.print_log(data, str(test_file))
-        content = Path(test_file).read_text()
-        self.assertTrue(check[0])
-        self.assertIn("successfully", check[1])
-        self.assertIn(str(time_now), content)
-        self.assertIn("This is an error test", content)
-
-    def test_append(self):
-        """Tests that an existing file can be opened and appended"""
-        time0 = datetime.now()
-        data0 = f'{time0}: This is an error test.'
-        time1 = datetime.now()
-        data1 = f'{time1}: This is the append test.'
-        test_file = self.tmp_dir / "log_append.txt"
-        check0 = io.print_log(data0, str(test_file))
-        check1 = io.print_log(data1, str(test_file))
-        content = Path(test_file).read_text()
-        self.assertTrue(check0[0])
-        self.assertIn("successfully", check0[1])
-        self.assertTrue(check1[0])
-        self.assertIn("successfully", check1[1])
-        self.assertIn(data0, content)
-        self.assertIn(data1, content)
 
 
 class TestDataframeCheck(unittest.TestCase):
@@ -306,100 +263,70 @@ class TestFileInputHAndle(unittest.TestCase):
 class TestErrHandle(unittest.TestCase):
     """Class to test the err_handle(err_msg, err_log='log.txt') function"""
 
-    def setUp(self):
-        """Setup method to create temporary testing directory"""
-        self.__tmpdir = tempfile.TemporaryDirectory()
-        self.tmp_dir = Path(self.__tmpdir.name)
-
-    def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
-        self.__tmpdir.cleanup()
-
     def test_err_log_print(self):
-        """Tests that logs are printed successfully"""
-        err_log = self.tmp_dir / "log.txt"
-        with patch("builtins.print") as mock_print:
-            io.err_handle("Test fail message", str(err_log))
-        content = err_log.read_text()
-        print_txt = " ".join(str(call.args[0]) 
-                             for call in mock_print.call_args_list)
-        self.assertIn("Test fail message", content)
-        self.assertIn("ERROR", print_txt)
-        self.assertIn("See", print_txt)
+        """Tests that error logs are printed correctly"""
+        with self.assertLogs("M9_Log", level="ERROR") as capture:
+            io.err_handle("Test fail message", "log.txt")
+        self.assertEqual(len(capture.records), 1)
+        record = capture.records[0]
+        self.assertEqual(record.levelname, "ERROR")
+        self.assertIn("Test fail message", record.getMessage())
 
-    def test_err_log_fail(self):
-        """Tests the case where logs fail to print"""
-        err_log = str(self.tmp_dir / "Not Here" / "log.txt")
+    def test_err_log_console(self):
+        """Tests the expected error message in the console"""
         with patch("builtins.print") as mock_print:
-            io.err_handle("Test fail message", str(err_log))
+            io.err_handle("Test fail message", "log.txt")
         print_txt = " ".join(str(call.args[0]) 
                              for call in mock_print.call_args_list)
-        self.assertIn("Could not send error to the logs", print_txt)
+        self.assertIn("ERROR", print_txt)
+        self.assertIn("log.txt", print_txt)
 
 
 class TestWarnHandle(unittest.TestCase):
     """Class to test the warn_handle(warn_msg, err_log='log.txt') function"""
 
-    def setUp(self):
-        """Setup method to create temporary testing directory"""
-        self.__tmpdir = tempfile.TemporaryDirectory()
-        self.tmp_dir = Path(self.__tmpdir.name)
-
-    def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
-        self.__tmpdir.cleanup()
-
     def test_warn_log_print(self):
-        """Tests that logs are printed successfully"""
-        err_log = self.tmp_dir / "log.txt"
+        """Tests that warning logs are printed correctly"""
         with patch("builtins.input", return_value="N"), \
-                patch("builtins.print"):
-            io.warn_handle("Test fail message", str(err_log))
-        content = err_log.read_text()
-        self.assertIn("Test fail message", content)
+                self.assertLogs("M9_Log", level="WARNING") as capture:
+            io.warn_handle("Test warn message", "log.txt")
+        self.assertEqual(len(capture.records), 1)
+        record = capture.records[0]
+        self.assertEqual(record.levelname, "WARNING")
+        self.assertIn("Test warn message", record.getMessage())
 
-    def test_warn_log_fail(self):
-        """Tests the case where logs fail to print"""
-        err_log = str(self.tmp_dir / "Not Here" / "log.txt")
-        with patch("builtins.input", return_value="N"), \
-                patch("builtins.print") as mock_print:
-            io.warn_handle("Test fail message", str(err_log))
-        print_txt = " ".join(str(call.args[0]) 
-                             for call in mock_print.call_args_list)
-        self.assertIn("Could not send error to the logs", print_txt)
+    def test_warn_log_console(self):
+        """Tests the expected warning message in the console"""
+        with patch("builtins.input", return_value="N") as mock_in, \
+                self.assertLogs("M9_Log", level="WARNING"):
+            io.warn_handle("Test warn message", "log.txt")
+        prompt = mock_in.call_args.args[0]
+        self.assertIn("Test warn message", prompt)
+        self.assertIn("like to proceed (Y/N)", prompt)
 
     def test_force_confirm(self):
         """Tests the case when user confirms to continue processing"""
-        err_log = self.tmp_dir / "log.txt"
         warn_msg = "Test warning message"
         with patch("builtins.input", return_value="Y"), \
-                patch("builtins.print"):
-            check = io.warn_handle(warn_msg, str(err_log))
-        content = err_log.read_text()
+                self.assertLogs("M9_Log", level="WARNING"):
+            check = io.warn_handle(warn_msg, "log.txt")
         self.assertTrue(check)
-        self.assertIn(warn_msg, content)
 
     def test_force_deny(self):
         """Tests the case when user declines to continue process"""
-        err_log = self.tmp_dir / "log.txt"
         warn_msg = "Test warning message"
         with patch("builtins.input", return_value="N"), \
-                patch("builtins.print"):
-            check = io.warn_handle(warn_msg, str(err_log))
-        content = err_log.read_text()
+                self.assertLogs("M9_Log", level="WARNING"):
+            check = io.warn_handle(warn_msg, "log.txt")
         self.assertFalse(check)
-        self.assertIn(warn_msg, content)
 
     def test_force_low_confirm(self):
         """Tests that lower case y works to confirm continuing"""
-        err_log = self.tmp_dir / "log.txt"
         warn_msg = "Test warning message"
         with patch("builtins.input", return_value="y"), \
-                patch("builtins.print"):
-            check = io.warn_handle(warn_msg, str(err_log))
-        content = err_log.read_text()
+                self.assertLogs("M9_Log", level="WARNING"):
+            check = io.warn_handle(warn_msg, "log.txt")
         self.assertTrue(check)
-        self.assertIn(warn_msg, content)
 
 
 if __name__ == "__main__":

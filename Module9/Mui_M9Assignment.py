@@ -34,6 +34,7 @@ TEST_FILES = [
 if __name__ == "__main__":
     # Setup
     err_log = "Mui_M9_Log.txt"
+    io.log_setup(err_log)
     file_list = []
 
     # Ask user for their transaction files

@@ -2,11 +2,14 @@
 # Module 9 Assignment - Input/Output Module
 # CSCI-3025: Python Programming
 # Purpose: Handles all input/output for the program
-# Dependencies: datetime, pandas
+# Dependencies: logging, pandas
 
 
-from datetime import datetime
+import logging
 import pandas as pd
+
+
+_logger = logging.getLogger("M9_Log")
 
 
 def file_exists(file_name):  # Duplicated from Module5
@@ -35,7 +38,7 @@ def file_exists(file_name):  # Duplicated from Module5
         return (True, f'{file_name} exists')
 
 
-def can_write_file(file_name):  # Duplicated from Module5
+def can_write_file(file_name):  # Duplicated from Module5 TODO currently unused, remove this and associated tests if still unused later
     """Checks if a file can be appended
     
     Args:
@@ -57,28 +60,6 @@ def can_write_file(file_name):  # Duplicated from Module5
     else:
         file_open.close()
         return (True, f"File printed successfully as {file_name}")
-
-
-def print_log(data, file_name):  # Duplicated from Module7
-    """Prints log entries to an existing file (will create if not present)
-    
-    Args:
-        data: information to be written to the log
-        file_name: the file path of the error log
-    
-    Returns:
-        2-tuple with the following characteristics
-            [0]: True if file was successfully written, otherwise False
-            [1]: f-string that provides more information beyond True/False
-    """
-    can_write = can_write_file(file_name)
-    if can_write[0]:
-        time_now = datetime.now()
-        with open(file_name, "a") as f:
-            f.write(f"{time_now}: {data}\n")
-        return can_write
-    else:
-        return can_write
 
 
 def dataframe_check(file_name, head_info=0):
@@ -150,7 +131,26 @@ def file_input_handle():
         return (False, check[1])
 
 
-def err_handle(err_msg, err_log='log.txt'):  # Heavy Reuse from Module7
+def log_setup(log_file="log.txt"):
+    """Sets up a shared logger to write messages to the given file
+    
+    Args:
+        log_file: the file path where the log is located
+    
+    Returns:
+        _logger: common log handler for all logs
+    """
+    if not _logger.handlers:
+        handler = logging.FileHandler(log_file)
+        handler.setFormatter(
+            logging.Formatter("%(asctime)s: %(levelname)s - %(message)s")
+        )
+        _logger.addHandler(handler)
+        _logger.setLevel(logging.WARNING)
+    return _logger
+
+
+def err_handle(err_msg, err_log='log.txt'):
     """Handles various errors, prints console message and calls print_log
     
     Args:
@@ -160,15 +160,8 @@ def err_handle(err_msg, err_log='log.txt'):  # Heavy Reuse from Module7
     Returns:
         None (console output)
     """
-    std_err = 'ERROR: An error has occurred.'
-    see_log = f'See {err_log} for details.'
-    log_err = 'Could not send error to the logs:'
-    flag = print_log(err_msg, err_log)
-    if flag[0]:
-        print(f'{std_err} {see_log}')
-    else:
-        print(f'{std_err}')
-        print(f'{log_err} {flag[1]}')
+    _logger.error(err_msg)
+    print(f'ERROR: An error has occurred. See {err_log} for details.')
 
 
 def warn_handle(warn_msg, err_log='log.txt'):
@@ -181,11 +174,8 @@ def warn_handle(warn_msg, err_log='log.txt'):
     Returns:
         True to continue, otherwise False
     """
+    _logger.warning(warn_msg)
     std_warn = f'WARNING: {warn_msg}. Would you like to proceed (Y/N): '
-    log_err = 'Could not send error to the logs:'
-    flag = print_log(warn_msg, err_log)
-    if not flag[0]:
-        print(f'{log_err} {flag[1]}')
     force = input(f'{std_warn}')
     if force in ["Y", "y"]:
         return True
