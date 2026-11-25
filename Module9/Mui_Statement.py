@@ -64,8 +64,13 @@ class Statement:
         """Adds two statement instances together and returns a new combined 
         statement instance"""
         new_name = f'{self.name}, {other.name}'
-        new_df = pd.concat([self.df, other.df], ignore_index=True)
-        new_df['Source'] = (([str(self.name)] * len(self.df))
-                             + ([str(other.name)] * len(other.df)))
+        new_dfa = self.df.copy()
+        new_dfb = other.df.copy()
+        if "File Source" not in self.df.columns:
+            new_dfa["File Source"] = [str(self.name)] * len(self.df)
+        if "File Source" not in other.df.columns:
+            new_dfb["File Source"] = [str(other.name)] * len(other.df)
+        new_df = pd.concat([new_dfa, new_dfb], ignore_index=True)
         new_df = new_df.sort_values(by="Date")
+        new_df = new_df.reset_index(drop=True)
         return Statement(new_df, new_name)

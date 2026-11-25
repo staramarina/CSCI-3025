@@ -10,6 +10,7 @@
 
 
 import sys
+from copy import deepcopy
 import Mui_Ancillary as aux
 import Mui_IO as io
 import Mui_Parser as parse
@@ -81,6 +82,15 @@ if __name__ == "__main__":
         sys.exit(1)
     print("Data frame(s) created.")
 
+
+    # TODO Temporary data dump for testins
+    with open('test_dump.txt', "w") as f: 
+        f.write('------------------------ORIGINAL DATAFRAMES------------------------\n')
+        for df in df_list.values(): # pre-cleaning print
+            f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
+            f.write('\n\n') # extra lines for readability
+
+
     # Parse/clean dataframes
     print("\nParsing and cleaning data.")
     df_clean = {}
@@ -106,15 +116,41 @@ if __name__ == "__main__":
         sys.exit(1)
     print("Data successfully parsed and cleaned.")
 
+
+    # TODO Temporary data dump for testins
+    with open('test_dump.txt', "a") as f: 
+        f.write('------------------------CLEAN DATAFRAMES------------------------\n')
+        for df in df_clean.values(): # pre-classes print
+            f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
+            f.write('\n\n') # extra lines for readability
+
+
     # Create a list of statement class instances
     df_class = []
     for file, df in df_clean.items():
         statement = stmnt.Statement(df, file)  # TODO add validation check
         df_class.append(statement)
 
-    # Spin up class instances
-    # TODO use cleaned data to generate statement class instances -- init in statement class
-    # TODO if more than one instance, combine together -- add method in stmnt
+
+    # TODO Temporary data dump for testins
+    with open('test_dump.txt', "a") as f: 
+        f.write('------------------------CLASSES------------------------\n')
+        for data in df_class:  # post-classes print
+            f.write(str(data))
+            f.write('\n\n') # extra lines for readability
+
+
+    # Add all class instances together into a single class instance
+    all_data = deepcopy(df_class[0])
+    for statement in df_class[1:]:
+        all_data += statement
+
+
+    # TODO Temporary data dump for testins
+    with open('test_dump.txt', "a") as f: 
+        f.write('------------------------COMBINED------------------------\n')
+        f.write(str(all_data))  #post combined print
+
 
     # Analysis
     # TODO print analysis menu -- call from io
@@ -127,12 +163,3 @@ if __name__ == "__main__":
     # TODO program closing message(s)
 
 
-
-    # TODO Temporary data dump for testins
-    with open('test_dump.txt', "a") as f: 
-        #for df in df_clean.values(): # pre-classes print
-            #f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
-            #f.write('\n\n') # extra lines for readability
-        for data in df_class:  # post-classes print
-            f.write(str(data))
-            f.write('\n\n') # extra lines for readability
