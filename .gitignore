@@ -223,4 +223,4 @@ venv/
 .vscode/*
 
 # Potentially Sensitive Data (probably not, but still don't post to GitHub)
-*/.priv_test/*
+*/priv_test/*
