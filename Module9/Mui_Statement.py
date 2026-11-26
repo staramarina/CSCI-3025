@@ -228,8 +228,17 @@ class Statement:
                 [0]: True if Description column exists, otherwise False
                 [1]: data in a dataframe on success, otherwise error message
         """
-        # Do this off description if exists, else send error
-        # probably don't need any extra calcs for this, just return df
+        if "Description" in self.df.columns:
+            data = self.df.loc[self.df["Amount"] < 0,
+                               ["Description", "Amount"]].copy()
+            data = data.dropna()
+            data = data.groupby("Description", as_index=False)["Amount"].sum()
+            data = data.sort_values(by="Amount", ascending=False)
+            data = data.reset_index(drop=True)
+            data["Amount"] *= -1
+            return (True, data)
+        else:
+            return (False, "Description data not available")
 
     def descript_chart(self):
         """Generates the chart for spending by description
@@ -243,7 +252,29 @@ class Statement:
                 [1]: a 2-tuple of matplotlib (fig, ax) on success, 
                      otherwise error message
         """
-        # probably bar chart for this
+        check = self.descript_analysis()
+        if check[0]:
+            data = check[1]
+            fig, ax = plt.subplots(figsize=(10, max(4, 0.4*len(data))))
+            sns.barplot(
+                data=data,
+                x="Amount",
+                y="Description",
+                color="tab:blue",
+                errorbar=None,
+                ax=ax
+            )
+            ax.set_title("Total Expenses by Description")
+            ax.set_xlabel("Total Amount")
+            ax.set_ylabel("")
+            for con in ax.containers:
+                ax.bar_label(con, fmt="%.2f", padding=3)
+            ax.margins(x=0.12)
+            fig.tight_layout()
+            chart = (fig, ax)
+            return (True, chart)
+        else:
+            return (False, check[1])
 
     def bal_analysis(self):
         """Performs analysis on overall balance changes per day
