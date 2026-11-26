@@ -188,7 +188,7 @@ def print_analysis_menu():
     print('Please select one of the following options:')
     print('1 -- Overall Spending per Day')
     print('2 -- Spending by Category')
-    print('3 -- Spending by Source')
+    print('3 -- Spending by Description')
     print('4 -- Overall Balance Changes per Day')
     print('5 -- Top 5 Expenses')
     print('x -- Quit')
