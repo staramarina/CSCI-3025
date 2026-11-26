@@ -108,6 +108,9 @@ class Statement:
             None
         
         Returns:
+            chart: a 2-tuple with the following format
+                [0]: matplotlib figure
+                [1]: matplotlib axes
         """
         data, exp_min, exp_max, exp_avg = self.spend_analysis()
         fig, ax = plt.subplots(figsize=(10, 6))
@@ -115,19 +118,23 @@ class Statement:
             data=data,
             x="Date",
             y="Amount",
-            markersize=8,
+            color="tab:blue",
             dashes=False,
             estimator=None,
+            label="Daily Expense Total",
             ax=ax,
         )
         ax.axhline(
-            exp_min, ls="--", label=f"Minimum Daily Expense: {exp_min:.2f}"
+            exp_max, ls="--", color="tab:red", 
+            label=f"Maximum Daily Expense: {exp_max:.2f}"
         )
         ax.axhline(
-            exp_max, ls="--", label=f"Maximum Daily Expense: {exp_max:.2f}"
+            exp_avg, ls="--", color="tab:orange", 
+            label=f"Average Daily Expense: {exp_avg:.2f}"
         )
         ax.axhline(
-            exp_avg, ls="--", label=f"Average Daily Expense: {exp_avg:.2f}"
+            exp_min, ls="--", color="tab:green", 
+            label=f"Minimum Daily Expense: {exp_min:.2f}"
         )
         ax.set_title("Aggregate Expenses per Day")
         ax.set_xlabel("Date")
