@@ -80,6 +80,7 @@ class Statement:
 
     def spend_analysis(self):
         """Performs analysis on overall spending per day
+        Note: "Date" and "Amount" always exist per parsing rules
         
         Args:
             None
