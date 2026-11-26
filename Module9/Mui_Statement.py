@@ -21,7 +21,7 @@ class Statement:
         Returns:
             A statement class instance
         """
-        self.name = name  # TODO validate this as well to strip any directories from the file name
+        self.name = name
         self.df = data
 
     @property
@@ -74,3 +74,33 @@ class Statement:
         new_df = new_df.sort_values(by="Date")
         new_df = new_df.reset_index(drop=True)
         return Statement(new_df, new_name)
+
+    def spend_analysis(self):
+        """Performs analysis on overall spending per day"""
+
+    def spend_chart(self):
+        """Generates the chart for overall spending per day"""
+
+    def cat_analysis(self):
+        """Performs analysis on spending by category"""
+
+    def cat_chart(self):
+        """Generates the chart for spending by category"""
+
+    def srce_analysis(self):
+        """Performs analysis on spending by source"""
+
+    def srce_chart(self):
+        """Generates the chart for spending by source"""
+
+    def bal_analysis(self):
+        """Performs analysis on overall balance changes per day"""
+
+    def bal_chart(self):
+        """Generates the chart for overall balances changes per day"""
+
+    def top5_analysis(self):
+        """Performs analysis on top 5 expenses"""
+
+    def top5_chart(self):
+        """Generates the chart for top 5 expenses"""
