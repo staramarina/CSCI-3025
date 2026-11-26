@@ -6,6 +6,9 @@
 
 
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mplticker
 
 
 class Statement:
@@ -76,17 +79,64 @@ class Statement:
         return Statement(new_df, new_name)
 
     def spend_analysis(self):
-        """Performs analysis on overall spending per day"""
-        # just need date and amount columns (both required per cleaning)
-        # remove all NA (date already done in cleaning)
-        # remove any positive, then * -1 to all
-        # calculate min, max, mean
-        # return df, min, max, mean
+        """Performs analysis on overall spending per day
+        
+        Args:
+            None
+        
+        Returns:
+            data: expense data only grouped by date
+            exp_min: minimum daily expense total
+            exp_max: maximum daily expense total
+            exp_avg: average daily expense total
+        """
+        data = self.df.loc[self.df["Amount"] < 0,["Date", "Amount"]].copy()
+        data = data.dropna()
+        data = data.groupby("Date", as_index=False)["Amount"].sum()
+        data = data.sort_values(by="Date")
+        data = data.reset_index(drop=True)
+        data["Amount"] *= -1
+        exp_min = data["Amount"].min().round(2)
+        exp_max = data["Amount"].max().round(2)
+        exp_avg = data["Amount"].mean().round(2)
+        return (data, exp_min, exp_max, exp_avg)
 
     def spend_chart(self):
-        """Generates the chart for overall spending per day"""
-        # do lineplot
-        # do hlines for min, max, and mean expense per day
+        """Generates the chart for overall spending per day
+        
+        Args:
+            None
+        
+        Returns:
+        """
+        data, exp_min, exp_max, exp_avg = self.spend_analysis()
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(
+            data=data,
+            x="Date",
+            y="Amount",
+            markersize=8,
+            dashes=False,
+            estimator=None,
+            ax=ax,
+        )
+        ax.axhline(
+            exp_min, ls="--", label=f"Minimum Daily Expense: {exp_min:.2f}"
+        )
+        ax.axhline(
+            exp_max, ls="--", label=f"Maximum Daily Expense: {exp_max:.2f}"
+        )
+        ax.axhline(
+            exp_avg, ls="--", label=f"Average Daily Expense: {exp_avg:.2f}"
+        )
+        ax.set_title("Aggregate Expenses per Day")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Aggregate Amount")
+        ax.legend(title="Statistics")
+        plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
+        fig.tight_layout()
+        chart = (fig, ax)
+        return chart
 
     def cat_analysis(self):
         """Performs analysis on spending by category"""
