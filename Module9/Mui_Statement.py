@@ -113,6 +113,7 @@ class Statement:
 
     def spend_chart(self):
         """Generates the chart for overall spending per day
+        Note: both "Date" and "Amount" are required per parser
         
         Args:
             None
@@ -278,7 +279,7 @@ class Statement:
 
     def bal_analysis(self):
         """Performs analysis on overall balance changes per day
-        Note: "Amount" is required per parser, "Balance" is optional
+        Note: "Date" is required per parser, "Balance" is optional
         
         Args:
             None
@@ -286,10 +287,20 @@ class Statement:
         Returns:
             A 2-tuple with the following format:
                 [0]: True if Balance column exists, otherwise False
-                [1]: data in a dataframe on success, otherwise error message
+                [1]: A 2-tuple with the following format:
+                    [0]: balance data grouped by date
+                    [1]: minimum daily balance total
+                    [2]: maximum daily balance total
+                    [3]: average daily balance total
         """
-        # need date and balance, check for later, otherwise send error
-        # probably don't need anything else, just return df
+        if "Balance" in self.df.columns:
+            data = self.df["Date", "Balance"].copy()
+            data = data.dropna()
+            data = data.sort_values(by="Date")
+            data = data.reset_index(drop=True)
+            return (True, data)
+        else:
+            return (False, "Description data not available")
 
     def bal_chart(self):
         """Generates the chart for overall balances changes per day
@@ -303,7 +314,29 @@ class Statement:
                 [1]: a 2-tuple of matplotlib (fig, ax) on success, 
                      otherwise error message
         """
-        # probably bar/whisker to show the distribution of changes, otherwise line plot
+        check = self.bal_analysis()
+        if check[0]:
+            data = check[1]
+            day = sorted(data["Date"].unique())
+            mean_all = data["Balance"].mean()
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.boxplot(data=data, x="Date", y="Balance", order=day, ax=ax)
+            ax.axhline(
+                mean_all,
+                ls="--",
+                color="red",
+                label=f"Overall mean: {mean_all:.2f} lunar",
+            )
+            ax.set_title("Balance Changes per Day")
+            ax.set_xlabel("Date")
+            ax.set_ylabel("Balance")
+            ax.legend()
+            plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
+            fig.tight_layout()
+            chart = (fig, ax)
+            return (True, chart)
+        else:
+            return (False, check[1])
 
     def top5_analysis(self):
         """Performs analysis on top 5 expenses
