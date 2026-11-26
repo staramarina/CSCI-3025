@@ -151,5 +151,116 @@ class TestStmntMagic(StmntBuild, unittest.TestCase):
         self.assertEqual(8, len(new_stmnt.df))
 
 
+class TestSpendAnalysis(StmntBuild, unittest.TestCase):
+    """Class to test the spend_analysis() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+    def test_spend_income(self):
+        """Tests that income is excluded from expenses"""
+        data = self.stmnt4.spend_analysis()
+        df = data[0]
+        self.assertTrue((df["Amount"] >= 0).all())
+
+    def test_spend_pad(self):
+        """Tests that missing dates are added"""
+        data = self.stmnt4.spend_analysis()
+        df = data[0]
+        day = df[df["Date"] == pd.Timestamp("2026-11-17")]
+        self.assertEqual(3, len(df))
+        self.assertEqual(1, len(day))
+        self.assertAlmostEqual(0.0, day["Amount"].iloc[0])
+
+    def test_spend_stats(self):
+        """Tests than min, max, and avg values are calculated correctly"""
+        data = self.stmnt4.spend_analysis()
+        exp_min = 0.0
+        exp_max = 7.66 + 28.79
+        exp_avg = (21.13 + 7.66 + 28.79) / 3
+        self.assertAlmostEqual(exp_min, data[1], places=2)
+        self.assertAlmostEqual(exp_max, data[2], places=2)
+        self.assertAlmostEqual(exp_avg, data[3], places=2)
+
+    def test_spend_orig(self):
+        """Tests that the original dataframe is unmodified"""
+        orig = self.stmnt4.df.copy(deep=True)
+        self.stmnt4.spend_analysis()
+        pd.testing.assert_frame_equal(orig, self.stmnt4.df)
+
+
+class TestSpendChart(StmntBuild, unittest.TestCase):
+    """Class to test the spend_chart() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
+class TestCatAnalysis(StmntBuild, unittest.TestCase):
+    """Class to test the cat_analysis() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
+class TestCatChart(StmntBuild, unittest.TestCase):
+    """Class to test the cat_chart() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
+class TestDescriptAnalysis(StmntBuild, unittest.TestCase):
+    """Class to test the descript_analysis() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
+class TestDescriptChart(StmntBuild, unittest.TestCase):
+    """Class to test the descript_chart() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
+class TestBalAnalysis(StmntBuild, unittest.TestCase):
+    """Class to test the bal_analysis() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
+class TestBalChart(StmntBuild, unittest.TestCase):
+    """Class to test the bal_chart() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
+class TestTopAnalysis(StmntBuild, unittest.TestCase):
+    """Class to test the top5_analysis() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
+class TestTopChart(StmntBuild, unittest.TestCase):
+    """Class to test the top5_chart() method"""
+
+    def setUp(self):
+        """Setup method to create test statement class instances"""
+        self.stmnt4 = self.build_df4_stmnt()
+
+
 if __name__ == "__main__":
     unittest.main()
