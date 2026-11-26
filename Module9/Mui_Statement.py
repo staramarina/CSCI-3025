@@ -95,10 +95,19 @@ class Statement:
         data = data.groupby("Date", as_index=False)["Amount"].sum()
         data = data.sort_values(by="Date")
         data = data.reset_index(drop=True)
+        date_full = pd.date_range(
+            data["Date"].min(), 
+            data["Date"].max(), 
+            freq="D"
+        )
+        data = (data.set_index("Date")
+                    .reindex(date_full, fill_value=0)
+                    .rename_axis("Date")
+                    .reset_index())
         data["Amount"] *= -1
-        exp_min = data["Amount"].min().round(2)
-        exp_max = data["Amount"].max().round(2)
-        exp_avg = data["Amount"].mean().round(2)
+        exp_min = data["Amount"].min().round(2) + 0.0
+        exp_max = data["Amount"].max().round(2) + 0.0
+        exp_avg = data["Amount"].mean().round(2) + 0.0
         return (data, exp_min, exp_max, exp_avg)
 
     def spend_chart(self):
