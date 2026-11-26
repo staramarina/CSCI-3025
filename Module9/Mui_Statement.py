@@ -2,13 +2,12 @@
 # Module 9 Assignment - Statement Class Module
 # CSCI-3025: Python Programming
 # Purpose: Class for bank statements, analysis, and chart generation
-# Dependencies: pandas
+# Dependencies: pandas, seaborn, matplotlib
 
 
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import matplotlib.ticker as mplticker
 
 
 class Statement:
@@ -301,7 +300,7 @@ class Statement:
             stats = (data, bal_avg)
             return (True, stats)
         else:
-            return (False, "Description data not available")
+            return (False, "Balance data not available")
 
     def bal_chart(self):
         """Generates the chart for maximum balance per day
@@ -367,12 +366,12 @@ class Statement:
             top = data.head(5).copy()
             other = data["Amount"].iloc[5:].sum()
             if 0 < other:
-                top = pd.concat([top, pd.DataFrame({"Description": ["Other"], "Amount": [other]})], ignore_index=True)
+                top = pd.concat([top, pd.DataFrame(
+                    {"Description": ["Other"], "Amount": [other]})], 
+                    ignore_index=True)
             return (True, top)
         else:
             return (False, "Description data not available")
-        # find the top 5 expenses
-        # return 2 df, one for each top 5, then another for everything else to compare
 
     def top5_chart(self):
         """Generates the chart for top 5 expenses
