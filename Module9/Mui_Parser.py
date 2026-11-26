@@ -251,7 +251,7 @@ def clean_money(data, col):
                 return (True, df)
         else:  # All other money columns should be mostly negative TODO document this, add test case
             if 0.50 > pcnt_neg:
-                df[col] = df[col] * -1
+                df[col] *= -1
                 return (True, df)
             else:
                 return (True, df)
