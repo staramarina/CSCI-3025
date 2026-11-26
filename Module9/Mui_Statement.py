@@ -77,30 +77,53 @@ class Statement:
 
     def spend_analysis(self):
         """Performs analysis on overall spending per day"""
+        # just need date and amount columns (both required per cleaning)
+        # remove all NA (date already done in cleaning)
+        # calculate min, max, mean
+        # return df, min, max, mean
 
     def spend_chart(self):
         """Generates the chart for overall spending per day"""
+        # do lineplot
+        # do hlines for min, max, and mean expense per day
 
     def cat_analysis(self):
         """Performs analysis on spending by category"""
+        # Check that category exists, otherwise send error
+        # just need category and amount
+        # calculate percentage of spend on each category, put it in a dict
+        # return df and percentage dict
 
     def cat_chart(self):
         """Generates the chart for spending by category"""
+        # do a pie chart with matplotlib for this, seaborn doesn't support
 
-    def srce_analysis(self):
-        """Performs analysis on spending by source"""
+    def descript_analysis(self):
+        """Performs analysis on spending by description"""
+        # Do this off description if exists, else send error
+        # description should have more than three types, else send error
+        # probably don't need any extra calcs for this, just return df
 
-    def srce_chart(self):
-        """Generates the chart for spending by source"""
+    def descript_chart(self):
+        """Generates the chart for spending by description"""
+        # probably bar chart for this
 
     def bal_analysis(self):
         """Performs analysis on overall balance changes per day"""
+        # need date and balance, check for later, otherwise send error
+        # probably don't need anything else, just return df
 
     def bal_chart(self):
         """Generates the chart for overall balances changes per day"""
+        # probably bar/whisker to show the distribution of changes, otherwise line plot
 
     def top5_analysis(self):
         """Performs analysis on top 5 expenses"""
+        # need description and amount, check for description, otherwise send error
+        # consolidate on description
+        # find the top 5 expenses
+        # return 2 df, one for each top 5, then another for everything else to compare
 
     def top5_chart(self):
         """Generates the chart for top 5 expenses"""
+        # probably just a bar chart, maybe compare against all other categories combined
