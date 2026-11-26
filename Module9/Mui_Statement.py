@@ -79,6 +79,7 @@ class Statement:
         """Performs analysis on overall spending per day"""
         # just need date and amount columns (both required per cleaning)
         # remove all NA (date already done in cleaning)
+        # remove any positive, then * -1 to all
         # calculate min, max, mean
         # return df, min, max, mean
 
@@ -101,7 +102,6 @@ class Statement:
     def descript_analysis(self):
         """Performs analysis on spending by description"""
         # Do this off description if exists, else send error
-        # description should have more than three types, else send error
         # probably don't need any extra calcs for this, just return df
 
     def descript_chart(self):

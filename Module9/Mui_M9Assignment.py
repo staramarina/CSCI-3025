@@ -31,9 +31,9 @@ TEST_FILES = {
     'data/wellsfargo_checking_example.csv': True
 }
 
-USAA_CHECK = '.priv_test/check2_scrubbed.csv'
-USAA_CREDIT = 'priv_test/credit2_scrubbed.csv'
-SAFE_CREDIT = 'priv_test/credit1_scrubbed.csv'
+USAA_CHECK = 'priv_test/checking2_scrubbed.csv' # good description and category
+USAA_CREDIT = 'priv_test/credit2_scrubbed.csv'  # good to combo with checking2
+SAFE_CREDIT = 'priv_test/credit1_scrubbed.csv' # good balance, don't use description
 
 REAL_FILES = {
     USAA_CHECK: True,
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     print("\nBuilding data frames.")
     df_list = {}
     df_pop_ls = []
-    for file in TEST_FILES:  # TODO replace with file_list later
+    for file in REAL_FILES:  # TODO replace with file_list later
         check = parse.build_dataframe(file)
         if check[0]:  # If dataframe successfully built
             df_list[file] = check[1]
