@@ -9,6 +9,9 @@ import unittest
 import sys
 from pathlib import Path
 import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 
 #Adds parent directory to front of module search path
@@ -20,6 +23,45 @@ import Mui_Statement as stmnt
 
 class StmntBuild:
     """Class to build various statement class instances for test cases"""
+
+    def build_lrg(self):
+        """Builds and returns a larger pandas dataframe for analysis/charts"""
+        data = {
+            "Date": [
+                '2026-10-27', '2026-10-21', '2026-10-13', '2026-10-13',
+                '2026-10-06', '2026-10-05', '2026-10-05', '2026-09-28',
+                '2026-09-21', '2026-09-11', '2026-09-08', '2026-09-03',
+                '2026-09-03', '2026-09-03', '2026-09-03', '2026-08-27',
+                '2026-08-20', '2026-08-18', '2026-08-11', '2026-08-06',
+                '2026-08-03', '2026-08-03',
+            ],
+            "Amount": [
+                -24.61, 2651.68, -104.7, -39.51, 2651.68, -3026.84, -197.91,
+                -23.99, 2651.68, -104.7, -41.51, -3026.84, -234.24, 2964.26,
+                2651.68, -22.71, 2651.68, -39.59, -104.7, 2651.68, -3026.84,
+                -187.9
+            ],
+            "Category": [
+                'Natural Gas', 'Paycheck', 'Internet', 'Water', 'Paycheck', 
+                'Uncategorized', 'Electricity', 'Natural Gas', 'Paycheck', 
+                'Internet', 'Water', 'Transfer', 'Electricity', 'Uncategorized',
+                'Paycheck', 'Natural Gas', 'Paycheck', 'Water', 'Internet', 
+                'Paycheck', 'Uncategorized', 'Electricity'
+            ],
+            "Description": [
+                'Gas Company', 'Workplace', 'InternetCompany', 
+                'Locale Wa Utlpayment', 'Workplace', 'Newmortgage Company', 
+                'Locale', 'Gas Company', 'Workplace', 'InternetCompany', 
+                'Locale Wa Utlpayment', 'Newmortgage Company', 'Locale', 
+                'Workplace Reimbursement', 'Workplace', 'Gas Company', 
+                'Workplace', 'Locale Wa Utlpayment', 'InternetCompany', 
+                'Workplace', 'Newmortgage Company', 'Locale'
+            ]
+        }
+        df = pd.DataFrame(data)
+        df["Date"] = pd.to_datetime(df["Date"])
+        df["Amount"] = pd.to_numeric(df["Amount"])
+        return df
 
     def build_df6(self):
         """Builds and returns a pandas dataframe with 6 columns"""
@@ -35,7 +77,7 @@ class StmntBuild:
         df["Date"] = pd.to_datetime(df["Date"])
         df["Post Date"] = pd.to_datetime(df["Post Date"])
         df["Amount"] = pd.to_numeric(df["Amount"])
-        df["Balance"] = pd.to_numeric(df["Amount"])
+        df["Balance"] = pd.to_numeric(df["Balance"])
         return df
 
     def build_df4(self):
@@ -49,7 +91,7 @@ class StmntBuild:
         df = pd.DataFrame(data)
         df["Date"] = pd.to_datetime(df["Date"])
         df["Amount"] = pd.to_numeric(df["Amount"])
-        df["Balance"] = pd.to_numeric(df["Amount"])
+        df["Balance"] = pd.to_numeric(df["Balance"])
         return df
 
     def build_default_stmnt(self):
