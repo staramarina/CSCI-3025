@@ -317,10 +317,10 @@ def clean_dataframe(data_raw, err_log):
             return (False, err_msg)
 
     # Date columns cleanup
-    date_col_ls = []
-    for col in df.columns:
-        if "date" in col.lower():
-            date_col_ls.append(col)
+    date_col_ls = df.columns[df.columns.str.contains("date", case=False)]
+    if 0 == len(date_col_ls):
+        err_msg = "No date column detected."
+        return (False, err_msg)
     for col in date_col_ls:
         format_check = date_format(df[col])
         clean_check = date_clean(
