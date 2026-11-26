@@ -150,7 +150,7 @@ class Statement:
         ax.set_title("Aggregate Expenses per Day")
         ax.set_xlabel("Date")
         ax.set_ylabel("Aggregate Amount")
-        ax.legend(title="Statistics")
+        ax.legend()
         plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
         fig.tight_layout()
         chart = (fig, ax)
@@ -278,7 +278,7 @@ class Statement:
             return (False, check[1])
 
     def bal_analysis(self):
-        """Performs analysis on overall balance changes per day
+        """Performs analysis on maximum balance per day
         Note: "Date" is required per parser, "Balance" is optional
         
         Args:
@@ -288,22 +288,23 @@ class Statement:
             A 2-tuple with the following format:
                 [0]: True if Balance column exists, otherwise False
                 [1]: A 2-tuple with the following format:
-                    [0]: balance data grouped by date
-                    [1]: minimum daily balance total
-                    [2]: maximum daily balance total
-                    [3]: average daily balance total
+                    [0]: max balance data grouped by date
+                    [1]: average daily balance total
         """
         if "Balance" in self.df.columns:
-            data = self.df["Date", "Balance"].copy()
+            data = self.df[["Date", "Balance"]].copy()
             data = data.dropna()
+            data = data.groupby("Date", as_index=False)["Balance"].max()
             data = data.sort_values(by="Date")
             data = data.reset_index(drop=True)
-            return (True, data)
+            bal_avg = data["Balance"].mean().round(2) + 0.0
+            stats = (data, bal_avg)
+            return (True, stats)
         else:
             return (False, "Description data not available")
 
     def bal_chart(self):
-        """Generates the chart for overall balances changes per day
+        """Generates the chart for maximum balance per day
         
         Args:
             None
@@ -316,18 +317,23 @@ class Statement:
         """
         check = self.bal_analysis()
         if check[0]:
-            data = check[1]
-            day = sorted(data["Date"].unique())
-            mean_all = data["Balance"].mean()
+            data, bal_avg = check[1]
             fig, ax = plt.subplots(figsize=(10, 6))
-            sns.boxplot(data=data, x="Date", y="Balance", order=day, ax=ax)
-            ax.axhline(
-                mean_all,
-                ls="--",
-                color="red",
-                label=f"Overall mean: {mean_all:.2f} lunar",
+            sns.lineplot(
+                data=data,
+                x="Date",
+                y="Balance",
+                color="tab:blue",
+                dashes=False,
+                estimator=None,
+                label="Maximum Daily Balance",
+                ax=ax,
             )
-            ax.set_title("Balance Changes per Day")
+            ax.axhline(
+                bal_avg, ls="--", color="tab:orange", 
+                label=f"Average Maximum Balance: {bal_avg:.2f}"
+            )
+            ax.set_title("Maximum Balance per Day")
             ax.set_xlabel("Date")
             ax.set_ylabel("Balance")
             ax.legend()
