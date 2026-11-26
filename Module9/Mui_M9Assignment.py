@@ -36,8 +36,8 @@ USAA_CREDIT = 'priv_test/credit2_scrubbed.csv'  # good to combo with checking2
 SAFE_CREDIT = 'priv_test/credit1_scrubbed.csv' # good balance, don't use description
 
 REAL_FILES = {
-    #USAA_CHECK: True,
-    USAA_CREDIT: True,
+    USAA_CHECK: True,
+    #USAA_CREDIT: True,
     #SAFE_CREDIT: True
 }
 
@@ -167,8 +167,29 @@ if __name__ == "__main__":
     # TODO check user input with int_check -- call from aux
     # TODO call analysis method -- from stmnt
 
-    spend = all_data.spend_chart()
-    check_spend = io.chart_save(spend, "charts/spend_chart.png")
+    # Spend analysis
+    #spend = all_data.spend_chart()
+    #check_spend = io.chart_save(spend, "charts/spend_chart.png")
+
+    # Category analysis
+    #check_cat = all_data.cat_chart()
+    #if check_cat[0]:
+    #    chart_check = io.chart_save(check_cat[1], "charts/cat_chart.png")
+
+    # Description analysis
+    #check_des = all_data.descript_chart()
+    #if check_des[0]:
+    #    chart_check = io.chart_save(check_des[1], "charts/descript_chart.png")
+
+    # Balance analysis
+    #check_bal = all_data.bal_chart()
+    #if check_bal[0]:
+    #    chart_check = io.chart_save(check_bal[1], "charts/bal_chart.png")
+
+    # Top 5 analysis
+    check_top = all_data.top5_chart()
+    if check_top[0]:
+        chart_check = io.chart_save(check_top[1], "charts/top5_chart.png")
 
     # TODO print results
     # TODO ask if user wants another analysis, repeat until N/n
