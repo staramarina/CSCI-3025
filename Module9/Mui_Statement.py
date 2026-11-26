@@ -356,8 +356,21 @@ class Statement:
                 [0]: True if Description column exists, otherwise False
                 [1]: data in a dataframe on success, otherwise error message
         """
-        # need description and amount, check for description, otherwise send error
-        # consolidate on description
+        if "Description" in self.df.columns:
+            data = self.df.loc[self.df["Amount"] < 0,
+                               ["Description", "Amount"]].copy()
+            data = data.dropna()
+            data = data.groupby("Description", as_index=False)["Amount"].sum()
+            data["Amount"] *= -1
+            data = data.sort_values(by="Amount", ascending=False)
+            data = data.reset_index(drop=True)
+            top = data.head(5).copy()
+            other = data["Amount"].iloc[5:].sum()
+            if 0 < other:
+                top = pd.concat([top, pd.DataFrame({"Description": ["Other"], "Amount": [other]})], ignore_index=True)
+            return (True, top)
+        else:
+            return (False, "Description data not available")
         # find the top 5 expenses
         # return 2 df, one for each top 5, then another for everything else to compare
 
@@ -376,13 +389,13 @@ class Statement:
         check = self.top5_analysis()
         if check[0]:
             data = check[1]
-            fig, ax = plt.subplots(figsize=(8, 8))
+            fig, ax = plt.subplots(figsize=(10, 6))
             ax.pie(
                 data["Amount"],
                 labels=data["Description"],
-                autopct="%1.11f%%",
+                autopct="%1.1f%%",
                 startangle=90,
-                counterclock=False
+                counterclock=True
             )
             ax.set_title("Top 5 Expenses")
             ax.axis("equal")
