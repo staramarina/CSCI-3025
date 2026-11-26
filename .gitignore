@@ -221,3 +221,6 @@ venv/
 
 # Visual Studio Code
 .vscode/*
+
+# Potentially Sensitive Data (probably not, but still don't post to GitHub)
+*/.priv_test/*
