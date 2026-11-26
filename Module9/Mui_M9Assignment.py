@@ -31,6 +31,16 @@ TEST_FILES = {
     'data/wellsfargo_checking_example.csv': True
 }
 
+USAA_CHECK = '.priv_test/check2_scrubbed.csv'
+USAA_CREDIT = 'priv_test/credit2_scrubbed.csv'
+SAFE_CREDIT = 'priv_test/credit1_scrubbed.csv'
+
+REAL_FILES = {
+    USAA_CHECK: True,
+    USAA_CREDIT: True,
+    SAFE_CREDIT: True
+}
+
 
 if __name__ == "__main__":
     # Setup
