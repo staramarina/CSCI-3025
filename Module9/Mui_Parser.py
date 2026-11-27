@@ -2,10 +2,11 @@
 # Module 9 Assignment - Data Parser Module
 # CSCI-3025: Python Programming
 # Purpose: Normalizing and transforming CSVs to pandas dataframes
-# Dependencies: re, pandas, Mui_IO
+# Dependencies: re, numpy pandas, Mui_IO
 
 
 import re
+import numpy as np
 import pandas as pd
 import Mui_IO as io
 
@@ -318,9 +319,6 @@ def clean_dataframe(data_raw, err_log):
 
     # Date columns cleanup
     date_col_ls = df.columns[df.columns.str.contains("date", case=False)]
-    if 0 == len(date_col_ls):
-        err_msg = "No date column detected."
-        return (False, err_msg)
     for col in date_col_ls:
         format_check = date_format(df[col])
         clean_check = date_clean(
@@ -349,7 +347,9 @@ def clean_dataframe(data_raw, err_log):
             df = num_check[1]
         else:
             force = io.warn_handle(num_check[1], err_log)
-            if not force:
+            if force:
+                df["Balance"] = np.nan
+            else:
                 return (False, f"Process aborted: {num_check[1]}.")
     deb_ls = df.columns[df.columns.str.contains("debit", case=False)]
     if 0 < len(deb_ls):
@@ -359,7 +359,9 @@ def clean_dataframe(data_raw, err_log):
             df = num_check[1]
         else:
             force = io.warn_handle(num_check[1], err_log)
-            if not force:
+            if force:
+                df["Debit"] = np.nan
+            else:
                 return (False, f"Process aborted: {num_check[1]}.")
     crd_ls = df.columns[df.columns.str.contains("credit", case=False)]
     if 0 < len(crd_ls):
@@ -369,7 +371,9 @@ def clean_dataframe(data_raw, err_log):
             df = num_check[1]
         else:
             force = io.warn_handle(num_check[1], err_log)
-            if not force:
+            if force:
+                df["Credit"] = np.nan
+            else:
                 return (False, f"Process aborted: {num_check[1]}.")
     amnt_ls = df.columns[df.columns.str.contains("amount", case=False)]
     if 0 < len(amnt_ls):
@@ -379,7 +383,9 @@ def clean_dataframe(data_raw, err_log):
             df = num_check[1]
         else:
             force = io.warn_handle(num_check[1], err_log)
-            if not force:
+            if force:
+                df["Amount"] = np.nan
+            else:
                 return (False, f"Process aborted: {num_check[1]}.")
 
     # Handle debit/credit columns
@@ -405,10 +411,12 @@ def clean_dataframe(data_raw, err_log):
         df = df.rename(columns={"Credit": "Amount"})
 
     # Drop full NA columns
+    for col in df.columns:
+        if df[col].isna().all():
+            df = df.drop(columns=[col])
+
+    # Ensure Amount is present (Date confirmed at beginning)
     if "Amount" in df.columns:
-        for col in df.columns:
-            if df[col].isna().all():
-                df = df.drop(columns=[col])
         return (True, df)
     else:
         return (False, "Could not determine column labeling.")

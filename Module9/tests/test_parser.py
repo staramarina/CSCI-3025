@@ -740,6 +740,35 @@ class TestCleanDataframe(unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Process aborted", check[1])
 
+    def test_force_bad_num(self):
+        """Tests when number conversion failure is accepted"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": ["missing", "not here", "N/A", "error"]
+        }
+        df = pd.DataFrame(data)
+        with patch("builtins.input", return_value="Y"):
+            check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIn("Amount", check[1].columns)
+        self.assertNotIn("Balance", check[1].columns)
+
+    def test_abort_bad_num(self):
+        """Tests when number conversion failure is aborted"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": ["missing", "not here", "N/A", "error"]
+        }
+        df = pd.DataFrame(data)
+        with patch("builtins.input", return_value="N"):
+            check = parse.clean_dataframe(df, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("Process aborted", check[1])
+
     def test_deb_crd_merge(self):
         """Tests that debit/credit columns renamed and merged"""
         data = {
@@ -759,6 +788,45 @@ class TestCleanDataframe(unittest.TestCase):
         for rx, ex in zip(check[1]["Amount"], exp):
             self.assertAlmostEqual(rx, ex)
 
+    def test_deb_crd_conflict(self):
+        """Tests that debit/credit merge conflicts are integrated"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["-21.13", "-7.66", "-28.79", ""],
+            "Credit": ["", "14.54", "", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("Conflicting debit/credit information", check[1])
+
+    def test_debit_only(self):
+        """Tests the case where debit is the only money column"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIn("Amount", check[1].columns)
+        self.assertNotIn("Debit", check[1].columns)
+
+    def test_credit_only(self):
+        """Tests the case where credit si the only money column"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Credit": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIn("Amount", check[1].columns)
+        self.assertNotIn("Credit", check[1].columns)
+
     def test_column_conflict(self):
         """Tests the case when column labeling is conflicting"""
         data = {
@@ -770,6 +838,31 @@ class TestCleanDataframe(unittest.TestCase):
         check = parse.clean_dataframe(df, self.err_log)
         self.assertFalse(check[0])
         self.assertIn("Could not determine column", check[1])
+
+    def test_no_date_col(self):
+        """Tests the case where no date column exists"""
+        data = {
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+        }
+        df = pd.DataFrame(data)
+        with patch("builtins.input", return_value="Y"):
+            check = parse.clean_dataframe(df, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("Could not verify date columns", check[1])
+
+    def test_no_money_col(self):
+        """Tests the case where no amount, debit, or credit column exists"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("Could not determine column labeling", check[1])
 
 
 if __name__ == "__main__":
