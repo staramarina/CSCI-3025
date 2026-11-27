@@ -197,6 +197,38 @@ class TestSpendChart(StmntBuild, unittest.TestCase):
         """Setup method to create test statement class instances"""
         self.stmnt4 = self.build_df4_stmnt()
 
+    def tearDown(self):
+        """Closes charts after each test"""
+        yield
+        plt.close("all")
+
+    def test_spend_fig(self):
+        """Tests that both figure and axes is returned"""
+        fig, ax = self.stmnt4.spend_chart()
+        self.assertIsNotNone(fig)
+        self.assertIsNotNone(ax)
+        self.assertIsInstance(fig, plt.Figure)
+        self.assertIsInstance(ax, matplotlib.axes.Axes)
+
+    def test_spend_label(self):
+        """Tests that the chart title and axis label are correct"""
+        fig, ax = self.stmnt4.spend_chart()
+        self.assertIn("Aggregate Expenses per Day", ax.get_title())
+        self.assertIn("Date", ax.get_xlabel())
+        self.assertIn("Aggregate Amount", ax.get_ylabel())
+
+    def test_spend_legend(self):
+        """Tests that all legend items are present"""
+        fig, ax = self.stmnt4.spend_chart()
+        legend_txt = []
+        for text in ax.get_legend().get_texts():
+            legend_txt.append(text.get_text())
+        self.assertEqual(4, len(legend_txt))
+        self.assertIn("Daily Expense Total", legend_txt[0])
+        self.assertIn("Maximum Daily Expense", legend_txt[1])
+        self.assertIn("Average Daily Expense", legend_txt[2])
+        self.assertIn("Minimum Daily Expense", legend_txt[3])
+
 
 class TestCatAnalysis(StmntBuild, unittest.TestCase):
     """Class to test the cat_analysis() method"""
