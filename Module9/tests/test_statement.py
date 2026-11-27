@@ -33,20 +33,20 @@ class StmntBuild:
                 '2026-09-21', '2026-09-11', '2026-09-08', '2026-09-03',
                 '2026-09-03', '2026-09-03', '2026-09-03', '2026-08-27',
                 '2026-08-20', '2026-08-18', '2026-08-11', '2026-08-06',
-                '2026-08-03', '2026-08-03',
+                '2026-08-03', '2026-08-03', '2026-08-01'
             ],
             "Amount": [
                 -24.61, 2651.68, -104.7, -39.51, 2651.68, -3026.84, -197.91,
                 -23.99, 2651.68, -104.7, -41.51, -3026.84, -234.24, 2964.26,
                 2651.68, -22.71, 2651.68, -39.59, -104.7, 2651.68, -3026.84,
-                -187.9
+                -187.9, -59.31
             ],
             "Category": [
                 'Natural Gas', 'Paycheck', 'Internet', 'Water', 'Paycheck', 
                 'Uncategorized', 'Electricity', 'Natural Gas', 'Paycheck', 
                 'Internet', 'Water', 'Transfer', 'Electricity', 'Uncategorized',
                 'Paycheck', 'Natural Gas', 'Paycheck', 'Water', 'Internet', 
-                'Paycheck', 'Uncategorized', 'Electricity'
+                'Paycheck', 'Uncategorized', 'Electricity', 'Uncategorized'
             ],
             "Description": [
                 'Gas Company', 'Workplace', 'InternetCompany', 
@@ -55,7 +55,7 @@ class StmntBuild:
                 'Locale Wa Utlpayment', 'Newmortgage Company', 'Locale', 
                 'Workplace Reimbursement', 'Workplace', 'Gas Company', 
                 'Workplace', 'Locale Wa Utlpayment', 'InternetCompany', 
-                'Workplace', 'Newmortgage Company', 'Locale'
+                'Workplace', 'Newmortgage Company', 'Locale', 'Trash Company'
             ]
         }
         df = pd.DataFrame(data)
@@ -347,7 +347,7 @@ class TestDescriptAnalysis(StmntBuild, unittest.TestCase):
         self.assertTrue((df["Amount"] >= 0).all())
 
     def test_descript_sort(self):
-        """Tests that categories are sorted by amount"""
+        """Tests that descriptions are sorted by amount"""
         check = self.stmnt6.descript_analysis()
         df = check[1]
         exp_stk = 21.13
@@ -512,7 +512,114 @@ class TestTopAnalysis(StmntBuild, unittest.TestCase):
 
     def setUp(self):
         """Setup method to create test statement class instances"""
-        self.stmnt4 = self.build_df4_stmnt()
+        name2 = "Error Testing"
+        df2 = self.build_min()
+        name_big = "Large Testing"
+        df_big = self.build_lrg()
+        self.stmnt2 = self.build_any_stmnt(df2, name2)
+        self.stmnt_lrg = self.build_any_stmnt(df_big, name_big)
+        self.stmnt6 = self.build_df6_stmnt()
+
+    def test_top_income(self):
+        """Tests that income is excluded from expenses"""
+        check = self.stmnt6.top5_analysis()
+        df = check[1]
+        self.assertTrue(check[0])
+        self.assertTrue((df["Amount"] >= 0).all())
+
+    def test_top_sort(self):
+        """Tests that descriptions are sorted by amount"""
+        check = self.stmnt6.top5_analysis()
+        df = check[1]
+        exp_stk = 21.13
+        exp_cook = 7.66
+        exp_mac = 28.79
+        self.assertTrue(check[0])
+        self.assertEqual(3, len(df))
+        self.assertAlmostEqual(exp_mac, df.loc[0, "Amount"])
+        self.assertAlmostEqual(exp_stk, df.loc[1, "Amount"])
+        self.assertAlmostEqual(exp_cook, df.loc[2, "Amount"])
+        self.assertLessEqual(df.loc[2, "Amount"], df.loc[1, "Amount"])
+        self.assertLessEqual(df.loc[1, "Amount"], df.loc[0, "Amount"])
+
+    def test_top_less(self):
+        """Tests the case when there are less than five descriptions"""
+        check = self.stmnt6.top5_analysis()
+        df = check[1]
+        exp_tot = 21.13 + 7.66 + 28.79
+        self.assertTrue(check[0])
+        self.assertEqual(3, len(df))
+        self.assertNotIn("Other", df["Description"].values)
+        self.assertAlmostEqual(exp_tot, df["Amount"].sum())
+
+    def test_top_more(self):
+        """Tests the case when there are more than five descriptions"""
+        check = self.stmnt_lrg.top5_analysis()
+        df = check[1]
+        exp_gas = 24.61 + 23.99 + 22.71
+        exp_www = 104.7 + 104.7 + 104.7
+        exp_water = 39.51 + 41.51 + 39.59
+        exp_mort = 3026.84 + 3026.84 + 3026.84
+        exp_elec = 197.91 + 234.24 + 187.9
+        exp_other = 59.31
+        self.assertTrue(check[0])
+        self.assertEqual(6, len(df))
+        self.assertIn("Other", df["Description"].values)
+        indx = df.set_index("Description")
+        self.assertAlmostEqual(
+            exp_gas, indx.loc["Gas Company", "Amount"], places=2
+        )
+        self.assertAlmostEqual(
+            exp_www, indx.loc["InternetCompany", "Amount"], places=2
+        )
+        self.assertAlmostEqual(
+            exp_water, indx.loc["Locale Wa Utlpayment", "Amount"], places=2
+        )
+        self.assertAlmostEqual(
+            exp_mort, indx.loc["Newmortgage Company", "Amount"], places=2
+        )
+        self.assertAlmostEqual(
+            exp_elec, indx.loc["Locale", "Amount"], places=2
+        )
+        self.assertAlmostEqual(
+            exp_other, indx.loc["Other", "Amount"], places=2
+        )
+
+    def test_top_err(self):
+        """Tests the case when there is no Description column"""
+        check = self.stmnt2.top5_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("Description data not available", check[1])
+
+    def test_top_orig(self):
+        """Tests that the original dataframe is unmodifed"""
+        orig = self.stmnt6.df.copy(deep=True)
+        self.stmnt6.top5_analysis()
+        pd.testing.assert_frame_equal(orig, self.stmnt6.df)
+
+
+"""
+Gas Company -- x3
+-24.61, -23.99, -22.71
+
+InternetCompany -- x3
+-104.7, -104.7, -104.7, 
+
+Locale Wa Utlpayment -- x3
+-39.51, -41.51, -39.59, 
+
+Newmortgage Company -- x3
+-3026.84, -3026.84, -3026.84, 
+
+Locale -- x3
+-197.91, -234.24, -187.9
+
+Trash Company -- x1
+-59.31
+
+"""
+
+
 
 
 class TestTopChart(StmntBuild, unittest.TestCase):
