@@ -44,7 +44,7 @@ class TestFileExists(unittest.TestCase):
         self.tmp_dir = Path(self.__tmpdir.name)
 
     def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
+        """Tear down method to delete temporary testing directory"""
         self.__tmpdir.cleanup()
 
     def test_file_exists_true(self):
@@ -77,11 +77,11 @@ class TestCanWriteFile(unittest.TestCase):
         self.tmp_dir = Path(self.__tmpdir.name)
 
     def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
+        """Tear down method to delete temporary testing directory"""
         self.__tmpdir.cleanup()
 
     def test_writable_dir(self):
-        """Tests that writing to writable directing succeeds"""
+        """Tests that writing to writable directory succeeds"""
         test_file = self.tmp_dir / "write_test.txt"
         check = io.can_write_file(str(test_file))
         self.assertTrue(check[0])
@@ -123,7 +123,7 @@ class TestDataframeCheck(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Tear down method to delete temprorary testing directory"""
+        """Tear down method to delete temporary testing directory"""
         cls.tmp_dir.cleanup()
 
     def setUp(self):
@@ -193,7 +193,7 @@ class TestChartSave(unittest.TestCase):
         self.chart = make_chart()
 
     def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
+        """Tear down method to delete temporary testing directory"""
         plt.close("all")
         self.__tmpdir.cleanup()
 
@@ -234,7 +234,7 @@ class TestChartSave(unittest.TestCase):
         self.assertTrue(save.exists())
 
 
-class TestFileInputHAndle(unittest.TestCase):
+class TestFileInputHandle(unittest.TestCase):
     """Class to test the file_input_handle() function"""
 
     def setUp(self):
@@ -245,7 +245,7 @@ class TestFileInputHAndle(unittest.TestCase):
         self.test_file.write_text("Test Content\n")
 
     def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
+        """Tear down method to delete temporary testing directory"""
         self.__tmpdir.cleanup()
 
     def test_file_there(self):
