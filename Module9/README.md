@@ -23,7 +23,15 @@ Development Environment: Python 3.14.4
 The personal expense tracker was created for State University of New York (SUNY): Empire State University (ESU), CSCI-3025: Python Programming course as the Module 9 assignment.
 
 The personal expense tracker: 
-- TODO (describe flow of main program)
+- Requests any number of CSV files from the user to be analyzed together.
+- Builds pandas dataframes from those CSV files.
+- Parses and cleans each dataframe individually to ensure no anomalies result in combining formats.
+- Generates statement class instances for each dataframe.
+- Combines all statement class instances into a single instance so they can be analyzed together.
+  	- File source information is maintained by adding a File Source column in the dataframe.
+- An interactive menu is provided to the user for them to select which analysis they would like performed.
+- A chart is generated and saved for each requested analysis.
+- Once the user is satisfied, they may interactively exit the program.
 
 Ground work for the following features is included, but not fully implemented:
 - Mixed date formatting flagging - the case of indeterminate day, month, or year first is caught and the user is prompted with a warning. Other mixed date formatting is caught with format="mixed" to avoid warnings from pandas when supporting unexpected date formats. 
