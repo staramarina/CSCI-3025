@@ -379,12 +379,39 @@ class TestDescriptChart(StmntBuild, unittest.TestCase):
 
     def setUp(self):
         """Setup method to create test statement class instances"""
-        self.stmnt4 = self.build_df4_stmnt()
+        name2 = "Error Testing"
+        df2 = self.build_min()
+        self.stmnt2 = self.build_any_stmnt(df2, name2)
+        self.stmnt6 = self.build_df6_stmnt()
 
     def tearDown(self):
         """Closes charts after each test"""
         yield
         plt.close("all")
+
+    def test_descript_fig(self):
+        """Tests that both figure and axes is returned"""
+        check = self.stmnt6.descript_chart()
+        fig, ax = check[1]
+        self.assertTrue(check[0])
+        self.assertIsNotNone(fig)
+        self.assertIsNotNone(ax)
+        self.assertIsInstance(fig, plt.Figure)
+        self.assertIsInstance(ax, matplotlib.axes.Axes)
+
+    def test_descript_label(self):
+        """Tests that the chart title and axis label are correct"""
+        check = self.stmnt6.descript_chart()
+        fig, ax = check[1]
+        self.assertTrue(check[0])
+        self.assertIn("Total Expenses by Description", ax.get_title())
+        self.assertIn("Total Amount", ax.get_xlabel())
+
+    def test_descript_chart_err(self):
+        """Tests the case when Description is not a column"""
+        check = self.stmnt2.descript_chart()
+        self.assertFalse(check[0])
+        self.assertIn("Description data not available", check[1])
 
 
 class TestBalAnalysis(StmntBuild, unittest.TestCase):
