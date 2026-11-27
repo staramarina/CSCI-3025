@@ -23,14 +23,17 @@ Development Environment: Python 3.14.4
 The personal expense tracker was created for State University of New York (SUNY): Empire State University (ESU), CSCI-3025: Python Programming course as the Module 9 assignment.
 
 The personal expense tracker: 
-- TODO
+- TODO (describe flow of main program)
 
 Ground work for the following features is included, but not fully implemented:
 - Mixed date formatting flagging - the case of indeterminate day, month, or year first is caught and the user is prompted with a warning. Other mixed date formatting is caught with format="mixed" to avoid warnings from pandas when supporting unexpected date formats. 
-- Consistent signage on "Amount" values - For banks with "Debit" and "Credit" columns, the standard that expenses are negative and credits are positive is enforced. However, there is no method for determining the convention when a single "Amount" column is given. The convention varies between banks and in the case of USAA, depends on the account type. No assumption is made when performing the analysis, though it does result in negative numbers appears in charts. TODO verify this when the charts are built.
+- All files provided are assumed to be analyzed as a single data set, however, this can be changed to support multiple separate or combined data sets with only changes within the main program, since analysis is conducted per class instance. 
+- Informational messages are not logged to keep log size relatively small. 
 
 ## Features
-- TODO
+- Robust error and warning handling with timestamped logging of both.
+- Informative warnings print to the console and allows the user to select whether they want to proceed.
+- Fairly bank format agnostic file input: only a date column and amount, debit, or credit column is required for basic analysis.
 
 ## Installation
 
@@ -38,6 +41,7 @@ Ground work for the following features is included, but not fully implemented:
 - Python 3.11 or higher (estimated)
 - External Packages
     - pandas - handles data formatting and analysis
+    - numpy - handles additional data formatting
     - seaborn - creates graphs
     - matplotlib - handles the underlying settings for graphs
 
@@ -51,11 +55,19 @@ TODO
 ```
 python -m pip install pandas
 ```
-4. Install seaborn package: (note: this includes matplotlib installation)
+4. Install seaborn package:
 ```
 python -m pip install seaborn
 ```
-5. Ensure Python path includes the Module9 directory or run from within it.
+5. Ensure numpy is installed. It usually installs alongside pandas, but if it didn't, run the following command:
+```
+python -m pip install numpy
+```
+6. Ensure matplotlib is installed. It usually installs alongside seaborn, but if it didn't, run the following command:
+```
+python -m pip install matplotlib
+```
+7. Ensure Python path includes the Module9 directory or run from within it.
 
 ## Usage
 
@@ -82,32 +94,40 @@ TODO
     ├── pyproject.toml                          # Project configuration file
     ├── README.md                               # Read me file (current file)
     ├── charts                                  # Directory to hold generated charts
-    │     └── TODO.png                          # TODO
+    │   ├── bal_chart.png                     # Example line chart of maximum balance per day
+    │   ├── cat_chart.png                     # Example bar chart of total expenses by category
+    │   ├── descript_chart.png                # Example bar chart of total expenses by description
+    │   ├── spend_chart.png                   # Example line chart of aggregate expenses per day
+    │   └── top5_chart.png                    # Example pie chart of top 5 expenses
     ├── tests                                   # Test files for unittest
-    │     ├── __init__.py                       # Tells Python this is a package
-    │     ├── test_ancillary.py                 # Tests for Mui_Ancillary.py
-    │     ├── test_io.py                        # Tests for Mui_IO.py
-    │     ├── test_parser.py                    # Tests for Mui_Parser.py
-    │     └── test_statement.py                 # Tests for Mui_Statement.py
+    │   ├── __init__.py                       # Tells Python this is a package
+    │   ├── test_ancillary.py                 # Tests for Mui_Ancillary.py
+    │   ├── test_io.py                        # Tests for Mui_IO.py
+    │   ├── test_parser.py                    # Tests for Mui_Parser.py
+    │   └── test_statement.py                 # Tests for Mui_Statement.py
     └── data                                    # Data used for manual tests
-    │     ├── bofa_checking_example.csv         # Estimated example of checking account export from Bank of America
-    │     ├── chase_checking_example.csv        # Estimated example of checking account export from Chase
-    │     ├── chase_credit_example.csv          # Estimated example of credit card account export from Chase
-    │     ├── citibank_checking_example.csv     # Estimated example of checking account export from Citibank
-    │     ├── citibank_credit_example.csv       # Estimated example of credit card account export from Citibank
-    │     ├── sample-bank-transactions.csv      # Sample generic bank export from https://getutilly.com/guides/sample-bank-statement-csv
-    │     ├── SCU_checking_example.csv          # Example of checking account export from SAFE Credit Union
-    │     ├── SCU_credit_example.csv            # Example of credit card account export from SAFE Credit Union
-    │     ├── USAA_checking_example.csv         # Example of checking account export from USAA
-    │     └── USAA_credit_example.csv           # Example of credit card account export from USAA
+        ├── bofa_checking_example.csv         # Estimated example of checking account export from Bank of America
+        ├── chase_checking_example.csv        # Estimated example of checking account export from Chase
+        ├── chase_credit_example.csv          # Estimated example of credit card account export from Chase
+        ├── citibank_checking_example.csv     # Estimated example of checking account export from Citibank
+        ├── citibank_credit_example.csv       # Estimated example of credit card account export from Citibank
+        ├── sample-bank-transactions.csv      # Sample generic bank export from https://getutilly.com/guides/sample-bank-statement-csv
+        ├── SCU_checking_example.csv          # Example of checking account export from SAFE Credit Union
+        ├── SCU_credit_example.csv            # Example of credit card account export from SAFE Credit Union
+        ├── USAA_checking_example.csv         # Example of checking account export from USAA
+        └── USAA_credit_example.csv           # Example of credit card account export from USAA
 ```
 
 ## Modules
 
 ### Built-in Packages
-- TODO
+- sys for graceful program exits
+- copy to make deep copies without affecting original instances
+- datetime for representing dates
+- logging to support error and warning logging
+- re to support matching shapes
 
-### External Packages - REVIEW
+### External Packages
 - pandas for handling large data formatting and analysis
     - Estimated Minimum: 2.0
     - Development Environment: 3.1.1
@@ -117,6 +137,9 @@ TODO
 - matplotlib for handling graph input
     - Estimated Minimum: 3.7
     - Development Environment: 3.11.2
+- numy for handling data formatting
+    - Estimated Minimum: 1.20.3
+    - Development Environment: 2.5.5
 
 ### Ancillary Module (Mui_Ancillary.py)
 | Function | Purpose | Return |
@@ -171,6 +194,9 @@ The parser also handles the following.
     - If both "Debit" and "Credit", but not "Amount" are present, "Debit" and "Credit" are merged into a single "Amount" column
     - If only "Debit" or "Credit" is present, but not "Amount", the column is renamed as "Amount"
     - Fully empty/NA columns are removed
+
+Consistent signage on "Amount" values - For banks with "Debit" and "Credit" columns, the standard that expenses are negative and credits are positive is enforced. However, there is no method for determining the convention when a single "Amount" column is given. The convention varies between banks and in the case of USAA, depends on the account type. No assumption is made when performing the analysis, though it does result in negative numbers appears in charts. TODO verify this when the charts are built.
+
 
 ## Warnings & Errors
 - The following are warnings and can be overridden via the console if the user chooses.
