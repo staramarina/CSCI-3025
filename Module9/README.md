@@ -152,8 +152,26 @@ TODO
 | ----- | ------ | ------ |
 | int_check(num_str) | Determines whether a string can be converted to an integer | (True, int) on success, otherwise (False, error message) |
 
-### XXX Module (Mui_XXX.py)
+### IO Module (Mui_IO.py)
 | Function | Purpose | Return |
+| ----- | ------ | ------ |
+TODO
+
+### Parser Module (Mui_Parser.py)
+| Function | Purpose | Return |
+| ----- | ------ | ------ |
+TODO
+
+### Statement Module (Mui_Statement.py)
+The statement module holds the statement class with the following attributes and methods.
+
+##### Attributes
+| Attribute | Purpose | Default Value |
+| ----- | ------ | ------ |
+TODO
+
+##### Methods
+| Method | Purpose | Return |
 | ----- | ------ | ------ |
 TODO
 
