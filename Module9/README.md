@@ -178,7 +178,7 @@ TODO
 ## Data Files
 A set of test files is included within the data folder. The examples from USAA and SAFE Credit Union (SCU) were based off real exports and utilize the observed formats, headers, and leading/trailing rows. The examples from Bank of America (BofA), Chase, Citibank, and Wells Fargo were estimated based on information available; as such, the format of the data from these banks may differ from the examples. Checking and savings accounts appeared to share formats, but differed in formatting between checking and credit cards. An example of each was included from the pool of sample banks with the exception of Wells Fargo and BofA credit cards, as there was not enough information available to determine the formatting at a confidence rating of at least 50%. Sample transaction data within these files are based on real, but sanitized, transactions. 
 
-In addition to the generated sample data, a generic "sample-bank-transactions.csv" was obtained from https://getutilly.com/guides/sample-bank-statement-csv. This file was also used for testing purposes. 
+In addition to the generated sample data, a generic "sample-bank-transactions.csv" was obtained from Utilly (2026). This file was also used for testing purposes. 
 
 Other files tested, but not included within the data folder, were real, but anonymized, transaction data for a period of 18 months from USAA and SCU. While the data is anonymized, it does include purchase habits, balance information, etc.; because the GitHub repository is public, the full data set is not published. 
 
@@ -202,25 +202,24 @@ The expense tracker has robust data validation and parsing rules as described in
     - If the year is last as either YYYY or YY, a check is run to determine whether the day is first or not. In an ambiguous case, the assumption is made that month is first (most common in the U.S.) and the user is prompted to approve this assumption. Example: 10/11/12 is interpreted as 11 Oct 2012.
     - Mixed formatting, e.g. MM/DD/YYYY and MM-DD-YY within the same column are handled via pandas format="mixed", but position order must be consistent, i.e. cannot swap between MM/DD/YY and DD/MM/YY. While this fallback is slower, especially in cases that do not need it, it prevents excessive trace back warnings in the console. Masking the warning was considered, but there was a concern that additional masking would result as well as the thread-safety of conducting this. Ultimately, the design decision was made to avoid these concerns with a slight decrease in performance. 
 - CSVs with missing header row is accepted, but the following assumptions are made. The operator must approve the action before the assumed header row is added.
-    - There is a minimum of one and a maximum of two date columns. The first being for "Date" or "Transaction Date", the second being for "Posted Date"
+    - There is a minimum of one and a maximum of two date columns. The first being for "Date" or "Transaction Date", the second being for "Posted Date". (Only the first date-like column is used for analysis.)
     - There is a minimum of one and a maximum of three money/float type columns. 
         - If one is present, it is assumed to be "Amount" with mixed positive and negative numbers. 
-        - If two are present, a check is run to determine if the combination is "Debit", "Credit" or "Amount", "Balance". If there is any instance of values in both columns within the row, then the latter is assumed. Otherwise the former is assumed.
-        - If three are present, it is assumed to be "Debit", "Credit", and "Balance"
+        - If two are present, a check is run to determine if the combination is "Debit", "Credit" or "Amount", "Balance". If there is any instance of values in both columns .within the row, then the latter is assumed. Otherwise the former is assumed.
+        - If three are present, it is assumed to be "Debit", "Credit", and "Balance".
 - The parser assumes the following.
     - All rows must have a "Date" value, though "Post Date" may be omitted.
     - Any instance of "bal" represents "Balance", e.g. Running bal., Balance, etc.
-    - Any instance of "debit" represents "Debit", e.g. Debit, Amount Debit
-    - Any instance of "credit" represents "Credit", e.g. Credit, Amount Credit
-    - Any instance of "amount" other than those listed above represents "Amount"
-    - An "Amount" column must be present
+    - Any instance of "debit" represents "Debit", e.g. Debit, Amount Debit.
+    - Any instance of "credit" represents "Credit", e.g. Credit, Amount Credit.
+    - Any instance of "amount" other than those listed above represents "Amount".
+    - An "Amount" column must be present.
+    - If a column is named "Credit" or "Balance", it is assumed that it must be at least 50% positive values. If this is not true, all values have their signs swapped.
+    - Other than the two columns above, it is assumed that all values in the column should be at least 50% negative. If this is not true, all values have their signs swapped. This handles the case where some credit card exports consider expenses to be positive and credits to be negative.
 The parser also handles the following.
-    - If both "Debit" and "Credit", but not "Amount" are present, "Debit" and "Credit" are merged into a single "Amount" column
-    - If only "Debit" or "Credit" is present, but not "Amount", the column is renamed as "Amount"
-    - Fully empty/NA columns are removed
-
-Consistent signage on "Amount" values - For banks with "Debit" and "Credit" columns, the standard that expenses are negative and credits are positive is enforced. However, there is no method for determining the convention when a single "Amount" column is given. The convention varies between banks and in the case of USAA, depends on the account type. No assumption is made when performing the analysis, though it does result in negative numbers appears in charts. TODO verify this when the charts are built.
-
+    - If both "Debit" and "Credit", but not "Amount" are present, "Debit" and "Credit" are merged into a single "Amount" column.
+    - If only "Debit" or "Credit" is present, but not "Amount", the column is renamed as "Amount".
+    - Fully empty/NA columns are removed.
 
 ## Warnings & Errors
 - The following are warnings and can be overridden via the console if the user chooses.
