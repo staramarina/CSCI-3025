@@ -238,6 +238,43 @@ class TestCatAnalysis(StmntBuild, unittest.TestCase):
         self.stmnt4 = self.build_df4_stmnt()
         self.stmnt6 = self.build_df6_stmnt()
 
+    def test_cat_income(self):
+        """Tests that income is excluded from expenses"""
+        check = self.stmnt6.cat_analysis()
+        df = check[1]
+        self.assertTrue(check[0])
+        self.assertTrue((df["Amount"] >= 0).all())
+
+    def test_cat_agg(self):
+        """Tests that amount values are aggregated"""
+        check = self.stmnt6.cat_analysis()
+        df = check[1]
+        self.assertTrue(check[0])
+        self.assertTrue(2, len(df))
+
+    def test_cat_sort(self):
+        """Tests that categories are sorted by amount"""
+        check = self.stmnt6.cat_analysis()
+        df = check[1]
+        exp_res = 21.13 + 7.66
+        exp_ff = 28.79
+        self.assertTrue(check[0])
+        self.assertAlmostEqual(exp_ff, df.loc[0, "Amount"])
+        self.assertAlmostEqual(exp_res, df.loc[1, "Amount"])
+        self.assertLessEqual(df.loc[0, "Amount"], df.loc[1, "Amount"])
+
+    def test_cat_err(self):
+        """Tests the case when there is no Category column"""
+        check = self.stmnt4.cat_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("Category data not available", check[1])
+
+    def test_cat_orig(self):
+        """Tests that the original dataframe is unmodifed"""
+        orig = self.stmnt6.df.copy(deep=True)
+        self.stmnt4.cat_analysis()
+        pd.testing.assert_frame_equal(orig, self.stmnt6.df)
+
 
 class TestCatChart(StmntBuild, unittest.TestCase):
     """Class to test the cat_chart() method"""
