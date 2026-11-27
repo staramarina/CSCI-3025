@@ -334,7 +334,44 @@ class TestDescriptAnalysis(StmntBuild, unittest.TestCase):
 
     def setUp(self):
         """Setup method to create test statement class instances"""
-        self.stmnt4 = self.build_df4_stmnt()
+        name2 = "Error Testing"
+        df2 = self.build_min()
+        self.stmnt2 = self.build_any_stmnt(df2, name2)
+        self.stmnt6 = self.build_df6_stmnt()
+
+    def test_descript_income(self):
+        """Tests that income is excluded from expenses"""
+        check = self.stmnt6.descript_analysis()
+        df = check[1]
+        self.assertTrue(check[0])
+        self.assertTrue((df["Amount"] >= 0).all())
+
+    def test_descript_sort(self):
+        """Tests that categories are sorted by amount"""
+        check = self.stmnt6.descript_analysis()
+        df = check[1]
+        exp_stk = 21.13
+        exp_cook = 7.66
+        exp_mac = 28.79
+        self.assertTrue(check[0])
+        self.assertEqual(3, len(df))
+        self.assertAlmostEqual(exp_cook, df.loc[0, "Amount"])
+        self.assertAlmostEqual(exp_stk, df.loc[1, "Amount"])
+        self.assertAlmostEqual(exp_mac, df.loc[2, "Amount"])
+        self.assertLessEqual(df.loc[0, "Amount"], df.loc[1, "Amount"])
+        self.assertLessEqual(df.loc[1, "Amount"], df.loc[2, "Amount"])
+
+    def test_descript_err(self):
+        """Tests the case when there is no Description column"""
+        check = self.stmnt2.descript_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("Description data not available", check[1])
+
+    def test_descript_orig(self):
+        """Tests that the original dataframe is unmodifed"""
+        orig = self.stmnt6.df.copy(deep=True)
+        self.stmnt6.descript_analysis()
+        pd.testing.assert_frame_equal(orig, self.stmnt6.df)
 
 
 class TestDescriptChart(StmntBuild, unittest.TestCase):
