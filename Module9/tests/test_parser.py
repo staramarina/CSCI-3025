@@ -58,6 +58,8 @@ class TestBuildDataframe(unittest.TestCase):
         check = parse.build_dataframe(file_name)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Date", check[1].columns)
+        self.assertIn("Amount", check[1].columns)
 
     def test_lead_rows(self):
         """Tests the case when there is a header and leading rows"""
@@ -66,11 +68,12 @@ class TestBuildDataframe(unittest.TestCase):
         check = parse.build_dataframe(file_name)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
+        self.assertIn("Date", check[1].columns)
+        self.assertIn("Amount", check[1].columns)
 
     def test_no_head(self):
         """Tests the case when there is no header or leading rows"""
         file_name = os.path.join(self.base, "good_no_head.csv")
-        head_info = None
         check = parse.build_dataframe(file_name)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
@@ -428,6 +431,19 @@ class TestCleanDate(unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Process aborted", check[1])
 
+    def test_date_convert_fail(self):
+        """Thests the case when all date values fail to convert"""
+        col = "Date"
+        df = pd.DataFrame({ col: [
+            "no-date", "missing", "N/A", 
+        ]})
+        yr1 = False
+        day1 = False
+        det = True
+        mix = False
+        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        self.assertFalse(check[0])
+        self.assertIn("failed to convert", check[1])
 
 class TestCleanMoney(unittest.TestCase):
     """Class to test the clean_money(data, col) function"""
