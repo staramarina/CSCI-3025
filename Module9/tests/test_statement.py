@@ -94,6 +94,17 @@ class StmntBuild:
         df["Balance"] = pd.to_numeric(df["Balance"])
         return df
 
+    def build_min(self):
+        """Builds and returns a pandas dataframe with only Date and Amount"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Amount": [-21.13, -7.66, -28.79, 1500.00],
+        }
+        df = pd.DataFrame(data)
+        df["Date"] = pd.to_datetime(df["Date"])
+        df["Amount"] = pd.to_numeric(df["Amount"])
+        return df
+
     def build_default_stmnt(self):
         """Builds a defaul statement instance"""
         df = self.build_df4()
@@ -282,6 +293,7 @@ class TestCatChart(StmntBuild, unittest.TestCase):
     def setUp(self):
         """Setup method to create test statement class instances"""
         self.stmnt4 = self.build_df4_stmnt()
+        self.stmnt6 = self.build_df6_stmnt()
 
     def tearDown(self):
         """Closes charts after each test"""
