@@ -131,7 +131,7 @@ TODO
         ├── chase_credit_example.csv          # Estimated example of credit card account export from Chase
         ├── citibank_checking_example.csv     # Estimated example of checking account export from Citibank
         ├── citibank_credit_example.csv       # Estimated example of credit card account export from Citibank
-        ├── sample-bank-transactions.csv      # Sample generic bank export from https://getutilly.com/guides/sample-bank-statement-csv
+        ├── sample-bank-transactions.csv      # Sample generic bank export from Utilly (2026)
         ├── SCU_checking_example.csv          # Example of checking account export from SAFE Credit Union
         ├── SCU_credit_example.csv            # Example of credit card account export from SAFE Credit Union
         ├── USAA_checking_example.csv         # Example of checking account export from USAA
