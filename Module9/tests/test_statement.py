@@ -598,41 +598,58 @@ class TestTopAnalysis(StmntBuild, unittest.TestCase):
         pd.testing.assert_frame_equal(orig, self.stmnt6.df)
 
 
-"""
-Gas Company -- x3
--24.61, -23.99, -22.71
-
-InternetCompany -- x3
--104.7, -104.7, -104.7, 
-
-Locale Wa Utlpayment -- x3
--39.51, -41.51, -39.59, 
-
-Newmortgage Company -- x3
--3026.84, -3026.84, -3026.84, 
-
-Locale -- x3
--197.91, -234.24, -187.9
-
-Trash Company -- x1
--59.31
-
-"""
-
-
-
-
 class TestTopChart(StmntBuild, unittest.TestCase):
     """Class to test the top5_chart() method"""
 
     def setUp(self):
         """Setup method to create test statement class instances"""
-        self.stmnt4 = self.build_df4_stmnt()
+        name2 = "Error Testing"
+        df2 = self.build_min()
+        name_big = "Large Testing"
+        df_big = self.build_lrg()
+        self.stmnt2 = self.build_any_stmnt(df2, name2)
+        self.stmnt_lrg = self.build_any_stmnt(df_big, name_big)
+        self.stmnt6 = self.build_df6_stmnt()
 
     def tearDown(self):
         """Closes charts after each test"""
         yield
         plt.close("all")
+
+    def test_top_fig(self):
+        """Tests that both figure and axes is returned"""
+        check = self.stmnt6.top5_chart()
+        fig, ax = check[1]
+        self.assertTrue(check[0])
+        self.assertIsNotNone(fig)
+        self.assertIsNotNone(ax)
+        self.assertIsInstance(fig, plt.Figure)
+        self.assertIsInstance(ax, matplotlib.axes.Axes)
+
+    def test_top_label(self):
+        """Tests that the chart title is correct"""
+        check = self.stmnt6.top5_chart()
+        fig, ax = check[1]
+        self.assertTrue(check[0])
+        self.assertIn("Top 5 Expenses", ax.get_title())
+
+    def test_top_less_chart(self):
+        """Tests that less than 5 wedges are included"""
+        check = self.stmnt6.top5_chart()
+        fig, ax = check[1]
+        self.assertEqual(3, len(ax.patches))
+
+    def test_top_more_chart(self):
+        """Tests that 6 wedges are included"""
+        check = self.stmnt_lrg.top5_chart()
+        fig, ax = check[1]
+        self.assertEqual(6, len(ax.patches))
+
+    def test_top_chart_err(self):
+        """Tests the case when Description is not a column"""
+        check = self.stmnt2.top5_chart()
+        self.assertFalse(check[0])
+        self.assertIn("Description data not available", check[1])
 
 
 if __name__ == "__main__":
