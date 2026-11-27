@@ -85,7 +85,7 @@ class TestCanWriteFile(unittest.TestCase):
         test_file = self.tmp_dir / "write_test.txt"
         check = io.can_write_file(str(test_file))
         self.assertTrue(check[0])
-        self.assertIn("successfully", check[1])
+        self.assertIn("can be appended", check[1])
 
     def test_directory(self):
         """Tests that path to non-existent directory returns (False, message)"""
