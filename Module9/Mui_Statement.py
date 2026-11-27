@@ -53,6 +53,7 @@ class Statement:
             data: a pandas dataframe
         
         Returns:
+            _val_df(data): validated pandas dataframe
         """
         self.__df = self._val_df(data)
 
