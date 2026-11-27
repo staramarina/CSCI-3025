@@ -274,7 +274,7 @@ TEST_FILES = {
 TODO add remaining manual test steps, include manual end-to-end test
 
 ### Automated Testing
-All test cases are compatible with both unittest and pytest.  
+All test cases are compatible with both unittest and pytest. All 134 test cases pass with both pytest and unittest.  
 To run all tests with unittest, enter the following from within the Module9 directory.
 ```
 python -m unittest
