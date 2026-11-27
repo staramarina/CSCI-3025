@@ -9,6 +9,7 @@ import unittest
 import os
 import sys
 import tempfile
+import logging
 from pathlib import Path
 from unittest.mock import patch
 import pandas as pd
@@ -262,6 +263,37 @@ class TestFileInputHAndle(unittest.TestCase):
         self.assertIn("does not exist", check[1])
 
 
+class TestLogSetup(unittest.TestCase):
+    """Class to test the log_setup(log_file="log.txt") function"""
+
+    def setUp(self):
+        """Setup method to create temporary testing directory and logger"""
+        self.__tmpdir = tempfile.TemporaryDirectory()
+        self.log_file = os.path.join(self.__tmpdir.name, "test_log.txt")
+        logging.getLogger("M9_Log").handlers.clear()
+
+    def tearDown(self):
+        """Tear down method to delete testing directory and clear logger"""
+        logging.getLogger("M9_Log").handlers.clear()
+        self.__tmpdir.cleanup()
+
+    def test_handler(self):
+        """Tests that the handler is attached to the shared logger"""
+        log = io.log_setup(self.log_file)
+        self.assertIs(logging.getLogger("M9_Log"), log)
+        self.assertEqual(1, len(log.handlers))
+        self.assertIsInstance(log.handlers[0], logging.FileHandler)
+        self.assertEqual(self.log_file, log.handlers[0].baseFilename)
+        self.assertEqual(logging.WARNING, log.level)
+
+    def test_duplicate(self):
+        """Tests that calling log_setup twice only results 
+        in a single handler"""
+        io.log_setup(self.log_file)
+        io.log_setup(self.log_file)
+        self.assertEqual(1, len(logging.getLogger("M9_Log").handlers))
+
+
 class TestErrHandle(unittest.TestCase):
     """Class to test the err_handle(err_msg, err_log='log.txt') function"""
 
@@ -329,6 +361,29 @@ class TestWarnHandle(unittest.TestCase):
                 self.assertLogs("M9_Log", level="WARNING"):
             check = io.warn_handle(warn_msg, "log.txt")
         self.assertTrue(check)
+
+
+class TestPrinting(unittest.TestCase):
+    """Class to test any printing-only functions"""
+
+    def test_analysis_menu(self):
+        """Tests the print_analysis_menu() function"""
+        with patch("builtins.print") as mock_print:
+            io.print_analysis_menu()
+        txt = " ".join(str(call.args[0])
+                       for call in mock_print.call_args_list)
+        self.assertEqual(7, mock_print.call_count)
+        exp = [
+            'Please select one of the following options:',
+            '1 -- Overall Spending per Day',
+            '2 -- Spending by Category',
+            '3 -- Spending by Description',
+            '4 -- Overall Balance Changes per Day',
+            '5 -- Top 5 Expenses',
+            'x -- Quit'
+        ]
+        for item in exp:
+            self.assertIn(item, txt)
 
 
 if __name__ == "__main__":
