@@ -155,8 +155,15 @@ class TestStmntMagic(StmntBuild, unittest.TestCase):
             self.build_any_stmnt(not_df, "Test")
         self.assertIn("Data must be in a pandas dataframe", str(err.exception))
 
+    def test_string_method(self):
+        """Tests that the __str__ method returns name and data"""
+        txt = str(self.stmnt6)
+        self.assertIn("Transactions Test 1.csv", txt)
+        self.assertIn("COOKIES", txt)
+        self.assertIn("Amount", txt)
+
     def test_add_method(self):
-        """Tests tha the __add__ method returns a new combined instance"""
+        """Tests that the __add__ method returns a new combined instance"""
         new_stmnt = self.stmnt4 + self.stmnt6
         self.assertIn("Post Date", new_stmnt.df.columns)
         self.assertEqual(8, len(new_stmnt.df))
