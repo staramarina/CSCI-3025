@@ -42,6 +42,12 @@ Ground work for the following features is included, but not fully implemented:
 - Robust error and warning handling with timestamped logging of both.
 - Informative warnings print to the console and allows the user to select whether they want to proceed.
 - Fairly bank format agnostic file input: only a date column and amount, debit, or credit column is required for basic analysis.
+- Multiple analysis options:
+  	- Expenses per day over the full data period (available to all data imports that are successfully parsed/cleaned).
+  	- Spending by category (requires category data).
+  	- Spending by description (requires description data) -- Note: most banks put the source of the expense in the description column, this is not true of all banks.
+  	- Maximum balance by day over the full data period (requires balance data).
+  	- Top 5 expenses (requires description data) -- Note: if less than 5 expenses are the in the data, the chart can still be generated, it will simply have less slides.
 
 ## Installation
 
