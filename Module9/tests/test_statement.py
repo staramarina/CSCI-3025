@@ -419,7 +419,41 @@ class TestBalAnalysis(StmntBuild, unittest.TestCase):
 
     def setUp(self):
         """Setup method to create test statement class instances"""
+        name2 = "Error Testing"
+        df2 = self.build_min()
+        self.stmnt2 = self.build_any_stmnt(df2, name2)
         self.stmnt4 = self.build_df4_stmnt()
+
+    def test_bal_max(self):
+        """Tests that balance values only reflect maximum"""
+        check = self.stmnt4.bal_analysis()
+        df = check[1][0]
+        exp_bal = [3237.40, 1766.19, 1773.85]
+        self.assertTrue(check[0])
+        self.assertTrue(3, len(df))
+        for rx, ex in zip(df["Balance"], exp_bal):
+            self.assertAlmostEqual(rx, ex)
+
+    def test_bal_stats(self):
+        """Tests than avg value is calculated correctly"""
+        check = self.stmnt4.bal_analysis()
+        df, avg = check[1]
+        exp_avg = (3237.40 + 1766.19 + 1773.85) / 3
+        self.assertTrue(check[0])
+        self.assertIsInstance(df, pd.DataFrame)
+        self.assertAlmostEqual(exp_avg, avg, places=2)
+
+    def test_bal_err(self):
+        """Tests the case when there is no Category column"""
+        check = self.stmnt2.bal_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("Balance data not available", check[1])
+
+    def test_bal_orig(self):
+        """Tests that the original dataframe is unmodified"""
+        orig = self.stmnt4.df.copy(deep=True)
+        self.stmnt4.bal_analysis()
+        pd.testing.assert_frame_equal(orig, self.stmnt4.df)
 
 
 class TestBalChart(StmntBuild, unittest.TestCase):
