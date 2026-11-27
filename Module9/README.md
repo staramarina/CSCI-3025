@@ -170,7 +170,7 @@ TODO
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
 | file_exists(file_name) | Checks if a file can be opened and read | (True, success message) on success, otherwise (False, error message) |
-| can_write_file(file_name) | Checks if a file can be appended |  |
+| can_write_file(file_name) | Checks if a file can be appended | (True, success message) on success, otherwise (False, error message) |
 | dataframe_check(file_name, head_info=0) | Checks that data is successfully imported into a pandas dataframe | (True, dataframe) on success, otherwise (False, error message) |
 | chart_save(chart, file_name, dpi=150) | Saves a chart as an image file | (True, success message) on success, otherwise (False, error message) |
 | file_input_handle() | Asks user for file and check for it | (True, file_name) on success, otherwise (False, error message) |
