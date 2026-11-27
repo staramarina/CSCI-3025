@@ -236,6 +236,7 @@ class TestCatAnalysis(StmntBuild, unittest.TestCase):
     def setUp(self):
         """Setup method to create test statement class instances"""
         self.stmnt4 = self.build_df4_stmnt()
+        self.stmnt6 = self.build_df6_stmnt()
 
 
 class TestCatChart(StmntBuild, unittest.TestCase):
@@ -244,6 +245,11 @@ class TestCatChart(StmntBuild, unittest.TestCase):
     def setUp(self):
         """Setup method to create test statement class instances"""
         self.stmnt4 = self.build_df4_stmnt()
+
+    def tearDown(self):
+        """Closes charts after each test"""
+        yield
+        plt.close("all")
 
 
 class TestDescriptAnalysis(StmntBuild, unittest.TestCase):
@@ -261,6 +267,11 @@ class TestDescriptChart(StmntBuild, unittest.TestCase):
         """Setup method to create test statement class instances"""
         self.stmnt4 = self.build_df4_stmnt()
 
+    def tearDown(self):
+        """Closes charts after each test"""
+        yield
+        plt.close("all")
+
 
 class TestBalAnalysis(StmntBuild, unittest.TestCase):
     """Class to test the bal_analysis() method"""
@@ -277,6 +288,11 @@ class TestBalChart(StmntBuild, unittest.TestCase):
         """Setup method to create test statement class instances"""
         self.stmnt4 = self.build_df4_stmnt()
 
+    def tearDown(self):
+        """Closes charts after each test"""
+        yield
+        plt.close("all")
+
 
 class TestTopAnalysis(StmntBuild, unittest.TestCase):
     """Class to test the top5_analysis() method"""
@@ -292,6 +308,11 @@ class TestTopChart(StmntBuild, unittest.TestCase):
     def setUp(self):
         """Setup method to create test statement class instances"""
         self.stmnt4 = self.build_df4_stmnt()
+
+    def tearDown(self):
+        """Closes charts after each test"""
+        yield
+        plt.close("all")
 
 
 if __name__ == "__main__":
