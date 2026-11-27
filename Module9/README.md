@@ -202,9 +202,9 @@ The statement module holds the statement class with the following attributes and
 ##### Methods
 | Method | Purpose | Return |
 | ----- | ------ | ------ |
-| (@property) def df(self) | Used for validated access to statement's dataframe | self.__df |
-| def _val_df(self, data) | Checks that input data is a pandas dataframe | pandas dataframe on success, otherwise raises TypeError |
-| (@df.setter) def df(self, data) | Sets the dataframe after validation | validated pandas dataframe |
+| (@property) df(self) | Used for validated access to statement's dataframe | self.__df |
+| _val_df(self, data) | Checks that input data is a pandas dataframe | pandas dataframe on success, otherwise raises TypeError |
+| (@df.setter) df(self, data) | Sets the dataframe after validation | validated pandas dataframe |
 | __str__(self) | Provides file name and data for a statement as a string | name and data as a string |
 | __add__(self, other) | Adds two statement instances together and returns a new combined statement instance | A new combined statement instance |
 | spend_analysis(self) | Performs analysis on overall spending per day | A 4-tuple as (dataframe with expense data grouped by date, minimum value, maximum value, daily average) |
