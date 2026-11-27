@@ -49,7 +49,13 @@ Ground work for the following features is included, but not fully implemented:
 1. Download the repository from https://github.com/staramarina/CSCI-3025/tree/main/Module9
 2. Verify all files and folders are present
 ```
-TODO
+   Module9/
+    ├── charts                          # Empty directory to hold generated charts
+    ├── Mui_Ancillary.py                # General purpose ancillary tools
+    ├── Mui_IO.py                       # Handles all input/output for the program
+    ├── Mui_M9Assignment.py             # Main program
+    ├── Mui_Parser.py                   # Normalizing and transforming CSVs to pandas dataframes
+    └── Mui_Statement.py                # Class for bank statements, analysis, and chart generation
 ```
 3. Install pandas package: (note: it is recommended to utilize a virtual environment to segment dependencies)
 ```
@@ -86,26 +92,26 @@ TODO
 ## Project Structure
 ```
    Module9/
-    ├── Mui_Ancillary.py                        # General purpose ancillary tools
-    ├── Mui_IO.py                               # Handles all input/output for the program
-    ├── Mui_M9Assignment.py                     # Main program
-    ├── Mui_Parser.py                           # Normalizing and transforming CSVs to pandas dataframes
-    ├── Mui_Statement.py                        # Class for bank statements, analysis, and chart generation
-    ├── pyproject.toml                          # Project configuration file
-    ├── README.md                               # Read me file (current file)
-    ├── charts                                  # Directory to hold generated charts
+    ├── Mui_Ancillary.py                      # General purpose ancillary tools
+    ├── Mui_IO.py                             # Handles all input/output for the program
+    ├── Mui_M9Assignment.py                   # Main program
+    ├── Mui_Parser.py                         # Normalizing and transforming CSVs to pandas dataframes
+    ├── Mui_Statement.py                      # Class for bank statements, analysis, and chart generation
+    ├── pyproject.toml                        # Project configuration file
+    ├── README.md                             # Read me file (current file)
+    ├── charts                                # Directory to hold generated charts
     │   ├── bal_chart.png                     # Example line chart of maximum balance per day
     │   ├── cat_chart.png                     # Example bar chart of total expenses by category
     │   ├── descript_chart.png                # Example bar chart of total expenses by description
     │   ├── spend_chart.png                   # Example line chart of aggregate expenses per day
     │   └── top5_chart.png                    # Example pie chart of top 5 expenses
-    ├── tests                                   # Test files for unittest
+    ├── tests                                 # Test files for unittest
     │   ├── __init__.py                       # Tells Python this is a package
     │   ├── test_ancillary.py                 # Tests for Mui_Ancillary.py
     │   ├── test_io.py                        # Tests for Mui_IO.py
     │   ├── test_parser.py                    # Tests for Mui_Parser.py
     │   └── test_statement.py                 # Tests for Mui_Statement.py
-    └── data                                    # Data used for manual tests
+    └── data                                  # Data used for manual tests
         ├── bofa_checking_example.csv         # Estimated example of checking account export from Bank of America
         ├── chase_checking_example.csv        # Estimated example of checking account export from Chase
         ├── chase_credit_example.csv          # Estimated example of credit card account export from Chase
