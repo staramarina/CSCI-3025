@@ -59,7 +59,7 @@ def can_write_file(file_name):  # Duplicated from Module5 TODO currently unused,
         return (False, f"Failed to write file with error: {err}.")
     else:
         file_open.close()
-        return (True, f"File printed successfully as {file_name}.")
+        return (True, f"File as {file_name} can be appended.")
 
 
 def dataframe_check(file_name, head_info=0):
