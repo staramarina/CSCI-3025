@@ -461,12 +461,50 @@ class TestBalChart(StmntBuild, unittest.TestCase):
 
     def setUp(self):
         """Setup method to create test statement class instances"""
+        name2 = "Error Testing"
+        df2 = self.build_min()
+        self.stmnt2 = self.build_any_stmnt(df2, name2)
         self.stmnt4 = self.build_df4_stmnt()
 
     def tearDown(self):
         """Closes charts after each test"""
         yield
         plt.close("all")
+
+    def test_bal_fig(self):
+        """Tests that both figure and axes is returned"""
+        check = self.stmnt4.bal_chart()
+        fig, ax = check[1]
+        self.assertTrue(check[0])
+        self.assertIsNotNone(fig)
+        self.assertIsNotNone(ax)
+        self.assertIsInstance(fig, plt.Figure)
+        self.assertIsInstance(ax, matplotlib.axes.Axes)
+
+    def test_bal_label(self):
+        """Tests that the chart title and axis label are correct"""
+        check = self.stmnt4.bal_chart()
+        fig, ax = check[1]
+        self.assertIn("Maximum Balance per Day", ax.get_title())
+        self.assertIn("Date", ax.get_xlabel())
+        self.assertIn("Balance", ax.get_ylabel())
+
+    def test_bal_legend(self):
+        """Tests that all legend items are present"""
+        check = self.stmnt4.bal_chart()
+        fig, ax = check[1]
+        legend_txt = []
+        for text in ax.get_legend().get_texts():
+            legend_txt.append(text.get_text())
+        self.assertEqual(2, len(legend_txt))
+        self.assertIn("Maximum Daily Balance", legend_txt[0])
+        self.assertIn("Average Maximum Balance", legend_txt[1])
+
+    def test_bal_chart_err(self):
+        """Tests the case when Balance is not a column"""
+        check = self.stmnt2.bal_chart()
+        self.assertFalse(check[0])
+        self.assertIn("Balance data not available", check[1])
 
 
 class TestTopAnalysis(StmntBuild, unittest.TestCase):
