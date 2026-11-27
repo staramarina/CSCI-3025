@@ -210,7 +210,6 @@ class TestSpendChart(StmntBuild, unittest.TestCase):
 
     def tearDown(self):
         """Closes charts after each test"""
-        yield
         plt.close("all")
 
     def test_spend_fig(self):
@@ -263,7 +262,7 @@ class TestCatAnalysis(StmntBuild, unittest.TestCase):
         check = self.stmnt6.cat_analysis()
         df = check[1]
         self.assertTrue(check[0])
-        self.assertTrue(2, len(df))
+        self.assertEqual(2, len(df))
 
     def test_cat_sort(self):
         """Tests that categories are sorted by amount"""
@@ -301,7 +300,6 @@ class TestCatChart(StmntBuild, unittest.TestCase):
 
     def tearDown(self):
         """Closes charts after each test"""
-        yield
         plt.close("all")
 
     def test_cat_fig(self):
@@ -386,7 +384,6 @@ class TestDescriptChart(StmntBuild, unittest.TestCase):
 
     def tearDown(self):
         """Closes charts after each test"""
-        yield
         plt.close("all")
 
     def test_descript_fig(self):
@@ -430,7 +427,7 @@ class TestBalAnalysis(StmntBuild, unittest.TestCase):
         df = check[1][0]
         exp_bal = [3237.40, 1766.19, 1773.85]
         self.assertTrue(check[0])
-        self.assertTrue(3, len(df))
+        self.assertEqual(3, len(df))
         for rx, ex in zip(df["Balance"], exp_bal):
             self.assertAlmostEqual(rx, ex)
 
@@ -468,7 +465,6 @@ class TestBalChart(StmntBuild, unittest.TestCase):
 
     def tearDown(self):
         """Closes charts after each test"""
-        yield
         plt.close("all")
 
     def test_bal_fig(self):
@@ -613,7 +609,6 @@ class TestTopChart(StmntBuild, unittest.TestCase):
 
     def tearDown(self):
         """Closes charts after each test"""
-        yield
         plt.close("all")
 
     def test_top_fig(self):

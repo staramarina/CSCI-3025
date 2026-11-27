@@ -88,10 +88,11 @@ class TestCanWriteFile(unittest.TestCase):
 
     def test_directory(self):
         """Tests that path to non-existent directory returns (False, message)"""
-        dir_path = str(self.tmp_dir) + "/Missing Directory"
-        check = io.file_exists(str(dir_path))
+        temp_path = str(self.tmp_dir)
+        dir_path = str(temp_path) + "/Missing Directory/write_test.txt"
+        check = io.can_write_file(dir_path)
         self.assertFalse(check[0])
-        self.assertIn("does not exist", check[1])
+        self.assertIn("directory does not exist", check[1])
 
 
 class TestDataframeCheck(unittest.TestCase):
@@ -255,7 +256,8 @@ class TestFileInputHAndle(unittest.TestCase):
 
     def test_file_not_there(self):
         """Tests that (False, message) is returned when file does not exist"""
-        check = io.file_exists("not_file.txt")
+        with patch("builtins.input", return_value="not_file.txt"):
+            check = io.file_input_handle()
         self.assertFalse(check[0])
         self.assertIn("does not exist", check[1])
 
