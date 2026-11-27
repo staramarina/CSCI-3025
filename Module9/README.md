@@ -155,12 +155,26 @@ TODO
 ### IO Module (Mui_IO.py)
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
-TODO
+| file_exists(file_name) | Checks if a file can be opened and read | (True, success message) on success, otherwise (False, error message) |
+| can_write_file(file_name) | Checks if a file can be appended |  |
+| dataframe_check(file_name, head_info=0) | Checks that data is successfully imported into a pandas dataframe | (True, dataframe) on success, otherwise (False, error message) |
+| chart_save(chart, file_name, dpi=150) | Saves a chart as an image file | (True, success message) on success, otherwise (False, error message) |
+| file_input_handle() | Asks user for file and check for it | (True, file_name) on success, otherwise (False, error message) |
+| log_setup(log_file="log.txt") | Sets up a shared logger to write messages to the given file | common log handler for all logs |
+| err_handle(err_msg, err_log='log.txt') | Handles various errors, prints console message and calls print_log | None (console/log output) |
+| warn_handle(warn_msg, err_log='log.txt') | Handles various warnings, prints console message and calls print_log | True to continue, otherwise False |
+| print_analysis_menu() | Prints menu with analysis options | None (console output) |
 
 ### Parser Module (Mui_Parser.py)
 | Function | Purpose | Return |
 | ----- | ------ | ------ |
-TODO
+| build_dataframe(file_name) | Builds a pandas dataframe based on file contents | (True, dataframe) on success, otherwise (False, error message) |
+| infer_header(data) | Infers header columns if missing from the data set | (True, dataframe) on success, otherwise (False, error message) |
+| date_format(column: pd.Series) | Attempts to determine the position of date values in string | A 4-tuple with True/False values for (year first, day first, determination made, mixed date formats) |
+| date_clean(data, col, yr_first, day_first, determine, mixed, err_log) | Fixes formatting and converts to datetime within given pandas series | (True, dataframe) on success, otherwise (False, error message) |
+| clean_money(data, col) | Fixes formatting and converts to number within given pandas series | (True, dataframe) on success, otherwise (False, error message) |
+| merge_deb_crd(data) | "Merges the debit and credit columns into single Amount column | (True, dataframe) on success, otherwise (False, error message) |
+| clean_dataframe(data_raw, err_log) | Cleans column naming, missing data, and data type conversions | (True, dataframe) on success, otherwise (False, error message) |
 
 ### Statement Module (Mui_Statement.py)
 The statement module holds the statement class with the following attributes and methods.
@@ -168,12 +182,27 @@ The statement module holds the statement class with the following attributes and
 ##### Attributes
 | Attribute | Purpose | Default Value |
 | ----- | ------ | ------ |
-TODO
+| name | name of the data set (typically the file name) | "Transaction Data" |
+| df | a pandas dataframe | N/A |
 
 ##### Methods
 | Method | Purpose | Return |
 | ----- | ------ | ------ |
-TODO
+| (@property) def df(self) | Used for validated access to statement's dataframe | self.__df |
+| def _val_df(self, data) | Checks that input data is a pandas dataframe | pandas dataframe on success, otherwise raises TypeError |
+| (@df.setter) def df(self, data) | Sets the dataframe after validation | validated pandas dataframe |
+| __str__(self) | Provides file name and data for a statement as a string | name and data as a string |
+| __add__(self, other) | Adds two statement instances together and returns a new combined statement instance | A new combined statement instance |
+| spend_analysis(self) | Performs analysis on overall spending per day | A 4-tuple as (dataframe with expense data grouped by date, minimum value, maximum value, daily average) |
+| spend_chart(self) | Generates the chart for overall spending per day | A 2-tuple as (matplotlib figure, matplotlib axes) |
+| cat_analysis(self) | Performs analysis on spending by category | (True, dataframe) if Category column exists, otherwise (False, error message) |
+| cat_chart(self) | Generates the chart for spending by category | (True, (matplotlib figure, matplotlib axes)) if Category column exists, otherwise (False, error message) |
+| descript_analysis(self) | Performs analysis on spending by description | (True, dataframe) if Description column exists, otherwise (False, error message) |
+| descript_chart(self) | Generates the chart for spending by description | (True, (matplotlib figure, matplotlib axes)) if Description column exists, otherwise (False, error message) |
+| bal_analysis(self) | Performs analysis on maximum balance per day | (True, (dataframe, daily average)) if Balance column exists, otherwise (False, error message) |
+| bal_chart(self) | Generates the chart for maximum balance per day | (True, (matplotlib figure, matplotlib axes)) if Balance column exists, otherwise (False, error message) |
+| top5_analysis(self) | Performs analysis on top 5 expenses | (True, dataframe) if Description column exists, otherwise (False, error message) |
+| top5_chart(self) | Generates the chart for top 5 expenses | (True, (matplotlib figure, matplotlib axes)) if Description column exists, otherwise (False, error message) |
 
 ## Data Files
 A set of test files is included within the data folder. The examples from USAA and SAFE Credit Union (SCU) were based off real exports and utilize the observed formats, headers, and leading/trailing rows. The examples from Bank of America (BofA), Chase, Citibank, and Wells Fargo were estimated based on information available; as such, the format of the data from these banks may differ from the examples. Checking and savings accounts appeared to share formats, but differed in formatting between checking and credit cards. An example of each was included from the pool of sample banks with the exception of Wells Fargo and BofA credit cards, as there was not enough information available to determine the formatting at a confidence rating of at least 50%. Sample transaction data within these files are based on real, but sanitized, transactions. 
@@ -220,6 +249,13 @@ The parser also handles the following.
     - If both "Debit" and "Credit", but not "Amount" are present, "Debit" and "Credit" are merged into a single "Amount" column.
     - If only "Debit" or "Credit" is present, but not "Amount", the column is renamed as "Amount".
     - Fully empty/NA columns are removed.
+ 
+#### Analysis Data Prerequisites
+- Overall spending per day can be analyzed with only the minimum data columns, "Date" and "Amount"
+- Spending by category requires "Amount" (required through the parser) and "Category" (optional through the parser).
+- Spending by Description requires "Amount" (required through the parser) and "Description" (optional through the parser).
+- Overall maximum balance per day requires "Amount" (required through the parser) and "Balance" (optional through the parser).
+- Top 5 expenses grouping requires "Amount" (required through the parser) and "Description" (optional through the parser).
 
 ## Warnings & Errors
 - The following are warnings and can be overridden via the console if the user chooses.
