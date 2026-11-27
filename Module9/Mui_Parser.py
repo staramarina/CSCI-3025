@@ -245,12 +245,12 @@ def clean_money(data, col):
         qty_neg = (num_val < 0).sum()
         pcnt_neg = qty_neg / len(num_val)
         if ("bal" in col.lower() or "credit" in col.lower()):
-            if 0.50 > pcnt_neg:  # Balance and Credit should be mostly positive  TODO document this, add test case
+            if 0.50 > pcnt_neg:  # Balance and Credit should be mostly positive
                 return (True, df)
             else:
                 df[col] *= -1
                 return (True, df)
-        else:  # All other money columns should be mostly negative TODO document this, add test case
+        else:  # All other money columns should be mostly negative
             if 0.50 > pcnt_neg:
                 df[col] *= -1
                 return (True, df)
