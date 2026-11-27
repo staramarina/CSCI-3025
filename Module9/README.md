@@ -220,7 +220,58 @@ Consistent signage on "Amount" values - For banks with "Debit" and "Credit" colu
 ## Testing
 
 ### Manual Testing
-TODO
+Manual testing included utilizing examples provided in the data folder as well as real (though sanitized) exports from USAA and SAFE Credit Union (full data was not published due to privacy, but may be provided upon request). Each section of the main program prior to the analysis section was tested and dumped to the "test_dump.txt" file. This process can be recreated using the following steps. 
+
+1. Insert the following code between the import section and the main section
+```
+TEST_FILES = {
+    'data/bofa_checking_example.csv': True,
+    'data/chase_checking_example.csv': True,
+    'data/chase_credit_example.csv': True,
+    'data/citibank_checking_example.csv': True,
+    'data/citibank_credit_example.csv': True,
+    'data/sample-bank-transactions.csv': True,
+    'data/SCU_checking_example.csv': True,
+    'data/SCU_credit_example.csv': True,
+    'data/USAA_checking_example.csv': True,
+    'data/USAA_credit_example.csv': True,
+    'data/wellsfargo_checking_example.csv': True
+}
+```
+2. Comment the "Ask user for their transaction files" section by adding three double quotes (""") at the beginning and another three (""") at the end.
+3. Change line "for file in file_list:" to "for file in TEST_FILES:".
+4. Enter the following code between "Build dataframes from CSV files" and "Parse/clean dataframes".
+```
+    with open('test_dump.txt', "w") as f: 
+        f.write('------------------------ORIGINAL DATAFRAMES------------------------\n')
+        for df in df_list.values():  # pre-cleaning print
+            f.write(df.to_string(header=True, index=True))  # dumps data to file
+            f.write('\n\n')  # extra lines for readability
+```
+5. Enter the following code between "Parse/clean dataframes" and "Create a list of statement class instances".
+```
+    with open('test_dump.txt', "a") as f: 
+        f.write('------------------------CLEAN DATAFRAMES------------------------\n')
+        for df in df_clean.values():  # pre-classes print
+            f.write(df.to_string(header=True, index=True))  # dumps data to file
+            f.write('\n\n')  # extra lines for readability
+```
+6. Enter the following code between "Create a list of statement class instances" and "Add all class instances together into a single class instance".
+```
+    with open('test_dump.txt', "a") as f: 
+        f.write('------------------------CLASSES------------------------\n')
+        for data in df_class:  # post-classes print
+            f.write(str(data))  # dumps data to file
+            f.write('\n\n')  # extra lines for readability
+```
+7. Enter the following code between "Add all class instances together into a single class instance" and "Analysis"
+```
+    with open('test_dump.txt', "a") as f: 
+        f.write('------------------------COMBINED------------------------\n')
+        f.write(str(all_data))  #post combined print
+```
+
+TODO add remaining manual test steps, include manual end-to-end test
 
 ### Automated Testing
 All test cases are compatible with both unittest and pytest.  
