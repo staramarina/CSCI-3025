@@ -177,8 +177,8 @@ TODO
 | chart_save(chart, file_name, dpi=150) | Saves a chart as an image file | (True, success message) on success, otherwise (False, error message) |
 | file_input_handle() | Asks user for file and check for it | (True, file_name) on success, otherwise (False, error message) |
 | log_setup(log_file="log.txt") | Sets up a shared logger to write messages to the given file | common log handler for all logs |
-| err_handle(err_msg, err_log='log.txt') | Handles various errors, prints console message and calls print_log | None (console/log output) |
-| warn_handle(warn_msg, err_log='log.txt') | Handles various warnings, prints console message and calls print_log | True to continue, otherwise False |
+| err_handle(err_msg, err_log='log.txt') | Handles various errors, prints console message and calls logger | None (console/log output) |
+| warn_handle(warn_msg, err_log='log.txt') | Handles various warnings, prints console message and calls logger | True to continue, otherwise False |
 | print_analysis_menu() | Prints menu with analysis options | None (console output) |
 
 ### Parser Module (Mui_Parser.py)
