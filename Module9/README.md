@@ -434,6 +434,7 @@ python -m pytest
 |  | test_lead_rows(self) | Tests the case when there is a header and leading rows |
 |  | test_no_head(self) | Tests the case when there is no header or leading rows |
 |  | test_empty_file(self) | Tests the case when the file exists, but it's empty |
+|  | test_utf8_bom(self) | Tests the case when CSV is UTF-8 BOM format |
 | TestInferHeader(unittest.TestCase) |  | Class to test the infer_header(data) function |
 |  | test_infer_date1(self) | Tests the case of a single date column and one money column |
 |  | test_infer_date2(self) | Tests the case of two date columns |

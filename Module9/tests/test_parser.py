@@ -42,6 +42,9 @@ class TestBuildDataframe(unittest.TestCase):
             f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
         with open(os.path.join(base, "empty.csv"), "w") as f:
             f.write("")
+        with open(os.path.join(base, "bom_no_head.csv"), "w", 
+                  encoding="utf-8-sig") as f:
+            f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
 
     @classmethod
     def tearDownClass(cls):
@@ -64,7 +67,6 @@ class TestBuildDataframe(unittest.TestCase):
     def test_lead_rows(self):
         """Tests the case when there is a header and leading rows"""
         file_name = os.path.join(self.base, "good_lead.csv")
-        head_info = 1
         check = parse.build_dataframe(file_name)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
@@ -84,6 +86,13 @@ class TestBuildDataframe(unittest.TestCase):
         check = parse.build_dataframe(file_name)
         self.assertFalse(check[0])
         self.assertIn("no parsable data", check[1])
+
+    def test_utf8_bom(self):
+        """Tests the case when CSV is UTF-8 BOM format"""
+        file_name = os.path.join(self.base, "bom_no_head.csv")
+        check = parse.build_dataframe(file_name)
+        self.assertTrue(check[0])
+        self.assertIsInstance(check[1], pd.DataFrame)
 
 
 class TestInferHeader(unittest.TestCase):
