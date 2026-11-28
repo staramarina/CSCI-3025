@@ -93,7 +93,9 @@ python -m pip install matplotlib
 
 ### Running the Program
 From the Module9 directory  
-```python Mui_M9Assignment.py```
+```
+python Mui_M9Assignment.py
+```
 
 ### Example Interaction
 ```
