@@ -41,9 +41,9 @@ def build_dataframe(file_name):
                 continue
     if 0 == line_count:
         if "date" in line.lower():
-            head_info = 0  # Missing column header case
+            head_info = 0  # Normal header case
         else:
-            head_info = None  # Normal header case
+            head_info = None  # Missing column header case
     else:
         head_info = line_count  # Leading rows case
     check = io.dataframe_check(file_name, head_info)
@@ -319,7 +319,15 @@ def clean_dataframe(data_raw, err_log):
 
     # Date columns cleanup
     date_col_ls = df.columns[df.columns.str.contains("date", case=False)]
+    prime_ls = [col for col in date_col_ls if "post" not in col.lower()]
+    post_ls = [col for col in date_col_ls if "post" in col.lower()]
+    if 0 == len(prime_ls) and 0 == len(post_ls):
+        return (False, "Could not identify a date column.")
+    keep_ls = [prime_ls[0]] + post_ls[:1]
     for col in date_col_ls:
+        if col not in keep_ls:
+            df = df.drop(columns=[col])
+    for col in keep_ls:
         format_check = date_format(df[col])
         clean_check = date_clean(
             df, col, 
@@ -329,14 +337,12 @@ def clean_dataframe(data_raw, err_log):
         )
         if not clean_check[0]:
             return (False, clean_check[1])
-        elif "post" not in col.lower():
-            df = clean_check[1].dropna(subset=[col])
-            df = df.rename(columns={col: "Date"})
-        elif "post" in col.lower():
-            df = clean_check[1]
-            df = df.rename(columns={col: "Post Date"})
         else:
             df = clean_check[1]
+    df = df.rename(columns={keep_ls[0]: "Date"})
+    df = df.dropna(subset=["Date"])
+    if 2 == len(keep_ls):
+        df = df.rename(columns={keep_ls[1]: "Post Date"})
 
     # Rename and format money columns
     bal_ls = df.columns[df.columns.str.contains("bal", case=False)]
