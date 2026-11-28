@@ -99,7 +99,47 @@ python Mui_M9Assignment.py
 
 ### Example Interaction
 ```
-TODO
+Welcome to the expense tracker!
+
+Please enter the file name of your file: data/USAA_checking_example.csv
+Would you like to include another file (Y/N): y
+Please enter the file name of your file: data/USAA_credit_example.csv
+Would you like to include another file (Y/N): n
+File(s) received.
+
+Building data frame(s).
+Data frame(s) created.
+
+Parsing and cleaning data.
+Data successfully parsed and cleaned.
+
+Processing data.
+Data successfully processed.
+
+Combining data.
+Data combined.
+
+
+Please select one of the following options:
+1 -- Overall Spending per Day
+2 -- Spending by Category
+3 -- Spending by Description
+4 -- Overall Balance Changes per Day
+5 -- Top 5 Expenses
+x -- Quit
+1
+Chart saved to charts/spend_chart.png.
+
+Please select one of the following options:
+1 -- Overall Spending per Day
+2 -- Spending by Category
+3 -- Spending by Description
+4 -- Overall Balance Changes per Day
+5 -- Top 5 Expenses
+x -- Quit
+x
+
+Thank you for using the expense tracker!
 ```
 
 ### Example Chart Generation
