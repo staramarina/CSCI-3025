@@ -45,7 +45,7 @@ class TestBuildDataframe(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Tear down method to delete temprorary testing directory"""
+        """Tear down method to delete temporary testing directory"""
         cls.tmp_dir.cleanup()
 
     def setUp(self):
@@ -242,7 +242,7 @@ class TestDateFormat(unittest.TestCase):
         self.assertFalse(mixed)
 
     def test_sep_mixed(self):
-        """Tests the case when there are mixed separaters"""
+        """Tests the case when there are mixed separators"""
         series = pd.Series([
             "11-18-2026", "11/19/2026", "11-20-2026", 
             "11-21-2026", "11/22/2026", "11-23-2026"
@@ -300,7 +300,7 @@ class TestCleanDate(unittest.TestCase):
         self.err_log = os.path.join(self.__tmpdir.name, "log.txt")
 
     def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
+        """Tear down method to delete temporary testing directory"""
         self.__tmpdir.cleanup()
 
     def test_yr1_det(self):
@@ -352,7 +352,7 @@ class TestCleanDate(unittest.TestCase):
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
 
     def test_det_sep_mix(self):
-        """Tests the case when there are mixed separaters"""
+        """Tests the case when there are mixed separators"""
         col = "Date"
         df = pd.DataFrame({ col: [
             "11-18-2026", "11/19/2026", "11-20-2026", 
@@ -432,7 +432,7 @@ class TestCleanDate(unittest.TestCase):
         self.assertIn("Process aborted", check[1])
 
     def test_date_convert_fail(self):
-        """Thests the case when all date values fail to convert"""
+        """Tests the case when all date values fail to convert"""
         col = "Date"
         df = pd.DataFrame({ col: [
             "no-date", "missing", "N/A", 
@@ -524,7 +524,7 @@ class TestCleanMoney(unittest.TestCase):
             self.assertEqual(rx, ex)
 
     def test_amnt_chg(self):
-        """Tests that a mostly postive amount column is updated"""
+        """Tests that a mostly positive amount column is updated"""
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
@@ -622,7 +622,7 @@ class TestMergeDebCrd(unittest.TestCase):
         self.assertIn("Failed to merge columns", check[1])
 
     def test_deb_crd_orig(self):
-        """Tests that the orignal dataframe still has debit/credit columns"""
+        """Tests that the original dataframe still has debit/credit columns"""
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["-21.13", "-7.66", "-28.79", ""],
@@ -636,7 +636,7 @@ class TestMergeDebCrd(unittest.TestCase):
 
 
 class TestCleanDataframe(unittest.TestCase):
-    """Class to test the clean_dataframe(data_raw, err_log) funciton"""
+    """Class to test the clean_dataframe(data_raw, err_log) function"""
 
     def setUp(self):
         """Setup method to create temporary testing directory"""
@@ -644,7 +644,7 @@ class TestCleanDataframe(unittest.TestCase):
         self.err_log = os.path.join(self.__tmpdir.name, "log.txt")
 
     def tearDown(self):
-        """Tear down method to delete temprorary testing directory"""
+        """Tear down method to delete temporary testing directory"""
         self.__tmpdir.cleanup()
 
     def test_simple_clean_success(self):
@@ -695,7 +695,7 @@ class TestCleanDataframe(unittest.TestCase):
         self.assertIn("Process aborted", check[1])
 
     def test_multi_date(self):
-        """Tests the case of multiple header rows"""
+        """Tests the case of multiple dates in header rows"""
         data = {
             "Transaction Date": ["11/18/2026", "11/16/2026", 
                                  "11/16/2026", "11/15/2026"],
@@ -815,7 +815,7 @@ class TestCleanDataframe(unittest.TestCase):
         self.assertNotIn("Debit", check[1].columns)
 
     def test_credit_only(self):
-        """Tests the case where credit si the only money column"""
+        """Tests the case where credit is the only money column"""
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Credit": ["-21.13", "-7.66", "-28.79", "1500.00"],
