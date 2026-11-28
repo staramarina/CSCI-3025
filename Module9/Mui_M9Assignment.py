@@ -37,9 +37,9 @@ USAA_CREDIT = 'priv_test/credit2_scrubbed.csv'  # good to combo with checking2
 SAFE_CREDIT = 'priv_test/credit1_scrubbed.csv' # good balance, don't use description
 
 REAL_FILES = {
-    USAA_CHECK: True,
-    #USAA_CREDIT: True,
-    #SAFE_CREDIT: True
+    #USAA_CHECK: True,
+    USAA_CREDIT: True,
+    SAFE_CREDIT: True
 }
 
 
@@ -155,7 +155,7 @@ if __name__ == "__main__":
                     else:
                         io.err_handle(check_spend[1], err_log)
                 else:
-                    force = io.warn_handle(check_spend[1])
+                    force = io.warn_handle(spend[1])
                     if force:
                         print("Returning to analysis menu.")
                     else:
@@ -172,7 +172,7 @@ if __name__ == "__main__":
                     else:
                         io.err_handle(check_cat[1], err_log)
                 else:
-                    force = io.warn_handle(check_cat[1])
+                    force = io.warn_handle(cat[1])
                     if force:
                         print("Returning to analysis menu.")
                     else:
@@ -189,7 +189,7 @@ if __name__ == "__main__":
                     else:
                         io.err_handle(check_des[1], err_log)
                 else:
-                    force = io.warn_handle(check_des[1])
+                    force = io.warn_handle(des[1])
                     if force:
                         print("Returning to analysis menu.")
                     else:
@@ -206,7 +206,7 @@ if __name__ == "__main__":
                     else:
                         io.err_handle(check_bal[1], err_log)
                 else:
-                    force = io.warn_handle(check_bal[1])
+                    force = io.warn_handle(bal[1])
                     if force:
                         print("Returning to analysis menu.")
                     else:
@@ -223,7 +223,7 @@ if __name__ == "__main__":
                     else:
                         io.err_handle(check_top[1], err_log)
                 else:
-                    force = io.warn_handle(check_top[1])
+                    force = io.warn_handle(top[1])
                     if force:
                         print("Returning to analysis menu.")
                     else:
