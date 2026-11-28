@@ -661,7 +661,7 @@ python --version
 ```
 4. Install packages using the following commands.
 ```
-uv pip install "pandas==2.0.*" "numpy==1.21.*" "seaborn=0.12.*" "matplotlib=3.5.*"
+uv pip install --python .venv-min/bin/python "pandas==2.0.*" "numpy==1.21.*" "seaborn=0.12.*" "matplotlib=3.5.*"
 ```
 5. Compile all project files with the following command.
 ```
