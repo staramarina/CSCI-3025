@@ -233,6 +233,15 @@ class TestChartSave(unittest.TestCase):
         self.assertIn("saved", check[1])
         self.assertTrue(save.exists())
 
+    def test_bad_chart_in(self):
+        """Tests the case when a chart is not passed as input"""
+        chart = "no chart"
+        file_name = self.tmp_dir / "no_write.png"
+        check = io.chart_save(chart, str(file_name))
+        self.assertFalse(check[0])
+        self.assertIn("Chart was not a (figure, axes) tuple", check[1])
+        self.assertFalse(file_name.exists())
+
 
 class TestFileInputHandle(unittest.TestCase):
     """Class to test the file_input_handle() function"""

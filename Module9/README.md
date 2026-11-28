@@ -348,7 +348,7 @@ TEST_FILES = {
 TODO add remaining manual test steps, include manual end-to-end test
 
 ### Automated Testing
-All test cases are compatible with both unittest and pytest. All 136 test cases pass with both pytest and unittest.  
+All test cases are compatible with both unittest and pytest. All 137 test cases pass with both pytest and unittest.  
 To run all tests with unittest, enter the following from within the Module9 directory.
 ```
 python -m unittest
@@ -400,6 +400,7 @@ python -m pytest
 |  | test_custom_dpi(self) | Tests that a custom dpi is accepted |
 |  | test_bad_path(self) | Tests that nonexistent directory returns error |
 |  | test_miss_ext(self) | Tests that a file name with missing extension save as .png |
+|  | test_bad_chart_in(self) | Tests the case when a chart is not passed as input |
 | TestFileInputHandle(unittest.TestCase) |  | Class to test the file_input_handle() function |
 |  | setUp(self) | Setup method to create temporary testing directory |
 |  | tearDown(self) | Tear down method to delete temporary testing directory |
