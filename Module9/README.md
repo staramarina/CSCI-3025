@@ -144,7 +144,7 @@ Thank you for using the expense tracker!
 ```
 
 ### Example Chart Generation
-Below are example charts that were generated using anonomized export data. The data period covered 18 months of transactions.
+Below are example charts that were generated using anonymized export data. The data period covered 18 months of transactions.
 
 ![Example Overall Spending per Day chart](charts/spend_chart.png)
 
