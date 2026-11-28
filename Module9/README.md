@@ -333,11 +333,10 @@ The parser also handles the following.
     - Warnings inform the user what happened and give an option to proceed.
     - Errors provide generic information in the console with details in the logs.
 
-
 ## Testing
 
 ### Manual Testing
-Manual testing included utilizing examples provided in the data folder as well as real (though sanitized) exports from USAA and SAFE Credit Union (full data was not published due to privacy, but may be provided upon request). Each section of the main program prior to the analysis section was tested and dumped to the "test_dump.txt" file. This process can be recreated using the following steps. 
+Manual testing included utilizing examples provided in the data folder as well as real (though sanitized) exports from USAA and SAFE Credit Union (full data was not published due to privacy, but may be provided upon request). Each section of the main program prior to the analysis section was tested and dumped to the "test_dump.txt" file. This process can be recreated using the steps below. Once all data actions were verified, end-to-end testing was conducted with both real exports and the examples included within the data folder. Various file combinations to include single and multiple, same and mixed format were tested. 
 
 1. Insert the following code between the import section and the main section (note: ensure files are present within the data folder).
 ```
@@ -387,8 +386,6 @@ TEST_FILES = {
         f.write('------------------------COMBINED------------------------\n')
         f.write(str(all_data))  #post combined print
 ```
-
-TODO add remaining manual test steps, include manual end-to-end test
 
 ### Automated Testing
 All test cases are compatible with both unittest and pytest. All 151 test cases pass with both pytest and unittest.  
