@@ -14,8 +14,7 @@ from unittest.mock import patch
 import numpy as np
 import pandas as pd
 
-
-#Adds parent directory to front of module search path
+# Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
@@ -42,8 +41,9 @@ class TestBuildDataframe(unittest.TestCase):
             f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
         with open(os.path.join(base, "empty.csv"), "w") as f:
             f.write("")
-        with open(os.path.join(base, "bom_no_head.csv"), "w", 
-                  encoding="utf-8-sig") as f:
+        with open(
+            os.path.join(base, "bom_no_head.csv"), "w", encoding="utf-8-sig"
+        ) as f:
             f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
         with open(os.path.join(base, "not_enough.csv"), "w") as f:
             f.write("11/16/2026,-7.66\n")
@@ -112,7 +112,7 @@ class TestInferHeader(unittest.TestCase):
         data = {
             0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             1: ["-21.13", "-7.66", "-28.79", "1500.00"],
-            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.infer_header(df)
@@ -127,7 +127,7 @@ class TestInferHeader(unittest.TestCase):
             0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             1: ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             2: ["-21.13", "-7.66", "-28.79", "1500.00"],
-            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.infer_header(df)
@@ -143,7 +143,7 @@ class TestInferHeader(unittest.TestCase):
             1: ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             2: ["-21.13", "-7.66", "-28.79", "1500.00"],
             3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
-            4: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"]
+            4: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
         }
         df = pd.DataFrame(data)
         check = parse.infer_header(df)
@@ -167,7 +167,7 @@ class TestInferHeader(unittest.TestCase):
             0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             1: ["-21.13", "-7.66", "-28.79", ""],
             2: ["", "", "", "1500.00"],
-            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.infer_header(df)
@@ -182,7 +182,7 @@ class TestInferHeader(unittest.TestCase):
             0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             1: ["-21.13", "-7.66", "-28.79", "1500.00"],
             2: ["54.12", "12.54", "5.37", "1505.37"],
-            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            3: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.infer_header(df)
@@ -198,7 +198,7 @@ class TestInferHeader(unittest.TestCase):
             1: ["-21.13", "-7.66", "-28.79", ""],
             2: ["", "", "", "1500.00"],
             3: ["54.12", "12.54", "5.37", "1505.37"],
-            4: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            4: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.infer_header(df)
@@ -212,7 +212,7 @@ class TestInferHeader(unittest.TestCase):
         """Tests the case of no money columns"""
         data = {
             0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
-            1: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            1: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.infer_header(df)
@@ -225,10 +225,17 @@ class TestDateFormat(unittest.TestCase):
 
     def test_year_first(self):
         """Tests the case when the year is clearly first part"""
-        series = pd.Series([
-            "2026-11-18", "2026-11-19", "2026-11-20", 
-            "2026-11-21", "2026-11-22", "2026-11-23"
-        ], name="Date")
+        series = pd.Series(
+            [
+                "2026-11-18",
+                "2026-11-19",
+                "2026-11-20",
+                "2026-11-21",
+                "2026-11-22",
+                "2026-11-23",
+            ],
+            name="Date",
+        )
         yr_first, day_first, determine, mixed = parse.date_format(series)
         self.assertTrue(yr_first)
         self.assertFalse(day_first)
@@ -237,10 +244,17 @@ class TestDateFormat(unittest.TestCase):
 
     def test_day_first(self):
         """Tests the case when day is clearly first part"""
-        series = pd.Series([
-            "18-11-2026", "19-11-2026", "20-11-2026", 
-            "21-11-2026", "22-11-2026", "23-11-2026"
-        ], name="Date")
+        series = pd.Series(
+            [
+                "18-11-2026",
+                "19-11-2026",
+                "20-11-2026",
+                "21-11-2026",
+                "22-11-2026",
+                "23-11-2026",
+            ],
+            name="Date",
+        )
         yr_first, day_first, determine, mixed = parse.date_format(series)
         self.assertFalse(yr_first)
         self.assertTrue(day_first)
@@ -249,10 +263,17 @@ class TestDateFormat(unittest.TestCase):
 
     def test_mon_first(self):
         """Tests the case when day is clearly second part"""
-        series = pd.Series([
-            "11-18-2026", "11-19-2026", "11-20-2026", 
-            "11-21-2026", "11-22-2026", "11-23-2026"
-        ], name="Date")
+        series = pd.Series(
+            [
+                "11-18-2026",
+                "11-19-2026",
+                "11-20-2026",
+                "11-21-2026",
+                "11-22-2026",
+                "11-23-2026",
+            ],
+            name="Date",
+        )
         yr_first, day_first, determine, mixed = parse.date_format(series)
         self.assertFalse(yr_first)
         self.assertFalse(day_first)
@@ -261,10 +282,17 @@ class TestDateFormat(unittest.TestCase):
 
     def test_sep_mixed(self):
         """Tests the case when there are mixed separators"""
-        series = pd.Series([
-            "11-18-2026", "11/19/2026", "11-20-2026", 
-            "11-21-2026", "11/22/2026", "11-23-2026"
-        ], name="Date")
+        series = pd.Series(
+            [
+                "11-18-2026",
+                "11/19/2026",
+                "11-20-2026",
+                "11-21-2026",
+                "11/22/2026",
+                "11-23-2026",
+            ],
+            name="Date",
+        )
         yr_first, day_first, determine, mixed = parse.date_format(series)
         self.assertFalse(yr_first)
         self.assertFalse(day_first)
@@ -273,10 +301,17 @@ class TestDateFormat(unittest.TestCase):
 
     def test_year_mixed(self):
         """Tests the case when year is last and mixed YYYY and YY"""
-        series = pd.Series([
-            "11-18-2026", "11-19-26", "11-20-2026", 
-            "11-21-2026", "11-22-26", "11-23-2026"
-        ], name="Date")
+        series = pd.Series(
+            [
+                "11-18-2026",
+                "11-19-26",
+                "11-20-2026",
+                "11-21-2026",
+                "11-22-26",
+                "11-23-2026",
+            ],
+            name="Date",
+        )
         yr_first, day_first, determine, mixed = parse.date_format(series)
         self.assertFalse(yr_first)
         self.assertFalse(day_first)
@@ -285,10 +320,17 @@ class TestDateFormat(unittest.TestCase):
 
     def test_day_mixed(self):
         """Tests the case when there is a mix of date first and second"""
-        series = pd.Series([
-            "11-18-2026", "19-11-2026", "11-20-2026", 
-            "11-21-2026", "22-11-2026", "11-23-2026"
-        ], name="Date")
+        series = pd.Series(
+            [
+                "11-18-2026",
+                "19-11-2026",
+                "11-20-2026",
+                "11-21-2026",
+                "22-11-2026",
+                "11-23-2026",
+            ],
+            name="Date",
+        )
         yr_first, day_first, determine, mixed = parse.date_format(series)
         self.assertFalse(yr_first)
         self.assertFalse(day_first)
@@ -297,10 +339,17 @@ class TestDateFormat(unittest.TestCase):
 
     def test_ambiguous(self):
         """Tests the case when day position cannot be determined"""
-        series = pd.Series([
-            "01-02-03", "02-03-04", "03-04-05", 
-            "04-05-03", "05-06-04", "10-11-12"
-        ], name="Date")
+        series = pd.Series(
+            [
+                "01-02-03",
+                "02-03-04",
+                "03-04-05",
+                "04-05-03",
+                "05-06-04",
+                "10-11-12",
+            ],
+            name="Date",
+        )
         yr_first, day_first, determine, mixed = parse.date_format(series)
         self.assertFalse(yr_first)
         self.assertFalse(day_first)
@@ -309,16 +358,24 @@ class TestDateFormat(unittest.TestCase):
 
 
 class TestCleanDate(unittest.TestCase):
-    """Class to test the date_clean(data, col, yr_first, day_first, determine, 
+    """Class to test the date_clean(data, col, yr_first, day_first, determine,
     mixed) function"""
 
     def test_yr1_det(self):
         """Tests the case when the year is clearly first part"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "2026-11-18", "2026-11-19", "2026-11-20", 
-            "2026-11-21", "2026-11-22", "2026-11-23"
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "2026-11-18",
+                    "2026-11-19",
+                    "2026-11-20",
+                    "2026-11-21",
+                    "2026-11-22",
+                    "2026-11-23",
+                ]
+            }
+        )
         yr1 = True
         day1 = False
         det = True
@@ -331,10 +388,18 @@ class TestCleanDate(unittest.TestCase):
     def test_day1_det(self):
         """Tests the case when day is clearly first part"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "18-11-2026", "19-11-2026", "20-11-2026", 
-            "21-11-2026", "22-11-2026", "23-11-2026"
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "18-11-2026",
+                    "19-11-2026",
+                    "20-11-2026",
+                    "21-11-2026",
+                    "22-11-2026",
+                    "23-11-2026",
+                ]
+            }
+        )
         yr1 = False
         day1 = True
         det = True
@@ -347,10 +412,18 @@ class TestCleanDate(unittest.TestCase):
     def test_mon1_det(self):
         """Tests the case when day is clearly second part"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "11-18-2026", "11-19-2026", "11-20-2026", 
-            "11-21-2026", "11-22-2026", "11-23-2026"
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "11-18-2026",
+                    "11-19-2026",
+                    "11-20-2026",
+                    "11-21-2026",
+                    "11-22-2026",
+                    "11-23-2026",
+                ]
+            }
+        )
         yr1 = False
         day1 = False
         det = True
@@ -363,10 +436,18 @@ class TestCleanDate(unittest.TestCase):
     def test_det_sep_mix(self):
         """Tests the case when there are mixed separators"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "11-18-2026", "11/19/2026", "11-20-2026", 
-            "11-21-2026", "11/22/2026", "11-23-2026"
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "11-18-2026",
+                    "11/19/2026",
+                    "11-20-2026",
+                    "11-21-2026",
+                    "11/22/2026",
+                    "11-23-2026",
+                ]
+            }
+        )
         yr1 = False
         day1 = False
         det = True
@@ -379,10 +460,18 @@ class TestCleanDate(unittest.TestCase):
     def test_det_yr_mix(self):
         """Tests the case when year is last and mixed YYYY and YY"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "11-18-2026", "11-19-26", "11-20-2026", 
-            "11-21-2026", "11-22-26", "11-23-2026"
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "11-18-2026",
+                    "11-19-26",
+                    "11-20-2026",
+                    "11-21-2026",
+                    "11-22-26",
+                    "11-23-2026",
+                ]
+            }
+        )
         yr1 = False
         day1 = False
         det = True
@@ -395,10 +484,18 @@ class TestCleanDate(unittest.TestCase):
     def test_day1_mix(self):
         """Tests the case when there is a mix of date first and second"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "11-18-2026", "19-11-2026", "11-20-2026", 
-            "11-21-2026", "22-11-2026", "11-23-2026"
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "11-18-2026",
+                    "19-11-2026",
+                    "11-20-2026",
+                    "11-21-2026",
+                    "22-11-2026",
+                    "11-23-2026",
+                ]
+            }
+        )
         yr1 = False
         day1 = False
         det = False
@@ -410,10 +507,18 @@ class TestCleanDate(unittest.TestCase):
     def test_all_false_pass(self):
         """Tests the case when day position cannot be determined"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "01-02-03", "02-03-04", "03-04-05", 
-            "04-05-03", "05-06-04", "10-11-12"
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "01-02-03",
+                    "02-03-04",
+                    "03-04-05",
+                    "04-05-03",
+                    "05-06-04",
+                    "10-11-12",
+                ]
+            }
+        )
         yr1 = False
         day1 = False
         det = False
@@ -427,10 +532,18 @@ class TestCleanDate(unittest.TestCase):
     def test_all_false_fail(self):
         """Tests the case when day position cannot be determined"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "01-02-03", "02-03-04", "03-04-05", 
-            "04-05-03", "05-06-04", "10-11-12"
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "01-02-03",
+                    "02-03-04",
+                    "03-04-05",
+                    "04-05-03",
+                    "05-06-04",
+                    "10-11-12",
+                ]
+            }
+        )
         yr1 = False
         day1 = False
         det = False
@@ -443,9 +556,15 @@ class TestCleanDate(unittest.TestCase):
     def test_date_convert_fail(self):
         """Tests the case when all date values fail to convert"""
         col = "Date"
-        df = pd.DataFrame({ col: [
-            "no-date", "missing", "N/A", 
-        ]})
+        df = pd.DataFrame(
+            {
+                col: [
+                    "no-date",
+                    "missing",
+                    "N/A",
+                ]
+            }
+        )
         yr1 = False
         day1 = False
         det = True
@@ -453,6 +572,7 @@ class TestCleanDate(unittest.TestCase):
         check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertFalse(check[0])
         self.assertIn("failed to convert", check[1])
+
 
 class TestCleanMoney(unittest.TestCase):
     """Class to test the clean_money(data, col) function"""
@@ -463,7 +583,7 @@ class TestCleanMoney(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             "Amount": [-21.13, "-7.66", 28.79, "1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, 28.79, 1500.00]
@@ -479,7 +599,7 @@ class TestCleanMoney(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             "Amount": ["(21.13)", "-7.66", "$28.79", "1,500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, 28.79, 1500.00]
@@ -495,7 +615,7 @@ class TestCleanMoney(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             "Amount": ["-abc", "", "def", "xyz"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.clean_money(df, "Amount")
@@ -508,7 +628,7 @@ class TestCleanMoney(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             "Amount": ["(21.13)", "-7.66", "$28.79", "1,500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         exp = ["(21.13)", "-7.66", "$28.79", "1,500.00"]
@@ -523,7 +643,7 @@ class TestCleanMoney(unittest.TestCase):
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             "Amount": [-21.13, -7.66, -28.79, 1500.00],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": [-54.12, -12.54, -5.37, -1505.37]
+            "Balance": [-54.12, -12.54, -5.37, -1505.37],
         }
         df = pd.DataFrame(data)
         exp = [54.12, 12.54, 5.37, 1505.37]
@@ -539,7 +659,7 @@ class TestCleanMoney(unittest.TestCase):
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             "Amount": [21.13, 7.66, 28.79, -1500.00],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": [54.12, 12.54, 5.37, 1505.37]
+            "Balance": [54.12, 12.54, 5.37, 1505.37],
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, -28.79, 1500.00]
@@ -558,7 +678,12 @@ class TestMergeDebCrd(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["-21.13", "-7.66", "-28.79", ""],
             "Credit": ["", "", "", "1500.00"],
-            "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            "Description": [
+                "GENOS STEAKS",
+                "INSOMNIA COOKIES",
+                "MCDONALD S",
+                "Depost",
+            ],
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, -28.79, 1500.00]
@@ -571,14 +696,13 @@ class TestMergeDebCrd(unittest.TestCase):
         for rx, ex in zip(check[1]["Amount"], exp):
             self.assertAlmostEqual(rx, ex)
 
-
     def test_chg_debit(self):
         """Tests the case when debit is positive"""
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["21.13", "7.66", "28.79", ""],
             "Credit": ["", "", "", "1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, -28.79, 1500.00]
@@ -594,7 +718,7 @@ class TestMergeDebCrd(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["-21.13", "-7.66", "-28.79", ""],
             "Credit": ["", "", "", "-1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, -28.79, 1500.00]
@@ -610,7 +734,7 @@ class TestMergeDebCrd(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["-21.13", "-7.66", "-28.79", ""],
             "Credit": ["", "14.54", "", "1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.merge_deb_crd(df)
@@ -623,7 +747,7 @@ class TestMergeDebCrd(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["", "", "", ""],
             "Credit": ["", "", "", ""],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.merge_deb_crd(df)
@@ -653,7 +777,7 @@ class TestMergeDebCrd(unittest.TestCase):
             "Debit": ["-21.13", "-7.66", np.nan, np.nan],
             "Credit": [np.nan, np.nan, np.nan, "1500.00"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": [54.12, 12.54, 5.37, 1505.37]
+            "Balance": [54.12, 12.54, 5.37, 1505.37],
         }
         df = pd.DataFrame(data)
         exp = [54.12, 12.54, 5.37, 1505.37]
@@ -670,7 +794,7 @@ class TestMergeDebCrd(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["-21.13", "-7.66", "-28.79", ""],
             "Credit": ["", "", "", "1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         parse.merge_deb_crd(df)
@@ -687,7 +811,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"],
         }
         df = pd.DataFrame(data)
         check = parse.clean_dataframe(df)
@@ -706,7 +830,7 @@ class TestCleanDataframe(unittest.TestCase):
         data = {
             0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             1: ["-21.13", "-7.66", "-28.79", "1500.00"],
-            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="Y"):
@@ -720,7 +844,7 @@ class TestCleanDataframe(unittest.TestCase):
         data = {
             0: ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             1: ["-21.13", "-7.66", "-28.79", "1500.00"],
-            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            2: ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="N"):
@@ -731,11 +855,15 @@ class TestCleanDataframe(unittest.TestCase):
     def test_multi_date2(self):
         """Tests the case of multiple dates in header rows"""
         data = {
-            "Transaction Date": ["11/18/2026", "11/16/2026", 
-                                 "11/16/2026", "11/15/2026"],
+            "Transaction Date": [
+                "11/18/2026",
+                "11/16/2026",
+                "11/16/2026",
+                "11/15/2026",
+            ],
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.clean_dataframe(df)
@@ -749,13 +877,21 @@ class TestCleanDataframe(unittest.TestCase):
     def test_multi_date3(self):
         """Tests the case of three date columns"""
         data = {
-            "Transaction Date": ["11/18/2026", "11/16/2026", 
-                                 "11/16/2026", "11/15/2026"],
-            "Effective Date": ["11/18/2026", "11/17/2026", 
-                               "11/16/2026", "11/16/2026"],
+            "Transaction Date": [
+                "11/18/2026",
+                "11/16/2026",
+                "11/16/2026",
+                "11/15/2026",
+            ],
+            "Effective Date": [
+                "11/18/2026",
+                "11/17/2026",
+                "11/16/2026",
+                "11/16/2026",
+            ],
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.clean_dataframe(df)
@@ -768,10 +904,14 @@ class TestCleanDataframe(unittest.TestCase):
     def test_post_date_only(self):
         """Tests the case where post date is the only date column"""
         data = {
-            "Post Date": ["11/18/2026", "11/17/2026", 
-                          "11/16/2026", "11/16/2026"],
+            "Post Date": [
+                "11/18/2026",
+                "11/17/2026",
+                "11/16/2026",
+                "11/16/2026",
+            ],
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.clean_dataframe(df)
@@ -785,7 +925,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Date": ["07/01/10", "07/02/10", "07/02/10", "07/03/10"],
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"],
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="Y"):
@@ -800,7 +940,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Date": ["07/01/10", "07/02/10", "07/02/10", "07/03/10"],
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"],
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="N"):
@@ -814,7 +954,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": ["missing", "not here", "N/A", "error"]
+            "Balance": ["missing", "not here", "N/A", "error"],
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="Y"):
@@ -829,7 +969,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": ["missing", "not here", "N/A", "error"]
+            "Balance": ["missing", "not here", "N/A", "error"],
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="N"):
@@ -843,7 +983,12 @@ class TestCleanDataframe(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Amount Debit": ["-21.13", "-7.66", "-28.79", ""],
             "Amount Credit": ["", "", "", "1500.00"],
-            "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            "Description": [
+                "GENOS STEAKS",
+                "INSOMNIA COOKIES",
+                "MCDONALD S",
+                "Depost",
+            ],
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, -28.79, 1500.00]
@@ -862,7 +1007,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["-21.13", "-7.66", "-28.79", ""],
             "Credit": ["", "14.54", "", "1500.00"],
-            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
         }
         df = pd.DataFrame(data)
         check = parse.clean_dataframe(df)
@@ -874,7 +1019,12 @@ class TestCleanDataframe(unittest.TestCase):
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Debit": ["-21.13", "-7.66", "-28.79", "1500.00"],
-            "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            "Description": [
+                "GENOS STEAKS",
+                "INSOMNIA COOKIES",
+                "MCDONALD S",
+                "Depost",
+            ],
         }
         df = pd.DataFrame(data)
         check = parse.clean_dataframe(df)
@@ -887,7 +1037,12 @@ class TestCleanDataframe(unittest.TestCase):
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Credit": ["21.13", "7.66", "-28.79", "1500.00"],
-            "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
+            "Description": [
+                "GENOS STEAKS",
+                "INSOMNIA COOKIES",
+                "MCDONALD S",
+                "Depost",
+            ],
         }
         df = pd.DataFrame(data)
         exp = [21.13, 7.66, -28.79, 1500.00]
@@ -903,7 +1058,7 @@ class TestCleanDataframe(unittest.TestCase):
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"],
         }
         df = pd.DataFrame(data)
         check = parse.clean_dataframe(df)
@@ -915,7 +1070,7 @@ class TestCleanDataframe(unittest.TestCase):
         data = {
             "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"],
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="Y"):
@@ -928,7 +1083,7 @@ class TestCleanDataframe(unittest.TestCase):
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
+            "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"],
         }
         df = pd.DataFrame(data)
         check = parse.clean_dataframe(df)

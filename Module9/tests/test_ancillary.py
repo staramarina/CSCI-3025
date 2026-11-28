@@ -9,7 +9,6 @@ import unittest
 import sys
 from pathlib import Path
 
-
 # Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -22,8 +21,8 @@ class TestIntCheck(unittest.TestCase):
 
     def test_valid_num(self):
         """Tests various valid integers"""
-        num_str1 = '0'
-        num_str2 = '27'
+        num_str1 = "0"
+        num_str2 = "27"
         num1 = aux.int_check(num_str1)
         num2 = aux.int_check(num_str2)
         self.assertTrue(num1[0])
@@ -40,8 +39,8 @@ class TestIntCheck(unittest.TestCase):
 
     def test_char_input(self):
         """Tests function with character/string input"""
-        num_str1 = 'c'
-        num_str2 = 'string'
+        num_str1 = "c"
+        num_str2 = "string"
         num1 = aux.int_check(num_str1)
         num2 = aux.int_check(num_str2)
         self.assertFalse(num1[0])
@@ -51,7 +50,7 @@ class TestIntCheck(unittest.TestCase):
 
     def test_decimal_input(self):
         """Tests function with decimal number input"""
-        num_str = '123.45'
+        num_str = "123.45"
         num = aux.int_check(num_str)
         self.assertFalse(num[0])
         self.assertIn("Invalid input", num[1])

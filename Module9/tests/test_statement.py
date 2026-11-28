@@ -11,11 +11,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-
-#Adds parent directory to front of module search path
+# Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
@@ -29,35 +29,105 @@ class StmntBuild:
         """Builds and returns a larger pandas dataframe for analysis/charts"""
         data = {
             "Date": [
-                '2026-10-27', '2026-10-21', '2026-10-13', '2026-10-13',
-                '2026-10-06', '2026-10-05', '2026-10-05', '2026-09-28',
-                '2026-09-21', '2026-09-11', '2026-09-08', '2026-09-03',
-                '2026-09-03', '2026-09-03', '2026-09-03', '2026-08-27',
-                '2026-08-20', '2026-08-18', '2026-08-11', '2026-08-06',
-                '2026-08-03', '2026-08-03', '2026-08-01'
+                "2026-10-27",
+                "2026-10-21",
+                "2026-10-13",
+                "2026-10-13",
+                "2026-10-06",
+                "2026-10-05",
+                "2026-10-05",
+                "2026-09-28",
+                "2026-09-21",
+                "2026-09-11",
+                "2026-09-08",
+                "2026-09-03",
+                "2026-09-03",
+                "2026-09-03",
+                "2026-09-03",
+                "2026-08-27",
+                "2026-08-20",
+                "2026-08-18",
+                "2026-08-11",
+                "2026-08-06",
+                "2026-08-03",
+                "2026-08-03",
+                "2026-08-01",
             ],
             "Amount": [
-                -24.61, 2651.68, -104.7, -39.51, 2651.68, -3026.84, -197.91,
-                -23.99, 2651.68, -104.7, -41.51, -3026.84, -234.24, 2964.26,
-                2651.68, -22.71, 2651.68, -39.59, -104.7, 2651.68, -3026.84,
-                -187.9, -59.31
+                -24.61,
+                2651.68,
+                -104.7,
+                -39.51,
+                2651.68,
+                -3026.84,
+                -197.91,
+                -23.99,
+                2651.68,
+                -104.7,
+                -41.51,
+                -3026.84,
+                -234.24,
+                2964.26,
+                2651.68,
+                -22.71,
+                2651.68,
+                -39.59,
+                -104.7,
+                2651.68,
+                -3026.84,
+                -187.9,
+                -59.31,
             ],
             "Category": [
-                'Natural Gas', 'Paycheck', 'Internet', 'Water', 'Paycheck', 
-                'Uncategorized', 'Electricity', 'Natural Gas', 'Paycheck', 
-                'Internet', 'Water', 'Transfer', 'Electricity', 'Uncategorized',
-                'Paycheck', 'Natural Gas', 'Paycheck', 'Water', 'Internet', 
-                'Paycheck', 'Uncategorized', 'Electricity', 'Uncategorized'
+                "Natural Gas",
+                "Paycheck",
+                "Internet",
+                "Water",
+                "Paycheck",
+                "Uncategorized",
+                "Electricity",
+                "Natural Gas",
+                "Paycheck",
+                "Internet",
+                "Water",
+                "Transfer",
+                "Electricity",
+                "Uncategorized",
+                "Paycheck",
+                "Natural Gas",
+                "Paycheck",
+                "Water",
+                "Internet",
+                "Paycheck",
+                "Uncategorized",
+                "Electricity",
+                "Uncategorized",
             ],
             "Description": [
-                'Gas Company', 'Workplace', 'InternetCompany', 
-                'Locale Wa Utlpayment', 'Workplace', 'Newmortgage Company', 
-                'Locale', 'Gas Company', 'Workplace', 'InternetCompany', 
-                'Locale Wa Utlpayment', 'Newmortgage Company', 'Locale', 
-                'Workplace Reimbursement', 'Workplace', 'Gas Company', 
-                'Workplace', 'Locale Wa Utlpayment', 'InternetCompany', 
-                'Workplace', 'Newmortgage Company', 'Locale', 'Trash Company'
-            ]
+                "Gas Company",
+                "Workplace",
+                "InternetCompany",
+                "Locale Wa Utlpayment",
+                "Workplace",
+                "Newmortgage Company",
+                "Locale",
+                "Gas Company",
+                "Workplace",
+                "InternetCompany",
+                "Locale Wa Utlpayment",
+                "Newmortgage Company",
+                "Locale",
+                "Workplace Reimbursement",
+                "Workplace",
+                "Gas Company",
+                "Workplace",
+                "Locale Wa Utlpayment",
+                "InternetCompany",
+                "Workplace",
+                "Newmortgage Company",
+                "Locale",
+                "Trash Company",
+            ],
         }
         df = pd.DataFrame(data)
         df["Date"] = pd.to_datetime(df["Date"])
@@ -72,7 +142,7 @@ class StmntBuild:
             "Amount": [-21.13, -7.66, -28.79, 1500.00],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
             "Balance": [54.12, 12.54, 5.37, 1505.37],
-            "Category": ["Restaurants", "Restaurants", "Fast Food", "Income"]
+            "Category": ["Restaurants", "Restaurants", "Fast Food", "Income"],
         }
         df = pd.DataFrame(data)
         df["Date"] = pd.to_datetime(df["Date"])
@@ -87,7 +157,7 @@ class StmntBuild:
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
             "Amount": [-21.13, -7.66, -28.79, 1500.00],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
-            "Balance": [1773.85, 1766.19, 1737.40, 3237.40]
+            "Balance": [1773.85, 1766.19, 1737.40, 3237.40],
         }
         df = pd.DataFrame(data)
         df["Date"] = pd.to_datetime(df["Date"])
@@ -113,7 +183,7 @@ class StmntBuild:
             "Amount": [np.nan, np.nan, np.nan, np.nan],
             "Description": [np.nan, np.nan, np.nan, np.nan],
             "Balance": [np.nan, np.nan, np.nan, np.nan],
-            "Category": [np.nan, np.nan, np.nan, np.nan]
+            "Category": [np.nan, np.nan, np.nan, np.nan],
         }
         df = pd.DataFrame(data)
         df["Date"] = pd.to_datetime(df["Date"])

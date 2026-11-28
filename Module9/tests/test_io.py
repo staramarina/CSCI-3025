@@ -15,12 +15,10 @@ from unittest.mock import patch
 import pandas as pd
 import matplotlib
 
-
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-
-#Adds parent directory to front of module search path
+# Adds parent directory to front of module search path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
@@ -296,7 +294,7 @@ class TestLogSetup(unittest.TestCase):
         self.assertEqual(logging.WARNING, log.level)
 
     def test_duplicate(self):
-        """Tests that calling log_setup twice only results 
+        """Tests that calling log_setup twice only results
         in a single handler"""
         io.log_setup(self.log_file)
         io.log_setup(self.log_file)
@@ -319,8 +317,9 @@ class TestErrHandle(unittest.TestCase):
         """Tests the expected error message in the console"""
         with patch("builtins.print") as mock_print:
             io.err_handle("Test fail message", "log.txt")
-        print_txt = " ".join(str(call.args[0]) 
-                             for call in mock_print.call_args_list)
+        print_txt = " ".join(
+            str(call.args[0]) for call in mock_print.call_args_list
+        )
         self.assertIn("ERROR", print_txt)
         self.assertIn("log.txt", print_txt)
 
@@ -330,8 +329,10 @@ class TestWarnHandle(unittest.TestCase):
 
     def test_warn_log_print(self):
         """Tests that warning logs are printed correctly"""
-        with patch("builtins.input", return_value="N"), \
-                self.assertLogs("M9_Log", level="WARNING") as capture:
+        with (
+            patch("builtins.input", return_value="N"),
+            self.assertLogs("M9_Log", level="WARNING") as capture,
+        ):
             io.warn_handle("Test warn message")
         self.assertEqual(len(capture.records), 1)
         record = capture.records[0]
@@ -340,8 +341,10 @@ class TestWarnHandle(unittest.TestCase):
 
     def test_warn_log_console(self):
         """Tests the expected warning message in the console"""
-        with patch("builtins.input", return_value="N") as mock_in, \
-                self.assertLogs("M9_Log", level="WARNING"):
+        with (
+            patch("builtins.input", return_value="N") as mock_in,
+            self.assertLogs("M9_Log", level="WARNING"),
+        ):
             io.warn_handle("Test warn message")
         prompt = mock_in.call_args.args[0]
         self.assertIn("Test warn message", prompt)
@@ -350,24 +353,30 @@ class TestWarnHandle(unittest.TestCase):
     def test_force_confirm(self):
         """Tests the case when user confirms to continue processing"""
         warn_msg = "Test warning message"
-        with patch("builtins.input", return_value="Y"), \
-                self.assertLogs("M9_Log", level="WARNING"):
+        with (
+            patch("builtins.input", return_value="Y"),
+            self.assertLogs("M9_Log", level="WARNING"),
+        ):
             check = io.warn_handle(warn_msg)
         self.assertTrue(check)
 
     def test_force_deny(self):
         """Tests the case when user declines to continue process"""
         warn_msg = "Test warning message"
-        with patch("builtins.input", return_value="N"), \
-                self.assertLogs("M9_Log", level="WARNING"):
+        with (
+            patch("builtins.input", return_value="N"),
+            self.assertLogs("M9_Log", level="WARNING"),
+        ):
             check = io.warn_handle(warn_msg)
         self.assertFalse(check)
 
     def test_force_low_confirm(self):
         """Tests that lower case y works to confirm continuing"""
         warn_msg = "Test warning message"
-        with patch("builtins.input", return_value="y"), \
-                self.assertLogs("M9_Log", level="WARNING"):
+        with (
+            patch("builtins.input", return_value="y"),
+            self.assertLogs("M9_Log", level="WARNING"),
+        ):
             check = io.warn_handle(warn_msg)
         self.assertTrue(check)
 
@@ -379,17 +388,16 @@ class TestPrinting(unittest.TestCase):
         """Tests the print_analysis_menu() function"""
         with patch("builtins.print") as mock_print:
             io.print_analysis_menu()
-        txt = " ".join(str(call.args[0])
-                       for call in mock_print.call_args_list)
+        txt = " ".join(str(call.args[0]) for call in mock_print.call_args_list)
         self.assertEqual(7, mock_print.call_count)
         exp = [
-            'Please select one of the following options:',
-            '1 -- Overall Spending per Day',
-            '2 -- Spending by Category',
-            '3 -- Spending by Description',
-            '4 -- Overall Balance Changes per Day',
-            '5 -- Top 5 Expenses',
-            'x -- Quit'
+            "Please select one of the following options:",
+            "1 -- Overall Spending per Day",
+            "2 -- Spending by Category",
+            "3 -- Spending by Description",
+            "4 -- Overall Balance Changes per Day",
+            "5 -- Top 5 Expenses",
+            "x -- Quit",
         ]
         for item in exp:
             self.assertIn(item, txt)
