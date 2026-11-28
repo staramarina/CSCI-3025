@@ -681,15 +681,6 @@ class TestMergeDebCrd(unittest.TestCase):
 class TestCleanDataframe(unittest.TestCase):
     """Class to test the clean_dataframe(data_raw) function"""
 
-    #def setUp(self):
-    #    """Setup method to create temporary testing directory"""
-    #    self.__tmpdir = tempfile.TemporaryDirectory()
-    #    self.err_log = os.path.join(self.__tmpdir.name, "log.txt")
-
-    #def tearDown(self):
-    #    """Tear down method to delete temporary testing directory"""
-    #    self.__tmpdir.cleanup()
-
     def test_simple_clean_success(self):
         """Tests that case of Date, Amount, Description, Balance passes"""
         data = {

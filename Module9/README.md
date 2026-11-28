@@ -284,7 +284,7 @@ The parser also handles the following.
   	- An error is generated and displayed to the user when no files were received prior to the user selecting that they have no additional files to input. The program then gracefully exits.
     - An error is generated when inputting a file fails, so a generic error is given. However, the operator can try the file input again.
     - If all files could not be converted to a pandas data frame, the operator is notified and the program exits. Additional logs are not generated, as each instance was already logged. 
-    - If all data frames fail data parsing/cleaning, the operator is notified and the program exists. Additional logs are not generated, as each instance was already logged. 
+    - If all data frames fail data parsing/cleaning, the operator is notified and the program exits. Additional logs are not generated, as each instance was already logged. 
 - Other warning and error information includes the following.
     - All warnings and errors are logged in a file.
     - Warnings inform the user what happened and give an option to proceed.
@@ -480,12 +480,10 @@ python -m pytest
 |  | test_keep_nan(self) | Tests the case where np.nan is in both debit and credit columns |
 |  | test_deb_crd_orig(self) | Tests that the original dataframe still has debit/credit columns |
 | TestCleanDataframe(unittest.TestCase) |  | Class to test the clean_dataframe(data_raw) function |
-|  | setUp(self) | Setup method to create temporary testing directory |
-|  | tearDown(self) | Tear down method to delete temporary testing directory |
 |  | test_simple_clean_success(self) | Tests that case of Date, Amount, Description, Balance passes |
 |  | test_call_infer_header(self) | Tests that the infer_header is called appropriately when forced |
 |  | test_header_warn_abort(self) | Tests that aborting at the header warning stops processing |
-|  | test_multi_date(self) | Tests the case of multiple dates in header rows |
+|  | test_multi_date2(self) | Tests the case of multiple dates in header rows |
 |  | test_multi_date3(self) | Tests the case of three date columns |
 |  | test_post_date_only(self) | Tests the case where post date is the only date column |
 |  | test_force_ambig_date(self) | Tests when ambiguous date assumption is accepted |

@@ -182,7 +182,6 @@ def date_clean(data, col, yr_first, day_first, determine, mixed):
         day_first: whether day is first (True/False)
         determine: whether a determination was made (True/False)
         mixed: whether the column has mixed date formats (True/False)
-        err_log: file location to log warnings and errors
 
     Returns:
         A 2-tuple of the following format:
