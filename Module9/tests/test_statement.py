@@ -106,7 +106,7 @@ class StmntBuild:
         return df
 
     def build_default_stmnt(self):
-        """Builds a defaul statement instance"""
+        """Builds a default statement instance"""
         df = self.build_df4()
         return stmnt.Statement(df)
 
@@ -289,7 +289,7 @@ class TestCatAnalysis(StmntBuild, unittest.TestCase):
         self.assertIn("Category data not available", check[1])
 
     def test_cat_orig(self):
-        """Tests that the original dataframe is unmodifed"""
+        """Tests that the original dataframe is unmodified"""
         orig = self.stmnt6.df.copy(deep=True)
         self.stmnt6.cat_analysis()
         pd.testing.assert_frame_equal(orig, self.stmnt6.df)
@@ -448,7 +448,7 @@ class TestBalAnalysis(StmntBuild, unittest.TestCase):
         self.assertAlmostEqual(exp_avg, avg, places=2)
 
     def test_bal_err(self):
-        """Tests the case when there is no Category column"""
+        """Tests the case when there is no Balance column"""
         check = self.stmnt2.bal_analysis()
         self.assertFalse(check[0])
         self.assertIn("Balance data not available", check[1])
