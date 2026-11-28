@@ -77,7 +77,7 @@ if __name__ == "__main__":
         else:  # Error creating dataframe
             io.err_handle(check[1], err_log)
             warn_msg = f"Will drop {file}."
-            force = io.warn_handle(warn_msg, err_log)
+            force = io.warn_handle(warn_msg)
             if force:  # Continue with next data set
                 df_pop_ls.append(file)  # Add to removal flagged list
                 print("Continuing with next data set.")
@@ -111,7 +111,7 @@ if __name__ == "__main__":
         else:  # Error cleaning dataframe
             io.err_handle(check[1], err_log)
             warn_msg = f"Will drop data."
-            force = io.warn_handle(warn_msg, err_log)
+            force = io.warn_handle(warn_msg)
             if force:  # Continue with next data set
                 df_pop_ls.append(file)  # Add to removal flagged list
                 print("Continuing with next data set.")
