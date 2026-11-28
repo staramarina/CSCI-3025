@@ -178,7 +178,7 @@ TODO
 | file_input_handle() | Asks user for file and check for it | (True, file_name) on success, otherwise (False, error message) |
 | log_setup(log_file="log.txt") | Sets up a shared logger to write messages to the given file | common log handler for all logs |
 | err_handle(err_msg, err_log='log.txt') | Handles various errors, prints console message and calls logger | None (console/log output) |
-| warn_handle(warn_msg, err_log='log.txt') | Handles various warnings, prints console message and calls logger | True to continue, otherwise False |
+| warn_handle(warn_msg) | Handles various warnings, prints console message and calls logger | True to continue, otherwise False |
 | print_analysis_menu() | Prints menu with analysis options | None (console output) |
 
 ### Parser Module (Mui_Parser.py)
@@ -187,7 +187,7 @@ TODO
 | build_dataframe(file_name) | Builds a pandas dataframe based on file contents | (True, dataframe) on success, otherwise (False, error message) |
 | infer_header(data) | Infers header columns if missing from the data set | (True, dataframe) on success, otherwise (False, error message) |
 | date_format(column: pd.Series) | Attempts to determine the position of date values in string | A 4-tuple with True/False values for (year first, day first, determination made, mixed date formats) |
-| date_clean(data, col, yr_first, day_first, determine, mixed, err_log) | Fixes formatting and converts to datetime within given pandas series | (True, dataframe) on success, otherwise (False, error message) |
+| date_clean(data, col, yr_first, day_first, determine, mixed) | Fixes formatting and converts to datetime within given pandas series | (True, dataframe) on success, otherwise (False, error message) |
 | clean_money(data, col) | Fixes formatting and converts to number within given pandas series | (True, dataframe) on success, otherwise (False, error message) |
 | merge_deb_crd(data) | "Merges the debit and credit columns into single Amount column | (True, dataframe) on success, otherwise (False, error message) |
 | clean_dataframe(data_raw, err_log) | Cleans column naming, missing data, and data type conversions | (True, dataframe) on success, otherwise (False, error message) |
@@ -413,7 +413,7 @@ python -m pytest
 | TestErrHandle(unittest.TestCase) |  | Class to test the err_handle(err_msg, err_log='log.txt') function |
 |  | test_err_log_print(self) | Tests that error logs are printed correctly |
 |  | test_err_log_console(self) | Tests the expected error message in the console |
-| TestWarnHandle(unittest.TestCase) |  | Class to test the warn_handle(warn_msg, err_log='log.txt') function |
+| TestWarnHandle(unittest.TestCase) |  | Class to test the warn_handle(warn_msg) function |
 |  | test_warn_log_print(self) | Tests that warning logs are printed correctly |
 |  | test_warn_log_console(self) | Tests the expected warning message in the console |
 |  | test_force_confirm(self) | Tests the case when user confirms to continue processing |
@@ -450,9 +450,7 @@ python -m pytest
 |  | test_year_mixed(self) | Tests the case when year is last and mixed YYYY and YY |
 |  | test_day_mixed(self) | Tests the case when there is a mix of date first and second |
 |  | test_ambiguous(self) | Tests the case when day position cannot be determined |
-| TestCleanDate(unittest.TestCase) |  | Class to test the date_clean(data, col, yr_first, day_first, determine, mixed, err_log) function |
-|  | setUp(self) | Setup method to create temporary testing directory |
-|  | tearDown(self) | Tear down method to delete temporary testing directory |
+| TestCleanDate(unittest.TestCase) |  | Class to test the date_clean(data, col, yr_first, day_first, determine, mixed) function |
 |  | test_yr1_det(self) | Tests the case when the year is clearly first part |
 |  | test_day1_det(self) | Tests the case when day is clearly first part |
 |  | test_mon1_det(self) | Tests the case when day is clearly second part |

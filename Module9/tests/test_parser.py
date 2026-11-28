@@ -292,16 +292,7 @@ class TestDateFormat(unittest.TestCase):
 
 class TestCleanDate(unittest.TestCase):
     """Class to test the date_clean(data, col, yr_first, day_first, determine, 
-    mixed, err_log) function"""
-
-    def setUp(self):
-        """Setup method to create temporary testing directory"""
-        self.__tmpdir = tempfile.TemporaryDirectory()
-        self.err_log = os.path.join(self.__tmpdir.name, "log.txt")
-
-    def tearDown(self):
-        """Tear down method to delete temporary testing directory"""
-        self.__tmpdir.cleanup()
+    mixed) function"""
 
     def test_yr1_det(self):
         """Tests the case when the year is clearly first part"""
@@ -314,7 +305,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = False
-        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -330,7 +321,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = True
         det = True
         mix = False
-        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -346,7 +337,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = False
-        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -362,7 +353,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = True
-        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -378,7 +369,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = True
-        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -394,7 +385,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = False
         mix = True
-        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertFalse(check[0])
         self.assertIn("have mixed format", check[1])
 
@@ -410,7 +401,7 @@ class TestCleanDate(unittest.TestCase):
         det = False
         mix = False
         with patch("builtins.input", return_value="Y"):
-            check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+            check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -427,7 +418,7 @@ class TestCleanDate(unittest.TestCase):
         det = False
         mix = False
         with patch("builtins.input", return_value="N"):
-            check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+            check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertFalse(check[0])
         self.assertIn("Process aborted", check[1])
 
@@ -441,7 +432,7 @@ class TestCleanDate(unittest.TestCase):
         day1 = False
         det = True
         mix = False
-        check = parse.date_clean(df, col, yr1, day1, det, mix, self.err_log)
+        check = parse.date_clean(df, col, yr1, day1, det, mix)
         self.assertFalse(check[0])
         self.assertIn("failed to convert", check[1])
 

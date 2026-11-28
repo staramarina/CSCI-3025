@@ -151,7 +151,7 @@ def log_setup(log_file="log.txt"):
 
 
 def err_handle(err_msg, err_log='log.txt'):
-    """Handles various errors, prints console message and calls print_log
+    """Handles various errors, prints console message and calls logger
     
     Args:
         err_msg: the error message to log
@@ -164,8 +164,8 @@ def err_handle(err_msg, err_log='log.txt'):
     print(f'ERROR: An error has occurred. See {err_log} for details.')
 
 
-def warn_handle(warn_msg, err_log='log.txt'):
-    """Handles various warnings, prints console message and calls print_log
+def warn_handle(warn_msg):
+    """Handles various warnings, prints console message and calls logger
     
     Args:
         warn_msg: the warning message to log

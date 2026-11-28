@@ -172,7 +172,7 @@ def date_format(column: pd.Series):
     return (yr_first, day_first, determine, mixed)
 
 
-def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
+def date_clean(data, col, yr_first, day_first, determine, mixed):
     """Fixes formatting and converts to datetime within given pandas series
     
     Args:
@@ -201,7 +201,7 @@ def date_clean(data, col, yr_first, day_first, determine, mixed, err_log):
             return (True, df)
     elif not mixed:  # Ambiguous dates, assume month first or abort
         warn_msg = f"Dates in '{col}' are ambiguous, will assume month first."
-        force = io.warn_handle(warn_msg, err_log)
+        force = io.warn_handle(warn_msg)
         if force:
             df[col] = pd.to_datetime(df[col], errors="coerce", 
                                      dayfirst=day_first, yearfirst=yr_first, 
@@ -306,7 +306,7 @@ def clean_dataframe(data_raw, err_log):
     col_ls = df.columns[df.columns.str.contains("date", case=False)]
     if 0 == len(col_ls):
         warn_msg = "Missing column headers detected, will infer."
-        force = io.warn_handle(warn_msg, err_log)
+        force = io.warn_handle(warn_msg)
         if force:
             head_check = infer_header(df)
             if head_check[0]:
@@ -332,8 +332,7 @@ def clean_dataframe(data_raw, err_log):
         clean_check = date_clean(
             df, col, 
             format_check[0], format_check[1], 
-            format_check[2], format_check[3],
-            err_log
+            format_check[2], format_check[3]
         )
         if not clean_check[0]:
             return (False, clean_check[1])
@@ -352,7 +351,7 @@ def clean_dataframe(data_raw, err_log):
         if num_check[0]:
             df = num_check[1]
         else:
-            force = io.warn_handle(num_check[1], err_log)
+            force = io.warn_handle(num_check[1])
             if force:
                 df["Balance"] = np.nan
             else:
@@ -364,7 +363,7 @@ def clean_dataframe(data_raw, err_log):
         if num_check[0]:
             df = num_check[1]
         else:
-            force = io.warn_handle(num_check[1], err_log)
+            force = io.warn_handle(num_check[1])
             if force:
                 df["Debit"] = np.nan
             else:
@@ -376,7 +375,7 @@ def clean_dataframe(data_raw, err_log):
         if num_check[0]:
             df = num_check[1]
         else:
-            force = io.warn_handle(num_check[1], err_log)
+            force = io.warn_handle(num_check[1])
             if force:
                 df["Credit"] = np.nan
             else:
@@ -388,7 +387,7 @@ def clean_dataframe(data_raw, err_log):
         if num_check[0]:
             df = num_check[1]
         else:
-            force = io.warn_handle(num_check[1], err_log)
+            force = io.warn_handle(num_check[1])
             if force:
                 df["Amount"] = np.nan
             else:

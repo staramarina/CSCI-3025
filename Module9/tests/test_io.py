@@ -317,13 +317,13 @@ class TestErrHandle(unittest.TestCase):
 
 
 class TestWarnHandle(unittest.TestCase):
-    """Class to test the warn_handle(warn_msg, err_log='log.txt') function"""
+    """Class to test the warn_handle(warn_msg) function"""
 
     def test_warn_log_print(self):
         """Tests that warning logs are printed correctly"""
         with patch("builtins.input", return_value="N"), \
                 self.assertLogs("M9_Log", level="WARNING") as capture:
-            io.warn_handle("Test warn message", "log.txt")
+            io.warn_handle("Test warn message")
         self.assertEqual(len(capture.records), 1)
         record = capture.records[0]
         self.assertEqual(record.levelname, "WARNING")
@@ -333,7 +333,7 @@ class TestWarnHandle(unittest.TestCase):
         """Tests the expected warning message in the console"""
         with patch("builtins.input", return_value="N") as mock_in, \
                 self.assertLogs("M9_Log", level="WARNING"):
-            io.warn_handle("Test warn message", "log.txt")
+            io.warn_handle("Test warn message")
         prompt = mock_in.call_args.args[0]
         self.assertIn("Test warn message", prompt)
         self.assertIn("like to proceed (Y/N)", prompt)
@@ -343,7 +343,7 @@ class TestWarnHandle(unittest.TestCase):
         warn_msg = "Test warning message"
         with patch("builtins.input", return_value="Y"), \
                 self.assertLogs("M9_Log", level="WARNING"):
-            check = io.warn_handle(warn_msg, "log.txt")
+            check = io.warn_handle(warn_msg)
         self.assertTrue(check)
 
     def test_force_deny(self):
@@ -351,7 +351,7 @@ class TestWarnHandle(unittest.TestCase):
         warn_msg = "Test warning message"
         with patch("builtins.input", return_value="N"), \
                 self.assertLogs("M9_Log", level="WARNING"):
-            check = io.warn_handle(warn_msg, "log.txt")
+            check = io.warn_handle(warn_msg)
         self.assertFalse(check)
 
     def test_force_low_confirm(self):
@@ -359,7 +359,7 @@ class TestWarnHandle(unittest.TestCase):
         warn_msg = "Test warning message"
         with patch("builtins.input", return_value="y"), \
                 self.assertLogs("M9_Log", level="WARNING"):
-            check = io.warn_handle(warn_msg, "log.txt")
+            check = io.warn_handle(warn_msg)
         self.assertTrue(check)
 
 
