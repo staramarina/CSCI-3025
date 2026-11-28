@@ -8,6 +8,7 @@
 import unittest
 import sys
 from pathlib import Path
+import numpy as np
 import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
@@ -105,6 +106,19 @@ class StmntBuild:
         df["Amount"] = pd.to_numeric(df["Amount"])
         return df
 
+    def build_nan(self):
+        """Builds and returns a dataframe with all columns, but np.nan data"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Amount": [np.nan, np.nan, np.nan, np.nan],
+            "Description": [np.nan, np.nan, np.nan, np.nan],
+            "Balance": [np.nan, np.nan, np.nan, np.nan],
+            "Category": [np.nan, np.nan, np.nan, np.nan]
+        }
+        df = pd.DataFrame(data)
+        df["Date"] = pd.to_datetime(df["Date"])
+        return df
+
     def build_default_stmnt(self):
         """Builds a default statement instance"""
         df = self.build_df4()
@@ -174,6 +188,9 @@ class TestSpendAnalysis(StmntBuild, unittest.TestCase):
 
     def setUp(self):
         """Setup method to create test statement class instances"""
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt4 = self.build_df4_stmnt()
 
     def test_spend_income(self):
@@ -203,6 +220,12 @@ class TestSpendAnalysis(StmntBuild, unittest.TestCase):
         self.assertAlmostEqual(exp_max, data[2], places=2)
         self.assertAlmostEqual(exp_avg, data[3], places=2)
 
+    def test_spend_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.spend_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
     def test_spend_orig(self):
         """Tests that the original dataframe is unmodified"""
         orig = self.stmnt4.df.copy(deep=True)
@@ -215,6 +238,9 @@ class TestSpendChart(StmntBuild, unittest.TestCase):
 
     def setUp(self):
         """Setup method to create test statement class instances"""
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt4 = self.build_df4_stmnt()
 
     def tearDown(self):
@@ -252,6 +278,12 @@ class TestSpendChart(StmntBuild, unittest.TestCase):
         self.assertIn("Average Daily Expense", legend_txt[2])
         self.assertIn("Minimum Daily Expense", legend_txt[3])
 
+    def test_spend_chart_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.spend_chart()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
 
 class TestCatAnalysis(StmntBuild, unittest.TestCase):
     """Class to test the cat_analysis() method"""
@@ -261,6 +293,9 @@ class TestCatAnalysis(StmntBuild, unittest.TestCase):
         name2 = "Error Testing"
         df2 = self.build_min()
         self.stmnt2 = self.build_any_stmnt(df2, name2)
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt6 = self.build_df6_stmnt()
 
     def test_cat_income(self):
@@ -294,6 +329,12 @@ class TestCatAnalysis(StmntBuild, unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Category data not available", check[1])
 
+    def test_cat_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.cat_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
     def test_cat_orig(self):
         """Tests that the original dataframe is unmodified"""
         orig = self.stmnt6.df.copy(deep=True)
@@ -309,6 +350,9 @@ class TestCatChart(StmntBuild, unittest.TestCase):
         name2 = "Error Testing"
         df2 = self.build_min()
         self.stmnt2 = self.build_any_stmnt(df2, name2)
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt6 = self.build_df6_stmnt()
 
     def tearDown(self):
@@ -339,6 +383,12 @@ class TestCatChart(StmntBuild, unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Category data not available", check[1])
 
+    def test_cat_chart_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.cat_chart()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
 
 class TestDescriptAnalysis(StmntBuild, unittest.TestCase):
     """Class to test the descript_analysis() method"""
@@ -348,6 +398,9 @@ class TestDescriptAnalysis(StmntBuild, unittest.TestCase):
         name2 = "Error Testing"
         df2 = self.build_min()
         self.stmnt2 = self.build_any_stmnt(df2, name2)
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt6 = self.build_df6_stmnt()
 
     def test_descript_income(self):
@@ -378,6 +431,12 @@ class TestDescriptAnalysis(StmntBuild, unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Description data not available", check[1])
 
+    def test_descript_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.descript_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
     def test_descript_orig(self):
         """Tests that the original dataframe is unmodifed"""
         orig = self.stmnt6.df.copy(deep=True)
@@ -393,6 +452,9 @@ class TestDescriptChart(StmntBuild, unittest.TestCase):
         name2 = "Error Testing"
         df2 = self.build_min()
         self.stmnt2 = self.build_any_stmnt(df2, name2)
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt6 = self.build_df6_stmnt()
 
     def tearDown(self):
@@ -423,6 +485,12 @@ class TestDescriptChart(StmntBuild, unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Description data not available", check[1])
 
+    def test_descript_chart_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.descript_chart()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
 
 class TestBalAnalysis(StmntBuild, unittest.TestCase):
     """Class to test the bal_analysis() method"""
@@ -432,6 +500,9 @@ class TestBalAnalysis(StmntBuild, unittest.TestCase):
         name2 = "Error Testing"
         df2 = self.build_min()
         self.stmnt2 = self.build_any_stmnt(df2, name2)
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt4 = self.build_df4_stmnt()
 
     def test_bal_max(self):
@@ -459,6 +530,12 @@ class TestBalAnalysis(StmntBuild, unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Balance data not available", check[1])
 
+    def test_bal_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.bal_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
     def test_bal_orig(self):
         """Tests that the original dataframe is unmodified"""
         orig = self.stmnt4.df.copy(deep=True)
@@ -474,6 +551,9 @@ class TestBalChart(StmntBuild, unittest.TestCase):
         name2 = "Error Testing"
         df2 = self.build_min()
         self.stmnt2 = self.build_any_stmnt(df2, name2)
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt4 = self.build_df4_stmnt()
 
     def tearDown(self):
@@ -515,6 +595,12 @@ class TestBalChart(StmntBuild, unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Balance data not available", check[1])
 
+    def test_bal_chart_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.bal_chart()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
 
 class TestTopAnalysis(StmntBuild, unittest.TestCase):
     """Class to test the top5_analysis() method"""
@@ -527,6 +613,9 @@ class TestTopAnalysis(StmntBuild, unittest.TestCase):
         df_big = self.build_lrg()
         self.stmnt2 = self.build_any_stmnt(df2, name2)
         self.stmnt_lrg = self.build_any_stmnt(df_big, name_big)
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt6 = self.build_df6_stmnt()
 
     def test_top_income(self):
@@ -600,6 +689,12 @@ class TestTopAnalysis(StmntBuild, unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Description data not available", check[1])
 
+    def test_top_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.top5_analysis()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
+
     def test_top_orig(self):
         """Tests that the original dataframe is unmodifed"""
         orig = self.stmnt6.df.copy(deep=True)
@@ -618,6 +713,9 @@ class TestTopChart(StmntBuild, unittest.TestCase):
         df_big = self.build_lrg()
         self.stmnt2 = self.build_any_stmnt(df2, name2)
         self.stmnt_lrg = self.build_any_stmnt(df_big, name_big)
+        name_nan = "np.nan test"
+        df = self.build_nan()
+        self.stmnt_nan = self.build_any_stmnt(df, name_nan)
         self.stmnt6 = self.build_df6_stmnt()
 
     def tearDown(self):
@@ -658,6 +756,12 @@ class TestTopChart(StmntBuild, unittest.TestCase):
         check = self.stmnt2.top5_chart()
         self.assertFalse(check[0])
         self.assertIn("Description data not available", check[1])
+
+    def test_top_chart_nan(self):
+        """Tests the case when all data is nan"""
+        check = self.stmnt_nan.top5_chart()
+        self.assertFalse(check[0])
+        self.assertIn("No data available for analysis", check[1])
 
 
 if __name__ == "__main__":

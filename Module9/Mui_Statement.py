@@ -186,7 +186,7 @@ class Statement:
                                ["Category", "Amount"]].copy()
             data = data.dropna()
             if 0 == len(data):
-                return (False, "Category data not available")
+                return (False, "No data available for analysis")
             else:
                 data = data.groupby("Category", as_index=False)["Amount"].sum()
                 data = data.sort_values(by="Amount", ascending=False)
@@ -250,7 +250,7 @@ class Statement:
                                ["Description", "Amount"]].copy()
             data = data.dropna()
             if 0 == len(data):
-                return (False, "Description data not available")
+                return (False, "No data available for analysis")
             else:
                 data = data.groupby("Description", 
                                     as_index=False)["Amount"].sum()
@@ -315,7 +315,7 @@ class Statement:
             data = self.df[["Date", "Balance"]].copy()
             data = data.dropna()
             if 0 == len(data):
-                return (False, "Balance data not available")
+                return (False, "No data available for analysis")
             else:
                 data = data.groupby("Date", as_index=False)["Balance"].max()
                 data = data.sort_values(by="Date")
@@ -384,7 +384,7 @@ class Statement:
                                ["Description", "Amount"]].copy()
             data = data.dropna()
             if 0 == len(data):
-                return (False, "Description data not available")
+                return (False, "No data available for analysis")
             else:
                 data = data.groupby("Description", 
                                     as_index=False)["Amount"].sum()

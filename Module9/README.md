@@ -348,7 +348,7 @@ TEST_FILES = {
 TODO add remaining manual test steps, include manual end-to-end test
 
 ### Automated Testing
-All test cases are compatible with both unittest and pytest. All 137 test cases pass with both pytest and unittest.  
+All test cases are compatible with both unittest and pytest. All 151 test cases pass with both pytest and unittest.  
 To run all tests with unittest, enter the following from within the Module9 directory.
 ```
 python -m unittest
@@ -508,6 +508,7 @@ python -m pytest
 |  | build_df6(self) | Builds and returns a pandas dataframe with 6 columns |
 |  | build_df4(self) | Builds and returns a pandas dataframe with 4 columns |
 |  | build_min(self) | Builds and returns a pandas dataframe with only Date and Amount |
+|  | build_nan(self) | Builds and returns a dataframe with all columns, but np.nan data |
 |  | build_default_stmnt(self) | Builds a default statement instance |
 |  | build_df6_stmnt(self) | Builds a statement instance using the 6 column dataframe |
 |  | build_df4_stmnt(self) | Builds a statement instance using the 4 column dataframe |
@@ -525,6 +526,7 @@ python -m pytest
 |  | test_spend_income(self) | Tests that income is excluded from expenses |
 |  | test_spend_pad(self) | Tests that missing dates are added |
 |  | test_spend_stats(self) | Tests than min, max, and avg values are calculated correctly |
+|  | test_spend_nan(self) | Tests the case when all data is nan |
 |  | test_spend_orig(self) | Tests that the original dataframe is unmodified |
 | TestSpendChart(StmntBuild, unittest.TestCase) |  | Class to test the spend_chart() method |
 |  | setUp(self) | Setup method to create test statement class instances |
@@ -532,12 +534,14 @@ python -m pytest
 |  | test_spend_fig(self) | Tests that both figure and axes is returned |
 |  | test_spend_label(self) | Tests that the chart title and axis label are correct |
 |  | test_spend_legend(self) | Tests that all legend items are present |
+|  | test_spend_chart_nan(self) | Tests the case when all data is nan |
 | TestCatAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the cat_analysis() method |
 |  | setUp(self) | Setup method to create test statement class instances |
 |  | test_cat_income(self) | Tests that income is excluded from expenses |
 |  | test_cat_agg(self) | Tests that amount values are aggregated |
 |  | test_cat_sort(self) | Tests that categories are sorted by amount |
 |  | test_cat_err(self) | Tests the case when there is no Category column |
+|  | test_cat_nan(self) | Tests the case when all data is nan |
 |  | test_cat_orig(self) | Tests that the original dataframe is unmodified |
 | TestCatChart(StmntBuild, unittest.TestCase) |  | Class to test the cat_chart() method |
 |  | setUp(self) | Setup method to create test statement class instances |
@@ -545,11 +549,13 @@ python -m pytest
 |  | test_cat_fig(self) | Tests that both figure and axes is returned |
 |  | test_cat_label(self) | Tests that the chart title and axis label are correct |
 |  | test_cat_chart_err(self) | Tests the case when Category is not a column |
+|  | test_cat_chart_nan(self) | Tests the case when all data is nan |
 | TestDescriptAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the descript_analysis() method |
 |  | setUp(self) | Setup method to create test statement class instances |
 |  | test_descript_income(self) | Tests that income is excluded from expenses |
 |  | test_descript_sort(self) | Tests that descriptions are sorted by amount |
 |  | test_descript_err(self) | Tests the case when there is no Description column |
+|  | test_descript_nan(self) | Tests the case when all data is nan |
 |  | test_descript_orig(self) | Tests that the original dataframe is unmodifed |
 | TestDescriptChart(StmntBuild, unittest.TestCase) |  | Class to test the descript_chart() method |
 |  | setUp(self) | Setup method to create test statement class instances |
@@ -557,11 +563,13 @@ python -m pytest
 |  | test_descript_fig(self) | Tests that both figure and axes is returned |
 |  | test_descript_label(self) | Tests that the chart title and axis label are correct |
 |  | test_descript_chart_err(self) | Tests the case when Description is not a column |
+|  | test_descript_chart_nan(self) | Tests the case when all data is nan |
 | TestBalAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the bal_analysis() method |
 |  | setUp(self) | Setup method to create test statement class instances |
 |  | test_bal_max(self) | Tests that balance values only reflect maximum |
 |  | test_bal_stats(self) | Tests than avg value is calculated correctly |
 |  | test_bal_err(self) | Tests the case when there is no Balance column |
+|  | test_bal_nan(self) | Tests the case when all data is nan |
 |  | test_bal_orig(self) | Tests that the original dataframe is unmodified |
 | TestBalChart(StmntBuild, unittest.TestCase) |  | Class to test the bal_chart() method |
 |  | setUp(self) | Setup method to create test statement class instances |
@@ -570,6 +578,7 @@ python -m pytest
 |  | test_bal_label(self) | Tests that the chart title and axis label are correct |
 |  | test_bal_legend(self) | Tests that all legend items are present |
 |  | test_bal_chart_err(self) | Tests the case when Balance is not a column |
+|  | test_bal_chart_nan(self) | Tests the case when all data is nan |
 | TestTopAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the top5_analysis() method |
 |  | setUp(self) | Setup method to create test statement class instances |
 |  | test_top_income(self) | Tests that income is excluded from expenses |
@@ -577,6 +586,7 @@ python -m pytest
 |  | test_top_less(self) | Tests the case when there are less than five descriptions |
 |  | test_top_more(self) | Tests the case when there are more than five descriptions |
 |  | test_top_err(self) | Tests the case when there is no Description column |
+|  | test_top_nan(self) | Tests the case when all data is nan |
 |  | test_top_orig(self) | Tests that the original dataframe is unmodifed |
 | TestTopChart(StmntBuild, unittest.TestCase) |  | Class to test the top5_chart() method |
 |  | setUp(self) | Setup method to create test statement class instances |
@@ -586,6 +596,7 @@ python -m pytest
 |  | test_top_less_chart(self) | Tests that less than 5 wedges are included |
 |  | test_top_more_chart(self) | Tests that 6 wedges are included |
 |  | test_top_chart_err(self) | Tests the case when Description is not a column |
+|  | test_top_chart_nan(self) | Tests the case when all data is nan |
 
 ## Author & Credits
 Author: Tiffany M. Mui  
