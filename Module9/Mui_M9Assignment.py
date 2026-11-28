@@ -137,6 +137,13 @@ if __name__ == "__main__":
         all_data += statement
     print("Data combined.")
 
+    # Check that /charts folder exists and is writable
+    check = io.can_write_file("charts/")
+    if not check[0]:
+        io.err_handle(check[1], err_log)
+        print("\nPlease check charts directory and restart.")
+        sys.exit(1)
+
     # Map chart functions and file names to menu options
     map_chart = {
         1: (all_data.spend_chart, "charts/spend_chart.png"),
