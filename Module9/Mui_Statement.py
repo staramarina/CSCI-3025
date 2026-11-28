@@ -86,30 +86,38 @@ class Statement:
             None
         
         Returns:
-            data: expense data only grouped by date
-            exp_min: minimum daily expense total
-            exp_max: maximum daily expense total
-            exp_avg: average daily expense total
+            A 2-tuple of the following format:
+                [0]: True if data available, otherwise false
+                [1]: A 4-tuple of the following format on success, 
+                        otherwise error message
+                    [0]: data - expense data only grouped by date
+                    [1]: exp_min - minimum daily expense total
+                    [2]: exp_max - maximum daily expense total
+                    [3]: exp_avg - average daily expense total
         """
         data = self.df.loc[self.df["Amount"] < 0,["Date", "Amount"]].copy()
         data = data.dropna()
-        data = data.groupby("Date", as_index=False)["Amount"].sum()
-        data = data.sort_values(by="Date")
-        data = data.reset_index(drop=True)
-        date_full = pd.date_range(
-            data["Date"].min(), 
-            data["Date"].max(), 
-            freq="D"
-        )
-        data = (data.set_index("Date")
-                    .reindex(date_full, fill_value=0)
-                    .rename_axis("Date")
-                    .reset_index())
-        data["Amount"] *= -1
-        exp_min = data["Amount"].min().round(2) + 0.0
-        exp_max = data["Amount"].max().round(2) + 0.0
-        exp_avg = data["Amount"].mean().round(2) + 0.0
-        return (data, exp_min, exp_max, exp_avg)
+        if 0 == len(data):
+            return (False, "No data available for analysis")
+        else:
+            data = data.groupby("Date", as_index=False)["Amount"].sum()
+            data = data.sort_values(by="Date")
+            data = data.reset_index(drop=True)
+            date_full = pd.date_range(
+                data["Date"].min(), 
+                data["Date"].max(), 
+                freq="D"
+            )
+            data = (data.set_index("Date")
+                        .reindex(date_full, fill_value=0)
+                        .rename_axis("Date")
+                        .reset_index())
+            data["Amount"] *= -1
+            exp_min = data["Amount"].min().round(2) + 0.0
+            exp_max = data["Amount"].max().round(2) + 0.0
+            exp_avg = data["Amount"].mean().round(2) + 0.0
+            stats = (data, exp_min, exp_max, exp_avg)
+            return (True, stats)
 
     def spend_chart(self):
         """Generates the chart for overall spending per day
@@ -119,43 +127,48 @@ class Statement:
             None
         
         Returns:
-            chart: a 2-tuple with the following format
-                [0]: matplotlib figure
-                [1]: matplotlib axes
+            A 2-tuple with the following format
+                [0]: True if data is available, otherwise False
+                [1]: a 2-tuple of matplotlib (fig, ax) on success, 
+                     otherwise error message
         """
-        data, exp_min, exp_max, exp_avg = self.spend_analysis()
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.lineplot(
-            data=data,
-            x="Date",
-            y="Amount",
-            color="tab:blue",
-            dashes=False,
-            estimator=None,
-            label="Daily Expense Total",
-            ax=ax,
-        )
-        ax.axhline(
-            exp_max, ls="--", color="tab:red", 
-            label=f"Maximum Daily Expense: {exp_max:.2f}"
-        )
-        ax.axhline(
-            exp_avg, ls="--", color="tab:orange", 
-            label=f"Average Daily Expense: {exp_avg:.2f}"
-        )
-        ax.axhline(
-            exp_min, ls="--", color="tab:green", 
-            label=f"Minimum Daily Expense: {exp_min:.2f}"
-        )
-        ax.set_title("Aggregate Expenses per Day")
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Aggregate Amount")
-        ax.legend()
-        plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
-        fig.tight_layout()
-        chart = (fig, ax)
-        return chart
-
+        check = self.spend_analysis()
+        if check[0]:
+            data, exp_min, exp_max, exp_avg = check[1]
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.lineplot(
+                data=data,
+                x="Date",
+                y="Amount",
+                color="tab:blue",
+                dashes=False,
+                estimator=None,
+                label="Daily Expense Total",
+                ax=ax,
+            )
+            ax.axhline(
+                exp_max, ls="--", color="tab:red", 
+                label=f"Maximum Daily Expense: {exp_max:.2f}"
+            )
+            ax.axhline(
+                exp_avg, ls="--", color="tab:orange", 
+                label=f"Average Daily Expense: {exp_avg:.2f}"
+            )
+            ax.axhline(
+                exp_min, ls="--", color="tab:green", 
+                label=f"Minimum Daily Expense: {exp_min:.2f}"
+            )
+            ax.set_title("Aggregate Expenses per Day")
+            ax.set_xlabel("Date")
+            ax.set_ylabel("Aggregate Amount")
+            ax.legend()
+            plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
+            fig.tight_layout()
+            chart = (fig, ax)
+            return (True, chart)
+        else:
+            return (False, check[1])
+            
     def cat_analysis(self):
         """Performs analysis on spending by category
         Note: "Amount" is required per parser, "Category" is optional
@@ -172,11 +185,14 @@ class Statement:
             data = self.df.loc[self.df["Amount"] < 0,
                                ["Category", "Amount"]].copy()
             data = data.dropna()
-            data = data.groupby("Category", as_index=False)["Amount"].sum()
-            data = data.sort_values(by="Amount", ascending=False)
-            data = data.reset_index(drop=True)
-            data["Amount"] *= -1
-            return (True, data)
+            if 0 == len(data):
+                return (False, "Category data not available")
+            else:
+                data = data.groupby("Category", as_index=False)["Amount"].sum()
+                data = data.sort_values(by="Amount", ascending=False)
+                data = data.reset_index(drop=True)
+                data["Amount"] *= -1
+                return (True, data)
         else:
             return (False, "Category data not available")
 
@@ -233,11 +249,15 @@ class Statement:
             data = self.df.loc[self.df["Amount"] < 0,
                                ["Description", "Amount"]].copy()
             data = data.dropna()
-            data = data.groupby("Description", as_index=False)["Amount"].sum()
-            data = data.sort_values(by="Amount", ascending=False)
-            data = data.reset_index(drop=True)
-            data["Amount"] *= -1
-            return (True, data)
+            if 0 == len(data):
+                return (False, "Description data not available")
+            else:
+                data = data.groupby("Description", 
+                                    as_index=False)["Amount"].sum()
+                data = data.sort_values(by="Amount", ascending=False)
+                data = data.reset_index(drop=True)
+                data["Amount"] *= -1
+                return (True, data)
         else:
             return (False, "Description data not available")
 
@@ -294,12 +314,15 @@ class Statement:
         if "Balance" in self.df.columns:
             data = self.df[["Date", "Balance"]].copy()
             data = data.dropna()
-            data = data.groupby("Date", as_index=False)["Balance"].max()
-            data = data.sort_values(by="Date")
-            data = data.reset_index(drop=True)
-            bal_avg = data["Balance"].mean().round(2) + 0.0
-            stats = (data, bal_avg)
-            return (True, stats)
+            if 0 == len(data):
+                return (False, "Balance data not available")
+            else:
+                data = data.groupby("Date", as_index=False)["Balance"].max()
+                data = data.sort_values(by="Date")
+                data = data.reset_index(drop=True)
+                bal_avg = data["Balance"].mean().round(2) + 0.0
+                stats = (data, bal_avg)
+                return (True, stats)
         else:
             return (False, "Balance data not available")
 
@@ -360,17 +383,21 @@ class Statement:
             data = self.df.loc[self.df["Amount"] < 0,
                                ["Description", "Amount"]].copy()
             data = data.dropna()
-            data = data.groupby("Description", as_index=False)["Amount"].sum()
-            data["Amount"] *= -1
-            data = data.sort_values(by="Amount", ascending=False)
-            data = data.reset_index(drop=True)
-            top = data.head(5).copy()
-            other = data["Amount"].iloc[5:].sum()
-            if 0 < other:
-                top = pd.concat([top, pd.DataFrame(
-                    {"Description": ["Other"], "Amount": [other]})], 
-                    ignore_index=True)
-            return (True, top)
+            if 0 == len(data):
+                return (False, "Description data not available")
+            else:
+                data = data.groupby("Description", 
+                                    as_index=False)["Amount"].sum()
+                data["Amount"] *= -1
+                data = data.sort_values(by="Amount", ascending=False)
+                data = data.reset_index(drop=True)
+                top = data.head(5).copy()
+                other = data["Amount"].iloc[5:].sum()
+                if 0 < other:
+                    top = pd.concat([top, pd.DataFrame(
+                        {"Description": ["Other"], "Amount": [other]})], 
+                        ignore_index=True)
+                return (True, top)
         else:
             return (False, "Description data not available")
 

@@ -178,14 +178,15 @@ class TestSpendAnalysis(StmntBuild, unittest.TestCase):
 
     def test_spend_income(self):
         """Tests that income is excluded from expenses"""
-        data = self.stmnt4.spend_analysis()
-        df = data[0]
+        check = self.stmnt4.spend_analysis()
+        df = check[1][0]
+        self.assertTrue(check[0])
         self.assertTrue((df["Amount"] >= 0).all())
 
     def test_spend_pad(self):
         """Tests that missing dates are added"""
-        data = self.stmnt4.spend_analysis()
-        df = data[0]
+        check = self.stmnt4.spend_analysis()
+        df = check[1][0]
         day = df[df["Date"] == pd.Timestamp("2026-11-17")]
         self.assertEqual(3, len(df))
         self.assertEqual(1, len(day))
@@ -193,7 +194,8 @@ class TestSpendAnalysis(StmntBuild, unittest.TestCase):
 
     def test_spend_stats(self):
         """Tests than min, max, and avg values are calculated correctly"""
-        data = self.stmnt4.spend_analysis()
+        check = self.stmnt4.spend_analysis()
+        data = check[1]
         exp_min = 0.0
         exp_max = 7.66 + 28.79
         exp_avg = (21.13 + 7.66 + 28.79) / 3
@@ -221,7 +223,9 @@ class TestSpendChart(StmntBuild, unittest.TestCase):
 
     def test_spend_fig(self):
         """Tests that both figure and axes is returned"""
-        fig, ax = self.stmnt4.spend_chart()
+        check = self.stmnt4.spend_chart()
+        fig, ax = check[1]
+        self.assertTrue(check[0])
         self.assertIsNotNone(fig)
         self.assertIsNotNone(ax)
         self.assertIsInstance(fig, plt.Figure)
@@ -229,14 +233,16 @@ class TestSpendChart(StmntBuild, unittest.TestCase):
 
     def test_spend_label(self):
         """Tests that the chart title and axis label are correct"""
-        fig, ax = self.stmnt4.spend_chart()
+        check = self.stmnt4.spend_chart()
+        ax = check[1][1]
         self.assertIn("Aggregate Expenses per Day", ax.get_title())
         self.assertIn("Date", ax.get_xlabel())
         self.assertIn("Aggregate Amount", ax.get_ylabel())
 
     def test_spend_legend(self):
         """Tests that all legend items are present"""
-        fig, ax = self.stmnt4.spend_chart()
+        check = self.stmnt4.spend_chart()
+        ax = check[1][1]
         legend_txt = []
         for text in ax.get_legend().get_texts():
             legend_txt.append(text.get_text())
