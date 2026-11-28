@@ -104,7 +104,7 @@ def chart_save(chart, file_name, dpi=150):  # Duplicated from Module8
     """
     try:
         fig, ax = chart
-    except TypeError, ValueError:
+    except (TypeError, ValueError):
         return (False, "Chart was not a (figure, axes) tuple.")
     try:
         fig.savefig(file_name, dpi=dpi, bbox_inches="tight")
