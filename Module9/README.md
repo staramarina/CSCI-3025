@@ -2,7 +2,7 @@
 
 An expense tracker that accepts multiple CSV exports from a variety of banks.  
 
-Estimated Minimum: ![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)    
+Minimum: ![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)    
 Development Environment: Python 3.14.4
 
 ## Table of Contents
@@ -52,7 +52,7 @@ Ground work for the following features is included, but not fully implemented:
 ## Installation
 
 ### Prerequisites
-- Python 3.8 or higher (estimated)
+- Python 3.8 or higher
 - External Packages
     - pandas - handles data formatting and analysis
     - numpy - handles additional data formatting
@@ -204,16 +204,16 @@ Below are example charts that were generated using anonomized export data. The d
 
 ### External Packages
 - numpy for data handling
-    - Estimated Minimum: 1.20.3 (minimum required by pandas 2.0)
+    - Minimum: 1.21.6 (for numpy.typing.NDArray)
     - Development Environment: 2.5.5
 - pandas for handling large data formatting and analysis
-    - Estimated Minimum: 2.0 (due to to_datetime use with format="mixed")
+    - Minimum: 2.0.3 (for format="mixed" use in to_datetime)
     - Development Environment: 3.1.1
 - seaborn for creating graphs
-    - Estimated Minimum: 0.12 (due to use of errorbar parameter in barplot)
+    - Minimum: 0.12.2 (for pandas 2.0 compatibility and errorbar attribute on barplot)
     - Development Environment: 0.13.2
 - matplotlib for handling graph input
-    - Estimated Minimum: 3.1 (minimum requirement for seaborn 0.12)
+    - Minimum: 3.5.3 (for pandas 2.0 compatibility)
     - Development Environment: 3.11.2
 
 ### Ancillary Module (Mui_Ancillary.py)
@@ -645,6 +645,32 @@ python -m pytest
 |  | test_top_more_chart(self) | Tests that 6 wedges are included |
 |  | test_top_chart_err(self) | Tests the case when Description is not a column |
 |  | test_top_chart_nan(self) | Tests the case when all data is nan |
+
+### Minimum Version Testing
+Estimated minimum versions were based on package documentation and used as the start point for verification. The following steps were conducted to setup a virtual environment and run the tests. Installed package versions were modified based on the results of the test (either lowering or raising package version depending on results). All unittest cases pass with the statement minimum versions.
+1. Remove the current virtual environment in VS Code.
+2. Remove Module9 as Python project.
+3. Install Python 3.8 using the following commands from within the Module9 directory (note curl may need to be installed).
+```
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.local/bin/env
+uv venv --python 3.8 .venv-min
+source .venv-min/bin/activate
+python --version
+```
+4. Install packages using the following commands.
+```
+uv pip install "pandas==2.0.*" "numpy==1.21.*" "seaborn=0.12.*" "matplotlib=3.5.*"
+```
+5. Compile all project files with the following command.
+```
+python -m compileall Mui_Parser.py Mui_Statement.py Mui_IO.py Mui_Ancillary.py Mui_M9Assignment.py
+```
+6. Run unittest
+```
+python -m unittest discover -s . -p "test_*.py"
+```
+7. Verify results of unittest
 
 ## Author & Credits
 Author: Tiffany M. Mui  
