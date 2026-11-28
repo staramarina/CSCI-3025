@@ -283,6 +283,7 @@ def merge_deb_crd(data):
         return (False, "Failed to merge columns.")
     else:
         df["Amount"] = amount
+        df["Amount"] = df["Amount"].astype("float64")
         df = df.drop(columns=["Debit", "Credit"])
         return (True, df)
 
