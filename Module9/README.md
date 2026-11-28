@@ -197,6 +197,7 @@ Below are example charts that were generated using anonymized export data. The d
 ## Modules
 
 ### Built-in Packages
+- os for file pathing
 - sys for graceful program exits
 - copy to make deep copies without affecting original instances
 - datetime for representing dates
