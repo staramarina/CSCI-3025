@@ -36,7 +36,8 @@ The personal expense tracker:
 Ground work for the following features is included, but not fully implemented:
 - Mixed date formatting flagging - the case of indeterminate day, month, or year first is caught and the user is prompted with a warning. Other mixed date formatting is caught with format="mixed" to avoid warnings from pandas when supporting unexpected date formats. 
 - All files provided are assumed to be analyzed as a single data set, however, this can be changed to support multiple separate or combined data sets with only changes within the main program, since analysis is conducted per class instance. 
-- Informational messages are not logged to keep log size relatively small. 
+- Informational messages are not logged to keep log size relatively small since the log file is persistant after the program has exited. 
+- For portability, charts are not displayed in another window, instead they are saved to a file and can be opened separately.
 
 ## Features
 - Robust error and warning handling with timestamped logging of both.
@@ -647,7 +648,7 @@ python -m pytest
 |  | test_top_chart_nan(self) | Tests the case when all data is nan |
 
 ### Minimum Version Testing
-Estimated minimum versions were based on package documentation and used as the start point for verification. The following steps were conducted to setup a virtual environment and run the tests. Installed package versions were modified based on the results of the test (either lowering or raising package version depending on results). All unittest cases pass with the statement minimum versions.
+Estimated minimum versions were based on package documentation and used as the start point for verification. The following steps were conducted to setup a virtual environment and run the tests. Installed package versions were modified based on the results of the test (either lowering or raising package version depending on results). All unittest cases pass with the statement minimum versions. The main program (Mui_M9Assignment.py) was manually run in this environment with a subset of example files from the data folder to confirm that it performs as intended.
 1. Remove the current virtual environment in VS Code.
 2. Remove Module9 as Python project.
 3. Install Python 3.8 using the following commands from within the Module9 directory (note curl may need to be installed).

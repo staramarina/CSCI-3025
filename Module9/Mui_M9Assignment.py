@@ -12,6 +12,8 @@
 import os
 import sys
 from copy import deepcopy
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import Mui_Ancillary as aux
 import Mui_IO as io
