@@ -47,7 +47,7 @@ Ground work for the following features is included, but not fully implemented:
   	- Spending by category (requires category data).
   	- Spending by description (requires description data) -- Note: most banks put the source of the expense in the description column, this is not true of all banks.
   	- Maximum balance by day over the full data period (requires balance data).
-  	- Top 5 expenses (requires description data) -- Note: if less than 5 expenses are the in the data, the chart can still be generated, it will simply have less slides.
+  	- Top 5 expenses (requires description data) -- Note: if less than 5 expenses are the in the data, the chart can still be generated, it will simply have less slices.
 
 ## Installation
 
@@ -159,7 +159,7 @@ TODO
 - matplotlib for handling graph input
     - Estimated Minimum: 3.7
     - Development Environment: 3.11.2
-- numy for handling data formatting
+- numpy for handling data formatting
     - Estimated Minimum: 1.20.3
     - Development Environment: 2.5.5
 
@@ -237,7 +237,7 @@ The expense tracker has robust data validation and parsing rules as described in
     - Header row at row 0
     - Missing header row
     - Leading rows above the header that contain less than 3 commas (user must remove leading rows if they have 3 or more commas)
-    - Assumes that there is a minimum of 4 data columns (user must add addition columns if less than 4, though they can be completely blank)
+    - Assumes that there is a minimum of 4 data columns (user must add additional columns if less than 4, though they can be completely blank)
 - Files that do not exist, exist but are empty, have malformed data, or result in other value errors will generate a notification to the terminal and log the full details of the error. 
 
 #### Data Parsing
