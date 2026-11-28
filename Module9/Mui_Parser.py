@@ -2,7 +2,7 @@
 # Module 9 Assignment - Data Parser Module
 # CSCI-3025: Python Programming
 # Purpose: Normalizing and transforming CSVs to pandas dataframes
-# Dependencies: re, numpy pandas, Mui_IO
+# Dependencies: re, numpy, pandas, Mui_IO
 
 
 import re
