@@ -7,7 +7,7 @@
 
 def int_check(num_str):  # Duplicated from Module6
     """Determines whether a string can be converted to an integer
-    
+
     Args:
         num_str: an integer as a string
 
@@ -20,4 +20,4 @@ def int_check(num_str):  # Duplicated from Module6
         num_int = int(num_str)
         return (True, num_int)
     except (ValueError, TypeError) as err:
-        return (False, f'Invalid input: {err}')
+        return (False, f"Invalid input: {err}")

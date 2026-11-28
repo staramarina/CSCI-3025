@@ -8,42 +8,41 @@
 import logging
 import pandas as pd
 
-
 _logger = logging.getLogger("M9_Log")
 
 
 def file_exists(file_name):  # Duplicated from Module5
     """Checks if a file can be opened and read
-    
+
     Args:
         file_name: name of the file to check, can be absolute or relative path
-    
+
     Returns:
         2-tuple with the following characteristics
         [0]: True if file was successfully opened, otherwise False
         [1]: f-string that provides more information beyond True/False
     """
     try:
-        f = open(file_name, 'r')
-    except FileNotFoundError: 
-        return (False, f'{file_name} does not exist.')
+        f = open(file_name, "r")
+    except FileNotFoundError:
+        return (False, f"{file_name} does not exist.")
     except PermissionError:
-        return (False, f'You do not have permission to read {file_name}.')
+        return (False, f"You do not have permission to read {file_name}.")
     except IsADirectoryError:
-        return (False, f'{file_name} is not a file.')
+        return (False, f"{file_name} is not a file.")
     except OSError as err:
-        return (False, f'Failed to read file with error: {err}.')
+        return (False, f"Failed to read file with error: {err}.")
     else:
         f.close()
-        return (True, f'{file_name} exists.')
+        return (True, f"{file_name} exists.")
 
 
 def can_write_file(file_name):  # Heavy reuse from Module5
     """Checks that a directory exists and is writable
-    
+
     Args:
         file_name: name of the file to check, can be absolute or relative path
-    
+
     Returns:
         2-tuple with the following characteristics
         [0]: True if file was successfully opened, otherwise False
@@ -64,11 +63,11 @@ def can_write_file(file_name):  # Heavy reuse from Module5
 
 def dataframe_check(file_name, head_info=0):
     """Checks that data is successfully imported into a pandas dataframe
-    
+
     Args:
         file_name: file name where the data is stored
         head_info: header row location information
-    
+
     Returns:
         2-tuple with the following characteristics
             [0]: True if dataframe was generated, otherwise False
@@ -77,15 +76,15 @@ def dataframe_check(file_name, head_info=0):
     try:
         df = pd.read_csv(file_name, header=head_info, encoding="utf-8-sig")
     except FileNotFoundError:
-        return (False, f'{file_name} does not exist.')
+        return (False, f"{file_name} does not exist.")
     except pd.errors.EmptyDataError:
-        return (False, f'{file_name} has no parsable data.')
+        return (False, f"{file_name} has no parsable data.")
     except pd.errors.ParserError as err:
-        return (False, f'Encountered parsing error in {file_name}: {err}.')
+        return (False, f"Encountered parsing error in {file_name}: {err}.")
     except UnicodeDecodeError as err:
-        return (False, f'{file_name} is not valid UTF-8. {err}.')
+        return (False, f"{file_name} is not valid UTF-8. {err}.")
     except ValueError as err:
-        return (False, f'Encountered value error {file_name}: {err}.')
+        return (False, f"Encountered value error {file_name}: {err}.")
     else:
         return (True, df)
 
@@ -105,8 +104,8 @@ def chart_save(chart, file_name, dpi=150):  # Duplicated from Module8
     """
     try:
         fig, ax = chart
-    except (TypeError, ValueError):
-        return(False, "Chart was not a (figure, axes) tuple.")
+    except TypeError, ValueError:
+        return (False, "Chart was not a (figure, axes) tuple.")
     try:
         fig.savefig(file_name, dpi=dpi, bbox_inches="tight")
     except PermissionError:
@@ -119,10 +118,10 @@ def chart_save(chart, file_name, dpi=150):  # Duplicated from Module8
 
 def file_input_handle():
     """Asks user for file and check for it
-    
+
     Args:
         None
-    
+
     Returns:
         A 2-tuple with the following format:
             [0]: True if file can be read, otherwise False
@@ -138,10 +137,10 @@ def file_input_handle():
 
 def log_setup(log_file="log.txt"):
     """Sets up a shared logger to write messages to the given file
-    
+
     Args:
         log_file: the file path where the log is located
-    
+
     Returns:
         _logger: common log handler for all logs
     """
@@ -155,32 +154,32 @@ def log_setup(log_file="log.txt"):
     return _logger
 
 
-def err_handle(err_msg, err_log='log.txt'):
+def err_handle(err_msg, err_log="log.txt"):
     """Handles various errors, prints console message and calls logger
-    
+
     Args:
         err_msg: the error message to log
-    
+
     Returns:
         None (console/log output)
     """
     _logger.error(err_msg)
-    print(f'ERROR: An error has occurred. See {err_log} for details.')
+    print(f"ERROR: An error has occurred. See {err_log} for details.")
 
 
 def warn_handle(warn_msg):
     """Handles various warnings, prints console message and calls logger
-    
+
     Args:
         warn_msg: the warning message to log
         err_log: the file path where the log is located
-    
+
     Returns:
         True to continue, otherwise False
     """
     _logger.warning(warn_msg)
-    std_warn = f'WARNING: {warn_msg} Would you like to proceed (Y/N): '
-    force = input(f'{std_warn}')
+    std_warn = f"WARNING: {warn_msg} Would you like to proceed (Y/N): "
+    force = input(f"{std_warn}")
     if force in ["Y", "y"]:
         return True
     else:
@@ -189,10 +188,10 @@ def warn_handle(warn_msg):
 
 def print_analysis_menu():
     """Prints menu with analysis options"""
-    print('Please select one of the following options:')
-    print('1 -- Overall Spending per Day')
-    print('2 -- Spending by Category')
-    print('3 -- Spending by Description')
-    print('4 -- Overall Balance Changes per Day')
-    print('5 -- Top 5 Expenses')
-    print('x -- Quit')
+    print("Please select one of the following options:")
+    print("1 -- Overall Spending per Day")
+    print("2 -- Spending by Category")
+    print("3 -- Spending by Description")
+    print("4 -- Overall Balance Changes per Day")
+    print("5 -- Top 5 Expenses")
+    print("x -- Quit")

@@ -13,13 +13,13 @@ import os
 import sys
 from copy import deepcopy
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import Mui_Ancillary as aux
 import Mui_IO as io
 import Mui_Parser as parse
 import Mui_Statement as stmnt
-
 
 if __name__ == "__main__":
     # Setup
@@ -132,14 +132,14 @@ if __name__ == "__main__":
         2: (all_data.cat_chart, "charts/cat_chart.png"),
         3: (all_data.descript_chart, "charts/descript_chart.png"),
         4: (all_data.bal_chart, "charts/bal_chart.png"),
-        5: (all_data.top5_chart, "charts/top5_chart.png")
+        5: (all_data.top5_chart, "charts/top5_chart.png"),
     }
 
     # Analysis
     print("\n")
     io.print_analysis_menu()
     usr_in = input()
-    while 'x' != usr_in:
+    while "x" != usr_in:
         select = aux.int_check(usr_in)
         if (select[0]) and (select[1] in map_chart):
             make_chart, file_name = map_chart[select[1]]
@@ -155,8 +155,8 @@ if __name__ == "__main__":
                 print(result[1])
                 print("Returning to analysis menu.")
         else:
-            print('That doesn\'t seem to be an option.')
-        print('')
+            print("That doesn't seem to be an option.")
+        print("")
         io.print_analysis_menu()
         usr_in = input()
 
