@@ -209,8 +209,8 @@ The statement module holds the statement class with the following attributes and
 | (@df.setter) df(self, data) | Sets the dataframe after validation | validated pandas dataframe |
 | __str__(self) | Provides file name and data for a statement as a string | name and data as a string |
 | __add__(self, other) | Adds two statement instances together and returns a new combined statement instance | A new combined statement instance |
-| spend_analysis(self) | Performs analysis on overall spending per day | A 4-tuple as (dataframe with expense data grouped by date, minimum value, maximum value, daily average) |
-| spend_chart(self) | Generates the chart for overall spending per day | A 2-tuple as (matplotlib figure, matplotlib axes) |
+| spend_analysis(self) | Performs analysis on overall spending per day | A 2-tuple as (True, (dataframe with expense data grouped by date, minimum value, maximum value, daily average)) on success, otherwise (False, error message) |
+| spend_chart(self) | Generates the chart for overall spending per day | (True, (matplotlib figure, matplotlib axes)) if data is available, otherwise (False, error message) |
 | cat_analysis(self) | Performs analysis on spending by category | (True, dataframe) if Category column exists, otherwise (False, error message) |
 | cat_chart(self) | Generates the chart for spending by category | (True, (matplotlib figure, matplotlib axes)) if Category column exists, otherwise (False, error message) |
 | descript_analysis(self) | Performs analysis on spending by description | (True, dataframe) if Description column exists, otherwise (False, error message) |
