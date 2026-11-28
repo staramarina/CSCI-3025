@@ -143,7 +143,17 @@ Thank you for using the expense tracker!
 ```
 
 ### Example Chart Generation
-TODO
+Below are example charts that were generated using anonomized export data. The data period covered 18 months of transactions.
+
+![Example Overall Spending per Day chart](charts/spend_chart.png)
+
+![Example Spending by Category chart](charts/cat_chart.png)
+
+![Example Spending by Description chart](charts/descript_chart.png)
+
+![Example Overall Balance Changes per Day chart](charts/bal_chart.png)
+
+![Example Top 5 Expenses chart](charts/top5_chart.png)
 
 ## Project Structure
 ```
