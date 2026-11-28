@@ -280,9 +280,8 @@ The parser also handles the following.
     - If converting money columns to float data-type fails, the column can be skipped if operator selects "Y"/"y", otherwise exit.
     - If a file could not be converted to a pandas data frame, the operator is given the option to skip that file with "Y"/"y", otherwise exit.
     - If data parsing/cleaning fails on a single pandas data frame, the operator can continue with the next with "Y"/"y", otherwise exit.
-- The following are errors that cannot be overridden. The program will gracefully exit. 
-    - TODO
 - Exceptions to the behavior above are as follows.
+  	- An error is generated and displayed to the user when no files were received prior to the user selecting that they have no additional files to input. The program then gracefully exits.
     - An error is generated when inputting a file fails, so a generic error is given. However, the operator can try the file input again.
     - If all files could not be converted to a pandas data frame, the operator is notified and the program exits. Additional logs are not generated, as each instance was already logged. 
     - If all data frames fail data parsing/cleaning, the operator is notified and the program exists. Additional logs are not generated, as each instance was already logged. 
