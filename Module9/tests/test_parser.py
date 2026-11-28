@@ -45,6 +45,8 @@ class TestBuildDataframe(unittest.TestCase):
         with open(os.path.join(base, "bom_no_head.csv"), "w", 
                   encoding="utf-8-sig") as f:
             f.write("11/16/2026,INSOMNIA COOKIES,-7.66,1794.98\n")
+        with open(os.path.join(base, "not_enough.csv"), "w") as f:
+            f.write("11/16/2026,-7.66\n")
 
     @classmethod
     def tearDownClass(cls):
@@ -93,6 +95,13 @@ class TestBuildDataframe(unittest.TestCase):
         check = parse.build_dataframe(file_name)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
+
+    def test_few_columns(self):
+        """Tests the case of less than 3 columns"""
+        file_name = os.path.join(self.base, "not_enough.csv")
+        check = parse.build_dataframe(file_name)
+        self.assertFalse(check[0])
+        self.assertIn("parsing error", check[1])
 
 
 class TestInferHeader(unittest.TestCase):
