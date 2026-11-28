@@ -38,7 +38,7 @@ def file_exists(file_name):  # Duplicated from Module5
         return (True, f'{file_name} exists.')
 
 
-def can_write_file(file_name):  # Duplicated from Module5 TODO currently unused, remove this and associated tests if still unused later
+def can_write_file(file_name):  # Duplicated from Module5
     """Checks if a file can be appended
     
     Args:
@@ -160,7 +160,6 @@ def err_handle(err_msg, err_log='log.txt'):
     
     Args:
         err_msg: the error message to log
-        err_log: the file path where the log is located
     
     Returns:
         None (console/log output)
