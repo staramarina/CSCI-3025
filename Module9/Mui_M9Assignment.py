@@ -97,7 +97,7 @@ if __name__ == "__main__":
             df_clean[file] = check[1]
         else:  # Error cleaning dataframe
             io.err_handle(check[1], err_log)
-            warn_msg = f"Will drop data."
+            warn_msg = f"Will drop {file} data."
             force = io.warn_handle(warn_msg)
             if force:  # Continue with next data set
                 print("Continuing with next data set.")
@@ -117,7 +117,7 @@ if __name__ == "__main__":
             statement = stmnt.Statement(df, file)
         except TypeError as err:  # error creating statement instance
             warn_msg = f"{err}. Will drop data."
-            force = io.warn_handle(err)
+            force = io.warn_handle(warn_msg)
             if force:  # Continue with next data set
                 print("Continuing with next data set.")
             else:  # Gracefully terminate the program
@@ -137,100 +137,36 @@ if __name__ == "__main__":
         all_data += statement
     print("Data combined.")
 
+    # Map chart functions and file names to menu options
+    map_chart = {
+        1: (all_data.spend_chart, "charts/spend_chart.png"),
+        2: (all_data.cat_chart, "charts/cat_chart.png"),
+        3: (all_data.descript_chart, "charts/descript_chart.png"),
+        4: (all_data.bal_chart, "charts/bal_chart.png"),
+        5: (all_data.top5_chart, "charts/top5_chart.png")
+    }
+
     # Analysis
     print("\n")
     io.print_analysis_menu()
     usr_in = input()
     while 'x' != usr_in:
         select = aux.int_check(usr_in)
-        match select[1]:
-            case 1:  # Overall Spending per Day
-                spend = all_data.spend_chart()
-                if spend[0]:
-                    check_spend = io.chart_save(spend[1], 
-                                                "charts/spend_chart.png")
-                    if check_spend[0]:
-                        print(check_spend[1])
-                        plt.close(check_spend[1][0])
-                    else:
-                        io.err_handle(check_spend[1], err_log)
+        if (select[0]) and (select[1] in map_chart):
+            make_chart, file_name = map_chart[select[1]]
+            result = make_chart()
+            if result[0]:
+                save = io.chart_save(result[1], file_name)
+                if save[0]:
+                    print(save[1])
                 else:
-                    force = io.warn_handle(spend[1])
-                    if force:
-                        print("Returning to analysis menu.")
-                    else:
-                        io.err_handle("Process aborted.", err_log)
-                        sys.exit(1)
-            case 2:  # Spending by Category
-                cat = all_data.cat_chart()
-                if cat[0]:
-                    check_cat = io.chart_save(cat[1], 
-                                                "charts/cat_chart.png")
-                    if check_cat[0]:
-                        print(check_cat[1])
-                        plt.close(check_cat[1][0])
-                    else:
-                        io.err_handle(check_cat[1], err_log)
-                else:
-                    force = io.warn_handle(cat[1])
-                    if force:
-                        print("Returning to analysis menu.")
-                    else:
-                        io.err_handle("Process aborted.", err_log)
-                        sys.exit(1)
-            case 3:  # Spending by Description
-                des = all_data.descript_chart()
-                if des[0]:
-                    check_des = io.chart_save(des[1], 
-                                                "charts/descript_chart.png")
-                    if check_des[0]:
-                        print(check_des[1])
-                        plt.close(check_des[1][0])
-                    else:
-                        io.err_handle(check_des[1], err_log)
-                else:
-                    force = io.warn_handle(des[1])
-                    if force:
-                        print("Returning to analysis menu.")
-                    else:
-                        io.err_handle("Process aborted.", err_log)
-                        sys.exit(1)
-            case 4:  # Overall Balance Changes per Day
-                bal = all_data.bal_chart()
-                if bal[0]:
-                    check_bal = io.chart_save(bal[1], 
-                                                "charts/bal_chart.png")
-                    if check_bal[0]:
-                        print(check_bal[1])
-                        plt.close(check_bal[1][0])
-                    else:
-                        io.err_handle(check_bal[1], err_log)
-                else:
-                    force = io.warn_handle(bal[1])
-                    if force:
-                        print("Returning to analysis menu.")
-                    else:
-                        io.err_handle("Process aborted.", err_log)
-                        sys.exit(1)
-            case 5:  # Top 5 Expenses
-                top = all_data.top5_chart()
-                if top[0]:
-                    check_top = io.chart_save(top[1], 
-                                                "charts/top5_chart.png")
-                    if check_top[0]:
-                        print(check_top[1])
-                        plt.close(check_top[1][0])
-                    else:
-                        io.err_handle(check_top[1], err_log)
-                else:
-                    force = io.warn_handle(top[1])
-                    if force:
-                        print("Returning to analysis menu.")
-                    else:
-                        io.err_handle("Process aborted.", err_log)
-                        sys.exit(1)
-            case _:
-                print('That doesn\'t seem to be an option.')
+                    io.err_handle(save[1], err_log)
+                plt.close(result[1][0])
+            else:
+                print(result[1])
+                print("Returning to analysis menu.")
+        else:
+            print('That doesn\'t seem to be an option.')
         print('')
         io.print_analysis_menu()
         usr_in = input()
