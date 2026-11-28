@@ -105,7 +105,7 @@ if __name__ == "__main__":
     print("\nParsing and cleaning data.")
     df_clean = {}
     for file, df in df_list.items():
-        check = parse.clean_dataframe(df, err_log)
+        check = parse.clean_dataframe(df)
         if check[0]:  # If dataframes successfully cleaned
             df_clean[file] = check[1]
         else:  # Error cleaning dataframe

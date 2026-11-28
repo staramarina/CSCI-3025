@@ -645,16 +645,16 @@ class TestMergeDebCrd(unittest.TestCase):
 
 
 class TestCleanDataframe(unittest.TestCase):
-    """Class to test the clean_dataframe(data_raw, err_log) function"""
+    """Class to test the clean_dataframe(data_raw) function"""
 
-    def setUp(self):
-        """Setup method to create temporary testing directory"""
-        self.__tmpdir = tempfile.TemporaryDirectory()
-        self.err_log = os.path.join(self.__tmpdir.name, "log.txt")
+    #def setUp(self):
+    #    """Setup method to create temporary testing directory"""
+    #    self.__tmpdir = tempfile.TemporaryDirectory()
+    #    self.err_log = os.path.join(self.__tmpdir.name, "log.txt")
 
-    def tearDown(self):
-        """Tear down method to delete temporary testing directory"""
-        self.__tmpdir.cleanup()
+    #def tearDown(self):
+    #    """Tear down method to delete temporary testing directory"""
+    #    self.__tmpdir.cleanup()
 
     def test_simple_clean_success(self):
         """Tests that case of Date, Amount, Description, Balance passes"""
@@ -665,7 +665,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
         }
         df = pd.DataFrame(data)
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertIn("Date", check[1].columns)
@@ -685,7 +685,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="Y"):
-            check = parse.clean_dataframe(df, self.err_log)
+            check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIn("Date", check[1].columns)
         self.assertIn("Amount", check[1].columns)
@@ -699,7 +699,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="N"):
-            check = parse.clean_dataframe(df, self.err_log)
+            check = parse.clean_dataframe(df)
         self.assertFalse(check[0])
         self.assertIn("Process aborted", check[1])
 
@@ -713,7 +713,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
         }
         df = pd.DataFrame(data)
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIn("Date", check[1].columns)
         self.assertIn("Post Date", check[1].columns)
@@ -733,7 +733,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
         }
         df = pd.DataFrame(data)
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIn("Date", check[1].columns)
         self.assertIn("Post Date", check[1].columns)
@@ -749,7 +749,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
         }
         df = pd.DataFrame(data)
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIn("Date", check[1].columns)
         self.assertNotIn("Post Date", check[1].columns)
@@ -764,7 +764,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="Y"):
-            check = parse.clean_dataframe(df, self.err_log)
+            check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
@@ -779,7 +779,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="N"):
-            check = parse.clean_dataframe(df, self.err_log)
+            check = parse.clean_dataframe(df)
         self.assertFalse(check[0])
         self.assertIn("Process aborted", check[1])
 
@@ -793,7 +793,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="Y"):
-            check = parse.clean_dataframe(df, self.err_log)
+            check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIn("Amount", check[1].columns)
         self.assertNotIn("Balance", check[1].columns)
@@ -808,7 +808,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="N"):
-            check = parse.clean_dataframe(df, self.err_log)
+            check = parse.clean_dataframe(df)
         self.assertFalse(check[0])
         self.assertIn("Process aborted", check[1])
 
@@ -822,7 +822,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         exp = [-21.13, -7.66, -28.79, 1500.00]
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIsInstance(check[1], pd.DataFrame)
         self.assertIn("Amount", check[1].columns)
@@ -840,7 +840,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
         }
         df = pd.DataFrame(data)
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertFalse(check[0])
         self.assertIn("Conflicting debit/credit information", check[1])
 
@@ -852,7 +852,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
         }
         df = pd.DataFrame(data)
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIn("Amount", check[1].columns)
         self.assertNotIn("Debit", check[1].columns)
@@ -866,7 +866,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         exp = [21.13, 7.66, -28.79, 1500.00]
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertTrue(check[0])
         self.assertIn("Amount", check[1].columns)
         self.assertNotIn("Credit", check[1].columns)
@@ -881,7 +881,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
         }
         df = pd.DataFrame(data)
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertFalse(check[0])
         self.assertIn("Could not determine column", check[1])
 
@@ -894,7 +894,7 @@ class TestCleanDataframe(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         with patch("builtins.input", return_value="Y"):
-            check = parse.clean_dataframe(df, self.err_log)
+            check = parse.clean_dataframe(df)
         self.assertFalse(check[0])
         self.assertIn("Could not verify date columns", check[1])
 
@@ -906,7 +906,7 @@ class TestCleanDataframe(unittest.TestCase):
             "Balance": ["1773.85", "1766.19", "1737.40", "3237.40"]
         }
         df = pd.DataFrame(data)
-        check = parse.clean_dataframe(df, self.err_log)
+        check = parse.clean_dataframe(df)
         self.assertFalse(check[0])
         self.assertIn("Could not determine column labeling", check[1])
 

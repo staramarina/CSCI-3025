@@ -287,12 +287,11 @@ def merge_deb_crd(data):
         return (True, df)
 
 
-def clean_dataframe(data_raw, err_log):
+def clean_dataframe(data_raw):
     """Cleans column naming, missing data, and data type conversions
     
     Args:
         data_raw: full raw data pulled from the source, leading rows trimmed
-        err_log: file location to log warnings and errors
     
     Returns:
         A 2-tuple of the following format:

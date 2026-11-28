@@ -190,7 +190,7 @@ TODO
 | date_clean(data, col, yr_first, day_first, determine, mixed) | Fixes formatting and converts to datetime within given pandas series | (True, dataframe) on success, otherwise (False, error message) |
 | clean_money(data, col) | Fixes formatting and converts to number within given pandas series | (True, dataframe) on success, otherwise (False, error message) |
 | merge_deb_crd(data) | "Merges the debit and credit columns into single Amount column | (True, dataframe) on success, otherwise (False, error message) |
-| clean_dataframe(data_raw, err_log) | Cleans column naming, missing data, and data type conversions | (True, dataframe) on success, otherwise (False, error message) |
+| clean_dataframe(data_raw) | Cleans column naming, missing data, and data type conversions | (True, dataframe) on success, otherwise (False, error message) |
 
 ### Statement Module (Mui_Statement.py)
 The statement module holds the statement class with the following attributes and methods.
@@ -477,7 +477,7 @@ python -m pytest
 |  | test_deb_crd_conflict(self) | Tests the case when there is data in both debit and credit columns |
 |  | test_deb_crd_null(self) | Tests the case when neither debit nor credit have data |
 |  | test_deb_crd_orig(self) | Tests that the original dataframe still has debit/credit columns |
-| TestCleanDataframe(unittest.TestCase) |  | Class to test the clean_dataframe(data_raw, err_log) function |
+| TestCleanDataframe(unittest.TestCase) |  | Class to test the clean_dataframe(data_raw) function |
 |  | setUp(self) | Setup method to create temporary testing directory |
 |  | tearDown(self) | Tear down method to delete temporary testing directory |
 |  | test_simple_clean_success(self) | Tests that case of Date, Amount, Description, Balance passes |
