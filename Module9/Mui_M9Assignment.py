@@ -11,6 +11,7 @@
 
 import sys
 from copy import deepcopy
+import matplotlib.pyplot as plt
 import Mui_Ancillary as aux
 import Mui_IO as io
 import Mui_Parser as parse
@@ -67,9 +68,8 @@ if __name__ == "__main__":
     print("File(s) received.")
 
     # Build dataframes from CSV files
-    print("\nBuilding data frames.")
+    print("\nBuilding data frame(s).")
     df_list = {}
-    df_pop_ls = []
     for file in REAL_FILES:  # TODO replace with file_list later
         check = parse.build_dataframe(file)
         if check[0]:  # If dataframe successfully built
@@ -79,27 +79,14 @@ if __name__ == "__main__":
             warn_msg = f"Will drop {file}."
             force = io.warn_handle(warn_msg)
             if force:  # Continue with next data set
-                df_pop_ls.append(file)  # Add to removal flagged list
                 print("Continuing with next data set.")
             else:  # Gracefully terminate the program
                 io.err_handle("Process aborted.", err_log)
                 sys.exit(1)
-    for file in df_pop_ls:  # Removal of flagged files
-        df_list.pop(file)
-    df_pop_ls.clear()
     if 0 == len(df_list):
         print("No useable files. Please restart.")
         sys.exit(1)
     print("Data frame(s) created.")
-
-
-    # TODO Temporary data dump for testins
-    with open('test_dump.txt', "w") as f: 
-        f.write('------------------------ORIGINAL DATAFRAMES------------------------\n')
-        for df in df_list.values(): # pre-cleaning print
-            f.write(df.to_string(header=True, index=True)) # dumps data from feed endpoint
-            f.write('\n\n') # extra lines for readability
-
 
     # Parse/clean dataframes
     print("\nParsing and cleaning data.")
@@ -113,89 +100,140 @@ if __name__ == "__main__":
             warn_msg = f"Will drop data."
             force = io.warn_handle(warn_msg)
             if force:  # Continue with next data set
-                df_pop_ls.append(file)  # Add to removal flagged list
                 print("Continuing with next data set.")
             else:  # Gracefully terminate the program
                 io.err_handle("Process aborted.", err_log)
                 sys.exit(1)
-    for file in df_pop_ls:  # Removal of flagged files
-        df_list.pop(file)
-    df_pop_ls.clear()
     if 0 == len(df_clean):
         print("No useable data. Please restart.")
         sys.exit(1)
     print("Data successfully parsed and cleaned.")
 
-
-    # TODO Temporary data dump for testins
-    with open('test_dump.txt', "a") as f: 
-        f.write('------------------------CLEAN DATAFRAMES------------------------\n')
-        for df in df_clean.values(): # pre-classes print
-            f.write(df.to_string(header=True, index=True)) # dumps data
-            f.write('\n\n') # extra lines for readability
-
-
     # Create a list of statement class instances
+    print("\nProcessing data.")
     df_class = []
     for file, df in df_clean.items():
-        statement = stmnt.Statement(df, file)  # TODO add validation check, wrap in try/except
-        df_class.append(statement)
-
-
-    # TODO Temporary data dump for testins
-    with open('test_dump.txt', "a") as f: 
-        f.write('------------------------CLASSES------------------------\n')
-        for data in df_class:  # post-classes print
-            f.write(str(data))
-            f.write('\n\n') # extra lines for readability
-
+        try:
+            statement = stmnt.Statement(df, file)
+        except TypeError as err:  # error creating statement instance
+            warn_msg = f"{err}. Will drop data."
+            force = io.warn_handle(err)
+            if force:  # Continue with next data set
+                print("Continuing with next data set.")
+            else:  # Gracefully terminate the program
+                io.err_handle("Process aborted.", err_log)
+                sys.exit(1)
+        else:
+            df_class.append(statement)
+    if 0 == len(df_class):
+        print("No useable data. Please restart.")
+        sys.exit(1)
+    print("Data successfully processed.")
 
     # Add all class instances together into a single class instance
+    print("\nCombining data.")
     all_data = deepcopy(df_class[0])
     for statement in df_class[1:]:
         all_data += statement
-
-
-    # TODO Temporary data dump for testins
-    with open('test_dump.txt', "a") as f: 
-        f.write('------------------------COMBINED------------------------\n')
-        f.write(str(all_data))  #post combined print
-
+    print("Data combined.")
 
     # Analysis
-    # TODO print analysis menu -- call from io
-    # TODO check user input with int_check -- call from aux
-    # TODO call analysis method -- from stmnt
-
-    # Spend analysis
-    #spend = all_data.spend_chart()
-    #check_spend = io.chart_save(spend, "charts/spend_chart.png")
-
-    # Category analysis
-    #check_cat = all_data.cat_chart()
-    #if check_cat[0]:
-    #    chart_check = io.chart_save(check_cat[1], "charts/cat_chart.png")
-    #    plot.close(check_cat[1][0])
-
-    # Description analysis
-    #check_des = all_data.descript_chart()
-    #if check_des[0]:
-    #    chart_check = io.chart_save(check_des[1], "charts/descript_chart.png")
-
-    # Balance analysis
-    #check_bal = all_data.bal_chart()
-    #if check_bal[0]:
-    #    chart_check = io.chart_save(check_bal[1], "charts/bal_chart.png")
-
-    # Top 5 analysis
-    check_top = all_data.top5_chart()
-    if check_top[0]:
-        chart_check = io.chart_save(check_top[1], "charts/top5_chart.png")
-
-    # TODO print results
-    # TODO ask if user wants another analysis, repeat until N/n
+    print("\n")
+    io.print_analysis_menu()
+    usr_in = input()
+    while 'x' != usr_in:
+        select = aux.int_check(usr_in)
+        match select[1]:
+            case 1:  # Overall Spending per Day
+                spend = all_data.spend_chart()
+                if spend[0]:
+                    check_spend = io.chart_save(spend[1], 
+                                                "charts/spend_chart.png")
+                    if check_spend[0]:
+                        print(check_spend[1])
+                        plt.close(check_spend[1][0])
+                    else:
+                        io.err_handle(check_spend[1], err_log)
+                else:
+                    force = io.warn_handle(check_spend[1])
+                    if force:
+                        print("Returning to analysis menu.")
+                    else:
+                        io.err_handle("Process aborted.", err_log)
+                        sys.exit(1)
+            case 2:  # Spending by Category
+                cat = all_data.cat_chart()
+                if cat[0]:
+                    check_cat = io.chart_save(cat[1], 
+                                                "charts/cat_chart.png")
+                    if check_cat[0]:
+                        print(check_cat[1])
+                        plt.close(check_cat[1][0])
+                    else:
+                        io.err_handle(check_cat[1], err_log)
+                else:
+                    force = io.warn_handle(check_cat[1])
+                    if force:
+                        print("Returning to analysis menu.")
+                    else:
+                        io.err_handle("Process aborted.", err_log)
+                        sys.exit(1)
+            case 3:  # Spending by Description
+                des = all_data.descript_chart()
+                if des[0]:
+                    check_des = io.chart_save(des[1], 
+                                                "charts/descript_chart.png")
+                    if check_des[0]:
+                        print(check_des[1])
+                        plt.close(check_des[1][0])
+                    else:
+                        io.err_handle(check_des[1], err_log)
+                else:
+                    force = io.warn_handle(check_des[1])
+                    if force:
+                        print("Returning to analysis menu.")
+                    else:
+                        io.err_handle("Process aborted.", err_log)
+                        sys.exit(1)
+            case 4:  # Overall Balance Changes per Day
+                bal = all_data.bal_chart()
+                if bal[0]:
+                    check_bal = io.chart_save(bal[1], 
+                                                "charts/bal_chart.png")
+                    if check_bal[0]:
+                        print(check_bal[1])
+                        plt.close(check_bal[1][0])
+                    else:
+                        io.err_handle(check_bal[1], err_log)
+                else:
+                    force = io.warn_handle(check_bal[1])
+                    if force:
+                        print("Returning to analysis menu.")
+                    else:
+                        io.err_handle("Process aborted.", err_log)
+                        sys.exit(1)
+            case 5:  # Top 5 Expenses
+                top = all_data.top5_chart()
+                if top[0]:
+                    check_top = io.chart_save(top[1], 
+                                                "charts/top5_chart.png")
+                    if check_top[0]:
+                        print(check_top[1])
+                        plt.close(check_top[1][0])
+                    else:
+                        io.err_handle(check_top[1], err_log)
+                else:
+                    force = io.warn_handle(check_top[1])
+                    if force:
+                        print("Returning to analysis menu.")
+                    else:
+                        io.err_handle("Process aborted.", err_log)
+                        sys.exit(1)
+            case _:
+                print('That doesn\'t seem to be an option.')
+        print('')
+        io.print_analysis_menu()
+        usr_in = input()
 
     # Closing
-    # TODO program closing message(s)
-
-
+    print("\nThank you for using the expense tracker!\n")
