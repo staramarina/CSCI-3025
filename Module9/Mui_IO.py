@@ -159,6 +159,7 @@ def err_handle(err_msg, err_log="log.txt"):
 
     Args:
         err_msg: the error message to log
+        err_log: the file path where the log is located
 
     Returns:
         None (console/log output)
@@ -172,7 +173,6 @@ def warn_handle(warn_msg):
 
     Args:
         warn_msg: the warning message to log
-        err_log: the file path where the log is located
 
     Returns:
         True to continue, otherwise False
@@ -192,6 +192,6 @@ def print_analysis_menu():
     print("1 -- Overall Spending per Day")
     print("2 -- Spending by Category")
     print("3 -- Spending by Description")
-    print("4 -- Overall Balance Changes per Day")
+    print("4 -- Maximum Balance Changes per Day")
     print("5 -- Top 5 Expenses")
     print("x -- Quit")

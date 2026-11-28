@@ -85,7 +85,7 @@ class TestCanWriteFile(unittest.TestCase):
         self.assertTrue(check[0])
         self.assertIn("can be appended", check[1])
 
-    def test_directory(self):
+    def test_miss_directory(self):
         """Tests that path to non-existent directory returns (False, message)"""
         temp_path = str(self.tmp_dir)
         dir_path = str(temp_path) + "/Missing Directory/write_test.txt"
@@ -395,7 +395,7 @@ class TestPrinting(unittest.TestCase):
             "1 -- Overall Spending per Day",
             "2 -- Spending by Category",
             "3 -- Spending by Description",
-            "4 -- Overall Balance Changes per Day",
+            "4 -- Maximum Balance Changes per Day",
             "5 -- Top 5 Expenses",
             "x -- Quit",
         ]

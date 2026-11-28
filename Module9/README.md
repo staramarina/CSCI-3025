@@ -36,7 +36,7 @@ The personal expense tracker:
 Ground work for the following features is included, but not fully implemented:
 - Mixed date formatting flagging - the case of indeterminate day, month, or year first is caught and the user is prompted with a warning. Other mixed date formatting is caught with format="mixed" to avoid warnings from pandas when supporting unexpected date formats. 
 - All files provided are assumed to be analyzed as a single data set, however, this can be changed to support multiple separate or combined data sets with only changes within the main program, since analysis is conducted per class instance. 
-- Informational messages are not logged to keep log size relatively small since the log file is persistant after the program has exited. 
+- Informational messages are not logged to keep log size relatively small since the log file is persistent after the program has exited. 
 - For portability, charts are not displayed in another window, instead they are saved to a file and can be opened separately.
 
 ## Features
@@ -125,7 +125,7 @@ Please select one of the following options:
 1 -- Overall Spending per Day
 2 -- Spending by Category
 3 -- Spending by Description
-4 -- Overall Balance Changes per Day
+4 -- Maximum Balance Changes per Day
 5 -- Top 5 Expenses
 x -- Quit
 1
@@ -135,7 +135,7 @@ Please select one of the following options:
 1 -- Overall Spending per Day
 2 -- Spending by Category
 3 -- Spending by Description
-4 -- Overall Balance Changes per Day
+4 -- Maximum Balance Changes per Day
 5 -- Top 5 Expenses
 x -- Quit
 x
@@ -432,7 +432,7 @@ python -m pytest
 |  | setUp(self) | Setup method to create temporary testing directory |
 |  | tearDown(self) | Tear down method to delete temporary testing directory |
 |  | test_writable_dir(self) | Tests that writing to writable directory succeeds |
-|  | test_directory(self) | Tests that path to non-existent directory returns (False, message) |
+|  | test_miss_directory(self) | Tests that path to non-existent directory returns (False, message) |
 | TestDataframeCheck(unittest.TestCase) |  | Class to test dataframe_check(file_name, head_info=0) function |
 |  | setUpClass(cls) | Setup method to create temporary testing files for the class |
 |  | tearDownClass(cls) | Tear down method to delete temporary testing directory |
@@ -574,7 +574,7 @@ python -m pytest
 |  | setUp(self) | Setup method to create test statement class instances |
 |  | test_spend_income(self) | Tests that income is excluded from expenses |
 |  | test_spend_pad(self) | Tests that missing dates are added |
-|  | test_spend_stats(self) | Tests than min, max, and avg values are calculated correctly |
+|  | test_spend_stats(self) | Tests that min, max, and avg values are calculated correctly |
 |  | test_spend_nan(self) | Tests the case when all data is nan |
 |  | test_spend_orig(self) | Tests that the original dataframe is unmodified |
 | TestSpendChart(StmntBuild, unittest.TestCase) |  | Class to test the spend_chart() method |
@@ -605,7 +605,7 @@ python -m pytest
 |  | test_descript_sort(self) | Tests that descriptions are sorted by amount |
 |  | test_descript_err(self) | Tests the case when there is no Description column |
 |  | test_descript_nan(self) | Tests the case when all data is nan |
-|  | test_descript_orig(self) | Tests that the original dataframe is unmodifed |
+|  | test_descript_orig(self) | Tests that the original dataframe is unmodified |
 | TestDescriptChart(StmntBuild, unittest.TestCase) |  | Class to test the descript_chart() method |
 |  | setUp(self) | Setup method to create test statement class instances |
 |  | tearDown(self) | Closes charts after each test |
@@ -636,7 +636,7 @@ python -m pytest
 |  | test_top_more(self) | Tests the case when there are more than five descriptions |
 |  | test_top_err(self) | Tests the case when there is no Description column |
 |  | test_top_nan(self) | Tests the case when all data is nan |
-|  | test_top_orig(self) | Tests that the original dataframe is unmodifed |
+|  | test_top_orig(self) | Tests that the original dataframe is unmodified |
 | TestTopChart(StmntBuild, unittest.TestCase) |  | Class to test the top5_chart() method |
 |  | setUp(self) | Setup method to create test statement class instances |
 |  | tearDown(self) | Closes charts after each test |
@@ -661,7 +661,7 @@ python --version
 ```
 4. Install packages using the following commands.
 ```
-uv pip install --python .venv-min/bin/python "pandas==2.0.*" "numpy==1.21.*" "seaborn=0.12.*" "matplotlib=3.5.*"
+uv pip install --python .venv-min/bin/python "pandas==2.0.*" "numpy==1.21.*" "seaborn==0.12.*" "matplotlib==3.5.*"
 ```
 5. Compile all project files with the following command.
 ```

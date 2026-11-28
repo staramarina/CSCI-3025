@@ -508,7 +508,7 @@ class TestDescriptAnalysis(StmntBuild, unittest.TestCase):
         self.assertIn("No data available for analysis", check[1])
 
     def test_descript_orig(self):
-        """Tests that the original dataframe is unmodifed"""
+        """Tests that the original dataframe is unmodified"""
         orig = self.stmnt6.df.copy(deep=True)
         self.stmnt6.descript_analysis()
         pd.testing.assert_frame_equal(orig, self.stmnt6.df)
@@ -766,7 +766,7 @@ class TestTopAnalysis(StmntBuild, unittest.TestCase):
         self.assertIn("No data available for analysis", check[1])
 
     def test_top_orig(self):
-        """Tests that the original dataframe is unmodifed"""
+        """Tests that the original dataframe is unmodified"""
         orig = self.stmnt6.df.copy(deep=True)
         self.stmnt6.top5_analysis()
         pd.testing.assert_frame_equal(orig, self.stmnt6.df)
