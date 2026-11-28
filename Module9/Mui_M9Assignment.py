@@ -175,6 +175,7 @@ if __name__ == "__main__":
     #check_cat = all_data.cat_chart()
     #if check_cat[0]:
     #    chart_check = io.chart_save(check_cat[1], "charts/cat_chart.png")
+    #    plot.close(check_cat[1][0])
 
     # Description analysis
     #check_des = all_data.descript_chart()
