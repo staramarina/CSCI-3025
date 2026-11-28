@@ -9,7 +9,9 @@
 #           Mui_Parser.py, Mui_Statement.py
 
 
+import os
 import sys
+from pathlib import Path
 from copy import deepcopy
 import matplotlib.pyplot as plt
 import Mui_Ancillary as aux
@@ -32,16 +34,6 @@ TEST_FILES = {
     'data/wellsfargo_checking_example.csv': True
 }
 
-USAA_CHECK = 'priv_test/checking2_scrubbed.csv' # good description and category
-USAA_CREDIT = 'priv_test/credit2_scrubbed.csv'  # good to combo with checking2
-SAFE_CREDIT = 'priv_test/credit1_scrubbed.csv' # good balance, don't use description
-
-REAL_FILES = {
-    #USAA_CHECK: True,
-    USAA_CREDIT: True,
-    SAFE_CREDIT: True
-}
-
 
 if __name__ == "__main__":
     # Setup
@@ -50,7 +42,6 @@ if __name__ == "__main__":
     print("\nWelcome to the expense tracker!\n")
 
     # Ask user for their transaction files
-    """ # TODO add this back in later when ready to conduct full testing.
     file_list = {}
     more_file = "y"
     while more_file in ["Y", "y"]:
@@ -64,13 +55,12 @@ if __name__ == "__main__":
     if 0 == len(file_list):
         print("No files received. Please restart.")
         sys.exit(1)
-    """
     print("File(s) received.")
 
     # Build dataframes from CSV files
     print("\nBuilding data frame(s).")
     df_list = {}
-    for file in REAL_FILES:  # TODO replace with file_list later
+    for file in file_list:
         check = parse.build_dataframe(file)
         if check[0]:  # If dataframe successfully built
             df_list[file] = check[1]
@@ -138,8 +128,14 @@ if __name__ == "__main__":
     print("Data combined.")
 
     # Check that /charts folder exists and is writable
-    check = io.can_write_file("charts/")
-    if not check[0]:
+    probe = os.path.join("charts", ".write_check")
+    check = io.can_write_file(probe)
+    if check[0]:
+        try:
+            os.remove(probe)
+        except OSError:
+            pass
+    else:
         io.err_handle(check[1], err_log)
         print("\nPlease check charts directory and restart.")
         sys.exit(1)
