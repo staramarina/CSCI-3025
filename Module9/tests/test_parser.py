@@ -11,6 +11,7 @@ import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import patch
+import numpy as np
 import pandas as pd
 
 
@@ -628,6 +629,40 @@ class TestMergeDebCrd(unittest.TestCase):
         check = parse.merge_deb_crd(df)
         self.assertFalse(check[0])
         self.assertIn("Failed to merge columns", check[1])
+
+    def test_merge_nan(self):
+        """Tests the case of np.nan values in data"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["-21.13", "-7.66", "-28.79", np.nan],
+            "Credit": [np.nan, np.nan, np.nan, "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+        }
+        df = pd.DataFrame(data)
+        exp = [-21.13, -7.66, -28.79, 1500.00]
+        check = parse.merge_deb_crd(df)
+        self.assertTrue(check[0])
+        self.assertTrue(pd.api.types.is_float_dtype(check[1]["Amount"]))
+        for rx, ex in zip(check[1]["Amount"], exp):
+            self.assertAlmostEqual(rx, ex)
+
+    def test_keep_nan(self):
+        """Tests the case where np.nan is in both debit and credit columns"""
+        data = {
+            "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
+            "Debit": ["-21.13", "-7.66", np.nan, np.nan],
+            "Credit": [np.nan, np.nan, np.nan, "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"],
+            "Balance": [54.12, 12.54, 5.37, 1505.37]
+        }
+        df = pd.DataFrame(data)
+        exp = [54.12, 12.54, 5.37, 1505.37]
+        check = parse.merge_deb_crd(df)
+        self.assertTrue(check[0])
+        self.assertTrue(pd.api.types.is_float_dtype(check[1]["Amount"]))
+        self.assertEqual(4, len(check[1]))
+        for rx, ex in zip(check[1]["Balance"], exp):
+            self.assertAlmostEqual(rx, ex)
 
     def test_deb_crd_orig(self):
         """Tests that the original dataframe still has debit/credit columns"""

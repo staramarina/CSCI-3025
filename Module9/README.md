@@ -476,6 +476,8 @@ python -m pytest
 |  | test_chg_credt(self) | Tests the case when credit is negative |
 |  | test_deb_crd_conflict(self) | Tests the case when there is data in both debit and credit columns |
 |  | test_deb_crd_null(self) | Tests the case when neither debit nor credit have data |
+|  | test_merge_nan(self) | Tests the case of np.nan values in data |
+|  | test_keep_nan(self) | Tests the case where np.nan is in both debit and credit columns |
 |  | test_deb_crd_orig(self) | Tests that the original dataframe still has debit/credit columns |
 | TestCleanDataframe(unittest.TestCase) |  | Class to test the clean_dataframe(data_raw) function |
 |  | setUp(self) | Setup method to create temporary testing directory |
