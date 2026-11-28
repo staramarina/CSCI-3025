@@ -295,7 +295,7 @@ The parser also handles the following.
 ### Manual Testing
 Manual testing included utilizing examples provided in the data folder as well as real (though sanitized) exports from USAA and SAFE Credit Union (full data was not published due to privacy, but may be provided upon request). Each section of the main program prior to the analysis section was tested and dumped to the "test_dump.txt" file. This process can be recreated using the following steps. 
 
-1. Insert the following code between the import section and the main section
+1. Insert the following code between the import section and the main section (note: ensure files are present within the data folder).
 ```
 TEST_FILES = {
     'data/bofa_checking_example.csv': True,
@@ -337,7 +337,7 @@ TEST_FILES = {
             f.write(str(data))  # dumps data to file
             f.write('\n\n')  # extra lines for readability
 ```
-7. Enter the following code between "Add all class instances together into a single class instance" and "Analysis"
+7. Enter the following code between "Add all class instances together into a single class instance" and "Analysis".
 ```
     with open('test_dump.txt', "a") as f: 
         f.write('------------------------COMBINED------------------------\n')
@@ -366,17 +366,220 @@ python -m pytest
 |  | test_char_input(self) | Tests function with character/string input |
 |  | test_decimal_input(self) | Tests function with decimal number input |
 
-#### Specific Module Tests (test_XXX.py)
-
-##### Testing Fixtures, Variables, and Functions
-| Type | Name | Purpose |
-| ----- | ------ | ------ |
-TODO
-
-##### Testing Classes & Methods
+#### IO Module Tests (test_io.py)
 | Class | Method | Purpose |
 | ----- | ------ | ------ |
-TODO
+|  | make_chart() | Returns simple matplotlib (figure, axes) for chart_save tests |
+| TestFileExists(unittest.TestCase) |  | Tests the file_exists function |
+|  | setUp(self) | Setup method to create temporary testing directory |
+|  | tearDown(self) | Tear down method to delete temporary testing directory |
+|  | test_file_exists_true(self) | "Tests that (True, message) is returned when file exists |
+|  | test_file_not_exists(self) | Tests that (False, message) is returned when file does not exist |
+|  | test_directory(self) | Tests that path to directory returns (False, message) |
+| TestCanWriteFile(unittest.TestCase) |  | Tests the can_write_file function |
+|  | setUp(self) | Setup method to create temporary testing directory |
+|  | tearDown(self) | Tear down method to delete temporary testing directory |
+|  | test_writable_dir(self) | Tests that writing to writable directory succeeds |
+|  | test_directory(self) | Tests that path to non-existent directory returns (False, message) |
+| TestDataframeCheck(unittest.TestCase) |  | Class to teach dataframe_check(file_name, head_info=0) function |
+|  | setUpClass(cls) | Setup method to create temporary testing files for the class |
+|  | tearDownClass(cls) | Tear down method to delete temporary testing directory |
+|  | setUp(self) | Setup method to create temporary testing directory per method |
+|  | test_default_header(self) | Tests the case when there is a header and no leading rows |
+|  | test_lead_rows(self) | Tests the case when there is a header and leading rows |
+|  | test_no_head(self) | Tests the case when there is no header or leading rows |
+|  | test_no_file(self) | Tests the case when the file does not exist |
+|  | test_empty_file(self) | Tests the case when the file exists, but it's empty |
+|  | test_parse_err(self) | Tests that parsing error is returned if data is malformed |
+|  | test_val_err(self) | Tests that a value error is return if invalid header argument received |
+| TestChartSave(unittest.TestCase) |  | Class to test chart_save(chart, file_name, dpi=150) function |
+|  | setUp(self) | Setup method to create temporary testing directory |
+|  | tearDown(self) | Tear down method to delete temporary testing directory |
+|  | test_save_success(self) | Tests that a chart was saved successfully |
+|  | test_custom_dpi(self) | Tests that a custom dpi is accepted |
+|  | test_bad_path(self) | Tests that nonexistent directory returns error |
+|  | test_miss_ext(self) | Tests that a file name with missing extension save as .png |
+| TestFileInputHandle(unittest.TestCase) |  | Class to test the file_input_handle() function |
+|  | setUp(self) | Setup method to create temporary testing directory |
+|  | tearDown(self) | Tear down method to delete temporary testing directory |
+|  | test_file_there(self) | Tests that (True, message) is returned when file exists |
+|  | test_file_not_there(self) | Tests that (False, message) is returned when file does not exist |
+| TestLogSetup(unittest.TestCase) |  | Class to test the log_setup(log_file="log.txt") function |
+|  | setUp(self) | Setup method to create temporary testing directory and logger |
+|  | tearDown(self) | Tear down method to delete testing directory and clear logger |
+|  | test_handler(self) | Tests that the handler is attached to the shared logger |
+|  | test_duplicate(self) | Tests that calling log_setup twice only results in a single handler |
+| TestErrHandle(unittest.TestCase) |  | Class to test the err_handle(err_msg, err_log='log.txt') function |
+|  | test_err_log_print(self) | Tests that error logs are printed correctly |
+|  | test_err_log_console(self) | Tests the expected error message in the console |
+| TestWarnHandle(unittest.TestCase) |  | Class to test the warn_handle(warn_msg, err_log='log.txt') function |
+|  | test_warn_log_print(self) | Tests that warning logs are printed correctly |
+|  | test_warn_log_console(self) | Tests the expected warning message in the console |
+|  | test_force_confirm(self) | Tests the case when user confirms to continue processing |
+|  | test_force_deny(self) | Tests the case when user declines to continue process |
+|  | test_force_low_confirm(self) | Tests that lower case y works to confirm continuing |
+| TestPrinting(unittest.TestCase) |  | Class to test any printing-only functions |
+|  | test_analysis_menu(self) | Tests the print_analysis_menu() function |
+
+#### Parser Module Tests (test_parser.py)
+| Class | Method | Purpose |
+| ----- | ------ | ------ |
+| TestBuildDataframe(unittest.TestCase) |  | Class to test the build_dataframe(file_name) function |
+|  | setUpClass(cls) | Setup method to create temporary testing files for the class |
+|  | tearDownClass(cls) | Tear down method to delete temporary testing directory |
+|  | setUp(self) | Setup method to create temporary testing directory per method |
+|  | test_default_header(self) | Tests the case when there is a header and no leading rows |
+|  | test_lead_rows(self) | Tests the case when there is a header and leading rows |
+|  | test_no_head(self) | Tests the case when there is no header or leading rows |
+|  | test_empty_file(self) | Tests the case when the file exists, but it's empty |
+| TestInferHeader(unittest.TestCase) |  | Class to test the infer_header(data) function |
+|  | test_infer_date1(self) | Tests the case of a single date column and one money column |
+|  | test_infer_date2(self) | Tests the case of two date columns |
+|  | test_infer_date3(self) | Tests the case of three date columns |
+|  | test_infer_date0(self) | Tests the case of no date column |
+|  | test_infer_deb_crd(self) | Tests the case of two money columns, debit and credit |
+|  | test_infer_amt_bal(self) | Tests the case of two money columns, amount and balance |
+|  | test_infer_mon3(self) | Tests the case of three money columns |
+|  | test_infer_mon0(self) | Tests the case of no money columns |
+| TestDateFormat(unittest.TestCase) |  | Class to test the date_format(column: pd.Series) function |
+|  | test_year_first(self) | Tests the case when the year is clearly first part |
+|  | test_day_first(self) | Tests the case when day is clearly first part |
+|  | test_mon_first(self) | Tests the case when day is clearly second part |
+|  | test_sep_mixed(self) | Tests the case when there are mixed separators |
+|  | test_year_mixed(self) | Tests the case when year is last and mixed YYYY and YY |
+|  | test_day_mixed(self) | Tests the case when there is a mix of date first and second |
+|  | test_ambiguous(self) | Tests the case when day position cannot be determined |
+| TestCleanDate(unittest.TestCase) |  | Class to test the date_clean(data, col, yr_first, day_first, determine, mixed, err_log) function |
+|  | setUp(self) | Setup method to create temporary testing directory |
+|  | tearDown(self) | Tear down method to delete temporary testing directory |
+|  | test_yr1_det(self) | Tests the case when the year is clearly first part |
+|  | test_day1_det(self) | Tests the case when day is clearly first part |
+|  | test_mon1_det(self) | Tests the case when day is clearly second part |
+|  | test_det_sep_mix(self) | Tests the case when there are mixed separators |
+|  | test_det_yr_mix(self) | Tests the case when year is last and mixed YYYY and YY |
+|  | test_day1_mix(self) | Tests the case when there is a mix of date first and second |
+|  | test_all_false_pass(self) | Tests the case when day position cannot be determined |
+|  | test_all_false_fail(self) | Tests the case when day position cannot be determined |
+|  | test_date_convert_fail(self) | Tests the case when all date values fail to convert |
+| TestCleanMoney(unittest.TestCase) |  | Class to test the clean_money(data, col) function |
+|  | test_num_convert(self) | Tests that regular numbers are converted to floats |
+|  | test_symbol_strip(self) | Tests that additional symbols are stripped when converting |
+|  | test_invalid_num(self) | Tests that full invalid numbers result in error message |
+|  | test_orig_num(self) | Tests that the original data was not modified |
+|  | test_bal_chg(self) | Tests that a mostly negative balance column is updated |
+|  | test_amnt_chg(self) | Tests that a mostly positive amount column is updated |
+| TestMergeDebCrd(unittest.TestCase) |  | Class to test the merge_deb_crd(data) function |
+|  | test_keep_sign(self) | Tests the case of negative debit and positive credit in original |
+|  | test_chg_debit(self) | Tests the case when debit is positive |
+|  | test_chg_credt(self) | Tests the case when credit is negative |
+|  | test_deb_crd_conflict(self) | Tests the case when there is data in both debit and credit columns |
+|  | test_deb_crd_null(self) | Tests the case when neither debit nor credit have data |
+|  | test_deb_crd_orig(self) | Tests that the original dataframe still has debit/credit columns |
+| TestCleanDataframe(unittest.TestCase) |  | Class to test the clean_dataframe(data_raw, err_log) function |
+|  | setUp(self) | Setup method to create temporary testing directory |
+|  | tearDown(self) | Tear down method to delete temporary testing directory |
+|  | test_simple_clean_success(self) | Tests that case of Date, Amount, Description, Balance passes |
+|  | test_call_infer_header(self) | Tests that the infer_header is called appropriately when forced |
+|  | test_header_warn_abort(self) | Tests that aborting at the header warning stops processing |
+|  | test_multi_date(self) | Tests the case of multiple dates in header rows |
+|  | test_force_ambig_date(self) | Tests when ambiguous date assumption is accepted |
+|  | test_abort_ambig_date(self) | Tests when ambiguous date processing is aborted |
+|  | test_force_bad_num(self) | Tests when number conversion failure is accepted |
+|  | test_abort_bad_num(self) | Tests when number conversion failure is aborted |
+|  | test_deb_crd_merge(self) | Tests that debit/credit columns renamed and merged |
+|  | test_deb_crd_conflict(self) | Tests that debit/credit merge conflicts are integrated |
+|  | test_debit_only(self) | Tests the case where debit is the only money column |
+|  | test_credit_only(self) | Tests the case where credit is the only money column |
+|  | test_column_conflict(self) | Tests the case when column labeling is conflicting |
+|  | test_no_date_col(self) | Tests the case where no date column exists |
+|  | test_no_money_col(self) | Tests the case where no amount, debit, or credit column exists |
+
+#### Statement Class Module Tests (test_statement.py)
+| Class | Method | Purpose |
+| ----- | ------ | ------ |
+| StmntBuild |  | Class to build various statement class instances for test cases |
+|  | build_lrg(self) | Builds and returns a larger pandas dataframe for analysis/charts |
+|  | build_df6(self) | Builds and returns a pandas dataframe with 6 columns |
+|  | build_df4(self) | Builds and returns a pandas dataframe with 4 columns |
+|  | build_min(self) | Builds and returns a pandas dataframe with only Date and Amount |
+|  | build_default_stmnt(self) | Builds a default statement instance |
+|  | build_df6_stmnt(self) | Builds a statement instance using the 6 column dataframe |
+|  | build_df4_stmnt(self) | Builds a statement instance using the 4 column dataframe |
+|  | build_any_stmnt(self, df, name) | Returns a statement instance with specified input |
+| TestStmntMagic(StmntBuild, unittest.TestCase) |  | Class to test the magic functions in the statement class |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | test_default_init(self) | Tests the case when name is not supplied on initialization |
+|  | test_name_override(self) | Tests that the name is overridden when specified on initialization |
+|  | test_df_pass(self) | Tests that a dataframe is successfully added to class instance |
+|  | test_not_dataframe(self) | Tests the case when the data variable is not a dataframe on initialization |
+|  | test_string_method(self) | Tests that the __str__ method returns name and data |
+|  | test_add_method(self) | Tests that the __add__ method returns a new combined instance |
+| TestSpendAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the spend_analysis() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | test_spend_income(self) | Tests that income is excluded from expenses |
+|  | test_spend_pad(self) | Tests that missing dates are added |
+|  | test_spend_stats(self) | Tests than min, max, and avg values are calculated correctly |
+|  | test_spend_orig(self) | Tests that the original dataframe is unmodified |
+| TestSpendChart(StmntBuild, unittest.TestCase) |  | Class to test the spend_chart() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | tearDown(self) | Closes charts after each test |
+|  | test_spend_fig(self) | Tests that both figure and axes is returned |
+|  | test_spend_label(self) | Tests that the chart title and axis label are correct |
+|  | test_spend_legend(self) | Tests that all legend items are present |
+| TestCatAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the cat_analysis() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | test_cat_income(self) | Tests that income is excluded from expenses |
+|  | test_cat_agg(self) | Tests that amount values are aggregated |
+|  | test_cat_sort(self) | Tests that categories are sorted by amount |
+|  | test_cat_err(self) | Tests the case when there is no Category column |
+|  | test_cat_orig(self) | Tests that the original dataframe is unmodified |
+| TestCatChart(StmntBuild, unittest.TestCase) |  | Class to test the cat_chart() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | tearDown(self) | Closes charts after each test |
+|  | test_cat_fig(self) | Tests that both figure and axes is returned |
+|  | test_cat_label(self) | Tests that the chart title and axis label are correct |
+|  | test_cat_chart_err(self) | Tests the case when Category is not a column |
+| TestDescriptAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the descript_analysis() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | test_descript_income(self) | Tests that income is excluded from expenses |
+|  | test_descript_sort(self) | Tests that descriptions are sorted by amount |
+|  | test_descript_err(self) | Tests the case when there is no Description column |
+|  | test_descript_orig(self) | Tests that the original dataframe is unmodifed |
+| TestDescriptChart(StmntBuild, unittest.TestCase) |  | Class to test the descript_chart() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | tearDown(self) | Closes charts after each test |
+|  | test_descript_fig(self) | Tests that both figure and axes is returned |
+|  | test_descript_label(self) | Tests that the chart title and axis label are correct |
+|  | test_descript_chart_err(self) | Tests the case when Description is not a column |
+| TestBalAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the bal_analysis() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | test_bal_max(self) | Tests that balance values only reflect maximum |
+|  | test_bal_stats(self) | Tests than avg value is calculated correctly |
+|  | test_bal_err(self) | Tests the case when there is no Balance column |
+|  | test_bal_orig(self) | Tests that the original dataframe is unmodified |
+| TestBalChart(StmntBuild, unittest.TestCase) |  | Class to test the bal_chart() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | tearDown(self) | Closes charts after each test |
+|  | test_bal_fig(self) | Tests that both figure and axes is returned |
+|  | test_bal_label(self) | Tests that the chart title and axis label are correct |
+|  | test_bal_legend(self) | Tests that all legend items are present |
+|  | test_bal_chart_err(self) | Tests the case when Balance is not a column |
+| TestTopAnalysis(StmntBuild, unittest.TestCase) |  | Class to test the top5_analysis() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | test_top_income(self) | Tests that income is excluded from expenses |
+|  | test_top_sort(self) | Tests that descriptions are sorted by amount |
+|  | test_top_less(self) | Tests the case when there are less than five descriptions |
+|  | test_top_more(self) | Tests the case when there are more than five descriptions |
+|  | test_top_err(self) | Tests the case when there is no Description column |
+|  | test_top_orig(self) | Tests that the original dataframe is unmodifed |
+| TestTopChart(StmntBuild, unittest.TestCase) |  | Class to test the top5_chart() method |
+|  | setUp(self) | Setup method to create test statement class instances |
+|  | tearDown(self) | Closes charts after each test |
+|  | test_top_fig(self) | Tests that both figure and axes is returned |
+|  | test_top_label(self) | Tests that the chart title is correct |
+|  | test_top_less_chart(self) | Tests that less than 5 wedges are included |
+|  | test_top_more_chart(self) | Tests that 6 wedges are included |
+|  | test_top_chart_err(self) | Tests the case when Description is not a column |
 
 ## Author & Credits
 Author: Tiffany M. Mui  
