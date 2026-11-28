@@ -348,7 +348,7 @@ TEST_FILES = {
 TODO add remaining manual test steps, include manual end-to-end test
 
 ### Automated Testing
-All test cases are compatible with both unittest and pytest. All 134 test cases pass with both pytest and unittest.  
+All test cases are compatible with both unittest and pytest. All 136 test cases pass with both pytest and unittest.  
 To run all tests with unittest, enter the following from within the Module9 directory.
 ```
 python -m unittest
@@ -481,6 +481,8 @@ python -m pytest
 |  | test_call_infer_header(self) | Tests that the infer_header is called appropriately when forced |
 |  | test_header_warn_abort(self) | Tests that aborting at the header warning stops processing |
 |  | test_multi_date(self) | Tests the case of multiple dates in header rows |
+|  | test_multi_date3(self) | Tests the case of three date columns |
+|  | test_post_date_only(self) | Tests the case where post date is the only date column |
 |  | test_force_ambig_date(self) | Tests when ambiguous date assumption is accepted |
 |  | test_abort_ambig_date(self) | Tests when ambiguous date processing is aborted |
 |  | test_force_bad_num(self) | Tests when number conversion failure is accepted |

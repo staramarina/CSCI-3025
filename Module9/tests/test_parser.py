@@ -685,13 +685,13 @@ class TestCleanDataframe(unittest.TestCase):
         self.assertFalse(check[0])
         self.assertIn("Process aborted", check[1])
 
-    def test_multi_date(self):
+    def test_multi_date2(self):
         """Tests the case of multiple dates in header rows"""
         data = {
             "Transaction Date": ["11/18/2026", "11/16/2026", 
                                  "11/16/2026", "11/15/2026"],
             "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
-            "Amount": [-21.13, "-7.66", 28.79, "1500.00"],
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
             "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
         }
         df = pd.DataFrame(data)
@@ -701,6 +701,40 @@ class TestCleanDataframe(unittest.TestCase):
         self.assertIn("Post Date", check[1].columns)
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Date"]))
         self.assertTrue(pd.api.types.is_datetime64_dtype(check[1]["Post Date"]))
+        self.assertEqual(4, check[1]["Date"].notna().sum())
+
+    def test_multi_date3(self):
+        """Tests the case of three date columns"""
+        data = {
+            "Transaction Date": ["11/18/2026", "11/16/2026", 
+                                 "11/16/2026", "11/15/2026"],
+            "Effective Date": ["11/18/2026", "11/17/2026", 
+                               "11/16/2026", "11/16/2026"],
+            "Post Date": ["", "11/17/2026", "11/16/2026", "11/16/2026"],
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIn("Date", check[1].columns)
+        self.assertIn("Post Date", check[1].columns)
+        self.assertNotIn("Transaction Date", check[1].columns)
+        self.assertNotIn("Effective Date", check[1].columns)
+
+    def test_post_date_only(self):
+        """Tests the case where post date is the only date column"""
+        data = {
+            "Post Date": ["11/18/2026", "11/17/2026", 
+                          "11/16/2026", "11/16/2026"],
+            "Amount": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Description": ["GENOS STEAKS", "COOKIES", "MCDONALD S", "Depost"]
+        }
+        df = pd.DataFrame(data)
+        check = parse.clean_dataframe(df, self.err_log)
+        self.assertTrue(check[0])
+        self.assertIn("Date", check[1].columns)
+        self.assertNotIn("Post Date", check[1].columns)
 
     def test_force_ambig_date(self):
         """Tests when ambiguous date assumption is accepted"""

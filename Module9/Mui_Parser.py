@@ -323,7 +323,10 @@ def clean_dataframe(data_raw, err_log):
     post_ls = [col for col in date_col_ls if "post" in col.lower()]
     if 0 == len(prime_ls) and 0 == len(post_ls):
         return (False, "Could not identify a date column.")
-    keep_ls = [prime_ls[0]] + post_ls[:1]
+    elif 0 == len(prime_ls):
+        keep_ls = [post_ls[0]]
+    else:
+        keep_ls = [prime_ls[0]] + post_ls[:1]
     for col in date_col_ls:
         if col not in keep_ls:
             df = df.drop(columns=[col])
