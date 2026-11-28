@@ -75,13 +75,15 @@ def dataframe_check(file_name, head_info=0):
             [1]: pandas dataframe on success, otherwise error message
     """
     try:
-        df = pd.read_csv(file_name, header=head_info)
+        df = pd.read_csv(file_name, header=head_info, encoding="utf-8-sig")
     except FileNotFoundError:
         return (False, f'{file_name} does not exist.')
     except pd.errors.EmptyDataError:
         return (False, f'{file_name} has no parsable data.')
     except pd.errors.ParserError as err:
         return (False, f'Encountered parsing error in {file_name}: {err}.')
+    except UnicodeDecodeError as err:
+        return (False, f'{file_name} is not valid UTF-8. {err}.')
     except ValueError as err:
         return (False, f'Encountered value error {file_name}: {err}.')
     else:

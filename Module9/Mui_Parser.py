@@ -25,7 +25,7 @@ def build_dataframe(file_name):
     """
     line_count = 0
     line = ''
-    with open(file_name, "r") as f: 
+    with open(file_name, "r", encoding="utf-8-sig") as f: 
         for line in f:
             if line.isspace():
                 continue
