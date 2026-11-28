@@ -52,7 +52,7 @@ Ground work for the following features is included, but not fully implemented:
 ## Installation
 
 ### Prerequisites
-- Python 3.11 or higher (estimated)
+- Python 3.8 or higher (estimated)
 - External Packages
     - pandas - handles data formatting and analysis
     - numpy - handles additional data formatting
@@ -203,18 +203,18 @@ Below are example charts that were generated using anonomized export data. The d
 - re to support matching shapes
 
 ### External Packages
+- numpy for data handling
+    - Estimated Minimum: 1.20.3 (minimum required by pandas 2.0)
+    - Development Environment: 2.5.5
 - pandas for handling large data formatting and analysis
-    - Estimated Minimum: 2.0
+    - Estimated Minimum: 2.0 (due to to_datetime use with format="mixed")
     - Development Environment: 3.1.1
 - seaborn for creating graphs
-    - Estimated Minimum: 0.13
+    - Estimated Minimum: 0.12 (due to use of errorbar parameter in barplot)
     - Development Environment: 0.13.2
 - matplotlib for handling graph input
-    - Estimated Minimum: 3.7
+    - Estimated Minimum: 3.1 (minimum requirement for seaborn 0.12)
     - Development Environment: 3.11.2
-- numpy for handling data formatting
-    - Estimated Minimum: 1.20.3
-    - Development Environment: 2.5.5
 
 ### Ancillary Module (Mui_Ancillary.py)
 | Function | Purpose | Return |
