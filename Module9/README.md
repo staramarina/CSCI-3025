@@ -678,7 +678,7 @@ Author: Tiffany M. Mui
 Institution: State University of New York: Empire State University  
 Course: CSCI-3025 - Python Programming  
 Instructor: Dr. Sahand Ziabari  
-Date: XX Nov 2026  
+Date: 28 Nov 2026  
 
 ### Tools & AI Use Disclosure
 - Black 26.10.1 was utilized to ensure PEP8 compliance. All changes were manually reviewed and approved/disapproved as appropriate.
