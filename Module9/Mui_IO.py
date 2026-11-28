@@ -38,8 +38,8 @@ def file_exists(file_name):  # Duplicated from Module5
         return (True, f'{file_name} exists.')
 
 
-def can_write_file(file_name):  # Duplicated from Module5
-    """Checks if a file can be appended
+def can_write_file(file_name):  # Heavy reuse from Module5
+    """Checks that a directory exists and is writable
     
     Args:
         file_name: name of the file to check, can be absolute or relative path
