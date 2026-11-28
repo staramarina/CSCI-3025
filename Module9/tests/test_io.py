@@ -97,7 +97,7 @@ class TestCanWriteFile(unittest.TestCase):
 
 
 class TestDataframeCheck(unittest.TestCase):
-    """Class to teach dataframe_check(file_name, head_info=0) function"""
+    """Class to test dataframe_check(file_name, head_info=0) function"""
 
     @classmethod
     def setUpClass(cls):

@@ -382,7 +382,7 @@ python -m pytest
 |  | tearDown(self) | Tear down method to delete temporary testing directory |
 |  | test_writable_dir(self) | Tests that writing to writable directory succeeds |
 |  | test_directory(self) | Tests that path to non-existent directory returns (False, message) |
-| TestDataframeCheck(unittest.TestCase) |  | Class to teach dataframe_check(file_name, head_info=0) function |
+| TestDataframeCheck(unittest.TestCase) |  | Class to test dataframe_check(file_name, head_info=0) function |
 |  | setUpClass(cls) | Setup method to create temporary testing files for the class |
 |  | tearDownClass(cls) | Tear down method to delete temporary testing directory |
 |  | setUp(self) | Setup method to create temporary testing directory per method |
