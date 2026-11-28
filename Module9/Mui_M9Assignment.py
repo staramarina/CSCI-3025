@@ -3,36 +3,20 @@
 # CSCI-3025: Python Programming
 # Purpose: Personal Expense Tracker
 # Dependencies:
-#   Standard: sys, copy, datetime, logging, re
-#   External: pandas, matplotlib, seaborn
+#   Standard: os, sys, copy, datetime, logging, re
+#   External: pandas, numpy, matplotlib, seaborn
 #   Custom: Mui_Ancillary.py, Mui_IO.py,
 #           Mui_Parser.py, Mui_Statement.py
 
 
 import os
 import sys
-from pathlib import Path
 from copy import deepcopy
 import matplotlib.pyplot as plt
 import Mui_Ancillary as aux
 import Mui_IO as io
 import Mui_Parser as parse
 import Mui_Statement as stmnt
-
-
-TEST_FILES = {
-    'data/bofa_checking_example.csv': True,
-    'data/chase_checking_example.csv': True,
-    'data/chase_credit_example.csv': True,
-    'data/citibank_checking_example.csv': True,
-    'data/citibank_credit_example.csv': True,
-    'data/sample-bank-transactions.csv': True,
-    'data/SCU_checking_example.csv': True,
-    'data/SCU_credit_example.csv': True,
-    'data/USAA_checking_example.csv': True,
-    'data/USAA_credit_example.csv': True,
-    'data/wellsfargo_checking_example.csv': True
-}
 
 
 if __name__ == "__main__":
