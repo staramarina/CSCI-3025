@@ -115,29 +115,32 @@ TODO
     ├── Mui_Statement.py                      # Class for bank statements, analysis, and chart generation
     ├── pyproject.toml                        # Project configuration file
     ├── README.md                             # Read me file (current file)
+    ├── test_dump.txt                         # Shows the data changing steps after each section
     ├── charts                                # Directory to hold generated charts
     │   ├── bal_chart.png                     # Example line chart of maximum balance per day
     │   ├── cat_chart.png                     # Example bar chart of total expenses by category
     │   ├── descript_chart.png                # Example bar chart of total expenses by description
     │   ├── spend_chart.png                   # Example line chart of aggregate expenses per day
     │   └── top5_chart.png                    # Example pie chart of top 5 expenses
-    ├── tests                                 # Test files for unittest
-    │   ├── __init__.py                       # Tells Python this is a package
-    │   ├── test_ancillary.py                 # Tests for Mui_Ancillary.py
-    │   ├── test_io.py                        # Tests for Mui_IO.py
-    │   ├── test_parser.py                    # Tests for Mui_Parser.py
-    │   └── test_statement.py                 # Tests for Mui_Statement.py
-    └── data                                  # Data used for manual tests
-        ├── bofa_checking_example.csv         # Estimated example of checking account export from Bank of America
-        ├── chase_checking_example.csv        # Estimated example of checking account export from Chase
-        ├── chase_credit_example.csv          # Estimated example of credit card account export from Chase
-        ├── citibank_checking_example.csv     # Estimated example of checking account export from Citibank
-        ├── citibank_credit_example.csv       # Estimated example of credit card account export from Citibank
-        ├── sample-bank-transactions.csv      # Sample generic bank export from Utilly (2026)
-        ├── SCU_checking_example.csv          # Example of checking account export from SAFE Credit Union
-        ├── SCU_credit_example.csv            # Example of credit card account export from SAFE Credit Union
-        ├── USAA_checking_example.csv         # Example of checking account export from USAA
-        └── USAA_credit_example.csv           # Example of credit card account export from USAA
+    ├── data                                  # Data used for manual tests
+    │   ├── bofa_checking_example.csv         # Estimated example of checking account export from Bank of America
+    │   ├── chase_checking_example.csv        # Estimated example of checking account export from Chase
+    │   ├── chase_credit_example.csv          # Estimated example of credit card account export from Chase
+    │   ├── citibank_checking_example.csv     # Estimated example of checking account export from Citibank
+    │   ├── citibank_credit_example.csv       # Estimated example of credit card account export from Citibank
+    │   ├── sample-bank-transactions.csv      # Sample generic bank export from Utilly (2026)
+    │   ├── SCU_checking_example.csv          # Example of checking account export from SAFE Credit Union
+    │   ├── SCU_credit_example.csv            # Example of credit card account export from SAFE Credit Union
+    │   ├── USAA_checking_example.csv         # Example of checking account export from USAA
+    │   ├── USAA_credit_example.csv           # Example of credit card account export from USAA
+    │   └── wellsfargo_checking_example.csv   # Example of a checking account export from Wells Fargo
+    └── tests                                 # Test files for unittest
+        ├── __init__.py                       # Tells Python this is a package
+        ├── test_ancillary.py                 # Tests for Mui_Ancillary.py
+        ├── test_io.py                        # Tests for Mui_IO.py
+        ├── test_parser.py                    # Tests for Mui_Parser.py
+        └── test_statement.py                 # Tests for Mui_Statement.py
+
 ```
 
 ## Modules
