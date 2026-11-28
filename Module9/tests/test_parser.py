@@ -852,14 +852,17 @@ class TestCleanDataframe(unittest.TestCase):
         """Tests the case where credit is the only money column"""
         data = {
             "Date": ["11/18/2026", "11/16/2026", "11/16/2026", "11/15/2026"],
-            "Credit": ["-21.13", "-7.66", "-28.79", "1500.00"],
+            "Credit": ["21.13", "7.66", "-28.79", "1500.00"],
             "Description": ["GENOS STEAKS", "INSOMNIA COOKIES", "MCDONALD S", "Depost"]
         }
         df = pd.DataFrame(data)
+        exp = [21.13, 7.66, -28.79, 1500.00]
         check = parse.clean_dataframe(df, self.err_log)
         self.assertTrue(check[0])
         self.assertIn("Amount", check[1].columns)
         self.assertNotIn("Credit", check[1].columns)
+        for rx, ex in zip(check[1]["Amount"], exp):
+            self.assertAlmostEqual(rx, ex)
 
     def test_column_conflict(self):
         """Tests the case when column labeling is conflicting"""
